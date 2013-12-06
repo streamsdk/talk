@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddFriendsViewController : UIViewController
+@interface AddFriendsViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
+@property (nonatomic,strong) UITableView *myTableview;
+@property (nonatomic,strong) NSArray *userData;
 @end

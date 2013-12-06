@@ -50,16 +50,19 @@
     [array addObject:sharedNav];
     
     TabBarViewController * tabBar = [[TabBarViewController alloc]init];
+
     tabBar.viewControllers = array;
     [self presentViewController:tabBar animated:YES completion:NULL];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.title = @"MyFriends";
    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
     userData = [[NSMutableArray alloc]init];
-    
+    self.navigationItem.hidesBackButton = YES;
+
     UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addFriends)];
     self.navigationItem.rightBarButtonItem = rightItem;
     
@@ -78,6 +81,7 @@
     NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
     NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
     NSString * loginName= [array objectAtIndex:0];
+
     STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:loginName];
     [sq setQueryLogicAnd:true];
     [sq whereEqualsTo:@"status" forValue:@"friend"];
@@ -93,7 +97,7 @@
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [userData count];
+    return [userData count]+1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -103,17 +107,30 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    STreamObject * so = [userData objectAtIndex:indexPath.row];
-    cell.textLabel.text = [so objectId];
+    if (indexPath.row==0) {
+        NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+        NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
+        NSString * loginName= [array objectAtIndex:0];
+        cell.textLabel.text = loginName;
+    }else{
+        STreamObject * so = [userData objectAtIndex:indexPath.row-1];
+        cell.textLabel.text = [so objectId];
+    }
+    
+    cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    MainController *mainVC = [[MainController alloc]init];
-    STreamObject * so= [userData objectAtIndex:indexPath.row];
-    NSString *userName = [so objectId];
-    [mainVC setSendToID:userName];
-    [self.navigationController pushViewController:mainVC animated:YES];
+    if (indexPath.row!=0) {
+        MainController *mainVC = [[MainController alloc]init];
+        STreamObject * so= [userData objectAtIndex:indexPath.row-1];
+        NSString *userName = [so objectId];
+        [mainVC setSendToID:userName];
+        [self.navigationController pushViewController:mainVC animated:YES];
+    }
+   
 }
+
 @end

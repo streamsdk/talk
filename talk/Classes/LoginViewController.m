@@ -43,9 +43,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self .navigationItem.hidesBackButton = YES;
-    self.navigationController.navigationBarHidden = NO;
+     self.navigationController.navigationBarHidden = NO;
     
+    self .navigationItem.hidesBackButton = YES;
     UIBarButtonItem * leftitem = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
     self.navigationItem.leftBarButtonItem = leftitem;
     UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,self.view.frame.size.width, self.view.frame.size.height)];

@@ -10,5 +10,5 @@
 
 @interface MyFriendsViewController : UITableViewController
 
-@property (nonatomic,retain) NSMutableArray * userData;
+@property (nonatomic,retain) NSMutableArray *userData;
 @end

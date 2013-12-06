@@ -183,7 +183,8 @@
 		0EA16C0018516FC9009F2D3A /* MyFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */; };
 		0EA16C03185176A7009F2D3A /* AddFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16C02185176A7009F2D3A /* AddFriendsViewController.m */; };
 		0EA16C061851802F009F2D3A /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16C051851802F009F2D3A /* TabBarViewController.m */; };
-		0EA16C091851804A009F2D3A /* SearchFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16C081851804A009F2D3A /* SearchFriendsViewController.m */; };
+		0EA16C0C18518B2C009F2D3A /* SearchFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16C0B18518B2C009F2D3A /* SearchFriendsViewController.m */; };
+		0EA16C0E18519C4B009F2D3A /* tick.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EA16C0D18519C4B009F2D3A /* tick.png */; };
 		0ECD894A183B0FC800B4AC1D /* camera_button_take.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ECD8948183B0FC800B4AC1D /* camera_button_take.png */; };
 		0ECD894B183B0FC800B4AC1D /* camera_button_take@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ECD8949183B0FC800B4AC1D /* camera_button_take@2x.png */; };
 		0ED6BFBF184823740061038D /* libidn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9C0E018145E510039118F /* libidn.a */; };
@@ -567,8 +568,9 @@
 		0EA16C02185176A7009F2D3A /* AddFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddFriendsViewController.m; path = Classes/AddFriendsViewController.m; sourceTree = "<group>"; };
 		0EA16C041851802F009F2D3A /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
 		0EA16C051851802F009F2D3A /* TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarViewController.m; sourceTree = "<group>"; };
-		0EA16C071851804A009F2D3A /* SearchFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchFriendsViewController.h; sourceTree = "<group>"; };
-		0EA16C081851804A009F2D3A /* SearchFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchFriendsViewController.m; sourceTree = "<group>"; };
+		0EA16C0A18518B2C009F2D3A /* SearchFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchFriendsViewController.h; path = Classes/SearchFriendsViewController.h; sourceTree = "<group>"; };
+		0EA16C0B18518B2C009F2D3A /* SearchFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchFriendsViewController.m; path = Classes/SearchFriendsViewController.m; sourceTree = "<group>"; };
+		0EA16C0D18519C4B009F2D3A /* tick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tick.png; sourceTree = "<group>"; };
 		0ECD8948183B0FC800B4AC1D /* camera_button_take.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_button_take.png; sourceTree = "<group>"; };
 		0ECD8949183B0FC800B4AC1D /* camera_button_take@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_button_take@2x.png"; sourceTree = "<group>"; };
 		0ED8BC0818505D5F007BD8CA /* talk4s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = talk4s.png; path = talkTests/talk4s.png; sourceTree = SOURCE_ROOT; };
@@ -729,8 +731,8 @@
 				0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */,
 				0EA16C01185176A7009F2D3A /* AddFriendsViewController.h */,
 				0EA16C02185176A7009F2D3A /* AddFriendsViewController.m */,
-				0EA16C071851804A009F2D3A /* SearchFriendsViewController.h */,
-				0EA16C081851804A009F2D3A /* SearchFriendsViewController.m */,
+				0EA16C0A18518B2C009F2D3A /* SearchFriendsViewController.h */,
+				0EA16C0B18518B2C009F2D3A /* SearchFriendsViewController.m */,
 				0ED8BC0A185065D7007BD8CA /* RootViewController.h */,
 				0ED8BC0B185065D7007BD8CA /* RootViewController.m */,
 				4413D09F182FA98E00B01C14 /* LoginViewController.h */,
@@ -753,6 +755,7 @@
 		03D9BF0218145C080039118F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0EA16C0D18519C4B009F2D3A /* tick.png */,
 				0ED8BC1118506EFC007BD8CA /* background@2x.png */,
 				0ED8BC0F18506EA6007BD8CA /* background.png */,
 				0ED8BC0D18506A1D007BD8CA /* talk.png */,
@@ -1721,6 +1724,7 @@
 				03D9BF0618145C080039118F /* InfoPlist.strings in Resources */,
 				0E8A4F3A182B9EA700705C1F /* keyboard.png in Resources */,
 				0E08479918274C4E00350741 /* video@2x.png in Resources */,
+				0EA16C0E18519C4B009F2D3A /* tick.png in Resources */,
 				0E00515F1822293000BB50F8 /* typingSomeone.png in Resources */,
 				0E0051581822293000BB50F8 /* bubbleMine@2x.png in Resources */,
 				44A80E92183120A7006069DE /* Text@2x.png in Resources */,
@@ -1847,7 +1851,7 @@
 				03D9BF5218145E270039118F /* XMPPDeprecatedPlainAuthentication.m in Sources */,
 				4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */,
 				03D9C08018145E410039118F /* XMPPvCardTempLabel.m in Sources */,
-				0EA16C091851804A009F2D3A /* SearchFriendsViewController.m in Sources */,
+				0EA16C0C18518B2C009F2D3A /* SearchFriendsViewController.m in Sources */,
 				03D9C0B718145E480039118F /* RFImageToDataTransformer.m in Sources */,
 				03D9C09518145E410039118F /* XMPPMessageArchiving_Message_CoreDataObject.m in Sources */,
 				03D9C09318145E410039118F /* XMPPMessageArchiving.xcdatamodeld in Sources */,
