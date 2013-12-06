@@ -53,7 +53,7 @@
 
 -(void)initWithToolBar{
     
-    //初始化为NO
+    //初始化为NO added
     keyboardIsShow=NO; 
     faceButton = [createUI setButtonFrame:CGRectMake(0, 2,30, 36) withTitle:@"nil"];
     [faceButton setImage:[UIImage imageNamed:@"face.png"] forState:UIControlStateNormal];
