@@ -22,7 +22,7 @@
 
 @implementation MyFriendsViewController
 
-@synthesize userData;
+@synthesize userData,userDict;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -60,11 +60,13 @@
     [super viewDidLoad];
     self.title = @"MyFriends";
    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
-    userData = [[NSMutableArray alloc]init];
+    userData = [[NSArray alloc]init];
+    userDict = [[NSMutableDictionary alloc]init];
+    
     self.navigationItem.hidesBackButton = YES;
-
     UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addFriends)];
     self.navigationItem.rightBarButtonItem = rightItem;
+    
     
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"loading friends...";
@@ -81,23 +83,30 @@
     NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
     NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
     NSString * loginName= [array objectAtIndex:0];
-
+    NSArray *my = [[NSArray alloc]initWithObjects:loginName, nil];
     STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:loginName];
     [sq setQueryLogicAnd:true];
     [sq whereEqualsTo:@"status" forValue:@"friend"];
-    userData = [sq find];
+    NSArray * friends = [sq find];
     
+    [userDict setValue:my forKey:@"my"];
+    [userDict setValue:friends forKey:@"myFriends"];
+    userData = [userDict allKeys];
 }
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return [userData count];
+}
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [userData count]+1;
+    NSString * string = [userData objectAtIndex:section];
+    NSArray *frieds = [userDict objectForKey:string];
+    return [frieds count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -109,23 +118,25 @@
         [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    if (indexPath.row==0) {
-        NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-        NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-        NSString * loginName= [array objectAtIndex:0];
-        cell.textLabel.text = loginName;
+    
+    NSString * keys = [userData objectAtIndex:indexPath.section];
+    NSArray * friends = [userDict objectForKey:keys];
+    if (indexPath.section ==0) {
+         cell.textLabel.text = [friends objectAtIndex:indexPath.row];
+        
     }else{
-        STreamObject * so = [userData objectAtIndex:indexPath.row-1];
+        STreamObject * so = [friends objectAtIndex:indexPath.row];
         cell.textLabel.text = [so objectId];
     }
-    
     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row!=0) {
+    if (indexPath.section!=0) {
+        NSString * keys = [userData objectAtIndex:indexPath.section];
+        NSArray * friends = [userDict objectForKey:keys];
         MainController *mainVC = [[MainController alloc]init];
-        STreamObject * so= [userData objectAtIndex:indexPath.row-1];
+        STreamObject * so= [friends objectAtIndex:indexPath.row];
         NSString *userName = [so objectId];
         [mainVC setSendToID:userName];
         [self.navigationController pushViewController:mainVC animated:YES];

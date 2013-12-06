@@ -721,6 +721,7 @@
 				0EE07675182B53540052BC02 /* creatUI */,
 				44A80E99183129E2006069DE /* Emoji-master */,
 				0EA16BFA18516F30009F2D3A /* MBPHUD */,
+				0EA16C0F1851C77D009F2D3A /* tabbar */,
 				0EA16C041851802F009F2D3A /* TabBarViewController.h */,
 				0EA16C051851802F009F2D3A /* TabBarViewController.m */,
 				0E00514818221D3D00BB50F8 /* MainController.h */,
@@ -1573,10 +1574,17 @@
 		0EA16BFA18516F30009F2D3A /* MBPHUD */ = {
 			isa = PBXGroup;
 			children = (
+			);
+			name = MBPHUD;
+			sourceTree = "<group>";
+		};
+		0EA16C0F1851C77D009F2D3A /* tabbar */ = {
+			isa = PBXGroup;
+			children = (
 				0EA16BF718516F28009F2D3A /* MBProgressHUD.h */,
 				0EA16BF818516F28009F2D3A /* MBProgressHUD.m */,
 			);
-			name = MBPHUD;
+			name = tabbar;
 			sourceTree = "<group>";
 		};
 		0ED8EC9A18288D8500C84741 /* Voice */ = {

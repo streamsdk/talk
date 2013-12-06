@@ -12,4 +12,5 @@
 
 @property (nonatomic,strong) UITableView * myTableview;
 @property (nonatomic,strong) NSMutableArray *userData;
+
 @end

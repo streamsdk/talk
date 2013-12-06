@@ -18,6 +18,7 @@
 #import "XMPPMessage.h"
 #import "LoginViewController.h"
 #import "TalkDB.h"
+#import "MyFriendsViewController.h"
 
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
@@ -50,7 +51,10 @@
     }
     return self;
 }
-
+-(void) back {
+    MyFriendsViewController * myFriendsVC = [[MyFriendsViewController alloc]init];
+    [self.navigationController pushViewController:myFriendsVC animated:YES];
+}
 -(void)initWithToolBar{
     
     //初始化为NO added
@@ -140,6 +144,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.navigationItem.hidesBackButton = YES;
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
     
     STreamXMPP *con = [STreamXMPP sharedObject];
@@ -156,6 +161,9 @@
     NSString *userID = [self getUserID];
     bubbleData = [talk readInitDB:sendToID withOtherID:userID];
     
+    UIBarButtonItem * leftitem = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
+    self.navigationItem.leftBarButtonItem = leftitem;
+
     UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithTitle:@"Exit" style:UIBarButtonItemStyleDone target:self action:@selector(exitClicked)];
     self.navigationItem.rightBarButtonItem = rightItem;
     

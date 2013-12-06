@@ -7,8 +7,12 @@
 //
 
 #import "SearchFriendsViewController.h"
-#import <arcstreamsdk/STreamUser.h>
+#import "MainController.h"
 #import "MBProgressHUD.h"
+#import <arcstreamsdk/STreamUser.h>
+#import <arcstreamsdk/STreamObject.h>
+#import <arcstreamsdk/STreamQuery.h>
+#import <arcstreamsdk/STreamCategoryObject.h>
 
 #define SEARCH_TAG 10000
 @interface SearchFriendsViewController ()
@@ -88,6 +92,10 @@
         
     }
     if (userData) {
+        NSString * loginName = [self getLoginName];
+        STreamQuery *sq = [[STreamQuery alloc]initWithCategory:loginName];
+        NSMutableArray *all = [sq find];
+        
         cell.textLabel.text = [userData objectAtIndex:indexPath.row];
         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
     }
@@ -96,18 +104,52 @@
 }
 -(void) searchFriends:(NSString *)userName {
     STreamUser * user = [[STreamUser alloc]init];
-    
-    [user isUserExists:userName response:^(BOOL exists, NSString *resposne) {
-        if (exists) {
-            [userData removeAllObjects];
-            [userData addObject:userName];
-            [myTableview reloadData];
-            NSLog(@"%@",resposne);
-        }else{
-            UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"No results found" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
-            [alertview show];
+    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
+    NSString * loginName= [array objectAtIndex:0];
+    if (![userName isEqualToString:loginName]) {
+        [user isUserExists:userName response:^(BOOL exists, NSString *resposne) {
+            if (exists) {
+                [userData removeAllObjects];
+                [userData addObject:userName];
+                [myTableview reloadData];
+                NSLog(@"%@",resposne);
+            }else{
+                [userData removeAllObjects];
+                UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"No results found" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+                [alertview show];
+            }
+        }];
+    }
+}
+
+- (NSString *)getLoginName {
+    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
+    NSString * loginName= [array objectAtIndex:0];
+    return loginName;
+}
+
+-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSString *loginName  = [self getLoginName];
+    STreamQuery * sq = [[STreamQuery alloc]initWithCategory:loginName];
+    NSMutableArray * all = [sq find];
+    NSString *userName= [userData objectAtIndex:indexPath.row];
+    for (STreamObject *id in all) {
+        if ([userName isEqualToString:[id objectId]]) {
+            
         }
-    }];
+    }
+    STreamObject * so = [[STreamObject alloc]init];
+    [so setObjectId:userName];
+    [so addStaff:@"status" withObject:@"request"];
+    [so setCategory:loginName];
+    [so updateInBackground];
+    
+    MainController *mainVC = [[MainController alloc]init];
+    [mainVC setSendToID:userName];
+    self.tabBarController.tabBar.hidden = YES;
+    [self.navigationController pushViewController:mainVC animated:YES];
 }
 #pragma mark searchBarDelegate
 -(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
