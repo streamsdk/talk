@@ -179,6 +179,11 @@
 		0E8A4F36182B7FE300705C1F /* TalkDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F35182B7FE300705C1F /* TalkDB.m */; };
 		0E8A4F38182B802600705C1F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8A4F37182B802600705C1F /* libsqlite3.dylib */; };
 		0E8A4F3A182B9EA700705C1F /* keyboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E8A4F39182B9EA700705C1F /* keyboard.png */; };
+		0EA16BF918516F28009F2D3A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16BF818516F28009F2D3A /* MBProgressHUD.m */; };
+		0EA16C0018516FC9009F2D3A /* MyFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */; };
+		0EA16C03185176A7009F2D3A /* AddFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16C02185176A7009F2D3A /* AddFriendsViewController.m */; };
+		0EA16C061851802F009F2D3A /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16C051851802F009F2D3A /* TabBarViewController.m */; };
+		0EA16C091851804A009F2D3A /* SearchFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16C081851804A009F2D3A /* SearchFriendsViewController.m */; };
 		0ECD894A183B0FC800B4AC1D /* camera_button_take.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ECD8948183B0FC800B4AC1D /* camera_button_take.png */; };
 		0ECD894B183B0FC800B4AC1D /* camera_button_take@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ECD8949183B0FC800B4AC1D /* camera_button_take@2x.png */; };
 		0ED6BFBF184823740061038D /* libidn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9C0E018145E510039118F /* libidn.a */; };
@@ -554,6 +559,16 @@
 		0E8A4F35182B7FE300705C1F /* TalkDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TalkDB.m; path = talkDB/TalkDB.m; sourceTree = "<group>"; };
 		0E8A4F37182B802600705C1F /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		0E8A4F39182B9EA700705C1F /* keyboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = keyboard.png; sourceTree = "<group>"; };
+		0EA16BF718516F28009F2D3A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = "Emoji-master/MBProgressHUD.h"; sourceTree = "<group>"; };
+		0EA16BF818516F28009F2D3A /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = "Emoji-master/MBProgressHUD.m"; sourceTree = "<group>"; };
+		0EA16BFE18516FC9009F2D3A /* MyFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyFriendsViewController.h; path = Classes/MyFriendsViewController.h; sourceTree = "<group>"; };
+		0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyFriendsViewController.m; path = Classes/MyFriendsViewController.m; sourceTree = "<group>"; };
+		0EA16C01185176A7009F2D3A /* AddFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddFriendsViewController.h; path = Classes/AddFriendsViewController.h; sourceTree = "<group>"; };
+		0EA16C02185176A7009F2D3A /* AddFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddFriendsViewController.m; path = Classes/AddFriendsViewController.m; sourceTree = "<group>"; };
+		0EA16C041851802F009F2D3A /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
+		0EA16C051851802F009F2D3A /* TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarViewController.m; sourceTree = "<group>"; };
+		0EA16C071851804A009F2D3A /* SearchFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchFriendsViewController.h; sourceTree = "<group>"; };
+		0EA16C081851804A009F2D3A /* SearchFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchFriendsViewController.m; sourceTree = "<group>"; };
 		0ECD8948183B0FC800B4AC1D /* camera_button_take.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_button_take.png; sourceTree = "<group>"; };
 		0ECD8949183B0FC800B4AC1D /* camera_button_take@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_button_take@2x.png"; sourceTree = "<group>"; };
 		0ED8BC0818505D5F007BD8CA /* talk4s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = talk4s.png; path = talkTests/talk4s.png; sourceTree = SOURCE_ROOT; };
@@ -703,14 +718,23 @@
 				0ED8EC9A18288D8500C84741 /* Voice */,
 				0EE07675182B53540052BC02 /* creatUI */,
 				44A80E99183129E2006069DE /* Emoji-master */,
+				0EA16BFA18516F30009F2D3A /* MBPHUD */,
+				0EA16C041851802F009F2D3A /* TabBarViewController.h */,
+				0EA16C051851802F009F2D3A /* TabBarViewController.m */,
 				0E00514818221D3D00BB50F8 /* MainController.h */,
 				0E00514918221D3D00BB50F8 /* MainController.m */,
 				03F5B05A1833BB3300A847A0 /* AllUserViewController.h */,
 				03F5B05B1833BB3300A847A0 /* AllUserViewController.m */,
-				4413D09F182FA98E00B01C14 /* LoginViewController.h */,
-				4413D0A0182FA98E00B01C14 /* LoginViewController.m */,
+				0EA16BFE18516FC9009F2D3A /* MyFriendsViewController.h */,
+				0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */,
+				0EA16C01185176A7009F2D3A /* AddFriendsViewController.h */,
+				0EA16C02185176A7009F2D3A /* AddFriendsViewController.m */,
+				0EA16C071851804A009F2D3A /* SearchFriendsViewController.h */,
+				0EA16C081851804A009F2D3A /* SearchFriendsViewController.m */,
 				0ED8BC0A185065D7007BD8CA /* RootViewController.h */,
 				0ED8BC0B185065D7007BD8CA /* RootViewController.m */,
+				4413D09F182FA98E00B01C14 /* LoginViewController.h */,
+				4413D0A0182FA98E00B01C14 /* LoginViewController.m */,
 				03451B8318326C5600030E79 /* SignUpViewController.h */,
 				03451B8418326C5600030E79 /* SignUpViewController.m */,
 				03DCB2A1181525B80024053E /* ViewController.h */,
@@ -1543,6 +1567,15 @@
 			name = talkDB;
 			sourceTree = "<group>";
 		};
+		0EA16BFA18516F30009F2D3A /* MBPHUD */ = {
+			isa = PBXGroup;
+			children = (
+				0EA16BF718516F28009F2D3A /* MBProgressHUD.h */,
+				0EA16BF818516F28009F2D3A /* MBProgressHUD.m */,
+			);
+			name = MBPHUD;
+			sourceTree = "<group>";
+		};
 		0ED8EC9A18288D8500C84741 /* Voice */ = {
 			isa = PBXGroup;
 			children = (
@@ -1772,6 +1805,7 @@
 				03D9C0E618145E510039118F /* DDLog.m in Sources */,
 				03D9BF0C18145C080039118F /* AppDelegate.m in Sources */,
 				03D9C0A318145E410039118F /* XMPPAttentionModule.m in Sources */,
+				0EA16C03185176A7009F2D3A /* AddFriendsViewController.m in Sources */,
 				03D9C0B518145E480039118F /* GCDMulticastDelegate.m in Sources */,
 				03D9C08D18145E410039118F /* XMPPTransports.m in Sources */,
 				03D9C07218145E410039118F /* XMPPRoomOccupantMemoryStorageObject.m in Sources */,
@@ -1780,6 +1814,7 @@
 				03D9C0A018145E410039118F /* XMPPTime.m in Sources */,
 				0ED8BC0C185065D7007BD8CA /* RootViewController.m in Sources */,
 				03D9C07C18145E410039118F /* XMPPvCardTempAdr.m in Sources */,
+				0EA16C0018516FC9009F2D3A /* MyFriendsViewController.m in Sources */,
 				03D9C09E18145E410039118F /* XMPPPing.m in Sources */,
 				44A80EAF183129E2006069DE /* EmojiPictographs.m in Sources */,
 				03D9C08218145E410039118F /* XMPPvCardTempTel.m in Sources */,
@@ -1795,6 +1830,7 @@
 				0E084793182736BC00350741 /* UIBubbleTableViewCell.m in Sources */,
 				03D9C07818145E410039118F /* XMPPvCardCoreDataStorage.m in Sources */,
 				03D9C06218145E410039118F /* XMPPIQ+JabberRPC.m in Sources */,
+				0EA16BF918516F28009F2D3A /* MBProgressHUD.m in Sources */,
 				44A80EB3183129E2006069DE /* UIExpandingTextView.m in Sources */,
 				03D9BF5318145E270039118F /* XMPPDigestMD5Authentication.m in Sources */,
 				03D9C05818145E410039118F /* XMPPGroupCoreDataStorageObject.m in Sources */,
@@ -1807,9 +1843,11 @@
 				03D9C05718145E410039118F /* XMPPReconnect.m in Sources */,
 				03D9C06418145E410039118F /* XMPPJabberRPCModule.m in Sources */,
 				03D9C09C18145E410039118F /* XMPPMessageDeliveryReceipts.m in Sources */,
+				0EA16C061851802F009F2D3A /* TabBarViewController.m in Sources */,
 				03D9BF5218145E270039118F /* XMPPDeprecatedPlainAuthentication.m in Sources */,
 				4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */,
 				03D9C08018145E410039118F /* XMPPvCardTempLabel.m in Sources */,
+				0EA16C091851804A009F2D3A /* SearchFriendsViewController.m in Sources */,
 				03D9C0B718145E480039118F /* RFImageToDataTransformer.m in Sources */,
 				03D9C09518145E410039118F /* XMPPMessageArchiving_Message_CoreDataObject.m in Sources */,
 				03D9C09318145E410039118F /* XMPPMessageArchiving.xcdatamodeld in Sources */,

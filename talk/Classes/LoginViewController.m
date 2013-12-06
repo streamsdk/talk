@@ -14,6 +14,8 @@
 #import "STreamXMPP.h"
 #import "AllUserViewController.h"
 #import "SignUpViewController.h"
+#import "RootViewController.h"
+#import "MyFriendsViewController.h"
 
 @interface LoginViewController ()
 
@@ -32,15 +34,20 @@
     }
     return self;
 }
-
+-(void) back {
+    self.navigationController.navigationBarHidden = YES;
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-//    self .navigationItem.hidesBackButton = YES;
+    self .navigationItem.hidesBackButton = YES;
     self.navigationController.navigationBarHidden = NO;
     
+    UIBarButtonItem * leftitem = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
+    self.navigationItem.leftBarButtonItem = leftitem;
     UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,self.view.frame.size.width, self.view.frame.size.height)];
     [imageview setImage:[UIImage imageNamed:@"background.png"]];
     imageview.userInteractionEnabled = YES;
@@ -62,14 +69,13 @@
     password.keyboardType = UIKeyboardTypeAlphabet;
     [imageview addSubview:password];
     
-    UIButton *loginButton = [createUI setButtonFrame:CGRectMake(20, 220, self.view.frame.size.width-40, 40) withTitle:@"LOG IN"];
+    UIButton *loginButton = [createUI setButtonFrame:CGRectMake(20, 220, self.view.frame.size.width-40, 50) withTitle:@"LOG IN"];
     loginButton.titleLabel.font = [UIFont systemFontOfSize:20.0f];
-    [loginButton setTitleColor:[UIColor purpleColor] forState:UIControlStateNormal];
-    [loginButton setBackgroundColor:[UIColor colorWithRed:247.0/255.0 green:229.0/255.0 blue:227.0/255.0 alpha:1.0]];
+    [loginButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [loginButton setBackgroundColor:[UIColor redColor]];
     [loginButton addTarget:self action:@selector(loginUser) forControlEvents:UIControlEventTouchUpInside];
     [imageview addSubview:loginButton];
 
-    
 }
 -(NSString*)getCacheDirectory
 {
@@ -92,8 +98,8 @@
             
             STreamXMPP *con = [STreamXMPP sharedObject];
             [con connect:userName withPassword:passWord];
-            AllUserViewController *userVC = [[AllUserViewController alloc]init];
-            [self.navigationController pushViewController:userVC animated:NO];
+            MyFriendsViewController *myFriendVC = [[MyFriendsViewController alloc]init];
+            [self.navigationController pushViewController:myFriendVC animated:YES];
         } else {
             UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"user does not exist or password error,please sigUp" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
             [alertView show];

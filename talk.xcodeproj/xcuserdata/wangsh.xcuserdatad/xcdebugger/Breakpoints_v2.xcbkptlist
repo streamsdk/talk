@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/Classes/SignUpViewController.m"
-            timestampString = "407927604.092684"
+            timestampString = "407987799.664913"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "131"
-            endingLineNumber = "131"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
             landmarkName = "-signUpUser"
             landmarkType = "5">
          </BreakpointContent>

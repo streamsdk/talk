@@ -29,6 +29,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
     userArray = [[NSMutableArray alloc]initWithObjects:@"test1",@"test2",@"test3",@"test4",@"test5",@"test6",@"test7",@"test8",@"test9", nil];
     NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
     NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
@@ -57,6 +58,7 @@
     if (cell == nil) {
         
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
     }
     cell.textLabel.text = [userArray objectAtIndex:indexPath.row];
     return cell;

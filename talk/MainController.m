@@ -126,6 +126,7 @@
     
 }
 -(NSString *)getUserID{
+    
     NSString * userID =nil;
     NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
     NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
@@ -139,6 +140,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
     
     STreamXMPP *con = [STreamXMPP sharedObject];
     [con setXmppDelegate:self];

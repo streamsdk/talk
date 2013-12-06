@@ -195,9 +195,10 @@
         UIBubbleTypingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
         
         cell.backgroundColor = [UIColor clearColor];
+        
         if (cell == nil) cell = [[UIBubbleTypingTableViewCell alloc] init];
 
-        
+        [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
         cell.type = self.typingBubble;
         cell.showAvatar = self.showAvatars;
         
@@ -212,6 +213,7 @@
         NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:0];
         cell.backgroundColor = [UIColor clearColor];
         if (cell == nil) cell = [[UIBubbleHeaderTableViewCell alloc] init];
+        [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
         cell.date = data.date;
         return cell;
     }
@@ -221,7 +223,7 @@
     NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
 
     if (cell == nil) cell = [[UIBubbleTableViewCell alloc] init];
-    
+    [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
     cell.data = data;
     cell.showAvatar = self.showAvatars;
 //    [self scrollBubbleViewToBottomAnimated:YES];

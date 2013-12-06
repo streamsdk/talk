@@ -8,13 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SignUpViewController : UIViewController <UIAlertViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextFieldDelegate>
+@interface SignUpViewController : UIViewController <UITextFieldDelegate>
 {
    
 }
 @property (nonatomic,strong) UITextField *userName;
 @property (nonatomic,strong) UITextField *password;
 @property (nonatomic,strong) UITextField *surePassword;
-@property (nonatomic,strong) UITextField *dateOfBirth;
-@property  (nonatomic,strong) UITextField *genderText;
 @end
