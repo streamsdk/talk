@@ -10,6 +10,7 @@
 #import "MBProgressHUD.h"
 #import <arcstreamsdk/STreamQuery.h>
 #import <arcstreamsdk/STreamObject.h>
+#import <arcstreamsdk/STreamCategoryObject.h>
 #import "MyFriendsViewController.h"
 
 @interface AddFriendsViewController ()
@@ -109,10 +110,22 @@
     
 }
 -(void)addFriends:(UIButton *)sender {
-     STreamObject * so = [userData objectAtIndex:sender.tag];
+    [sender setImage:[UIImage imageNamed:@"delete.png"]forState:UIControlStateNormal];
+    STreamObject * so = [userData objectAtIndex:sender.tag];
     [so setObjectId:[so objectId]];
     [so addStaff:@"status" withObject:@"friend"];
     [so updateInBackground];
+    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[so objectId]];
+    STreamObject *my = [[STreamObject alloc]init];
+    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
+    NSString * loginName= [array objectAtIndex:0];
+    [my setObjectId:loginName];
+    [my addStaff:@"status" withObject:@"friend"];
+    NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
+
+    [updateArray addObject:my];
+    [sco updateStreamCategoryObjects:updateArray];
 }
 - (void)didReceiveMemoryWarning
 {
