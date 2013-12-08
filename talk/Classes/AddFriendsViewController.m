@@ -81,18 +81,38 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.tag = indexPath.row;
         [button setFrame:CGRectMake(cell.frame.size.width-60, 2, 40, 40)];
         [cell addSubview:button];
     }
     STreamObject * so = [userData objectAtIndex:indexPath.row];
     NSString *status = [so getValue:@"status"];
     if ([status isEqualToString:@"friend"]) {
-        [button setImage:[UIImage imageNamed:@"tick.png"]forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"delete.png"]forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        [button setImage:[UIImage imageNamed:@"addBtn.png"]forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
+
     }
     cell.textLabel.text = [so objectId];
      cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
     return cell;
 
+}
+-(void)deleteFriends:(UIButton *)sender {
+    
+    STreamObject * so = [userData objectAtIndex:sender.tag];
+    [so setObjectId:[so objectId]];
+    [so deleteObjectInBackground];
+    
+    
+}
+-(void)addFriends:(UIButton *)sender {
+     STreamObject * so = [userData objectAtIndex:sender.tag];
+    [so setObjectId:[so objectId]];
+    [so addStaff:@"status" withObject:@"friend"];
+    [so updateInBackground];
 }
 - (void)didReceiveMemoryWarning
 {

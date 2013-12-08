@@ -16,7 +16,9 @@
 
 #define SEARCH_TAG 10000
 @interface SearchFriendsViewController ()
-
+{
+    UIButton *button;
+}
 @end
 
 @implementation SearchFriendsViewController
@@ -80,16 +82,28 @@
         [cell setBackgroundColor:[UIColor clearColor]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.tag = indexPath.row;
+        [button setFrame:CGRectMake(cell.frame.size.width-60, 2, 40, 40)];
+        [cell addSubview:button];
+        
     }
     NSString * str =  [userData objectAtIndex:indexPath.row];
     if (userData) {
         NSString * loginName = [self getLoginName];
         STreamQuery *sq = [[STreamQuery alloc]initWithCategory:loginName];
         NSMutableArray *all = [sq find];
-        for (STreamObject *id in all) {
-            if ([str isEqualToString:[id objectId]]) {
+        for (STreamObject *so in all) {
+            NSString *status = [so getValue:@"status"];
+            if ([status isEqualToString:@"friend"]) {
+                [button setImage:[UIImage imageNamed:@"delete.png"]forState:UIControlStateNormal];
+                [button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
+            }else{
+                [button setImage:[UIImage imageNamed:@"addBtn.png"]forState:UIControlStateNormal];
+                [button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
                 
             }
+
         }
 
         cell.textLabel.text = str;
@@ -169,6 +183,21 @@
     searchBar.text = @"";
     searchBar.placeholder = @"Search";
     [searchBar resignFirstResponder];
+}
+
+-(void)deleteFriends:(UIButton *)sender {
+    
+    STreamObject * so = [userData objectAtIndex:sender.tag];
+    [so setObjectId:[so objectId]];
+    [so deleteObjectInBackground];
+    
+    
+}
+-(void)addFriends:(UIButton *)sender {
+    STreamObject * so = [userData objectAtIndex:sender.tag];
+    [so setObjectId:[so objectId]];
+    [so addStaff:@"status" withObject:@"friend"];
+    [so updateInBackground];
 }
 - (void)didReceiveMemoryWarning
 {
