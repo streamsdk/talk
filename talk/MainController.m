@@ -32,6 +32,7 @@
     UIPageControl *pageControl;
     BOOL keyboardIsShow;//键盘是否显示
 }
+
 @property(nonatomic,retain) Voice * voice;
 
 @end
@@ -51,6 +52,7 @@
     }
     return self;
 }
+
 -(void) back {
     MyFriendsViewController * myFriendsVC = [[MyFriendsViewController alloc]init];
     [self.navigationController pushViewController:myFriendsVC animated:YES];
@@ -147,6 +149,10 @@
     self.navigationItem.hidesBackButton = YES;
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
     
+    
+    _qualityType = UIImagePickerControllerQualityTypeHigh;
+    _mp4Quality = AVAssetExportPresetHighestQuality;
+    
     STreamXMPP *con = [STreamXMPP sharedObject];
     [con setXmppDelegate:self];
     self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
@@ -229,7 +235,7 @@
         
             NSString * filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0];
             NSString *fileName = [self getCurrentTimeString];
-            filePath = [filePath stringByAppendingPathComponent:[fileName stringByAppendingString:@".MOV"]];
+            filePath = [filePath stringByAppendingPathComponent:[fileName stringByAppendingString:@".mp4"]];
             [data writeToFile:filePath atomically:NO];
         
             NSURL *url = [NSURL URLWithString:filePath];
@@ -574,6 +580,7 @@
 	imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 	imagePickerController.delegate = self;
 	imagePickerController.allowsEditing = NO;
+    imagePickerController.mediaTypes =  [[NSArray alloc] initWithObjects: (NSString *) kUTTypeImage, nil];
 	[self presentViewController:imagePickerController animated:YES completion:NULL];
 }
 - (void)takePhoto
@@ -593,6 +600,7 @@
         imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
         imagePickerController.delegate = self;
         imagePickerController.allowsEditing = NO;
+        imagePickerController.mediaTypes =  [[NSArray alloc] initWithObjects: (NSString *) kUTTypeImage, nil];
         [self presentViewController:imagePickerController animated:YES completion:NULL];
         
     }
@@ -607,31 +615,146 @@
                                               otherButtonTitles:@"好", nil];
         [alert show];
     }else{
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-        imagePicker.delegate = self;
-        imagePicker.allowsEditing = YES;
-        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        imagePicker.mediaTypes =  [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
-        imagePicker.videoQuality = UIImagePickerControllerQualityTypeLow;
-        [self presentViewController:imagePicker animated:YES completion:NULL];
+        
+        UIImagePickerController* pickerView = [[UIImagePickerController alloc] init];
+        pickerView.sourceType = UIImagePickerControllerSourceTypeCamera;
+        NSArray* availableMedia = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
+        pickerView.mediaTypes = [NSArray arrayWithObject:availableMedia[1]];
+        [self presentViewController:pickerView animated:YES completion:NULL];
+        pickerView.videoMaximumDuration = 15;
+        pickerView.delegate = self;
     }
 
 }
+#pragma mark 
+- (void)encodeToMp4
+{
+    AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:videoPath options:nil];
+    NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
+    
+    if ([compatiblePresets containsObject:_mp4Quality])
+        
+    {
+        _alert = [[UIAlertView alloc] init];
+        [_alert setTitle:@"Waiting.."];
+        
+        UIActivityIndicatorView* activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        activity.frame = CGRectMake(140,
+                                    80,
+                                    CGRectGetWidth(_alert.frame),
+                                    CGRectGetHeight(_alert.frame));
+        [_alert addSubview:activity];
+        [activity startAnimating];
+        _startDate = [NSDate date];
+        
+        AVAssetExportSession *exportSession = [[AVAssetExportSession alloc]initWithAsset:avAsset
+                                                                              presetName:_mp4Quality];
+        NSDateFormatter* formater = [[NSDateFormatter alloc] init];
+        [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
+        _mp4Path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.mp4", [formater stringFromDate:[NSDate date]]];
+     
+        
+        exportSession.outputURL = [NSURL fileURLWithPath: _mp4Path];
+        exportSession.outputFileType = AVFileTypeMPEG4;
+        [exportSession exportAsynchronouslyWithCompletionHandler:^{
+            switch ([exportSession status]) {
+                case AVAssetExportSessionStatusFailed:
+                {
+                    [_alert dismissWithClickedButtonIndex:0 animated:NO];
+                    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                    message:[[exportSession error] localizedDescription]
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles: nil];
+                    [alert show];
+                    break;
+                }
+                    
+                case AVAssetExportSessionStatusCancelled:
+                    NSLog(@"Export canceled");
+                    [_alert dismissWithClickedButtonIndex:0
+                                                 animated:YES];
+                    break;
+                case AVAssetExportSessionStatusCompleted:
+                    NSLog(@"Successful!");
+                    [self performSelectorOnMainThread:@selector(convertFinish) withObject:nil waitUntilDone:NO];
+                    break;
+                default:
+                    break;
+            }
+        }];
+    }
+    else
+    {
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"AVAsset doesn't support mp4 quality"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles: nil];
+        [alert show];
+    }
+}
+#pragma mark - private Method
+
+- (NSInteger) getFileSize:(NSString*) path
+{
+    NSFileManager * filemanager = [[NSFileManager alloc]init];
+    if([filemanager fileExistsAtPath:path]){
+        NSDictionary * attributes = [filemanager attributesOfItemAtPath:path error:nil];
+        NSNumber *theFileSize;
+        if ( (theFileSize = [attributes objectForKey:NSFileSize]) )
+            return  [theFileSize intValue]/1024;
+        else
+            return -1;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+- (CGFloat) getVideoDuration:(NSURL*) URL
+{
+    NSDictionary *opts = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO]
+                                                     forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
+    AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:URL options:opts];
+    float second = 0;
+    second = urlAsset.duration.value/urlAsset.duration.timescale;
+    return second;
+}
+
+- (void) convertFinish
+{
+    [_alert dismissWithClickedButtonIndex:0 animated:YES];
+    MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:videoPath];
+    NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
+    UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+    [self sendVideo:fileImage withData:videoData];
+    
+   /* MPMoviePlayerViewController* playerView = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://localhost/private%@", _mp4Path]]];
+    NSLog(@"%@",[NSString stringWithFormat:@"file://localhost/private%@", _mp4Path]);
+    [self presentModalViewController:playerView animated:YES];*/
+
+}
+
 
 #pragma mark - UIImagePickerControllerDelegate
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    if ([[info objectForKey:UIImagePickerControllerMediaType] isEqualToString:(NSString*)kUTTypeMovie]) {
-        NSURL *videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
-        MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:videoPath];
-        NSData *videoData = [NSData dataWithContentsOfURL:videoPath];
-        UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-        [self sendVideo:fileImage withData:videoData];
-    }else{
+    if ([[info objectForKey:UIImagePickerControllerMediaType] isEqualToString:(NSString*)kUTTypeImage]) {
+       
         UIImage * image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
         [self sendPhoto:image];
+    }else{
+        videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
+        [self encodeToMp4];
+        
     }
     [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissMoviePlayerViewControllerAnimated];
 }
 
 #pragma mark textFiledDelegate

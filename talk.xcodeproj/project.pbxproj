@@ -153,7 +153,6 @@
 		03D9C0F91814623B0039118F /* STreamXMPP.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D9C0F81814623B0039118F /* STreamXMPP.m */; };
 		03DCB2A3181525B80024053E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCB2A2181525B80024053E /* ViewController.m */; };
 		03F5B05018339C1500A847A0 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03F5B04F18339C1500A847A0 /* MediaPlayer.framework */; };
-		03F5B0561833B04A00A847A0 /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F5B0551833B04A00A847A0 /* PlayerView.m */; };
 		03F5B05C1833BB3300A847A0 /* AllUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F5B05B1833BB3300A847A0 /* AllUserViewController.m */; };
 		0E00514A18221D3D00BB50F8 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E00514918221D3D00BB50F8 /* MainController.m */; };
 		0E0051571822293000BB50F8 /* bubbleMine.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E00514D1822293000BB50F8 /* bubbleMine.png */; };
@@ -181,6 +180,7 @@
 		0E8A4F3A182B9EA700705C1F /* keyboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E8A4F39182B9EA700705C1F /* keyboard.png */; };
 		0E8D5FF21854099400F464D7 /* addBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E8D5FF01854099400F464D7 /* addBtn.png */; };
 		0E8D5FF31854099400F464D7 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E8D5FF11854099400F464D7 /* delete.png */; };
+		0E8D5FF91854647700F464D7 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8D5FF81854647700F464D7 /* PlayerViewController.m */; };
 		0EA16BF918516F28009F2D3A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16BF818516F28009F2D3A /* MBProgressHUD.m */; };
 		0EA16C0018516FC9009F2D3A /* MyFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */; };
 		0EA16C03185176A7009F2D3A /* AddFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16C02185176A7009F2D3A /* AddFriendsViewController.m */; };
@@ -524,8 +524,6 @@
 		03DCB2A1181525B80024053E /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		03DCB2A2181525B80024053E /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		03F5B04F18339C1500A847A0 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
-		03F5B0541833B04A00A847A0 /* PlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerView.h; sourceTree = "<group>"; };
-		03F5B0551833B04A00A847A0 /* PlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerView.m; sourceTree = "<group>"; };
 		03F5B05A1833BB3300A847A0 /* AllUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AllUserViewController.h; path = Classes/AllUserViewController.h; sourceTree = "<group>"; };
 		03F5B05B1833BB3300A847A0 /* AllUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AllUserViewController.m; path = Classes/AllUserViewController.m; sourceTree = "<group>"; };
 		0E00512F1821E54000BB50F8 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
@@ -564,6 +562,8 @@
 		0E8A4F39182B9EA700705C1F /* keyboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = keyboard.png; sourceTree = "<group>"; };
 		0E8D5FF01854099400F464D7 /* addBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addBtn.png; sourceTree = "<group>"; };
 		0E8D5FF11854099400F464D7 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
+		0E8D5FF71854647700F464D7 /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerViewController.h; path = talk/PlayerViewController.h; sourceTree = "<group>"; };
+		0E8D5FF81854647700F464D7 /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayerViewController.m; path = talk/PlayerViewController.m; sourceTree = "<group>"; };
 		0EA16BF718516F28009F2D3A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = "Emoji-master/MBProgressHUD.h"; sourceTree = "<group>"; };
 		0EA16BF818516F28009F2D3A /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = "Emoji-master/MBProgressHUD.m"; sourceTree = "<group>"; };
 		0EA16BFE18516FC9009F2D3A /* MyFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyFriendsViewController.h; path = Classes/MyFriendsViewController.h; sourceTree = "<group>"; };
@@ -668,6 +668,8 @@
 		03D9BEEF18145C080039118F = {
 			isa = PBXGroup;
 			children = (
+				0E8D5FF71854647700F464D7 /* PlayerViewController.h */,
+				0E8D5FF81854647700F464D7 /* PlayerViewController.m */,
 				03D9C0BA18145E510039118F /* Vendor */,
 				03D9C0A718145E480039118F /* Utilities */,
 				03D9BF7C18145E400039118F /* Extensions */,
@@ -1562,8 +1564,6 @@
 				0E08478D182736BC00350741 /* UIBubbleTableViewDataSource.h */,
 				0E08478E182736BC00350741 /* UIBubbleTypingTableViewCell.h */,
 				0E08478F182736BC00350741 /* UIBubbleTypingTableViewCell.m */,
-				03F5B0541833B04A00A847A0 /* PlayerView.h */,
-				03F5B0551833B04A00A847A0 /* PlayerView.m */,
 			);
 			path = libs;
 			sourceTree = "<group>";
@@ -1813,7 +1813,6 @@
 				03D9C06E18145E410039118F /* XMPPRoomMessageHybridCoreDataStorageObject.m in Sources */,
 				44A80EB4183129E2006069DE /* UIExpandingTextViewInternal.m in Sources */,
 				03D9C08118145E410039118F /* XMPPvCardTempModule.m in Sources */,
-				03F5B0561833B04A00A847A0 /* PlayerView.m in Sources */,
 				44A80EAD183129E2006069DE /* EmojiEmoticons.m in Sources */,
 				03D9C05F18145E410039118F /* XMPPUserMemoryStorageObject.m in Sources */,
 				03D9C08F18145E410039118F /* XMPPCapabilitiesCoreDataStorage.m in Sources */,
@@ -1911,6 +1910,7 @@
 				03D9C0EB18145E510039118F /* NSString+DDXML.m in Sources */,
 				03D9C07518145E410039118F /* XMPPRoom.m in Sources */,
 				03D9C09218145E410039118F /* XMPPCapabilities.m in Sources */,
+				0E8D5FF91854647700F464D7 /* PlayerViewController.m in Sources */,
 				03D9C05918145E410039118F /* XMPPResourceCoreDataStorageObject.m in Sources */,
 				03D9C08318145E410039118F /* NSXMLElement+XEP_0059.m in Sources */,
 				03D9C0E318145E510039118F /* DDAbstractDatabaseLogger.m in Sources */,

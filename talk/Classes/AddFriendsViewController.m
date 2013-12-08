@@ -105,12 +105,27 @@
     
     STreamObject * so = [userData objectAtIndex:sender.tag];
     [so setObjectId:[so objectId]];
-    [so deleteObjectInBackground];
+    [so addStaff:@"status" withObject:@"request"];
+    [so updateInBackground];
     
+    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
+    NSString * loginName= [array objectAtIndex:0];
+    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[so objectId]];
+    STreamObject *my = [[STreamObject alloc]init];
     
+    [my setObjectId:loginName];
+    [my addStaff:@"status" withObject:@"request"];
+    NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
+    
+    [updateArray addObject:my];
+    [sco updateStreamCategoryObjects:updateArray];
+    [sender setImage:[UIImage imageNamed:@"addBtn.png"]forState:UIControlStateNormal];
+    [sender addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
+
 }
 -(void)addFriends:(UIButton *)sender {
-    [sender setImage:[UIImage imageNamed:@"delete.png"]forState:UIControlStateNormal];
+    
     STreamObject * so = [userData objectAtIndex:sender.tag];
     [so setObjectId:[so objectId]];
     [so addStaff:@"status" withObject:@"friend"];
@@ -126,6 +141,9 @@
 
     [updateArray addObject:my];
     [sco updateStreamCategoryObjects:updateArray];
+    
+    [sender setImage:[UIImage imageNamed:@"delete.png"]forState:UIControlStateNormal];
+    [sender addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
 }
 - (void)didReceiveMemoryWarning
 {

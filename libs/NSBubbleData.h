@@ -5,7 +5,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
-#import "PlayerView.h"
+
 
 typedef enum _NSBubbleType
 {
@@ -26,7 +26,6 @@ typedef enum _NSBubbleType
 @property (nonatomic ,strong) AVAudioPlayer *audioPlayer;
 @property (nonatomic,strong) NSData * audioData;
 @property (nonatomic,strong) NSData * videoData;
-@property (nonatomic,strong) PlayerView *play;
 
 - (id)initWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type;
 + (id)dataWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type;

@@ -5,7 +5,6 @@
 //
 
 #import "NSBubbleData.h"
-#import "AppDelegate.h"
 
 #define BIG_IMG_WIDTH  300.0
 #define BIG_IMG_HEIGHT 300.0
@@ -22,8 +21,6 @@
 @synthesize audioPlayer;
 @synthesize audioData;
 @synthesize videoData;
-@synthesize play;
-
 #pragma mark - Lifecycle
 
 #if !__has_feature(objc_arc)
@@ -230,11 +227,8 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 }
 
 -(void)playerVideo {
-    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
-    NSString *retStr = [[NSString alloc] initWithData:videoData encoding:enc];
-    NSURL *url = [NSURL URLWithString:retStr];
-    play = [[PlayerView alloc]init];
-    [play playVideo:url];
+
+    NSString *_mp4Path =  [[NSString alloc] initWithData:videoData  encoding:NSUTF8StringEncoding];
 }
 -(void) bigToImage {
 
