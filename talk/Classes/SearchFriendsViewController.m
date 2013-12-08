@@ -60,17 +60,7 @@
    /* UIView *segment = [searchBar.subviews objectAtIndex:0];
     UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
     [segment addSubview: bgImage];*/
-    //    UIButton * cancel = [UIButton buttonWithType:UIButtonTypeCustom];
-    //    [cancel setFrame:CGRectMake(0, 64, 60, 50)];
-    //    [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
-    //    [cancel addTarget:self action:@selector(cancelSelected) forControlEvents:UIControlEventTouchUpInside];
-    //    [self.view addSubview:cancel];
     
-}
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
@@ -91,12 +81,18 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
     }
+    NSString * str =  [userData objectAtIndex:indexPath.row];
     if (userData) {
         NSString * loginName = [self getLoginName];
         STreamQuery *sq = [[STreamQuery alloc]initWithCategory:loginName];
         NSMutableArray *all = [sq find];
-        
-        cell.textLabel.text = [userData objectAtIndex:indexPath.row];
+        for (STreamObject *id in all) {
+            if ([str isEqualToString:[id objectId]]) {
+                
+            }
+        }
+
+        cell.textLabel.text = str;
         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
     }
     
@@ -173,6 +169,11 @@
     searchBar.text = @"";
     searchBar.placeholder = @"Search";
     [searchBar resignFirstResponder];
+}
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 @end
