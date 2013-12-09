@@ -5,6 +5,8 @@
 //
 
 #import "NSBubbleData.h"
+#import "AppDelegate.h"
+#import "PlayerData.h"
 
 #define BIG_IMG_WIDTH  300.0
 #define BIG_IMG_HEIGHT 300.0
@@ -21,6 +23,9 @@
 @synthesize audioPlayer;
 @synthesize audioData;
 @synthesize videoData;
+@synthesize _videoPath;
+
+
 #pragma mark - Lifecycle
 
 #if !__has_feature(objc_arc)
@@ -152,8 +157,9 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 
 }
 #pragma mark - Custom view video
-- (id)initWithImage:(UIImage *)image withData:(NSData *)data withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type{
+- (id)initWithImage:(UIImage *)image withData:(NSData *)data withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath{
     videoData = data;
+    _videoPath = videoPath;
     CGSize size = image.size;
     if (size.width > 200)
     {
@@ -175,11 +181,11 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
     return [self initWithView:imageView date:date type:type insets:insets];
 }
-+ (id)dataWithImage:(UIImage *)image withData:(NSData *)data withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type{
++ (id)dataWithImage:(UIImage *)image withData:(NSData *)data withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath{
 #if !__has_feature(objc_arc)
-    return [[[NSBubbleData alloc] initWithImage:image withData:data withType:video date:date type:type] autorelease];
+    return [[[NSBubbleData alloc] initWithImage:image withData:data withType:video date:date type:type withVidePath:videoPath] autorelease];
 #else
-    return [[NSBubbleData alloc] initWithImage:image withData:data withType:video date:date type:type];
+    return [[NSBubbleData alloc] initWithImage:image withData:data withType:video date:date type:type withVidePath:videoPath];
 #endif
 }
 #pragma mark - Custom view bubble
@@ -227,8 +233,10 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 }
 
 -(void)playerVideo {
-
-    NSString *_mp4Path =  [[NSString alloc] initWithData:videoData  encoding:NSUTF8StringEncoding];
+    PlayerData * data = [PlayerData sharedObject];
+    [data setPlayerData:_videoPath];
+    [APPDELEGATE showPlayerView];
+   
 }
 -(void) bigToImage {
 

@@ -11,6 +11,7 @@
 #import "MainController.h"
 #import "LoginViewController.h"
 #import "RootViewController.h"
+#import "PlayerViewController.h"
 
 #import <arcstreamsdk/STreamSession.h>
 #import "TalkDB.h"
@@ -47,7 +48,12 @@
 
     return YES;
 }
-
+-(void) showPlayerView {
+    
+    PlayerViewController * player = [[PlayerViewController alloc]init];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:player];
+    [self.window setRootViewController:nav];
+}
 - (void)applicationWillResignActive:(UIApplication *)application
 {
 }

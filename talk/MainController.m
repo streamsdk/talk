@@ -19,7 +19,6 @@
 #import "LoginViewController.h"
 #import "TalkDB.h"
 #import "MyFriendsViewController.h"
-
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
 
@@ -31,6 +30,7 @@
     UIScrollView *scrollView;//表情滚动视图
     UIPageControl *pageControl;
     BOOL keyboardIsShow;//键盘是否显示
+
 }
 
 @property(nonatomic,retain) Voice * voice;
@@ -52,6 +52,7 @@
     }
     return self;
 }
+
 
 -(void) back {
     MyFriendsViewController * myFriendsVC = [[MyFriendsViewController alloc]init];
@@ -215,12 +216,6 @@
     
     NSLog(@"");
 }
--(NSString*)getCurrentTimeString
-{
-    NSDateFormatter *dateformat=[[NSDateFormatter  alloc]init];
-    [dateformat setDateFormat:@"yyyyMMddHHmmss"];
-    return [dateformat stringFromDate:[NSDate date]];
-}
 - (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID{
     
     STreamFile *sf = [[STreamFile alloc] init];
@@ -232,16 +227,15 @@
             NSBubbleData * bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
             [bubbleData addObject:bubble];
         }else if ([body isEqualToString:@"video"]){
-        
-            NSString * filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0];
-            NSString *fileName = [self getCurrentTimeString];
-            filePath = [filePath stringByAppendingPathComponent:[fileName stringByAppendingString:@".mp4"]];
-            [data writeToFile:filePath atomically:NO];
-        
-            NSURL *url = [NSURL URLWithString:filePath];
+            NSString * string = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+            NSURL * url = [NSURL URLWithString:string];
+            NSDateFormatter* formater = [[NSDateFormatter alloc] init];
+            [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
+            NSString *mp4Path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.mp4", [formater stringFromDate:[NSDate date]]];
+            
             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
             UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-            NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+            NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
             [bubbleData addObject:bdata];
         }else{
             NSBubbleData *bubble = [NSBubbleData dataWithtimes:[body stringByAppendingString:@"\""] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withData:data];
@@ -308,7 +302,7 @@
     
 }
 -(void) sendVideo :(UIImage *)image withData:(NSData *)videoData {
-    NSBubbleData * bubbledata = [NSBubbleData dataWithImage:image withData:videoData withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+    NSBubbleData * bubbledata = [NSBubbleData dataWithImage:image withData:videoData withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withVidePath:_mp4Path];
     [bubbleData addObject:bubbledata];
     [bubbleTableView reloadData];
     STreamXMPP *con = [STreamXMPP sharedObject];

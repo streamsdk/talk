@@ -178,7 +178,6 @@
 		0E8A4F36182B7FE300705C1F /* TalkDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F35182B7FE300705C1F /* TalkDB.m */; };
 		0E8A4F38182B802600705C1F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8A4F37182B802600705C1F /* libsqlite3.dylib */; };
 		0E8A4F3A182B9EA700705C1F /* keyboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E8A4F39182B9EA700705C1F /* keyboard.png */; };
-		0E8D5FF91854647700F464D7 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8D5FF81854647700F464D7 /* PlayerViewController.m */; };
 		0EA16BF918516F28009F2D3A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16BF818516F28009F2D3A /* MBProgressHUD.m */; };
 		0EA16C0018516FC9009F2D3A /* MyFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */; };
 		0EA16C03185176A7009F2D3A /* AddFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16C02185176A7009F2D3A /* AddFriendsViewController.m */; };
@@ -205,6 +204,8 @@
 		0EF5A00E18556A8600B4EDE7 /* selectAdd.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF5A00C18556A8600B4EDE7 /* selectAdd.png */; };
 		0EF5A00F18556A8600B4EDE7 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF5A00D18556A8600B4EDE7 /* add.png */; };
 		0EF5A01218557E5C00B4EDE7 /* SearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5A01118557E5C00B4EDE7 /* SearchData.m */; };
+		0EF5A0191855861100B4EDE7 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5A0181855861100B4EDE7 /* PlayerViewController.m */; };
+		0EF5A01C185587B200B4EDE7 /* PlayerData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5A01B185587B200B4EDE7 /* PlayerData.m */; };
 		4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4413D0A0182FA98E00B01C14 /* LoginViewController.m */; };
 		44A80E8118311DEF006069DE /* face.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A80E7D18311DEF006069DE /* face.png */; };
 		44A80E8218311DEF006069DE /* face@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A80E7E18311DEF006069DE /* face@2x.png */; };
@@ -519,9 +520,9 @@
 		03D9C0E018145E510039118F /* libidn.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libidn.a; sourceTree = "<group>"; };
 		03D9C0E118145E510039118F /* stringprep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringprep.h; sourceTree = "<group>"; };
 		03D9C0F11814604F0039118F /* XMPPFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMPPFramework.h; sourceTree = "<group>"; };
-		03D9C0F6181462210039118F /* STreamXMPPProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STreamXMPPProtocol.h; sourceTree = "<group>"; };
-		03D9C0F71814623B0039118F /* STreamXMPP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STreamXMPP.h; sourceTree = "<group>"; };
-		03D9C0F81814623B0039118F /* STreamXMPP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STreamXMPP.m; sourceTree = "<group>"; };
+		03D9C0F6181462210039118F /* STreamXMPPProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STreamXMPPProtocol.h; path = ../STreamXMPPProtocol.h; sourceTree = "<group>"; };
+		03D9C0F71814623B0039118F /* STreamXMPP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STreamXMPP.h; path = ../STreamXMPP.h; sourceTree = "<group>"; };
+		03D9C0F81814623B0039118F /* STreamXMPP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = STreamXMPP.m; path = ../STreamXMPP.m; sourceTree = "<group>"; };
 		03DCB2A1181525B80024053E /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		03DCB2A2181525B80024053E /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		03F5B04F18339C1500A847A0 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -561,8 +562,6 @@
 		0E8A4F35182B7FE300705C1F /* TalkDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TalkDB.m; path = talkDB/TalkDB.m; sourceTree = "<group>"; };
 		0E8A4F37182B802600705C1F /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		0E8A4F39182B9EA700705C1F /* keyboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = keyboard.png; sourceTree = "<group>"; };
-		0E8D5FF71854647700F464D7 /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerViewController.h; path = talk/PlayerViewController.h; sourceTree = "<group>"; };
-		0E8D5FF81854647700F464D7 /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayerViewController.m; path = talk/PlayerViewController.m; sourceTree = "<group>"; };
 		0EA16BF718516F28009F2D3A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = "Emoji-master/MBProgressHUD.h"; sourceTree = "<group>"; };
 		0EA16BF818516F28009F2D3A /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = "Emoji-master/MBProgressHUD.m"; sourceTree = "<group>"; };
 		0EA16BFE18516FC9009F2D3A /* MyFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyFriendsViewController.h; path = Classes/MyFriendsViewController.h; sourceTree = "<group>"; };
@@ -596,6 +595,10 @@
 		0EF5A00D18556A8600B4EDE7 /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
 		0EF5A01018557E5C00B4EDE7 /* SearchData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchData.h; path = Classes/SearchData.h; sourceTree = "<group>"; };
 		0EF5A01118557E5C00B4EDE7 /* SearchData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchData.m; path = Classes/SearchData.m; sourceTree = "<group>"; };
+		0EF5A0171855861100B4EDE7 /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerViewController.h; path = talk/Classes/PlayerViewController.h; sourceTree = SOURCE_ROOT; };
+		0EF5A0181855861100B4EDE7 /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayerViewController.m; path = talk/Classes/PlayerViewController.m; sourceTree = SOURCE_ROOT; };
+		0EF5A01A185587B200B4EDE7 /* PlayerData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerData.h; path = talk/Classes/PlayerData.h; sourceTree = SOURCE_ROOT; };
+		0EF5A01B185587B200B4EDE7 /* PlayerData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayerData.m; path = talk/Classes/PlayerData.m; sourceTree = SOURCE_ROOT; };
 		4413D09F182FA98E00B01C14 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Classes/LoginViewController.h; sourceTree = "<group>"; };
 		4413D0A0182FA98E00B01C14 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Classes/LoginViewController.m; sourceTree = "<group>"; };
 		44A80E7D18311DEF006069DE /* face.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = face.png; sourceTree = "<group>"; };
@@ -671,8 +674,6 @@
 		03D9BEEF18145C080039118F = {
 			isa = PBXGroup;
 			children = (
-				0E8D5FF71854647700F464D7 /* PlayerViewController.h */,
-				0E8D5FF81854647700F464D7 /* PlayerViewController.m */,
 				03D9C0BA18145E510039118F /* Vendor */,
 				03D9C0A718145E480039118F /* Utilities */,
 				03D9BF7C18145E400039118F /* Extensions */,
@@ -730,9 +731,11 @@
 				0EE07675182B53540052BC02 /* creatUI */,
 				44A80E99183129E2006069DE /* Emoji-master */,
 				0EA16BFA18516F30009F2D3A /* MBPHUD */,
+				0EF5A014185585AA00B4EDE7 /* XMPP */,
+				0EF5A016185585F600B4EDE7 /* playerVC */,
 				0EA16C0F1851C77D009F2D3A /* tabbar */,
-				0EA16C041851802F009F2D3A /* TabBarViewController.h */,
-				0EA16C051851802F009F2D3A /* TabBarViewController.m */,
+				0EF5A0131855857800B4EDE7 /* searchVC */,
+				0EF5A015185585C900B4EDE7 /* login&signUp */,
 				0E00514818221D3D00BB50F8 /* MainController.h */,
 				0E00514918221D3D00BB50F8 /* MainController.m */,
 				03F5B05A1833BB3300A847A0 /* AllUserViewController.h */,
@@ -741,21 +744,8 @@
 				0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */,
 				0EA16C01185176A7009F2D3A /* AddFriendsViewController.h */,
 				0EA16C02185176A7009F2D3A /* AddFriendsViewController.m */,
-				0EA16C0A18518B2C009F2D3A /* SearchFriendsViewController.h */,
-				0EA16C0B18518B2C009F2D3A /* SearchFriendsViewController.m */,
-				0EF5A01018557E5C00B4EDE7 /* SearchData.h */,
-				0EF5A01118557E5C00B4EDE7 /* SearchData.m */,
-				0ED8BC0A185065D7007BD8CA /* RootViewController.h */,
-				0ED8BC0B185065D7007BD8CA /* RootViewController.m */,
-				4413D09F182FA98E00B01C14 /* LoginViewController.h */,
-				4413D0A0182FA98E00B01C14 /* LoginViewController.m */,
-				03451B8318326C5600030E79 /* SignUpViewController.h */,
-				03451B8418326C5600030E79 /* SignUpViewController.m */,
 				03DCB2A1181525B80024053E /* ViewController.h */,
 				03DCB2A2181525B80024053E /* ViewController.m */,
-				03D9C0F71814623B0039118F /* STreamXMPP.h */,
-				03D9C0F81814623B0039118F /* STreamXMPP.m */,
-				03D9C0F6181462210039118F /* STreamXMPPProtocol.h */,
 				03D9BF0A18145C080039118F /* AppDelegate.h */,
 				03D9BF0B18145C080039118F /* AppDelegate.m */,
 				03D9BF0D18145C080039118F /* Images.xcassets */,
@@ -1585,6 +1575,8 @@
 		0EA16BFA18516F30009F2D3A /* MBPHUD */ = {
 			isa = PBXGroup;
 			children = (
+				0EA16BF718516F28009F2D3A /* MBProgressHUD.h */,
+				0EA16BF818516F28009F2D3A /* MBProgressHUD.m */,
 			);
 			name = MBPHUD;
 			sourceTree = "<group>";
@@ -1592,8 +1584,8 @@
 		0EA16C0F1851C77D009F2D3A /* tabbar */ = {
 			isa = PBXGroup;
 			children = (
-				0EA16BF718516F28009F2D3A /* MBProgressHUD.h */,
-				0EA16BF818516F28009F2D3A /* MBProgressHUD.m */,
+				0EA16C041851802F009F2D3A /* TabBarViewController.h */,
+				0EA16C051851802F009F2D3A /* TabBarViewController.m */,
 			);
 			name = tabbar;
 			sourceTree = "<group>";
@@ -1629,6 +1621,53 @@
 				0E8A4F32182B7F8000705C1F /* CreateUI.m */,
 			);
 			name = creatUI;
+			sourceTree = "<group>";
+		};
+		0EF5A0131855857800B4EDE7 /* searchVC */ = {
+			isa = PBXGroup;
+			children = (
+				0EA16C0A18518B2C009F2D3A /* SearchFriendsViewController.h */,
+				0EA16C0B18518B2C009F2D3A /* SearchFriendsViewController.m */,
+				0EF5A01018557E5C00B4EDE7 /* SearchData.h */,
+				0EF5A01118557E5C00B4EDE7 /* SearchData.m */,
+			);
+			name = searchVC;
+			sourceTree = "<group>";
+		};
+		0EF5A014185585AA00B4EDE7 /* XMPP */ = {
+			isa = PBXGroup;
+			children = (
+				03D9C0F71814623B0039118F /* STreamXMPP.h */,
+				03D9C0F81814623B0039118F /* STreamXMPP.m */,
+				03D9C0F6181462210039118F /* STreamXMPPProtocol.h */,
+			);
+			name = XMPP;
+			path = "Emoji-master";
+			sourceTree = "<group>";
+		};
+		0EF5A015185585C900B4EDE7 /* login&signUp */ = {
+			isa = PBXGroup;
+			children = (
+				0ED8BC0A185065D7007BD8CA /* RootViewController.h */,
+				0ED8BC0B185065D7007BD8CA /* RootViewController.m */,
+				4413D09F182FA98E00B01C14 /* LoginViewController.h */,
+				4413D0A0182FA98E00B01C14 /* LoginViewController.m */,
+				03451B8318326C5600030E79 /* SignUpViewController.h */,
+				03451B8418326C5600030E79 /* SignUpViewController.m */,
+			);
+			name = "login&signUp";
+			sourceTree = "<group>";
+		};
+		0EF5A016185585F600B4EDE7 /* playerVC */ = {
+			isa = PBXGroup;
+			children = (
+				0EF5A0171855861100B4EDE7 /* PlayerViewController.h */,
+				0EF5A0181855861100B4EDE7 /* PlayerViewController.m */,
+				0EF5A01A185587B200B4EDE7 /* PlayerData.h */,
+				0EF5A01B185587B200B4EDE7 /* PlayerData.m */,
+			);
+			name = playerVC;
+			path = "Emoji-master";
 			sourceTree = "<group>";
 		};
 		44A80E99183129E2006069DE /* Emoji-master */ = {
@@ -1842,6 +1881,7 @@
 				03D9C09E18145E410039118F /* XMPPPing.m in Sources */,
 				44A80EAF183129E2006069DE /* EmojiPictographs.m in Sources */,
 				03D9C08218145E410039118F /* XMPPvCardTempTel.m in Sources */,
+				0EF5A0191855861100B4EDE7 /* PlayerViewController.m in Sources */,
 				03D9C08518145E410039118F /* XMPPIQ+XEP_0060.m in Sources */,
 				03D9C0E718145E510039118F /* DDTTYLogger.m in Sources */,
 				03D9C07418145E410039118F /* XMPPMUC.m in Sources */,
@@ -1893,6 +1933,7 @@
 				03D9C07F18145E410039118F /* XMPPvCardTempEmail.m in Sources */,
 				03D9C08C18145E410039118F /* XMPPMessage+XEP_0085.m in Sources */,
 				03D9C09118145E410039118F /* XMPPCapsResourceCoreDataStorageObject.m in Sources */,
+				0EF5A01C185587B200B4EDE7 /* PlayerData.m in Sources */,
 				03D9C09D18145E410039118F /* XMPPAutoPing.m in Sources */,
 				03D9C0E818145E510039118F /* ContextFilterLogFormatter.m in Sources */,
 				03D9C07318145E410039118F /* XMPPMessage+XEP0045.m in Sources */,
@@ -1915,7 +1956,6 @@
 				03D9C0EB18145E510039118F /* NSString+DDXML.m in Sources */,
 				03D9C07518145E410039118F /* XMPPRoom.m in Sources */,
 				03D9C09218145E410039118F /* XMPPCapabilities.m in Sources */,
-				0E8D5FF91854647700F464D7 /* PlayerViewController.m in Sources */,
 				03D9C05918145E410039118F /* XMPPResourceCoreDataStorageObject.m in Sources */,
 				03D9C08318145E410039118F /* NSXMLElement+XEP_0059.m in Sources */,
 				03D9C0E318145E510039118F /* DDAbstractDatabaseLogger.m in Sources */,
