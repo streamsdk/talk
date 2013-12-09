@@ -178,8 +178,6 @@
 		0E8A4F36182B7FE300705C1F /* TalkDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F35182B7FE300705C1F /* TalkDB.m */; };
 		0E8A4F38182B802600705C1F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8A4F37182B802600705C1F /* libsqlite3.dylib */; };
 		0E8A4F3A182B9EA700705C1F /* keyboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E8A4F39182B9EA700705C1F /* keyboard.png */; };
-		0E8D5FF21854099400F464D7 /* addBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E8D5FF01854099400F464D7 /* addBtn.png */; };
-		0E8D5FF31854099400F464D7 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E8D5FF11854099400F464D7 /* delete.png */; };
 		0E8D5FF91854647700F464D7 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8D5FF81854647700F464D7 /* PlayerViewController.m */; };
 		0EA16BF918516F28009F2D3A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16BF818516F28009F2D3A /* MBProgressHUD.m */; };
 		0EA16C0018516FC9009F2D3A /* MyFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */; };
@@ -204,6 +202,8 @@
 		0ED8ECAC18288EB600C84741 /* VoiceHud.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED8ECAB18288EB600C84741 /* VoiceHud.m */; };
 		0EDCAA7F1829F11500BF9101 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EDCAA7E1829F11500BF9101 /* CoreVideo.framework */; };
 		0EDCAAC5182A10B100BF9101 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0847371827305B00350741 /* AudioToolbox.framework */; };
+		0EF5A00E18556A8600B4EDE7 /* selectAdd.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF5A00C18556A8600B4EDE7 /* selectAdd.png */; };
+		0EF5A00F18556A8600B4EDE7 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF5A00D18556A8600B4EDE7 /* add.png */; };
 		4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4413D0A0182FA98E00B01C14 /* LoginViewController.m */; };
 		44A80E8118311DEF006069DE /* face.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A80E7D18311DEF006069DE /* face.png */; };
 		44A80E8218311DEF006069DE /* face@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A80E7E18311DEF006069DE /* face@2x.png */; };
@@ -560,8 +560,6 @@
 		0E8A4F35182B7FE300705C1F /* TalkDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TalkDB.m; path = talkDB/TalkDB.m; sourceTree = "<group>"; };
 		0E8A4F37182B802600705C1F /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		0E8A4F39182B9EA700705C1F /* keyboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = keyboard.png; sourceTree = "<group>"; };
-		0E8D5FF01854099400F464D7 /* addBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addBtn.png; sourceTree = "<group>"; };
-		0E8D5FF11854099400F464D7 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 		0E8D5FF71854647700F464D7 /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerViewController.h; path = talk/PlayerViewController.h; sourceTree = "<group>"; };
 		0E8D5FF81854647700F464D7 /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayerViewController.m; path = talk/PlayerViewController.m; sourceTree = "<group>"; };
 		0EA16BF718516F28009F2D3A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = "Emoji-master/MBProgressHUD.h"; sourceTree = "<group>"; };
@@ -593,6 +591,8 @@
 		0ED8ECAA18288EB600C84741 /* VoiceHud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VoiceHud.h; path = Voice/VoiceHud.h; sourceTree = "<group>"; };
 		0ED8ECAB18288EB600C84741 /* VoiceHud.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VoiceHud.m; path = Voice/VoiceHud.m; sourceTree = "<group>"; };
 		0EDCAA7E1829F11500BF9101 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		0EF5A00C18556A8600B4EDE7 /* selectAdd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectAdd.png; sourceTree = "<group>"; };
+		0EF5A00D18556A8600B4EDE7 /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
 		4413D09F182FA98E00B01C14 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Classes/LoginViewController.h; sourceTree = "<group>"; };
 		4413D0A0182FA98E00B01C14 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Classes/LoginViewController.m; sourceTree = "<group>"; };
 		44A80E7D18311DEF006069DE /* face.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = face.png; sourceTree = "<group>"; };
@@ -762,8 +762,8 @@
 		03D9BF0218145C080039118F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				0E8D5FF01854099400F464D7 /* addBtn.png */,
-				0E8D5FF11854099400F464D7 /* delete.png */,
+				0EF5A00C18556A8600B4EDE7 /* selectAdd.png */,
+				0EF5A00D18556A8600B4EDE7 /* add.png */,
 				0EA16C0D18519C4B009F2D3A /* tick.png */,
 				0ED8BC1118506EFC007BD8CA /* background@2x.png */,
 				0ED8BC0F18506EA6007BD8CA /* background.png */,
@@ -1750,13 +1750,13 @@
 				03D9C0EA18145E510039118F /* README.txt in Resources */,
 				0E00515D1822293000BB50F8 /* typingMine.png in Resources */,
 				44A80E91183120A7006069DE /* Text.png in Resources */,
-				0E8D5FF31854099400F464D7 /* delete.png in Resources */,
 				0ED8ECA318288DC400C84741 /* wave70x117@2x.png in Resources */,
 				0E00515E1822293000BB50F8 /* typingMine@2x.png in Resources */,
 				03D9BF0E18145C080039118F /* Images.xcassets in Resources */,
+				0EF5A00F18556A8600B4EDE7 /* add.png in Resources */,
 				0E00515B1822293000BB50F8 /* missingAvatar.png in Resources */,
+				0EF5A00E18556A8600B4EDE7 /* selectAdd.png in Resources */,
 				44A80E93183120A7006069DE /* Voice.png in Resources */,
-				0E8D5FF21854099400F464D7 /* addBtn.png in Resources */,
 				44A80E8F183120A7006069DE /* Speak.png in Resources */,
 				0ED8BC1018506EA6007BD8CA /* background.png in Resources */,
 				0ECD894B183B0FC800B4AC1D /* camera_button_take@2x.png in Resources */,

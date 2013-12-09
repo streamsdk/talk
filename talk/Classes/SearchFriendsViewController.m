@@ -99,16 +99,21 @@
             for (STreamObject *so in all) {
                 if ([str isEqualToString:[so objectId]]) {
                     NSString *status = [so getValue:@"status"];
-                    if ([status isEqualToString:@"friend"]) {
-                        [button setImage:[UIImage imageNamed:@"delete.png"]forState:UIControlStateNormal];
-                        [button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
-                    }else{
-                        [button setImage:[UIImage imageNamed:@"addBtn.png"]forState:UIControlStateNormal];
-                        [button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                   if ([status isEqualToString:@"friend"]){
                         
-                    }
+                        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You are already friends！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Cancel", nil];
+                        [alert show];
+                   }else  if ([status isEqualToString:@"request"]) {
+                       [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
+                       [button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
+                   }else  if ([status isEqualToString:@"sendRequest"]) {
+                      
+                   }else{
+                       [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
+                       [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
+                   }
                 }
-                
             }
         }else{
             [button setImage:[UIImage imageNamed:@"addBtn.png"]forState:UIControlStateNormal];
@@ -204,7 +209,6 @@
 }
 -(void)addFriends:(UIButton *)sender {
     
-    
     NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
     NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
     NSString * loginName= [array objectAtIndex:0];
@@ -213,13 +217,15 @@
     STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:friend];
     STreamObject *my = [[STreamObject alloc]init];
     [my setObjectId:loginName];
-    [my addStaff:@"status" withObject:@"request"];
+    [my addStaff:@"status" withObject:@"friend"];
     NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
-    
     [updateArray addObject:my];
     [sco updateStreamCategoryObjects:updateArray];
 
-    [button setImage:[UIImage imageNamed:@"delete.png"]forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
+    
+}
+-(void) addFriendSendRequest{
     
 }
 - (void)didReceiveMemoryWarning

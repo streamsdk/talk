@@ -83,21 +83,24 @@
         
         button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.tag = indexPath.row;
-        [button setFrame:CGRectMake(cell.frame.size.width-60, 2, 40, 40)];
+        [button setFrame:CGRectMake(cell.frame.size.width-200, 2, 40, 40)];
         [cell addSubview:button];
     }
     STreamObject * so = [userData objectAtIndex:indexPath.row];
     NSString *status = [so getValue:@"status"];
     if ([status isEqualToString:@"friend"]) {
-        [button setImage:[UIImage imageNamed:@"delete.png"]forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
         [button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
-    }else{
-        [button setImage:[UIImage imageNamed:@"addBtn.png"]forState:UIControlStateNormal];
+        cell.textLabel.text = [so objectId];
+        cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
+    }else if ([status isEqualToString:@"request"]){
+        [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
         [button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
+        cell.textLabel.text = [so objectId];
+        cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
 
     }
-    cell.textLabel.text = [so objectId];
-     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
+   
     return cell;
 
 }
@@ -115,12 +118,12 @@
     STreamObject *my = [[STreamObject alloc]init];
     
     [my setObjectId:loginName];
-    [my addStaff:@"status" withObject:@"request"];
+    [my addStaff:@"status" withObject:@"sendRequest"];
     NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
     
     [updateArray addObject:my];
     [sco updateStreamCategoryObjects:updateArray];
-    [sender setImage:[UIImage imageNamed:@"addBtn.png"]forState:UIControlStateNormal];
+    [sender setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
     [sender addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
 
 }
@@ -130,6 +133,7 @@
     [so setObjectId:[so objectId]];
     [so addStaff:@"status" withObject:@"friend"];
     [so updateInBackground];
+    
     STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[so objectId]];
     STreamObject *my = [[STreamObject alloc]init];
     NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
@@ -142,8 +146,9 @@
     [updateArray addObject:my];
     [sco updateStreamCategoryObjects:updateArray];
     
-    [sender setImage:[UIImage imageNamed:@"delete.png"]forState:UIControlStateNormal];
+    [sender setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
     [sender addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
+    
 }
 - (void)didReceiveMemoryWarning
 {
