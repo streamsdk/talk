@@ -20,6 +20,7 @@
 {
     UIButton *button;
     SearchData * _searchData;
+    NSMutableArray *allFriend;
 }
 @end
 
@@ -39,8 +40,9 @@
     [super viewDidLoad];
 
     self.title = @"Add Friends";
-    _searchData = [SearchData sharedObject];
-    userData = [_searchData getSearchData];
+//    _searchData = [SearchData sharedObject];
+//    userData = [_searchData getSearchData];
+    userData = [[NSMutableArray alloc]init];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
     
     UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelSelected)];
@@ -60,7 +62,6 @@
     searchBar.placeholder=@"search";
     searchBar.keyboardType=UIKeyboardTypeNamePhonePad;
     [self.view addSubview:searchBar];
-    
     
     //searchbar background
    /* UIView *segment = [searchBar.subviews objectAtIndex:0];
@@ -95,12 +96,8 @@
     NSString * str;
     if (userData && [userData count]!=0) {
         str =  [userData objectAtIndex:indexPath.row];
-        
-        NSString * loginName = [self getLoginName];
-        STreamQuery *sq = [[STreamQuery alloc]initWithCategory:loginName];
-        NSMutableArray *all = [sq find];
-        if (all && [all count]!=0) {
-            for (STreamObject *so in all) {
+        if (allFriend && [allFriend count]!=0) {
+            for (STreamObject *so in allFriend) {
                 if ([str isEqualToString:[so objectId]]) {
                     NSString *status = [so getValue:@"status"];
 
@@ -115,6 +112,10 @@
                    }else  if ([status isEqualToString:@"sendRequest"]) {
                       cell.textLabel.text = str;
                    }
+                }else{
+                    [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
+                    [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
+                    cell.textLabel.text = str;
                 }
             }
         }else{
@@ -131,14 +132,16 @@
 }
 -(void) searchFriends:(NSString *)userName {
     STreamUser * user = [[STreamUser alloc]init];
-    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-    NSString * loginName= [array objectAtIndex:0];
+    
+    NSString * loginName = [self getLoginName];
+    STreamQuery *sq = [[STreamQuery alloc]initWithCategory:loginName];
+    [sq addLimitId:userName];
+    allFriend = [sq find];
+
     if (![userName isEqualToString:loginName]) {
         [user isUserExists:userName response:^(BOOL exists, NSString *resposne) {
             if (exists) {
                 [userData addObject:userName];
-                [myTableview reloadData];
                 NSLog(@"%@",resposne);
             }else{
                 UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"No results found" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
@@ -222,13 +225,7 @@
     [sco updateStreamCategoryObjects:updateArray];
 
     [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
-    for (NSString *str in [_searchData getSearchData]) {
-        if (![string isEqualToString:str]) {
-            [_searchData setSearchData:str];
-            userData = [_searchData getSearchData];
-        }
-    }
-    [myTableview reloadData];
+
 }
 -(void) addFriendSendRequest:(UIButton *) sender {
 
@@ -251,13 +248,7 @@
     [sco updateStreamCategoryObjects:updateArray];
     
     [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
-    for (NSString *str in [_searchData getSearchData]) {
-        if (![string isEqualToString:str]) {
-            [_searchData setSearchData:str];
-            userData = [_searchData getSearchData];
-        }
-    }
-    [myTableview reloadData];
+
 }
 - (void)didReceiveMemoryWarning
 {

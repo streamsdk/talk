@@ -11,5 +11,5 @@
 @interface AddFriendsViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) UITableView *myTableview;
-@property (nonatomic,strong) NSArray *userData;
+@property (nonatomic,strong) NSMutableArray *userData;
 @end

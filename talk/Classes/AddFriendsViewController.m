@@ -33,6 +33,11 @@
     NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
     NSString * loginName= [array objectAtIndex:0];
     STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:loginName];
+    [sq setQueryLogicAnd:FALSE];
+    [sq whereEqualsTo:@"status" forValue:@"friend"];
+    
+    [sq whereEqualsTo:@"status" forValue:@"request"];
+    
     userData = [sq find];
 
 }
@@ -49,7 +54,7 @@
     self .navigationItem.hidesBackButton = YES;
     UIBarButtonItem * leftitem = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
     self.navigationItem.leftBarButtonItem = leftitem;
-    userData = [[NSArray alloc]init];
+    userData = [[NSMutableArray alloc]init];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
     myTableview  = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-49)];
     myTableview.backgroundColor = [UIColor clearColor];
@@ -100,7 +105,6 @@
         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
 
     }
-   
     return cell;
 
 }
