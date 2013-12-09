@@ -204,6 +204,7 @@
 		0EDCAAC5182A10B100BF9101 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0847371827305B00350741 /* AudioToolbox.framework */; };
 		0EF5A00E18556A8600B4EDE7 /* selectAdd.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF5A00C18556A8600B4EDE7 /* selectAdd.png */; };
 		0EF5A00F18556A8600B4EDE7 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF5A00D18556A8600B4EDE7 /* add.png */; };
+		0EF5A01218557E5C00B4EDE7 /* SearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5A01118557E5C00B4EDE7 /* SearchData.m */; };
 		4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4413D0A0182FA98E00B01C14 /* LoginViewController.m */; };
 		44A80E8118311DEF006069DE /* face.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A80E7D18311DEF006069DE /* face.png */; };
 		44A80E8218311DEF006069DE /* face@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A80E7E18311DEF006069DE /* face@2x.png */; };
@@ -593,6 +594,8 @@
 		0EDCAA7E1829F11500BF9101 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		0EF5A00C18556A8600B4EDE7 /* selectAdd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectAdd.png; sourceTree = "<group>"; };
 		0EF5A00D18556A8600B4EDE7 /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
+		0EF5A01018557E5C00B4EDE7 /* SearchData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchData.h; path = Classes/SearchData.h; sourceTree = "<group>"; };
+		0EF5A01118557E5C00B4EDE7 /* SearchData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchData.m; path = Classes/SearchData.m; sourceTree = "<group>"; };
 		4413D09F182FA98E00B01C14 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Classes/LoginViewController.h; sourceTree = "<group>"; };
 		4413D0A0182FA98E00B01C14 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Classes/LoginViewController.m; sourceTree = "<group>"; };
 		44A80E7D18311DEF006069DE /* face.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = face.png; sourceTree = "<group>"; };
@@ -740,6 +743,8 @@
 				0EA16C02185176A7009F2D3A /* AddFriendsViewController.m */,
 				0EA16C0A18518B2C009F2D3A /* SearchFriendsViewController.h */,
 				0EA16C0B18518B2C009F2D3A /* SearchFriendsViewController.m */,
+				0EF5A01018557E5C00B4EDE7 /* SearchData.h */,
+				0EF5A01118557E5C00B4EDE7 /* SearchData.m */,
 				0ED8BC0A185065D7007BD8CA /* RootViewController.h */,
 				0ED8BC0B185065D7007BD8CA /* RootViewController.m */,
 				4413D09F182FA98E00B01C14 /* LoginViewController.h */,
@@ -1936,6 +1941,7 @@
 				03D9C07718145E410039118F /* XMPPvCardAvatarCoreDataStorageObject.m in Sources */,
 				03D9C0A118145E410039118F /* NSXMLElement+XEP_0203.m in Sources */,
 				03451B8518326C5600030E79 /* SignUpViewController.m in Sources */,
+				0EF5A01218557E5C00B4EDE7 /* SearchData.m in Sources */,
 				0ED8ECAC18288EB600C84741 /* VoiceHud.m in Sources */,
 				03D9C09618145E410039118F /* XMPPMessageArchivingCoreDataStorage.m in Sources */,
 				03D9C0A418145E410039118F /* XMPPMessage+XEP_0224.m in Sources */,
