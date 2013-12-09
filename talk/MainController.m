@@ -227,12 +227,12 @@
             NSBubbleData * bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
             [bubbleData addObject:bubble];
         }else if ([body isEqualToString:@"video"]){
-            NSString * string = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
-            NSURL * url = [NSURL URLWithString:string];
+            
             NSDateFormatter* formater = [[NSDateFormatter alloc] init];
             [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
-            NSString *mp4Path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.mp4", [formater stringFromDate:[NSDate date]]];
-            
+            NSString *mp4Path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output%@", [formater stringFromDate:[NSDate date]]];
+            [data writeToFile : mp4Path atomically: NO ];
+            NSURL *url = [[NSURL alloc] initWithString:mp4Path];
             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
             UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
             NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
@@ -306,7 +306,7 @@
     [bubbleData addObject:bubbledata];
     [bubbleTableView reloadData];
     STreamXMPP *con = [STreamXMPP sharedObject];
-    [con sendFileInBackground:videoData toUser:sendToID finished:^(NSString *res){
+    [con sendFileInBackground:videoData toUser:@"yang" finished:^(NSString *res){
         NSLog(@"res:%@",res);
     }byteSent:^(float b){
         NSLog(@"byteSent:%f",b);

@@ -7,8 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SegmentedControl.h"
 
-@interface AddFriendsViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface AddFriendsViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,SegmentedControlDelegate>
+{
+    SegmentedControl *_segmentedControl;
+}
 
 @property (nonatomic,strong) UITableView *myTableview;
 @property (nonatomic,strong) NSMutableArray *userData;

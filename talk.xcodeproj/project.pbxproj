@@ -206,6 +206,11 @@
 		0EF5A01218557E5C00B4EDE7 /* SearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5A01118557E5C00B4EDE7 /* SearchData.m */; };
 		0EF5A0191855861100B4EDE7 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5A0181855861100B4EDE7 /* PlayerViewController.m */; };
 		0EF5A01C185587B200B4EDE7 /* PlayerData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5A01B185587B200B4EDE7 /* PlayerData.m */; };
+		0EF5A0201855B71400B4EDE7 /* SegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5A01F1855B71400B4EDE7 /* SegmentedControl.m */; };
+		0EF5A0311855BA3C00B4EDE7 /* segmented-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF5A0271855BA3C00B4EDE7 /* segmented-bg.png */; };
+		0EF5A0321855BA3C00B4EDE7 /* segmented-bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF5A0281855BA3C00B4EDE7 /* segmented-bg@2x.png */; };
+		0EF5A0331855BA3C00B4EDE7 /* segmented-separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF5A0291855BA3C00B4EDE7 /* segmented-separator.png */; };
+		0EF5A0341855BA3C00B4EDE7 /* segmented-separator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF5A02A1855BA3C00B4EDE7 /* segmented-separator@2x.png */; };
 		4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4413D0A0182FA98E00B01C14 /* LoginViewController.m */; };
 		44A80E8118311DEF006069DE /* face.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A80E7D18311DEF006069DE /* face.png */; };
 		44A80E8218311DEF006069DE /* face@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A80E7E18311DEF006069DE /* face@2x.png */; };
@@ -599,6 +604,12 @@
 		0EF5A0181855861100B4EDE7 /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayerViewController.m; path = talk/Classes/PlayerViewController.m; sourceTree = SOURCE_ROOT; };
 		0EF5A01A185587B200B4EDE7 /* PlayerData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerData.h; path = talk/Classes/PlayerData.h; sourceTree = SOURCE_ROOT; };
 		0EF5A01B185587B200B4EDE7 /* PlayerData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayerData.m; path = talk/Classes/PlayerData.m; sourceTree = SOURCE_ROOT; };
+		0EF5A01E1855B71400B4EDE7 /* SegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SegmentedControl.h; path = Classes/SegmentedControl.h; sourceTree = "<group>"; };
+		0EF5A01F1855B71400B4EDE7 /* SegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SegmentedControl.m; path = Classes/SegmentedControl.m; sourceTree = "<group>"; };
+		0EF5A0271855BA3C00B4EDE7 /* segmented-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-bg.png"; sourceTree = "<group>"; };
+		0EF5A0281855BA3C00B4EDE7 /* segmented-bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-bg@2x.png"; sourceTree = "<group>"; };
+		0EF5A0291855BA3C00B4EDE7 /* segmented-separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-separator.png"; sourceTree = "<group>"; };
+		0EF5A02A1855BA3C00B4EDE7 /* segmented-separator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-separator@2x.png"; sourceTree = "<group>"; };
 		4413D09F182FA98E00B01C14 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Classes/LoginViewController.h; sourceTree = "<group>"; };
 		4413D0A0182FA98E00B01C14 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Classes/LoginViewController.m; sourceTree = "<group>"; };
 		44A80E7D18311DEF006069DE /* face.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = face.png; sourceTree = "<group>"; };
@@ -734,6 +745,7 @@
 				0EF5A014185585AA00B4EDE7 /* XMPP */,
 				0EF5A016185585F600B4EDE7 /* playerVC */,
 				0EA16C0F1851C77D009F2D3A /* tabbar */,
+				0EF5A01D1855B6E400B4EDE7 /* segment */,
 				0EF5A0131855857800B4EDE7 /* searchVC */,
 				0EF5A015185585C900B4EDE7 /* login&signUp */,
 				0E00514818221D3D00BB50F8 /* MainController.h */,
@@ -1670,6 +1682,19 @@
 			path = "Emoji-master";
 			sourceTree = "<group>";
 		};
+		0EF5A01D1855B6E400B4EDE7 /* segment */ = {
+			isa = PBXGroup;
+			children = (
+				0EF5A0271855BA3C00B4EDE7 /* segmented-bg.png */,
+				0EF5A0281855BA3C00B4EDE7 /* segmented-bg@2x.png */,
+				0EF5A0291855BA3C00B4EDE7 /* segmented-separator.png */,
+				0EF5A02A1855BA3C00B4EDE7 /* segmented-separator@2x.png */,
+				0EF5A01E1855B71400B4EDE7 /* SegmentedControl.h */,
+				0EF5A01F1855B71400B4EDE7 /* SegmentedControl.m */,
+			);
+			name = segment;
+			sourceTree = "<group>";
+		};
 		44A80E99183129E2006069DE /* Emoji-master */ = {
 			isa = PBXGroup;
 			children = (
@@ -1784,6 +1809,7 @@
 				0E08479918274C4E00350741 /* video@2x.png in Resources */,
 				0EA16C0E18519C4B009F2D3A /* tick.png in Resources */,
 				0E00515F1822293000BB50F8 /* typingSomeone.png in Resources */,
+				0EF5A0341855BA3C00B4EDE7 /* segmented-separator@2x.png in Resources */,
 				0E0051581822293000BB50F8 /* bubbleMine@2x.png in Resources */,
 				44A80E92183120A7006069DE /* Text@2x.png in Resources */,
 				0E0051571822293000BB50F8 /* bubbleMine.png in Resources */,
@@ -1806,17 +1832,20 @@
 				0ECD894B183B0FC800B4AC1D /* camera_button_take@2x.png in Resources */,
 				03D9C0EF18145E510039118F /* build-libidn.sh in Resources */,
 				44A80E94183120A7006069DE /* Voice@2x.png in Resources */,
+				0EF5A0331855BA3C00B4EDE7 /* segmented-separator.png in Resources */,
 				0ED8ECA018288DC400C84741 /* black_bg_ip5@2x.png in Resources */,
 				44A80E8818311E2A006069DE /* facesBack@2x.png in Resources */,
 				0E00515C1822293000BB50F8 /* missingAvatar@2x.png in Resources */,
 				44A80E8718311E2A006069DE /* facesBack.png in Resources */,
 				44A80E8318311DEF006069DE /* faceDelete.png in Resources */,
+				0EF5A0321855BA3C00B4EDE7 /* segmented-bg@2x.png in Resources */,
 				0ED8ECA218288DC400C84741 /* mic_talk_358x358@2x.png in Resources */,
 				0E0051591822293000BB50F8 /* bubbleSomeone.png in Resources */,
 				0ECD894A183B0FC800B4AC1D /* camera_button_take.png in Resources */,
 				0ED8ECA118288DC400C84741 /* mic_normal_358x358@2x.png in Resources */,
 				44A80E8418311DEF006069DE /* faceDelete@2x.png in Resources */,
 				44A80E90183120A7006069DE /* Speak@2x.png in Resources */,
+				0EF5A0311855BA3C00B4EDE7 /* segmented-bg.png in Resources */,
 				0E08479818274C4E00350741 /* video.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1887,6 +1916,7 @@
 				03D9C07418145E410039118F /* XMPPMUC.m in Sources */,
 				03D9C08718145E410039118F /* TURNSocket.m in Sources */,
 				03D9C07118145E410039118F /* XMPPRoomMessageMemoryStorageObject.m in Sources */,
+				0EF5A0201855B71400B4EDE7 /* SegmentedControl.m in Sources */,
 				03D9BF7818145E370039118F /* XMPPModule.m in Sources */,
 				03D9BF5D18145E2F0039118F /* NSData+XMPP.m in Sources */,
 				03D9C0F91814623B0039118F /* STreamXMPP.m in Sources */,
