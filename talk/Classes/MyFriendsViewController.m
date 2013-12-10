@@ -11,7 +11,6 @@
 #import "MainController.h"
 #import "AddFriendsViewController.h"
 #import "SearchFriendsViewController.h"
-#import "TabBarViewController.h"
 
 #import <arcstreamsdk/STreamQuery.h>
 #import <arcstreamsdk/STreamObject.h>
@@ -34,25 +33,7 @@
 }
 -(void) addFriends {
     AddFriendsViewController * addVC = [[AddFriendsViewController alloc]init];
-    SearchFriendsViewController * searchVC = [[SearchFriendsViewController alloc]init];
-    UITabBarItem *mainBar=[[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemContacts tag:1001];
-    UITabBarItem *sharedBar=[[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemSearch tag:1002];
-    
-    addVC.tabBarItem = mainBar;
-    searchVC.tabBarItem = sharedBar;
-    
-    NSMutableArray * array = [[NSMutableArray alloc]init];
-    
-    UINavigationController * mainNav = [[UINavigationController alloc]initWithRootViewController:addVC];
-    UINavigationController * sharedNav =[[UINavigationController alloc]initWithRootViewController:searchVC];
-    
-    [array addObject:mainNav];
-    [array addObject:sharedNav];
-    
-    TabBarViewController * tabBar = [[TabBarViewController alloc]init];
-
-    tabBar.viewControllers = array;
-    [self presentViewController:tabBar animated:YES completion:NULL];
+    [self.navigationController pushViewController:addVC animated:YES];
 }
 
 - (void)viewDidLoad

@@ -12,7 +12,7 @@
 #import <arcstreamsdk/STreamObject.h>
 #import <arcstreamsdk/STreamCategoryObject.h>
 #import "MyFriendsViewController.h"
-
+#import "SearchFriendsViewController.h"
 @interface AddFriendsViewController ()
 
 @end
@@ -168,17 +168,15 @@
     [_segmentedControl setContentEdgeInsets:UIEdgeInsetsMake(2.0, 2.0, 3.0, 2.0)];
     [_segmentedControl setSegmentedControlMode:SegmentedControlModeButton];
     [_segmentedControl setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin];
-    
-    [_segmentedControl setSeparatorImage:[UIImage imageNamed:@"segmented-separator.png"]];
-    
     UIImage *buttonBackgroundImagePressedLeft = [[UIImage imageNamed:@"segmented-bg-pressed-left.png"]
                                                  resizableImageWithCapInsets:UIEdgeInsetsMake(0.0, 4.0, 0.0, 1.0)];
-    UIImage *buttonBackgroundImagePressedCenter = [[UIImage imageNamed:@"segmented-bg-pressed-center.png"]
+    UIImage *buttonBackgroundImagePressedCenter = [[UIImage imageNamed:@"segmented-bg-pressed-right.png"]
                                                    resizableImageWithCapInsets:UIEdgeInsetsMake(0.0, 4.0, 0.0, 1.0)];
     
+    [_segmentedControl setSeparatorImage:[UIImage imageNamed:@"segmented-separator.png"]];
     // Button 1
     UIButton *buttonSocial = [[UIButton alloc] init];
-    UIImage *buttonSocialImageNormal = [UIImage imageNamed:@"social-icon.png"];
+    UIImage *buttonSocialImageNormal = [UIImage imageNamed:@"addFriends.png"];
     
     [buttonSocial setBackgroundImage:buttonBackgroundImagePressedLeft forState:UIControlStateHighlighted];
     [buttonSocial setBackgroundImage:buttonBackgroundImagePressedLeft forState:UIControlStateSelected];
@@ -190,7 +188,7 @@
     
     // Button 2
     UIButton *buttonStar = [[UIButton alloc] init];
-    UIImage *buttonStarImageNormal = [UIImage imageNamed:@"star-icon.png"];
+    UIImage *buttonStarImageNormal = [UIImage imageNamed:@"search.png"];
     
     [buttonStar setBackgroundImage:buttonBackgroundImagePressedCenter forState:UIControlStateHighlighted];
     [buttonStar setBackgroundImage:buttonBackgroundImagePressedCenter forState:UIControlStateSelected];
@@ -210,7 +208,10 @@
 {
     if (_segmentedControl == segmentedControl)
         NSLog(@"SegmentedControl #1 : Selected Index %d", index);
-   
+    if (index ==1 ) {
+        SearchFriendsViewController * search = [[SearchFriendsViewController alloc]init];
+        [self.navigationController pushViewController:search animated:NO];
+    }
 }
 
 

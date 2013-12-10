@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface SearchFriendsViewController : UIViewController <UISearchBarDelegate, UISearchDisplayDelegate,UITableViewDelegate,UITableViewDataSource>
-
+#import "SegmentedControl.h"
+@interface SearchFriendsViewController : UIViewController <UISearchBarDelegate, UISearchDisplayDelegate,UITableViewDelegate,UITableViewDataSource,SegmentedControlDelegate>
+{
+     SegmentedControl *_segmentedControl;
+}
 @property (nonatomic,strong) UITableView * myTableview;
 @property (nonatomic,strong) NSMutableArray *userData;
 

@@ -14,7 +14,7 @@
 #import <arcstreamsdk/STreamQuery.h>
 #import <arcstreamsdk/STreamCategoryObject.h>
 #import "SearchData.h"
-
+#import "AddFriendsViewController.h"
 #define SEARCH_TAG 10000
 @interface SearchFriendsViewController ()
 {
@@ -42,20 +42,25 @@
     self.title = @"Add Friends";
 //    _searchData = [SearchData sharedObject];
 //    userData = [_searchData getSearchData];
+    self.navigationItem.hidesBackButton = YES;
     userData = [[NSMutableArray alloc]init];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
     
     UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelSelected)];
     self.navigationItem.rightBarButtonItem = rightItem;
     
-    myTableview  = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, self.view.bounds.size.width, self.view.bounds.size.height-64)];
+    myTableview  = [[UITableView alloc]initWithFrame:CGRectMake(0,90, self.view.bounds.size.width, self.view.bounds.size.height-90)];
     myTableview.backgroundColor = [UIColor clearColor];
     myTableview.delegate = self;
     myTableview.dataSource = self;
     [self.view addSubview:myTableview];
     
     
-    UISearchBar * searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, 50)];
+    _segmentedControl = [[SegmentedControl alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width,49)];
+    [_segmentedControl setDelegate:self];
+    [self setupSegmentedControl];
+
+    UISearchBar * searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64+49, self.view.bounds.size.width, 50)];
     searchBar.delegate = self;
     searchBar.tag =SEARCH_TAG;
     searchBar.barStyle=UIBarStyleDefault;
@@ -63,8 +68,9 @@
     searchBar.keyboardType=UIKeyboardTypeNamePhonePad;
     [self.view addSubview:searchBar];
     
+    
     //searchbar background
-   /* UIView *segment = [searchBar.subviews objectAtIndex:0];
+  /* UIView *segment = [searchBar.subviews objectAtIndex:0];
     UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
     [segment addSubview: bgImage];*/
     
@@ -250,6 +256,62 @@
     [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
 
 }
+
+- (void)setupSegmentedControl
+{
+    UIImage *backgroundImage = [[UIImage imageNamed:@"segmented-bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10.0, 10.0, 10.0, 10.0)];
+    [_segmentedControl setBackgroundImage:backgroundImage];
+    [_segmentedControl setContentEdgeInsets:UIEdgeInsetsMake(2.0, 2.0, 3.0, 2.0)];
+    [_segmentedControl setSegmentedControlMode:SegmentedControlModeButton];
+    [_segmentedControl setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin];
+    
+    [_segmentedControl setSeparatorImage:[UIImage imageNamed:@"segmented-separator.png"]];
+    
+    UIImage *buttonBackgroundImagePressedLeft = [[UIImage imageNamed:@"segmented-bg-pressed-left.png"]
+                                                 resizableImageWithCapInsets:UIEdgeInsetsMake(0.0, 4.0, 0.0, 1.0)];
+    UIImage *buttonBackgroundImagePressedCenter = [[UIImage imageNamed:@"segmented-bg-pressed-right.png"]
+                                                   resizableImageWithCapInsets:UIEdgeInsetsMake(0.0, 4.0, 0.0, 1.0)];
+    
+    // Button 1
+    UIButton *buttonSocial = [[UIButton alloc] init];
+    UIImage *buttonSocialImageNormal = [UIImage imageNamed:@"addFriends.png"];
+    
+    [buttonSocial setBackgroundImage:buttonBackgroundImagePressedLeft forState:UIControlStateHighlighted];
+    [buttonSocial setBackgroundImage:buttonBackgroundImagePressedLeft forState:UIControlStateSelected];
+    [buttonSocial setBackgroundImage:buttonBackgroundImagePressedLeft forState:(UIControlStateHighlighted|UIControlStateSelected)];
+    [buttonSocial setImage:buttonSocialImageNormal forState:UIControlStateNormal];
+    [buttonSocial setImage:buttonSocialImageNormal forState:UIControlStateSelected];
+    [buttonSocial setImage:buttonSocialImageNormal forState:UIControlStateHighlighted];
+    [buttonSocial setImage:buttonSocialImageNormal forState:(UIControlStateHighlighted|UIControlStateSelected)];
+    
+    // Button 2
+    UIButton *buttonStar = [[UIButton alloc] init];
+    UIImage *buttonStarImageNormal = [UIImage imageNamed:@"search.png"];
+    
+    [buttonStar setBackgroundImage:buttonBackgroundImagePressedCenter forState:UIControlStateHighlighted];
+    [buttonStar setBackgroundImage:buttonBackgroundImagePressedCenter forState:UIControlStateSelected];
+    [buttonStar setBackgroundImage:buttonBackgroundImagePressedCenter forState:(UIControlStateHighlighted|UIControlStateSelected)];
+    [buttonStar setImage:buttonStarImageNormal forState:UIControlStateNormal];
+    [buttonStar setImage:buttonStarImageNormal forState:UIControlStateSelected];
+    [buttonStar setImage:buttonStarImageNormal forState:UIControlStateHighlighted];
+    [buttonStar setImage:buttonStarImageNormal forState:(UIControlStateHighlighted|UIControlStateSelected)];
+    
+    [_segmentedControl setButtonsArray:@[buttonSocial, buttonStar]];
+    [self.view addSubview:_segmentedControl];
+}
+#pragma mark -
+#pragma mark SegmentedControlDelegate
+
+- (void)segmentedViewController:(SegmentedControl *)segmentedControl touchedAtIndex:(NSUInteger)index
+{
+    if (_segmentedControl == segmentedControl)
+        NSLog(@"SegmentedControl #1 : Selected Index %d", index);
+    if (index ==0) {
+        AddFriendsViewController * add = [[AddFriendsViewController alloc]init];
+        [self.navigationController pushViewController:add animated:NO];
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
