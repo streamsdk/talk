@@ -289,10 +289,19 @@
 
 #pragma mark - Actions
 #pragma mark send photo
+
+-(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
+    UIGraphicsBeginImageContext(newSize);
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
 -(void) sendPhoto :(UIImage *)image {
     if (sendToID) {
-        NSData * data = UIImageJPEGRepresentation(image, 1.0);
-        NSBubbleData * bubbledata = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+        NSData * data = UIImageJPEGRepresentation(image, 0.8);
+        UIImage * _image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(image.size.width*0.8, image.size.height*0.8)];
+        NSBubbleData * bubbledata = [NSBubbleData dataWithImage:_image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
         [bubbleData addObject:bubbledata];
         [bubbleTableView reloadData];
         STreamXMPP *con = [STreamXMPP sharedObject];
@@ -593,16 +602,13 @@
                                               cancelButtonTitle:nil
                                               otherButtonTitles:@"好", nil];
         [alert show];
-    }
-    else
-    {
+    }else{
         UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
         imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
         imagePickerController.delegate = self;
         imagePickerController.allowsEditing = NO;
         imagePickerController.mediaTypes =  [[NSArray alloc] initWithObjects: (NSString *) kUTTypeImage, nil];
         [self presentViewController:imagePickerController animated:YES completion:NULL];
-        
     }
 }
 -(void) takeVideo {
@@ -614,8 +620,7 @@
                                               cancelButtonTitle:nil
                                               otherButtonTitles:@"好", nil];
         [alert show];
-    }else{
-        
+    }else {
         UIImagePickerController* pickerView = [[UIImagePickerController alloc] init];
         pickerView.sourceType = UIImagePickerControllerSourceTypeCamera;
         NSArray* availableMedia = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
@@ -624,7 +629,7 @@
         pickerView.videoMaximumDuration = 15;
         pickerView.delegate = self;
     }
-
+   
 }
 #pragma mark 
 - (void)encodeToMp4
@@ -749,7 +754,7 @@
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-    [picker dismissMoviePlayerViewControllerAnimated];
+    [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark textFiledDelegate
@@ -772,6 +777,7 @@
     	[bubbleTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:([bubbleTableView numberOfRowsInSection:lastSectionIdx] - 1) inSection:lastSectionIdx] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
     }
 }
+
 
 #pragma mark player delegate 
 -(void) playerVideo:(NSString *)path {

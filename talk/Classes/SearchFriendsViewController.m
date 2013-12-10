@@ -100,14 +100,13 @@
         [cell addSubview:button];
         
     }
-    NSString * str;
+    
     if (userData && [userData count]!=0) {
         
-        str = [userData objectAtIndex:indexPath.row];
+        NSString * str = [userData objectAtIndex:indexPath.row];
         if (!isRefresh) {
             [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
             NSLog(@"index = %d %@",indexPath.row,str);
-            cell.textLabel.text = str;
             
         }else{
             if (allFriend && [allFriend count]!=0) {
@@ -116,20 +115,19 @@
                         NSString *status = [so getValue:@"status"];
                         
                         if ([status isEqualToString:@"friend"]){
-                            
+                            [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
                             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You are already friends！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Cancel", nil];
                             [alert show];
                         }else  if ([status isEqualToString:@"request"]) {
                             [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
                             [button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
-                            cell.textLabel.text = str;
+                        
                         }else  if ([status isEqualToString:@"sendRequest"]) {
-                            cell.textLabel.text = str;
+                            [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
                         }
                     }else{
                         [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
                         [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
-                        cell.textLabel.text = str;
                     }
                 }
             }else{
@@ -137,7 +135,7 @@
                 [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
             }
         }
-        
+        cell.textLabel.text = [userData objectAtIndex:indexPath.row];
         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
     }
     
@@ -155,7 +153,6 @@
                     STreamQuery *sq = [[STreamQuery alloc]initWithCategory:loginName];
                     [sq addLimitId:userName];
                     allFriend = [sq find];
-                    [userData removeAllObjects];
                     [userData addObject:userData];
                     isRefresh = YES;
                     [myTableview reloadData];
