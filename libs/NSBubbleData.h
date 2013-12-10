@@ -5,7 +5,13 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
+#import<UIKit/UIKit.h>
 
+@protocol PlayerDelegate <NSObject>
+
+-(void) playerVideo:(NSString *)path;
+
+@end
 
 typedef enum _NSBubbleType
 {
@@ -27,6 +33,8 @@ typedef enum _NSBubbleType
 @property (nonatomic,strong) NSData * audioData;
 @property (nonatomic,strong) NSData * videoData;
 @property (nonatomic,retain) NSString * _videoPath;
+
+@property (assign,nonatomic) id <PlayerDelegate> delegate;
 
 - (id)initWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type;
 + (id)dataWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type;

@@ -9,7 +9,7 @@
 #import "SearchData.h"
 
 static NSMutableArray * _searchData;
-
+static NSMutableSet * _set;
 @implementation SearchData
 
 
@@ -27,7 +27,11 @@ static NSMutableArray * _searchData;
 
 }
 -(void) setSearchData:(NSString *)string{
-    [_searchData addObject:string];
+    if (![_set containsObject:string]) {
+        [_set addObject:string];
+        [_searchData  addObject:string];
+    }
+   
 }
 -(NSMutableArray *) getSearchData {
     return _searchData;

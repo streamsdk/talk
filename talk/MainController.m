@@ -19,10 +19,11 @@
 #import "LoginViewController.h"
 #import "TalkDB.h"
 #import "MyFriendsViewController.h"
+
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
 
-@interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate>
 {
     NSMutableArray *bubbleData;
     CreateUI * createUI;
@@ -30,7 +31,7 @@
     UIScrollView *scrollView;//表情滚动视图
     UIPageControl *pageControl;
     BOOL keyboardIsShow;//键盘是否显示
-
+    
 }
 
 @property(nonatomic,retain) Voice * voice;
@@ -230,21 +231,23 @@
             
             NSDateFormatter* formater = [[NSDateFormatter alloc] init];
             [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
-            NSString *mp4Path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output%@", [formater stringFromDate:[NSDate date]]];
-            [data writeToFile : mp4Path atomically: NO ];
-            NSURL *url = [[NSURL alloc] initWithString:mp4Path];
+           NSString *mp4Path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.mp4", [formater stringFromDate:[NSDate date]]];
+            [data writeToFile : mp4Path atomically: YES ];
+            NSURL *url = [NSURL fileURLWithPath:mp4Path];
             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
             UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
             NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
+            bdata.delegate = self;
             [bubbleData addObject:bdata];
         }else{
             NSBubbleData *bubble = [NSBubbleData dataWithtimes:[body stringByAppendingString:@"\""] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withData:data];
+            bubble.delegate = self;
             [bubbleData addObject:bubble];
         }
         [bubbleTableView reloadData];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
-    
+
 }
 
 - (void)didReceiveMessage:(XMPPMessage *)message withFrom:(NSString *)fromID{
@@ -302,15 +305,18 @@
     
 }
 -(void) sendVideo :(UIImage *)image withData:(NSData *)videoData {
+    
     NSBubbleData * bubbledata = [NSBubbleData dataWithImage:image withData:videoData withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withVidePath:_mp4Path];
+    bubbledata .delegate = self;
     [bubbleData addObject:bubbledata];
     [bubbleTableView reloadData];
     STreamXMPP *con = [STreamXMPP sharedObject];
-    [con sendFileInBackground:videoData toUser:@"yang" finished:^(NSString *res){
+    [con sendFileInBackground:videoData toUser:sendToID finished:^(NSString *res){
         NSLog(@"res:%@",res);
     }byteSent:^(float b){
         NSLog(@"byteSent:%f",b);
     }withBodyData:@"video"];
+    [self scrollBubbleViewToBottomAnimated:YES];
 }
 #pragma mark send  message
 -(void) sendMessageClicked {
@@ -724,11 +730,6 @@
     NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
     UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
     [self sendVideo:fileImage withData:videoData];
-    
-   /* MPMoviePlayerViewController* playerView = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://localhost/private%@", _mp4Path]]];
-    NSLog(@"%@",[NSString stringWithFormat:@"file://localhost/private%@", _mp4Path]);
-    [self presentModalViewController:playerView animated:YES];*/
-
 }
 
 
@@ -772,6 +773,12 @@
     }
 }
 
+#pragma mark player delegate 
+-(void) playerVideo:(NSString *)path {
+    NSURL * url = [NSURL fileURLWithPath:path];
+    MPMoviePlayerViewController* playerView = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
+    [self presentViewController:playerView animated:YES completion:NULL];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

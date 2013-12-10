@@ -212,8 +212,6 @@
 		0EF5A00E18556A8600B4EDE7 /* selectAdd.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF5A00C18556A8600B4EDE7 /* selectAdd.png */; };
 		0EF5A00F18556A8600B4EDE7 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF5A00D18556A8600B4EDE7 /* add.png */; };
 		0EF5A01218557E5C00B4EDE7 /* SearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5A01118557E5C00B4EDE7 /* SearchData.m */; };
-		0EF5A0191855861100B4EDE7 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5A0181855861100B4EDE7 /* PlayerViewController.m */; };
-		0EF5A01C185587B200B4EDE7 /* PlayerData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5A01B185587B200B4EDE7 /* PlayerData.m */; };
 		0EF5A0201855B71400B4EDE7 /* SegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5A01F1855B71400B4EDE7 /* SegmentedControl.m */; };
 		4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4413D0A0182FA98E00B01C14 /* LoginViewController.m */; };
 		44A80E8118311DEF006069DE /* face.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A80E7D18311DEF006069DE /* face.png */; };
@@ -611,10 +609,6 @@
 		0EF5A00D18556A8600B4EDE7 /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
 		0EF5A01018557E5C00B4EDE7 /* SearchData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchData.h; path = Classes/SearchData.h; sourceTree = "<group>"; };
 		0EF5A01118557E5C00B4EDE7 /* SearchData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchData.m; path = Classes/SearchData.m; sourceTree = "<group>"; };
-		0EF5A0171855861100B4EDE7 /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerViewController.h; path = talk/Classes/PlayerViewController.h; sourceTree = SOURCE_ROOT; };
-		0EF5A0181855861100B4EDE7 /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayerViewController.m; path = talk/Classes/PlayerViewController.m; sourceTree = SOURCE_ROOT; };
-		0EF5A01A185587B200B4EDE7 /* PlayerData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerData.h; path = talk/Classes/PlayerData.h; sourceTree = SOURCE_ROOT; };
-		0EF5A01B185587B200B4EDE7 /* PlayerData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayerData.m; path = talk/Classes/PlayerData.m; sourceTree = SOURCE_ROOT; };
 		0EF5A01E1855B71400B4EDE7 /* SegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SegmentedControl.h; path = Classes/SegmentedControl.h; sourceTree = "<group>"; };
 		0EF5A01F1855B71400B4EDE7 /* SegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SegmentedControl.m; path = Classes/SegmentedControl.m; sourceTree = "<group>"; };
 		4413D09F182FA98E00B01C14 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Classes/LoginViewController.h; sourceTree = "<group>"; };
@@ -750,7 +744,6 @@
 				44A80E99183129E2006069DE /* Emoji-master */,
 				0EA16BFA18516F30009F2D3A /* MBPHUD */,
 				0EF5A014185585AA00B4EDE7 /* XMPP */,
-				0EF5A016185585F600B4EDE7 /* playerVC */,
 				0EF5A01D1855B6E400B4EDE7 /* segment */,
 				0EF5A0131855857800B4EDE7 /* searchVC */,
 				0EF5A015185585C900B4EDE7 /* login&signUp */,
@@ -1666,18 +1659,6 @@
 			name = "login&signUp";
 			sourceTree = "<group>";
 		};
-		0EF5A016185585F600B4EDE7 /* playerVC */ = {
-			isa = PBXGroup;
-			children = (
-				0EF5A0171855861100B4EDE7 /* PlayerViewController.h */,
-				0EF5A0181855861100B4EDE7 /* PlayerViewController.m */,
-				0EF5A01A185587B200B4EDE7 /* PlayerData.h */,
-				0EF5A01B185587B200B4EDE7 /* PlayerData.m */,
-			);
-			name = playerVC;
-			path = "Emoji-master";
-			sourceTree = "<group>";
-		};
 		0EF5A01D1855B6E400B4EDE7 /* segment */ = {
 			isa = PBXGroup;
 			children = (
@@ -1917,7 +1898,6 @@
 				03D9C09E18145E410039118F /* XMPPPing.m in Sources */,
 				44A80EAF183129E2006069DE /* EmojiPictographs.m in Sources */,
 				03D9C08218145E410039118F /* XMPPvCardTempTel.m in Sources */,
-				0EF5A0191855861100B4EDE7 /* PlayerViewController.m in Sources */,
 				03D9C08518145E410039118F /* XMPPIQ+XEP_0060.m in Sources */,
 				03D9C0E718145E510039118F /* DDTTYLogger.m in Sources */,
 				03D9C07418145E410039118F /* XMPPMUC.m in Sources */,
@@ -1969,7 +1949,6 @@
 				03D9C07F18145E410039118F /* XMPPvCardTempEmail.m in Sources */,
 				03D9C08C18145E410039118F /* XMPPMessage+XEP_0085.m in Sources */,
 				03D9C09118145E410039118F /* XMPPCapsResourceCoreDataStorageObject.m in Sources */,
-				0EF5A01C185587B200B4EDE7 /* PlayerData.m in Sources */,
 				03D9C09D18145E410039118F /* XMPPAutoPing.m in Sources */,
 				03D9C0E818145E510039118F /* ContextFilterLogFormatter.m in Sources */,
 				03D9C07318145E410039118F /* XMPPMessage+XEP0045.m in Sources */,

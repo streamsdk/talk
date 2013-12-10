@@ -15,6 +15,7 @@
 #import <arcstreamsdk/STreamCategoryObject.h>
 #import "SearchData.h"
 #import "AddFriendsViewController.h"
+
 #define SEARCH_TAG 10000
 @interface SearchFriendsViewController ()
 {
@@ -35,15 +36,16 @@
         // Custom initialization
     }
     return self;
-}- (void)viewDidLoad
+}
+- (void)viewDidLoad
 {
     [super viewDidLoad];
 
     self.title = @"Add Friends";
-//    _searchData = [SearchData sharedObject];
-//    userData = [_searchData getSearchData];
+     _searchData = [SearchData sharedObject];
+    isRefresh = NO;
+    userData = [_searchData getSearchData];
     self.navigationItem.hidesBackButton = YES;
-    userData = [[NSMutableArray alloc]init];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
     
     UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelSelected)];
@@ -60,7 +62,7 @@
     [_segmentedControl setDelegate:self];
     [self setupSegmentedControl];
 
-    UISearchBar * searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64+49, self.view.bounds.size.width, 50)];
+    UISearchBar * searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64+47, self.view.bounds.size.width, 50)];
     searchBar.delegate = self;
     searchBar.tag =SEARCH_TAG;
     searchBar.barStyle=UIBarStyleDefault;
@@ -80,7 +82,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-   
     return [userData count];
 }
 
@@ -101,35 +102,41 @@
     }
     NSString * str;
     if (userData && [userData count]!=0) {
-        str =  [userData objectAtIndex:indexPath.row];
-        if (allFriend && [allFriend count]!=0) {
-            for (STreamObject *so in allFriend) {
-                if ([str isEqualToString:[so objectId]]) {
-                    NSString *status = [so getValue:@"status"];
-
-                   if ([status isEqualToString:@"friend"]){
-                        
-                        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You are already friends！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Cancel", nil];
-                        [alert show];
-                   }else  if ([status isEqualToString:@"request"]) {
-                       [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
-                       [button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
-                       cell.textLabel.text = str;
-                   }else  if ([status isEqualToString:@"sendRequest"]) {
-                      cell.textLabel.text = str;
-                   }
-                }else{
-                    [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
-                    [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
-                    cell.textLabel.text = str;
-                }
-            }
-        }else{
-            [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
-            [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
+        
+        str = [userData objectAtIndex:indexPath.row];
+        if (!isRefresh) {
+            [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
+            NSLog(@"index = %d %@",indexPath.row,str);
             cell.textLabel.text = str;
+            
+        }else{
+            if (allFriend && [allFriend count]!=0) {
+                for (STreamObject *so in allFriend) {
+                    if ([str isEqualToString:[so objectId]]) {
+                        NSString *status = [so getValue:@"status"];
+                        
+                        if ([status isEqualToString:@"friend"]){
+                            
+                            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You are already friends！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Cancel", nil];
+                            [alert show];
+                        }else  if ([status isEqualToString:@"request"]) {
+                            [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
+                            [button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
+                            cell.textLabel.text = str;
+                        }else  if ([status isEqualToString:@"sendRequest"]) {
+                            cell.textLabel.text = str;
+                        }
+                    }else{
+                        [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
+                        [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
+                        cell.textLabel.text = str;
+                    }
+                }
+            }else{
+                [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
+                [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
+            }
         }
-    
         
         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
     }
@@ -138,16 +145,21 @@
 }
 -(void) searchFriends:(NSString *)userName {
     STreamUser * user = [[STreamUser alloc]init];
-    
     NSString * loginName = [self getLoginName];
-    STreamQuery *sq = [[STreamQuery alloc]initWithCategory:loginName];
-    [sq addLimitId:userName];
-    allFriend = [sq find];
+   
 
     if (![userName isEqualToString:loginName]) {
         [user isUserExists:userName response:^(BOOL exists, NSString *resposne) {
             if (exists) {
-                [userData addObject:userName];
+                if (![userData containsObject:userName]) {
+                    STreamQuery *sq = [[STreamQuery alloc]initWithCategory:loginName];
+                    [sq addLimitId:userName];
+                    allFriend = [sq find];
+                    [userData removeAllObjects];
+                    [userData addObject:userData];
+                    isRefresh = YES;
+                    [myTableview reloadData];
+                }
                 NSLog(@"%@",resposne);
             }else{
                 UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"No results found" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
@@ -164,27 +176,6 @@
     return loginName;
 }
 
--(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSString *loginName  = [self getLoginName];
-    STreamQuery * sq = [[STreamQuery alloc]initWithCategory:loginName];
-    NSMutableArray * all = [sq find];
-    NSString *userName= [userData objectAtIndex:indexPath.row];
-    for (STreamObject *id in all) {
-        if ([userName isEqualToString:[id objectId]]) {
-            
-        }
-    }
-    STreamObject * so = [[STreamObject alloc]init];
-    [so setObjectId:userName];
-    [so addStaff:@"status" withObject:@"request"];
-    [so setCategory:loginName];
-    [so updateInBackground];
-    
-//    MainController *mainVC = [[MainController alloc]init];
-//    [mainVC setSendToID:userName];
-//    self.tabBarController.tabBar.hidden = YES;
-//    [self.navigationController pushViewController:mainVC animated:YES];
-}
 #pragma mark searchBarDelegate
 -(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     
@@ -196,7 +187,7 @@
     [HUD showAnimated:YES whileExecutingBlock:^{
         [self searchFriends:string];
     }completionBlock:^{
-        [myTableview reloadData];
+        
         [HUD removeFromSuperview];
         HUD = nil;
     }];
@@ -231,7 +222,10 @@
     [sco updateStreamCategoryObjects:updateArray];
 
     [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
-
+     [_searchData setSearchData:string];
+    userData = [_searchData getSearchData];
+    isRefresh = NO;
+    [myTableview reloadData];
 }
 -(void) addFriendSendRequest:(UIButton *) sender {
 
@@ -254,7 +248,10 @@
     [sco updateStreamCategoryObjects:updateArray];
     
     [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
-
+    [_searchData setSearchData:string];
+    userData = [_searchData getSearchData];
+    isRefresh = NO;
+    [myTableview reloadData];
 }
 
 - (void)setupSegmentedControl

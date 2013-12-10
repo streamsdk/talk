@@ -13,6 +13,6 @@
 
 -(void) setSearchData:(NSString * )string;
 
--(NSMutableArray *) getSearchData;
+-(NSMutableArray*) getSearchData;
 
 @end

@@ -12,6 +12,7 @@
 @interface AddFriendsViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,SegmentedControlDelegate>
 {
     SegmentedControl *_segmentedControl;
+   
 }
 
 @property (nonatomic,strong) UITableView *myTableview;

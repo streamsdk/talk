@@ -57,13 +57,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "talk/MainController.m"
-            timestampString = "408275516.966876"
+            filePath = "talk/Classes/SearchFriendsViewController.m"
+            timestampString = "408354942.753484"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "229"
-            endingLineNumber = "229"
-            landmarkName = "-didReceiveFile:withBody:withFrom:"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
+            landmarkName = "-addFriends:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -73,13 +73,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "talk/MainController.m"
-            timestampString = "408261644.953665"
+            filePath = "talk/Classes/SearchFriendsViewController.m"
+            timestampString = "408354942.753484"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "221"
-            endingLineNumber = "221"
-            landmarkName = "-didReceiveFile:withBody:withFrom:"
+            startingLineNumber = "230"
+            endingLineNumber = "230"
+            landmarkName = "-addFriendSendRequest:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -89,13 +89,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "talk/MainController.m"
-            timestampString = "408275913.970645"
+            filePath = "talk/Classes/SearchFriendsViewController.m"
+            timestampString = "408354942.753484"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "237"
-            endingLineNumber = "237"
-            landmarkName = "-didReceiveFile:withBody:withFrom:"
+            startingLineNumber = "252"
+            endingLineNumber = "252"
+            landmarkName = "-addFriendSendRequest:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "talk/Classes/SearchFriendsViewController.m"
+            timestampString = "408354388.169374"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

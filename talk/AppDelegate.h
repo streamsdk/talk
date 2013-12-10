@@ -8,13 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-#define APPDELEGATE ((AppDelegate *)[[UIApplication sharedApplication] delegate])
-
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 {
     
 }
 @property (strong, nonatomic) UIWindow *window;
 
--(void) showPlayerView;
+
 @end

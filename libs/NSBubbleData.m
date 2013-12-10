@@ -5,8 +5,6 @@
 //
 
 #import "NSBubbleData.h"
-#import "AppDelegate.h"
-#import "PlayerData.h"
 
 #define BIG_IMG_WIDTH  300.0
 #define BIG_IMG_HEIGHT 300.0
@@ -24,7 +22,7 @@
 @synthesize audioData;
 @synthesize videoData;
 @synthesize _videoPath;
-
+@synthesize delegate;
 
 #pragma mark - Lifecycle
 
@@ -233,9 +231,8 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 }
 
 -(void)playerVideo {
-    PlayerData * data = [PlayerData sharedObject];
-    [data setPlayerData:_videoPath];
-    [APPDELEGATE showPlayerView];
+
+    [delegate playerVideo:_videoPath];
    
 }
 -(void) bigToImage {
