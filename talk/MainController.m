@@ -33,6 +33,7 @@
     UIScrollView *scrollView;//表情滚动视图
     UIPageControl *pageControl;
     BOOL keyboardIsShow;//键盘是否显示
+    BOOL isFace;
     
 }
 
@@ -64,17 +65,18 @@
 -(void)initWithToolBar{
     
     //初始化为NO added
-    keyboardIsShow=NO; 
+    keyboardIsShow=NO;
+    isFace = NO;
     faceButton = [createUI setButtonFrame:CGRectMake(0, 2,30, 36) withTitle:@"nil"];
     [faceButton setImage:[UIImage imageNamed:@"face.png"] forState:UIControlStateNormal];
-    [faceButton addTarget:self action:@selector(disFaceKeyboard) forControlEvents:UIControlEventTouchUpInside];
+    [faceButton addTarget:self action:@selector(faceClicked) forControlEvents:UIControlEventTouchUpInside];
   
     recordOrKeyboardButton = [createUI setButtonFrame:CGRectMake(30, 2, 30, 36) withTitle:(@"nil")];
     [recordOrKeyboardButton setImage:[UIImage imageNamed:@"Voice.png"] forState:UIControlStateNormal];
     [recordOrKeyboardButton addTarget:self action:@selector(KeyboardTorecordClicked) forControlEvents:UIControlEventTouchUpInside];
    
     photoButton = [createUI setButtonFrame:CGRectMake(60, 2, 30, 36) withTitle:@"nil"];
-    [photoButton setImage:[UIImage imageNamed:@"camera_button_take.png"] forState:UIControlStateNormal];
+    [photoButton setImage:[UIImage imageNamed:@"addIcon.png"] forState:UIControlStateNormal];
     [photoButton addTarget:self action:@selector(photoClicked) forControlEvents:UIControlEventTouchUpInside];
     
     messageText = [createUI setTextFrame:CGRectMake(90, 3, toolBar.frame.size.width-150, 34)];
@@ -89,34 +91,6 @@
     [toolBar addSubview:photoButton];
     [toolBar addSubview:messageText];
     [toolBar addSubview:sendButton];
-    
-    //创建表情键盘
-    if (scrollView==nil) {
-        scrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, keyboardHeight)];
-        [scrollView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"facesBack"]]];
-        for (int i=0; i<9; i++) {
-            FacialView *fview=[[FacialView alloc] initWithFrame:CGRectMake(12+320*i, 15, facialViewWidth, facialViewHeight)];
-            [fview setBackgroundColor:[UIColor clearColor]];
-            [fview loadFacialView:i size:CGSizeMake(33, 43)];
-            fview.delegate=self;
-            [scrollView addSubview:fview];
-        }
-    }
-    [scrollView setShowsVerticalScrollIndicator:NO];
-    [scrollView setShowsHorizontalScrollIndicator:NO];
-    scrollView.contentSize=CGSizeMake(320*9, keyboardHeight);
-    scrollView.pagingEnabled=YES;
-    scrollView.delegate=self;
-    [self.view addSubview:scrollView];
-    pageControl=[[UIPageControl alloc]initWithFrame:CGRectMake(94, self.view.frame.size.height-35, 150, 30)];
-    [pageControl setCurrentPage:0];
-    pageControl.pageIndicatorTintColor=RGBACOLOR(195, 179, 163, 1);
-    pageControl.currentPageIndicatorTintColor=RGBACOLOR(132, 104, 77, 1);
-    pageControl.numberOfPages = 9;//指定页面个数
-    [pageControl setBackgroundColor:[UIColor clearColor]];
-    pageControl.hidden=YES;
-    [pageControl addTarget:self action:@selector(changePage:)forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:pageControl];
 
 }
 - (void)scrollViewDidScroll:(UIScrollView *)sender {
@@ -152,7 +126,7 @@
 	// Do any additional setup after loading the view.
     self.navigationItem.hidesBackButton = YES;
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
-    
+
     
     _qualityType = UIImagePickerControllerQualityTypeHigh;
     _mp4Quality = AVAssetExportPresetHighestQuality;
@@ -424,6 +398,8 @@
 -(void) KeyboardTorecordClicked {
     
     [self dismissKeyBoard];
+    [scrollView removeFromSuperview];
+    [pageControl removeFromSuperview];
     [recordOrKeyboardButton removeFromSuperview];
     [messageText removeFromSuperview];
     [sendButton removeFromSuperview];
@@ -459,7 +435,10 @@
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-keyboardHeight,self.view.frame.size.width, keyboardHeight)];
         }];
         [pageControl setHidden:NO];
-        [faceButton setBackgroundImage:[UIImage imageNamed:@"Text"] forState:UIControlStateNormal];
+        if(isFace){
+            [faceButton setBackgroundImage:[UIImage imageNamed:@"Text"] forState:UIControlStateNormal];
+
+        }
         return;
     }
     //如果键盘没有显示，点击表情了，隐藏表情，显示键盘
@@ -570,20 +549,85 @@
 }
 #pragma mark PhotoButton clicked
 -(void) photoClicked {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"插入图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"系统相册",@"拍摄相片",@"拍摄视频", nil];
-    alert.delegate = self;
-    [alert show];
+//    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"插入图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"系统相册",@"拍摄相片",@"拍摄视频", nil];
+//    alert.delegate = self;
+//    [alert show];
+    [scrollView removeFromSuperview];
+    [pageControl removeFromSuperview];
+
+    scrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, keyboardHeight)];
+    [scrollView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"facesBack.png"]]];
+    for (int i=0; i<5; i++) {
+        IconView *fview=[[IconView alloc] initWithFrame:CGRectMake(12+320*i, 15, facialViewWidth, facialViewHeight)];
+        [fview setBackgroundColor:[UIColor clearColor]];
+        [fview loadIconView:i size:CGSizeMake(40, 40)];
+        fview.delegate=self;
+        [scrollView addSubview:fview];
+    }
+    [scrollView setShowsVerticalScrollIndicator:NO];
+    [scrollView setShowsHorizontalScrollIndicator:NO];
+    scrollView.contentSize=CGSizeMake(320, keyboardHeight);
+    scrollView.pagingEnabled=YES;
+    scrollView.delegate=self;
+    [self.view addSubview:scrollView];
+    pageControl=[[UIPageControl alloc]initWithFrame:CGRectMake(94, self.view.frame.size.height-35, 150, 30)];
+    [pageControl setCurrentPage:0];
+    pageControl.pageIndicatorTintColor=RGBACOLOR(195, 179, 163, 1);
+    pageControl.currentPageIndicatorTintColor=RGBACOLOR(132, 104, 77, 1);
+    pageControl.numberOfPages = 1;//指定页面个数
+    [pageControl setBackgroundColor:[UIColor clearColor]];
+    pageControl.hidden=YES;
+    isFace = YES;
+    [pageControl addTarget:self action:@selector(changePage:)forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:pageControl];
+    
+    [self disFaceKeyboard];
 }
+#pragma mark Face button 
+-(void) faceClicked {
+    [pageControl removeFromSuperview];
+    [scrollView removeFromSuperview];
+    //创建表情键盘
+    scrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, keyboardHeight)];
+    [scrollView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"facesBack"]]];
+    for (int i=0; i<9; i++) {
+        FacialView *fview=[[FacialView alloc] initWithFrame:CGRectMake(12+320*i, 15, facialViewWidth, facialViewHeight)];
+        [fview setBackgroundColor:[UIColor clearColor]];
+        [fview loadFacialView:i size:CGSizeMake(33, 43)];
+        fview.delegate=self;
+        [scrollView addSubview:fview];
+    }
+
+    [scrollView setShowsVerticalScrollIndicator:NO];
+    [scrollView setShowsHorizontalScrollIndicator:NO];
+    scrollView.contentSize=CGSizeMake(320*9, keyboardHeight);
+    scrollView.pagingEnabled=YES;
+    scrollView.delegate=self;
+    [self.view addSubview:scrollView];
+    pageControl=[[UIPageControl alloc]initWithFrame:CGRectMake(94, self.view.frame.size.height-35, 150, 30)];
+    [pageControl setCurrentPage:0];
+    pageControl.pageIndicatorTintColor=RGBACOLOR(195, 179, 163, 1);
+    pageControl.currentPageIndicatorTintColor=RGBACOLOR(132, 104, 77, 1);
+    pageControl.numberOfPages = 9;//指定页面个数
+    [pageControl setBackgroundColor:[UIColor clearColor]];
+    pageControl.hidden=YES;
+    [pageControl addTarget:self action:@selector(changePage:)forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:pageControl];
+    
+    isFace = NO;
+    [self disFaceKeyboard];
+}
+
 #pragma mark UIAlertViewDelegate
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 1)
-        [self addPhoto];
-    else if(buttonIndex == 2)
-        [self takePhoto];
-    else if(buttonIndex == 3)
-        [self takeVideo];
+//    if (buttonIndex == 1)
+//        [self addPhoto];
+//    else if(buttonIndex == 2)
+//        [self takePhoto];
+//    else if(buttonIndex == 3)
+//        [self takeVideo];
 }
 #pragma mark - Tool Methods
 - (void)addPhoto
@@ -834,9 +878,6 @@
     [UIView setAnimationDuration:2.6];//动画时间长度，单位秒，浮点数
     [self.bubbleTableView exchangeSubviewAtIndex:0 withSubviewAtIndex:1];
     [UIView setAnimationDelegate:bgView];
-    // 动画完毕后调用animationFinished
-    [UIView setAnimationDidStopSelector:@selector(animationFinished)];
-    [UIView commitAnimations];
 }
 -(void)suoxiao
 {
@@ -854,7 +895,17 @@
     [aView.layer addAnimation:animation forKey:nil];
 }
 
-
+-(void)  selectedIconView:(NSInteger) buttonTag{
+    if(buttonTag == 0)
+        [self addPhoto];
+    if (buttonTag == 1) {
+        [self takePhoto];
+    }
+    if (buttonTag == 2) {
+        [self takeVideo];
+    }
+        
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

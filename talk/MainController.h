@@ -10,7 +10,7 @@
 #import "UIBubbleTableView.h"
 #import "UIBubbleTableViewDataSource.h"
 #import "STreamXMPPProtocol.h"
-
+#import "IconView.h"
 #import "FacialView.h"
 #define Time  0.25
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
@@ -21,7 +21,7 @@
 #define facialViewHeight 170
 #define  buttonWh 34
 
-@interface MainController : UIViewController<UIBubbleTableViewDataSource,STreamXMPPProtocol,facialViewDelegate,UITextFieldDelegate>
+@interface MainController : UIViewController<UIBubbleTableViewDataSource,STreamXMPPProtocol,facialViewDelegate,UITextFieldDelegate,IconViewDelegate>
 {
     AVAudioRecorder *recorder;
     UIImagePickerControllerQualityType                  _qualityType;
