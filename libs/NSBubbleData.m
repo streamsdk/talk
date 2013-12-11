@@ -23,7 +23,7 @@
 @synthesize videoData;
 @synthesize _videoPath;
 @synthesize delegate;
-
+@synthesize _image;
 #pragma mark - Lifecycle
 
 #if !__has_feature(objc_arc)
@@ -91,6 +91,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 
 - (id)initWithImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type
 {
+    _image = image;
     bigImageSize = image.size;
     CGSize size = image.size;
     if (size.width > 200)
@@ -237,21 +238,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 }
 -(void) bigToImage {
 
-    UIAlertView * view =[[UIAlertView alloc]initWithTitle:@"" message:@"22222" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
-    UIImageView *viewe = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 50.0, 45.0, 45.0)];
-  
-    viewe.image = [UIImage imageNamed:@"camera_button_take.png"];
-    UIImage *theImage = [UIImage imageNamed:@"camera_button_take.png"];
-    theImage = [theImage stretchableImageWithLeftCapWidth:0. topCapHeight:0.];
-    CGSize theSize = theImage.size;
-    UIGraphicsBeginImageContext(theSize);
-    [theImage drawInRect:CGRectMake(0, 0, theSize.width, theSize.height)];
-    theImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    view.layer.contents = (id)[theImage CGImage];
-    [view addSubview:viewe];
-    [view show];
-    NSLog(@"");
+    [delegate bigImage:_image];
 }
 #pragma mark scaled image
 -(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{

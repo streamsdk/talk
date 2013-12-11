@@ -22,6 +22,8 @@
 
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
+#define BIG_IMG_WIDTH  300.0
+#define BIG_IMG_HEIGHT 340.0
 
 @interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate>
 {
@@ -227,6 +229,7 @@
             UIImage * image = [UIImage imageWithData:data];
             NSBubbleData * bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
             [bubbleData addObject:bubble];
+            bubble.delegate = self;
         }else if ([body isEqualToString:@"video"]){
             
             NSDateFormatter* formater = [[NSDateFormatter alloc] init];
@@ -299,10 +302,11 @@
 }
 -(void) sendPhoto :(UIImage *)image {
     if (sendToID) {
-        NSData * data = UIImageJPEGRepresentation(image, 0.8);
-        UIImage * _image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(image.size.width*0.8, image.size.height*0.8)];
+        NSData * data = UIImageJPEGRepresentation(image, 0.7);
+        UIImage * _image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(image.size.width*0.7, image.size.height*0.7)];
         NSBubbleData * bubbledata = [NSBubbleData dataWithImage:_image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
         [bubbleData addObject:bubbledata];
+        bubbledata.delegate = self;
         [bubbleTableView reloadData];
         STreamXMPP *con = [STreamXMPP sharedObject];
         [con sendFileInBackground:data toUser:sendToID finished:^(NSString *res){
@@ -785,6 +789,72 @@
     MPMoviePlayerViewController* playerView = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
     [self presentViewController:playerView animated:YES completion:NULL];
 }
+
+//bibImage
+
+-(void) bigImage:(UIImage *)image {
+    //创建灰色透明背景，使其背后内容不可操作
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
+    background = bgView;
+    [bgView setBackgroundColor:[UIColor colorWithRed:0.3
+                                               green:0.3
+                                                blue:0.3
+                                               alpha:0.7]];
+    [self.view addSubview:bgView];
+    //创建边框视图
+    UIView *borderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,BIG_IMG_WIDTH+16, BIG_IMG_HEIGHT+16)];
+    //将图层的边框设置为圆脚
+    borderView.layer.cornerRadius = 8;
+    borderView.layer.masksToBounds = YES;
+    //给图层添加一个有色边框
+    borderView.layer.borderWidth = 8;
+    borderView.layer.borderColor = [[UIColor colorWithRed:0.9
+                                                    green:0.9
+                                                     blue:0.9
+                                                    alpha:0.7]CGColor];
+    [borderView setCenter:bgView.center];
+    [bgView addSubview:borderView];
+    //创建关闭按钮
+    UIButton *closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [closeBtn setImage:[UIImage imageNamed:@"remove.png"] forState:UIControlStateNormal];
+    [closeBtn addTarget:self action:@selector(suoxiao) forControlEvents:UIControlEventTouchUpInside];
+    [closeBtn setFrame:CGRectMake(borderView.frame.origin.x+borderView.frame.size.width-20, borderView.frame.origin.y-6, 26, 27)];
+    [bgView addSubview:closeBtn];
+    //创建显示图像视图
+    UIImageView *imgview = [[UIImageView alloc] initWithFrame:CGRectMake(8, 8, BIG_IMG_WIDTH, BIG_IMG_HEIGHT)];
+    [imgview setImage:image];
+    
+    [borderView addSubview:imgview];
+    [self shakeToShow:borderView];//放大过程中的动画
+    
+    //动画效果
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [UIView beginAnimations:nil context:context];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationDuration:2.6];//动画时间长度，单位秒，浮点数
+    [self.bubbleTableView exchangeSubviewAtIndex:0 withSubviewAtIndex:1];
+    [UIView setAnimationDelegate:bgView];
+    // 动画完毕后调用animationFinished
+    [UIView setAnimationDidStopSelector:@selector(animationFinished)];
+    [UIView commitAnimations];
+}
+-(void)suoxiao
+{
+    [background removeFromSuperview];
+}
+//*************放大过程中出现的缓慢动画*************
+- (void) shakeToShow:(UIView*)aView{
+    CAKeyframeAnimation* animation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+    animation.duration = 0.5;
+    
+    NSMutableArray *values = [NSMutableArray array];
+    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(0.1, 0.1, 1.0)]];
+    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.0, 1.0, 1.0)]];
+    animation.values = values;
+    [aView.layer addAnimation:animation forKey:nil];
+}
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

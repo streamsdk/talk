@@ -11,6 +11,7 @@
 
 -(void) playerVideo:(NSString *)path;
 
+-(void)bigImage:(UIImage *)image;
 @end
 
 typedef enum _NSBubbleType
@@ -33,7 +34,7 @@ typedef enum _NSBubbleType
 @property (nonatomic,strong) NSData * audioData;
 @property (nonatomic,strong) NSData * videoData;
 @property (nonatomic,retain) NSString * _videoPath;
-
+@property (nonatomic,retain) UIImage *_image;
 @property (assign,nonatomic) id <PlayerDelegate> delegate;
 
 - (id)initWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type;

@@ -216,6 +216,7 @@
 		0EF79DEB1858006C00EB8A64 /* segmented-pressed-Right@2xx.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79DDE1858006C00EB8A64 /* segmented-pressed-Right@2xx.png */; };
 		0EF79DEC1858006C00EB8A64 /* segmented-separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79DDF1858006C00EB8A64 /* segmented-separator.png */; };
 		0EF79DED1858006C00EB8A64 /* segmented-separator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79DE01858006C00EB8A64 /* segmented-separator@2x.png */; };
+		0EF79DEF1858060200EB8A64 /* remove.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79DEE1858060200EB8A64 /* remove.png */; };
 		4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4413D0A0182FA98E00B01C14 /* LoginViewController.m */; };
 		44A80E8118311DEF006069DE /* face.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A80E7D18311DEF006069DE /* face.png */; };
 		44A80E8218311DEF006069DE /* face@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A80E7E18311DEF006069DE /* face@2x.png */; };
@@ -617,6 +618,7 @@
 		0EF79DDE1858006C00EB8A64 /* segmented-pressed-Right@2xx.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-pressed-Right@2xx.png"; sourceTree = "<group>"; };
 		0EF79DDF1858006C00EB8A64 /* segmented-separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-separator.png"; sourceTree = "<group>"; };
 		0EF79DE01858006C00EB8A64 /* segmented-separator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-separator@2x.png"; sourceTree = "<group>"; };
+		0EF79DEE1858060200EB8A64 /* remove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = remove.png; sourceTree = "<group>"; };
 		4413D09F182FA98E00B01C14 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Classes/LoginViewController.h; sourceTree = "<group>"; };
 		4413D0A0182FA98E00B01C14 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Classes/LoginViewController.m; sourceTree = "<group>"; };
 		44A80E7D18311DEF006069DE /* face.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = face.png; sourceTree = "<group>"; };
@@ -774,6 +776,7 @@
 		03D9BF0218145C080039118F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0EF79DEE1858060200EB8A64 /* remove.png */,
 				0EF5A00C18556A8600B4EDE7 /* selectAdd.png */,
 				0EF5A00D18556A8600B4EDE7 /* add.png */,
 				0ED8BC1118506EFC007BD8CA /* background@2x.png */,
@@ -1830,6 +1833,7 @@
 				0E00515E1822293000BB50F8 /* typingMine@2x.png in Resources */,
 				03D9BF0E18145C080039118F /* Images.xcassets in Resources */,
 				0EF79DE81858006C00EB8A64 /* segmented-pressed-left@2x.png in Resources */,
+				0EF79DEF1858060200EB8A64 /* remove.png in Resources */,
 				0EF79DE91858006C00EB8A64 /* segmented-pressed-Right.png in Resources */,
 				0EF5A00F18556A8600B4EDE7 /* add.png in Resources */,
 				0E00515B1822293000BB50F8 /* missingAvatar.png in Resources */,
