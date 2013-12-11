@@ -220,6 +220,15 @@
 		0EF79DF7185810BF00EB8A64 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79DF6185810BF00EB8A64 /* camera.png */; };
 		0EF79DF9185810FA00EB8A64 /* video1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79DF8185810FA00EB8A64 /* video1.png */; };
 		0EF79DFB185814A300EB8A64 /* addIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79DFA185814A300EB8A64 /* addIcon.png */; };
+		0EF79DFF18583ACF00EB8A64 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF79DFE18583ACF00EB8A64 /* SettingViewController.m */; };
+		0EF79E021858463200EB8A64 /* BackgroundImgViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF79E011858463200EB8A64 /* BackgroundImgViewController.m */; };
+		0EF79E0A1858466300EB8A64 /* b1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79E041858466300EB8A64 /* b1.png */; };
+		0EF79E0B1858466300EB8A64 /* b2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79E051858466300EB8A64 /* b2.png */; };
+		0EF79E0C1858466300EB8A64 /* b3.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79E061858466300EB8A64 /* b3.png */; };
+		0EF79E0D1858466300EB8A64 /* b4.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79E071858466300EB8A64 /* b4.png */; };
+		0EF79E0E1858466300EB8A64 /* b5.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79E081858466300EB8A64 /* b5.png */; };
+		0EF79E0F1858466300EB8A64 /* b6.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79E091858466300EB8A64 /* b6.png */; };
+		0EF79E1218584CAF00EB8A64 /* BackData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF79E1118584CAF00EB8A64 /* BackData.m */; };
 		4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4413D0A0182FA98E00B01C14 /* LoginViewController.m */; };
 		44A80E8118311DEF006069DE /* face.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A80E7D18311DEF006069DE /* face.png */; };
 		44A80E8218311DEF006069DE /* face@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A80E7E18311DEF006069DE /* face@2x.png */; };
@@ -626,6 +635,18 @@
 		0EF79DF6185810BF00EB8A64 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
 		0EF79DF8185810FA00EB8A64 /* video1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video1.png; sourceTree = "<group>"; };
 		0EF79DFA185814A300EB8A64 /* addIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addIcon.png; sourceTree = "<group>"; };
+		0EF79DFD18583ACF00EB8A64 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingViewController.h; path = setVC/SettingViewController.h; sourceTree = "<group>"; };
+		0EF79DFE18583ACF00EB8A64 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingViewController.m; path = setVC/SettingViewController.m; sourceTree = "<group>"; };
+		0EF79E001858463200EB8A64 /* BackgroundImgViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundImgViewController.h; sourceTree = "<group>"; };
+		0EF79E011858463200EB8A64 /* BackgroundImgViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundImgViewController.m; sourceTree = "<group>"; };
+		0EF79E041858466300EB8A64 /* b1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b1.png; sourceTree = "<group>"; };
+		0EF79E051858466300EB8A64 /* b2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b2.png; sourceTree = "<group>"; };
+		0EF79E061858466300EB8A64 /* b3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b3.png; sourceTree = "<group>"; };
+		0EF79E071858466300EB8A64 /* b4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b4.png; sourceTree = "<group>"; };
+		0EF79E081858466300EB8A64 /* b5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b5.png; sourceTree = "<group>"; };
+		0EF79E091858466300EB8A64 /* b6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b6.png; sourceTree = "<group>"; };
+		0EF79E1018584CAF00EB8A64 /* BackData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BackData.h; path = setVC/BackData.h; sourceTree = "<group>"; };
+		0EF79E1118584CAF00EB8A64 /* BackData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BackData.m; path = setVC/BackData.m; sourceTree = "<group>"; };
 		4413D09F182FA98E00B01C14 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Classes/LoginViewController.h; sourceTree = "<group>"; };
 		4413D0A0182FA98E00B01C14 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Classes/LoginViewController.m; sourceTree = "<group>"; };
 		44A80E7D18311DEF006069DE /* face.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = face.png; sourceTree = "<group>"; };
@@ -762,6 +783,7 @@
 				0EF5A01D1855B6E400B4EDE7 /* segment */,
 				0EF5A0131855857800B4EDE7 /* searchVC */,
 				0EF5A015185585C900B4EDE7 /* login&signUp */,
+				0EF79DFC18583A9E00EB8A64 /* setVC */,
 				0EF79DF018580D0E00EB8A64 /* IconSort */,
 				0E00514818221D3D00BB50F8 /* MainController.h */,
 				0E00514918221D3D00BB50F8 /* MainController.m */,
@@ -1717,6 +1739,33 @@
 			name = IconSort;
 			sourceTree = "<group>";
 		};
+		0EF79DFC18583A9E00EB8A64 /* setVC */ = {
+			isa = PBXGroup;
+			children = (
+				0EF79E031858466300EB8A64 /* backgroundforproject */,
+				0EF79DFD18583ACF00EB8A64 /* SettingViewController.h */,
+				0EF79DFE18583ACF00EB8A64 /* SettingViewController.m */,
+				0EF79E001858463200EB8A64 /* BackgroundImgViewController.h */,
+				0EF79E011858463200EB8A64 /* BackgroundImgViewController.m */,
+				0EF79E1018584CAF00EB8A64 /* BackData.h */,
+				0EF79E1118584CAF00EB8A64 /* BackData.m */,
+			);
+			name = setVC;
+			sourceTree = "<group>";
+		};
+		0EF79E031858466300EB8A64 /* backgroundforproject */ = {
+			isa = PBXGroup;
+			children = (
+				0EF79E041858466300EB8A64 /* b1.png */,
+				0EF79E051858466300EB8A64 /* b2.png */,
+				0EF79E061858466300EB8A64 /* b3.png */,
+				0EF79E071858466300EB8A64 /* b4.png */,
+				0EF79E081858466300EB8A64 /* b5.png */,
+				0EF79E091858466300EB8A64 /* b6.png */,
+			);
+			path = backgroundforproject;
+			sourceTree = "<group>";
+		};
 		44A80E99183129E2006069DE /* Emoji-master */ = {
 			isa = PBXGroup;
 			children = (
@@ -1827,6 +1876,7 @@
 				0ED8BC1418506EFC007BD8CA /* talk@2x.png in Resources */,
 				0E0051601822293000BB50F8 /* typingSomeone@2x.png in Resources */,
 				03D9BF0618145C080039118F /* InfoPlist.strings in Resources */,
+				0EF79E0E1858466300EB8A64 /* b5.png in Resources */,
 				0EF79DEC1858006C00EB8A64 /* segmented-separator.png in Resources */,
 				0EF79DE11858006C00EB8A64 /* segmented-bg-left.png in Resources */,
 				0E8A4F3A182B9EA700705C1F /* keyboard.png in Resources */,
@@ -1847,11 +1897,14 @@
 				0E00515D1822293000BB50F8 /* typingMine.png in Resources */,
 				44A80E91183120A7006069DE /* Text.png in Resources */,
 				0EF79DE21858006C00EB8A64 /* segmented-bg-left@2x.png in Resources */,
+				0EF79E0B1858466300EB8A64 /* b2.png in Resources */,
 				0ED8ECA318288DC400C84741 /* wave70x117@2x.png in Resources */,
 				0EF79DED1858006C00EB8A64 /* segmented-separator@2x.png in Resources */,
+				0EF79E0D1858466300EB8A64 /* b4.png in Resources */,
 				0E00515E1822293000BB50F8 /* typingMine@2x.png in Resources */,
 				03D9BF0E18145C080039118F /* Images.xcassets in Resources */,
 				0EF79DFB185814A300EB8A64 /* addIcon.png in Resources */,
+				0EF79E0C1858466300EB8A64 /* b3.png in Resources */,
 				0EF79DE81858006C00EB8A64 /* segmented-pressed-left@2x.png in Resources */,
 				0EF79DF51858106F00EB8A64 /* photoMark.png in Resources */,
 				0EF79DEF1858060200EB8A64 /* remove.png in Resources */,
@@ -1879,6 +1932,8 @@
 				0ECD894A183B0FC800B4AC1D /* camera_button_take.png in Resources */,
 				0ED8ECA118288DC400C84741 /* mic_normal_358x358@2x.png in Resources */,
 				44A80E8418311DEF006069DE /* faceDelete@2x.png in Resources */,
+				0EF79E0F1858466300EB8A64 /* b6.png in Resources */,
+				0EF79E0A1858466300EB8A64 /* b1.png in Resources */,
 				44A80E90183120A7006069DE /* Speak@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1937,6 +1992,7 @@
 				03D9C08618145E410039118F /* XMPPPubSub.m in Sources */,
 				03D9C08A18145E410039118F /* NSDate+XMPPDateTimeProfiles.m in Sources */,
 				03D9C0A018145E410039118F /* XMPPTime.m in Sources */,
+				0EF79E1218584CAF00EB8A64 /* BackData.m in Sources */,
 				0ED8BC0C185065D7007BD8CA /* RootViewController.m in Sources */,
 				03D9C07C18145E410039118F /* XMPPvCardTempAdr.m in Sources */,
 				0EA16C0018516FC9009F2D3A /* MyFriendsViewController.m in Sources */,
@@ -2003,6 +2059,7 @@
 				44A80EB2183129E2006069DE /* FacialView.m in Sources */,
 				0E084792182736BC00350741 /* UIBubbleTableView.m in Sources */,
 				03D9BF5418145E270039118F /* XMPPPlainAuthentication.m in Sources */,
+				0EF79DFF18583ACF00EB8A64 /* SettingViewController.m in Sources */,
 				03D9C06F18145E410039118F /* XMPPRoomOccupantHybridMemoryStorageObject.m in Sources */,
 				03D9C09A18145E410039118F /* XMPPPresence+XEP_0172.m in Sources */,
 				03D9C05B18145E410039118F /* XMPPRosterCoreDataStorage.m in Sources */,
@@ -2040,6 +2097,7 @@
 				03D9BF7518145E370039118F /* XMPPIQ.m in Sources */,
 				03D9BF5018145E270039118F /* XMPPAnonymousAuthentication.m in Sources */,
 				03D9C07718145E410039118F /* XMPPvCardAvatarCoreDataStorageObject.m in Sources */,
+				0EF79E021858463200EB8A64 /* BackgroundImgViewController.m in Sources */,
 				03D9C0A118145E410039118F /* NSXMLElement+XEP_0203.m in Sources */,
 				03451B8518326C5600030E79 /* SignUpViewController.m in Sources */,
 				0EF5A01218557E5C00B4EDE7 /* SearchData.m in Sources */,

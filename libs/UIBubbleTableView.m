@@ -213,7 +213,7 @@
         NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:0];
         cell.backgroundColor = [UIColor clearColor];
         if (cell == nil) cell = [[UIBubbleHeaderTableViewCell alloc] init];
-        [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
+        [cell setBackgroundColor:[UIColor clearColor]];
         cell.date = data.date;
         return cell;
     }
@@ -223,10 +223,9 @@
     NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
 
     if (cell == nil) cell = [[UIBubbleTableViewCell alloc] init];
-    [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
+    [cell setBackgroundColor:[UIColor clearColor]];
     cell.data = data;
     cell.showAvatar = self.showAvatars;
-//    [self scrollBubbleViewToBottomAnimated:YES];
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

@@ -19,6 +19,8 @@
 #import "LoginViewController.h"
 #import "TalkDB.h"
 #import "MyFriendsViewController.h"
+#import "SettingViewController.h"
+#import "BackData.h"
 
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
@@ -45,7 +47,6 @@
 
 @synthesize bubbleTableView,toolBar,messageText,sendButton,photoButton ,recordButton,recordOrKeyboardButton,keyBoardButton,faceButton;
 @synthesize sendToID;
-
 @synthesize voice;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -103,10 +104,11 @@
     int page = pageControl.currentPage;//获取当前pagecontroll的值
     [scrollView setContentOffset:CGPointMake(320 * page, 0)];//根据pagecontroll的值来改变scrollview的滚动位置，以此切换到指定的页面
 }
--(void) exitClicked {
-    
-    LoginViewController *loginVC = [[LoginViewController alloc]init];
-    [self.navigationController pushViewController:loginVC animated:NO];
+-(void) changeBackgroundClicked {
+    BackData *data = [BackData sharedObject];
+    [data setFriendId:sendToID];
+    SettingViewController *setVC = [[SettingViewController alloc]init];
+    [self.navigationController pushViewController:setVC animated:NO];
     
 }
 -(NSString *)getUserID{
@@ -125,15 +127,26 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationItem.hidesBackButton = YES;
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
+    BackData *data = [BackData sharedObject];
+    UIImage *bgImage =[data getImage];
+    if (bgImage) {
+        [self.view setBackgroundColor:[UIColor colorWithPatternImage:bgImage]];
+    }else{
+        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
+    }
 
-    
     _qualityType = UIImagePickerControllerQualityTypeHigh;
     _mp4Quality = AVAssetExportPresetHighestQuality;
     
     STreamXMPP *con = [STreamXMPP sharedObject];
     [con setXmppDelegate:self];
-    self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
+    if (sendToID) {
+        self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
+    }else{
+        sendToID = [data getFriendId];
+        self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
+    }
+    
     
     bubbleData = [[NSMutableArray alloc]init];
     
@@ -148,7 +161,7 @@
     UIBarButtonItem * leftitem = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
     self.navigationItem.leftBarButtonItem = leftitem;
 
-    UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithTitle:@"Exit" style:UIBarButtonItemStyleDone target:self action:@selector(exitClicked)];
+    UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"photoMark.png"] style:UIBarButtonItemStyleDone target:self action:@selector(changeBackgroundClicked)];
     self.navigationItem.rightBarButtonItem = rightItem;
     
     //bubbleTableView
