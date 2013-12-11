@@ -13,6 +13,10 @@
 #import <arcstreamsdk/STreamCategoryObject.h>
 #import "MyFriendsViewController.h"
 #import "SearchFriendsViewController.h"
+
+#define LEFT_BUTTON_TAG 1000
+#define RIGHT_BUTTON_TAG 2000
+
 @interface AddFriendsViewController ()
 
 @end
@@ -168,36 +172,20 @@
     [_segmentedControl setContentEdgeInsets:UIEdgeInsetsMake(2.0, 2.0, 3.0, 2.0)];
     [_segmentedControl setSegmentedControlMode:SegmentedControlModeButton];
     [_segmentedControl setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin];
-    UIImage *buttonBackgroundImagePressedLeft = [[UIImage imageNamed:@"segmented-bg-pressed-left.png"]
-                                                 resizableImageWithCapInsets:UIEdgeInsetsMake(0.0, 4.0, 0.0, 1.0)];
-    UIImage *buttonBackgroundImagePressedCenter = [[UIImage imageNamed:@"segmented-bg-pressed-right.png"]
-                                                   resizableImageWithCapInsets:UIEdgeInsetsMake(0.0, 4.0, 0.0, 1.0)];
-    
+
     [_segmentedControl setSeparatorImage:[UIImage imageNamed:@"segmented-separator.png"]];
     // Button 1
     UIButton *buttonSocial = [[UIButton alloc] init];
-    UIImage *buttonSocialImageNormal = [UIImage imageNamed:@"addFriends.png"];
-    
-    [buttonSocial setBackgroundImage:buttonBackgroundImagePressedLeft forState:UIControlStateHighlighted];
-    [buttonSocial setBackgroundImage:buttonBackgroundImagePressedLeft forState:UIControlStateSelected];
-    [buttonSocial setBackgroundImage:buttonBackgroundImagePressedLeft forState:(UIControlStateHighlighted|UIControlStateSelected)];
+    UIImage *buttonSocialImageNormal = [UIImage imageNamed:@"segmented-pressed-left.png"];
+    buttonSocial.tag = LEFT_BUTTON_TAG;
     [buttonSocial setImage:buttonSocialImageNormal forState:UIControlStateNormal];
-    [buttonSocial setImage:buttonSocialImageNormal forState:UIControlStateSelected];
-    [buttonSocial setImage:buttonSocialImageNormal forState:UIControlStateHighlighted];
-    [buttonSocial setImage:buttonSocialImageNormal forState:(UIControlStateHighlighted|UIControlStateSelected)];
-    
+
     // Button 2
     UIButton *buttonStar = [[UIButton alloc] init];
-    UIImage *buttonStarImageNormal = [UIImage imageNamed:@"search.png"];
-    
-    [buttonStar setBackgroundImage:buttonBackgroundImagePressedCenter forState:UIControlStateHighlighted];
-    [buttonStar setBackgroundImage:buttonBackgroundImagePressedCenter forState:UIControlStateSelected];
-    [buttonStar setBackgroundImage:buttonBackgroundImagePressedCenter forState:(UIControlStateHighlighted|UIControlStateSelected)];
+    UIImage *buttonStarImageNormal = [UIImage imageNamed:@"segmented-bg-Right.png"];
+    buttonStar.tag = RIGHT_BUTTON_TAG;
     [buttonStar setImage:buttonStarImageNormal forState:UIControlStateNormal];
-    [buttonStar setImage:buttonStarImageNormal forState:UIControlStateSelected];
-    [buttonStar setImage:buttonStarImageNormal forState:UIControlStateHighlighted];
-    [buttonStar setImage:buttonStarImageNormal forState:(UIControlStateHighlighted|UIControlStateSelected)];
- 
+
     [_segmentedControl setButtonsArray:@[buttonSocial, buttonStar]];
     [self.view addSubview:_segmentedControl];
 }
@@ -211,6 +199,15 @@
     if (index ==1 ) {
         SearchFriendsViewController * search = [[SearchFriendsViewController alloc]init];
         [self.navigationController pushViewController:search animated:NO];
+        UIButton * button =(UIButton *) [self.view viewWithTag:LEFT_BUTTON_TAG];
+        [button setImage:[UIImage imageNamed:@"segmented-bg-left.png"] forState:UIControlStateNormal];
+        UIButton * button2 =(UIButton *) [self.view viewWithTag:RIGHT_BUTTON_TAG];
+        [button2 setImage:[UIImage imageNamed:@"segmented-pressed-Right.png"] forState:UIControlStateNormal];
+    }
+    if (index == 0) {
+        UIButton * button =(UIButton *) [self.view viewWithTag:LEFT_BUTTON_TAG];
+        [button setImage:[UIImage imageNamed:@"segmented-pressed-left.png"] forState:UIControlStateNormal];
+
     }
 }
 

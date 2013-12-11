@@ -17,6 +17,8 @@
 #import "AddFriendsViewController.h"
 
 #define SEARCH_TAG 10000
+#define LEFT_BUTTON_TAG 1000
+#define RIGHT_BUTTON_TAG 2000
 @interface SearchFriendsViewController ()
 {
     UIButton *button;
@@ -261,38 +263,21 @@
     
     [_segmentedControl setSeparatorImage:[UIImage imageNamed:@"segmented-separator.png"]];
     
-    UIImage *buttonBackgroundImagePressedLeft = [[UIImage imageNamed:@"segmented-bg-pressed-left.png"]
-                                                 resizableImageWithCapInsets:UIEdgeInsetsMake(0.0, 4.0, 0.0, 1.0)];
-    UIImage *buttonBackgroundImagePressedCenter = [[UIImage imageNamed:@"segmented-bg-pressed-right.png"]
-                                                   resizableImageWithCapInsets:UIEdgeInsetsMake(0.0, 4.0, 0.0, 1.0)];
-    
     // Button 1
     UIButton *buttonSocial = [[UIButton alloc] init];
-    UIImage *buttonSocialImageNormal = [UIImage imageNamed:@"addFriends.png"];
-    
-    [buttonSocial setBackgroundImage:buttonBackgroundImagePressedLeft forState:UIControlStateHighlighted];
-    [buttonSocial setBackgroundImage:buttonBackgroundImagePressedLeft forState:UIControlStateSelected];
-    [buttonSocial setBackgroundImage:buttonBackgroundImagePressedLeft forState:(UIControlStateHighlighted|UIControlStateSelected)];
+    UIImage *buttonSocialImageNormal = [UIImage imageNamed:@"segmented-bg-left.png"];
     [buttonSocial setImage:buttonSocialImageNormal forState:UIControlStateNormal];
-    [buttonSocial setImage:buttonSocialImageNormal forState:UIControlStateSelected];
-    [buttonSocial setImage:buttonSocialImageNormal forState:UIControlStateHighlighted];
-    [buttonSocial setImage:buttonSocialImageNormal forState:(UIControlStateHighlighted|UIControlStateSelected)];
-    
+   
+    button.tag = LEFT_BUTTON_TAG;
     // Button 2
     UIButton *buttonStar = [[UIButton alloc] init];
-    UIImage *buttonStarImageNormal = [UIImage imageNamed:@"search.png"];
-    
-    [buttonStar setBackgroundImage:buttonBackgroundImagePressedCenter forState:UIControlStateHighlighted];
-    [buttonStar setBackgroundImage:buttonBackgroundImagePressedCenter forState:UIControlStateSelected];
-    [buttonStar setBackgroundImage:buttonBackgroundImagePressedCenter forState:(UIControlStateHighlighted|UIControlStateSelected)];
+    UIImage *buttonStarImageNormal = [UIImage imageNamed:@"segmented-pressed-Right.png"];
+    button.tag = RIGHT_BUTTON_TAG;
     [buttonStar setImage:buttonStarImageNormal forState:UIControlStateNormal];
-    [buttonStar setImage:buttonStarImageNormal forState:UIControlStateSelected];
-    [buttonStar setImage:buttonStarImageNormal forState:UIControlStateHighlighted];
-    [buttonStar setImage:buttonStarImageNormal forState:(UIControlStateHighlighted|UIControlStateSelected)];
-    
     [_segmentedControl setButtonsArray:@[buttonSocial, buttonStar]];
     [self.view addSubview:_segmentedControl];
 }
+
 #pragma mark -
 #pragma mark SegmentedControlDelegate
 
@@ -303,6 +288,12 @@
     if (index ==0) {
         AddFriendsViewController * add = [[AddFriendsViewController alloc]init];
         [self.navigationController pushViewController:add animated:NO];
+        UIButton * button1 = (UIButton *)[self.view viewWithTag:LEFT_BUTTON_TAG];
+        [button1 setImage:[UIImage imageNamed:@"segmented-pressed-left.png" ]forState:UIControlStateNormal];
+    }
+    if (index == 1) {
+        UIButton * button1 = (UIButton *)[self.view viewWithTag:RIGHT_BUTTON_TAG];
+        [button1 setImage:[UIImage imageNamed:@"segmented-pressed-Right.png" ]forState:UIControlStateNormal];
     }
 }
 
