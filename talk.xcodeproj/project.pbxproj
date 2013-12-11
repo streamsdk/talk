@@ -229,6 +229,7 @@
 		0EF79E0E1858466300EB8A64 /* b5.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79E081858466300EB8A64 /* b5.png */; };
 		0EF79E0F1858466300EB8A64 /* b6.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79E091858466300EB8A64 /* b6.png */; };
 		0EF79E1218584CAF00EB8A64 /* BackData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF79E1118584CAF00EB8A64 /* BackData.m */; };
+		0EF79E141858535E00EB8A64 /* headImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79E131858535E00EB8A64 /* headImage.jpg */; };
 		4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4413D0A0182FA98E00B01C14 /* LoginViewController.m */; };
 		44A80E8118311DEF006069DE /* face.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A80E7D18311DEF006069DE /* face.png */; };
 		44A80E8218311DEF006069DE /* face@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A80E7E18311DEF006069DE /* face@2x.png */; };
@@ -647,6 +648,7 @@
 		0EF79E091858466300EB8A64 /* b6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b6.png; sourceTree = "<group>"; };
 		0EF79E1018584CAF00EB8A64 /* BackData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BackData.h; path = setVC/BackData.h; sourceTree = "<group>"; };
 		0EF79E1118584CAF00EB8A64 /* BackData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BackData.m; path = setVC/BackData.m; sourceTree = "<group>"; };
+		0EF79E131858535E00EB8A64 /* headImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = headImage.jpg; sourceTree = "<group>"; };
 		4413D09F182FA98E00B01C14 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Classes/LoginViewController.h; sourceTree = "<group>"; };
 		4413D0A0182FA98E00B01C14 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Classes/LoginViewController.m; sourceTree = "<group>"; };
 		44A80E7D18311DEF006069DE /* face.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = face.png; sourceTree = "<group>"; };
@@ -1756,6 +1758,7 @@
 		0EF79E031858466300EB8A64 /* backgroundforproject */ = {
 			isa = PBXGroup;
 			children = (
+				0EF79E131858535E00EB8A64 /* headImage.jpg */,
 				0EF79E041858466300EB8A64 /* b1.png */,
 				0EF79E051858466300EB8A64 /* b2.png */,
 				0EF79E061858466300EB8A64 /* b3.png */,
@@ -1921,6 +1924,7 @@
 				03D9C0EF18145E510039118F /* build-libidn.sh in Resources */,
 				44A80E94183120A7006069DE /* Voice@2x.png in Resources */,
 				0ED8ECA018288DC400C84741 /* black_bg_ip5@2x.png in Resources */,
+				0EF79E141858535E00EB8A64 /* headImage.jpg in Resources */,
 				0EF79DF9185810FA00EB8A64 /* video1.png in Resources */,
 				0EF79DE71858006C00EB8A64 /* segmented-pressed-left.png in Resources */,
 				44A80E8818311E2A006069DE /* facesBack@2x.png in Resources */,

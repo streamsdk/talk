@@ -9,6 +9,8 @@
 #import "SettingViewController.h"
 #import "BackgroundImgViewController.h"
 #import "LoginViewController.h"
+
+#define IMAGE_TAG 10000
 @interface SettingViewController ()
 
 @end
@@ -34,10 +36,17 @@
 
 	// Do any additional setup after loading the view.
     NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+    UIImageView * imageview = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - 100)/2, 70, 100, 100)];
+    [imageview setImage:[UIImage imageNamed:@"headImage.jpg"]];
+    imageview.userInteractionEnabled = YES;
+    imageview.tag = IMAGE_TAG;
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headImageClicked:)];
+    [imageview addGestureRecognizer:tap];
+    [self.view addSubview:imageview];
     NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
     NSString * loginName= [array objectAtIndex:0];
     userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"SetChatBackground",@"Exit", nil];
-    myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(0,170, self.view.bounds.size.width, self.view.bounds.size.height)];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
     myTableView.dataSource = self;
@@ -80,8 +89,6 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row ==1) {
         BackgroundImgViewController * bgView = [[BackgroundImgViewController alloc]init];
-//        bgView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-//        [self presentViewController:bgView animated:YES completion:nil];
         [self .navigationController pushViewController:bgView animated:NO];
     }
     if (indexPath.row ==2) {
@@ -90,6 +97,29 @@
         [view show];
     }
 }
+
+-(void)headImageClicked:(UITapGestureRecognizer *)gestureRecognizer
+{
+    UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
+    imagePickerController.navigationBar.tintColor = [UIColor colorWithRed:72.0/255.0 green:106.0/255.0 blue:154.0/255.0 alpha:1.0];
+	imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+	imagePickerController.delegate = self;
+	imagePickerController.allowsEditing = NO;
+	[self presentViewController:imagePickerController animated:YES completion:NULL];
+}
+#pragma mark imagePickerController Delegate
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage * image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    UIImageView * imageview= (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
+    [imageview setImage:image];
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+#pragma mark alertview Delegate
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 1) {
