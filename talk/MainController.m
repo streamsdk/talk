@@ -308,12 +308,12 @@
 -(void) sendMessageClicked {
     
     if (sendToID) {
-        STreamObject * avatarSO = [[STreamObject alloc]init];
-        [avatarSO setObjectId:@"avatar"];
-        NSString *fileID = [avatarSO getValue:[self getUserID]];
-        STreamFile * file  =[ [STreamFile alloc]init];
-        NSData * imgData = [file downloadAsData:fileID];
-        UIImage *avatar = [UIImage imageWithData:imgData];
+//        STreamObject * avatarSO = [[STreamObject alloc]init];
+//        [avatarSO setObjectId:@"avatar"];
+//        NSString *fileID = [avatarSO getValue:[self getUserID]];
+//        STreamFile * file  =[ [STreamFile alloc]init];
+//        NSData * imgData = [file downloadAsData:fileID];
+//        UIImage *avatar = [UIImage imageWithData:imgData];
         
         NSString * messages = messageText.text;
         bubbleTableView.typingBubble = NSBubbleTypingTypeNobody;
@@ -464,7 +464,7 @@
         }];
         
         [UIView animateWithDuration:Time animations:^{
-            [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-ICONHEIGHT,self.view.frame.size.width, ICONHEIGHT)];
+            [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-ICONHEIGHT  ,self.view.frame.size.width, ICONHEIGHT)];
         }];
         [pageControl setHidden:NO];
         [messageText resignFirstResponder];
