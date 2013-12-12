@@ -16,6 +16,7 @@
 #import "SignUpViewController.h"
 #import "RootViewController.h"
 #import "MyFriendsViewController.h"
+#import "FileCache.h"
 
 @interface LoginViewController ()
 
@@ -103,6 +104,18 @@
         } else {
             UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"user does not exist or password error,please sigUp" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
             [alertView show];
+        }
+        FileCache * cache = [FileCache sharedObject];
+        NSData *data = [cache readFromFileDoc:userName];
+        if (!data) {
+            STreamObject * so = [[STreamObject alloc]init];
+            [so loadAll:[userName stringByAppendingString:@"Avatar"]];
+            NSString *fileID = [so getValue:@"avatar"];
+            if (fileID) {
+                STreamFile * file  =[ [STreamFile alloc]init];
+                NSData * imgData = [file downloadAsData:fileID];
+                [cache writeFileDoc:userName withData:imgData];
+            }
         }
     }else {
         

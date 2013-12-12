@@ -174,6 +174,7 @@
 		0E14FF98183B2CE900811FAD /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E00512F1821E54000BB50F8 /* arcstreamsdk.framework */; };
 		0E2918D4185957A500AA21B2 /* pinyin.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E2918D2185957A500AA21B2 /* pinyin.c */; };
 		0E2918D71859593F00AA21B2 /* ChineseString.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2918D61859593F00AA21B2 /* ChineseString.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		0E2918DD1859AFD900AA21B2 /* FileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2918DA1859AFD900AA21B2 /* FileCache.m */; };
 		0E8A4F33182B7F8000705C1F /* CreateUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F32182B7F8000705C1F /* CreateUI.m */; };
 		0E8A4F36182B7FE300705C1F /* TalkDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F35182B7FE300705C1F /* TalkDB.m */; };
 		0E8A4F38182B802600705C1F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8A4F37182B802600705C1F /* libsqlite3.dylib */; };
@@ -584,6 +585,8 @@
 		0E2918D3185957A500AA21B2 /* pinyin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinyin.h; sourceTree = "<group>"; };
 		0E2918D51859593F00AA21B2 /* ChineseString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChineseString.h; sourceTree = "<group>"; };
 		0E2918D61859593F00AA21B2 /* ChineseString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChineseString.m; sourceTree = "<group>"; };
+		0E2918D91859AFD900AA21B2 /* FileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileCache.h; sourceTree = "<group>"; };
+		0E2918DA1859AFD900AA21B2 /* FileCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileCache.m; sourceTree = "<group>"; };
 		0E8A4F31182B7F7100705C1F /* CreateUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreateUI.h; path = createUI/CreateUI.h; sourceTree = "<group>"; };
 		0E8A4F32182B7F8000705C1F /* CreateUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CreateUI.m; path = createUI/CreateUI.m; sourceTree = "<group>"; };
 		0E8A4F34182B7FE300705C1F /* TalkDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TalkDB.h; path = talkDB/TalkDB.h; sourceTree = "<group>"; };
@@ -788,6 +791,7 @@
 				44A80E99183129E2006069DE /* Emoji-master */,
 				0EA16BFA18516F30009F2D3A /* MBPHUD */,
 				0EF5A014185585AA00B4EDE7 /* XMPP */,
+				0E2918D81859AFC900AA21B2 /* cache */,
 				0EF5A01D1855B6E400B4EDE7 /* segment */,
 				0EF5A0131855857800B4EDE7 /* searchVC */,
 				0EF5A015185585C900B4EDE7 /* login&signUp */,
@@ -1634,6 +1638,15 @@
 			name = friendsSort;
 			sourceTree = "<group>";
 		};
+		0E2918D81859AFC900AA21B2 /* cache */ = {
+			isa = PBXGroup;
+			children = (
+				0E2918D91859AFD900AA21B2 /* FileCache.h */,
+				0E2918DA1859AFD900AA21B2 /* FileCache.m */,
+			);
+			name = cache;
+			sourceTree = "<group>";
+		};
 		0E8A4F30182B7EE300705C1F /* talkDB */ = {
 			isa = PBXGroup;
 			children = (
@@ -2080,6 +2093,7 @@
 				03D9C06618145E410039118F /* XMPPLastActivity.m in Sources */,
 				03D9C06918145E410039118F /* XMPPRoomCoreDataStorage.m in Sources */,
 				44A80EB2183129E2006069DE /* FacialView.m in Sources */,
+				0E2918DD1859AFD900AA21B2 /* FileCache.m in Sources */,
 				0E084792182736BC00350741 /* UIBubbleTableView.m in Sources */,
 				03D9BF5418145E270039118F /* XMPPPlainAuthentication.m in Sources */,
 				0EF79DFF18583ACF00EB8A64 /* SettingViewController.m in Sources */,

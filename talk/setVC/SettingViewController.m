@@ -157,10 +157,11 @@
              NSData * data = UIImageJPEGRepresentation(sImage, 1.0);
              [file postData:data];
              STreamObject * so = [[STreamObject alloc]init];
-             [so setObjectId:[loginName stringByAppendingString:@"avatar"]];
-             [so addStaff:loginName withObject:[file fileId]];
+             [so setObjectId:[loginName stringByAppendingString:@"Avatar"]];
+             [so addStaff:@"avatar" withObject:[file fileId]];
              [so updateInBackground];
-             
+             UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"save succeed!" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+             [view show];
              NSLog(@"ID:%@",[file fileId]);
          }
      }else{

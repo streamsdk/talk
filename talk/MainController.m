@@ -20,6 +20,7 @@
 #import "TalkDB.h"
 #import "MyFriendsViewController.h"
 #import "BackData.h"
+#import "MBProgressHUD.h"
 
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
@@ -36,6 +37,10 @@
     BOOL keyboardIsShow;//键盘是否显示
     BOOL isFace;
     
+    
+    FileCache * cache;
+    NSData *otherData;
+    NSData *myData;
 }
 
 @property(nonatomic,retain) Voice * voice;
@@ -57,7 +62,34 @@
     return self;
 }
 
+-(void) loadAvatar {
+    otherData = [cache readFromFileDoc:sendToID];
+    myData = [cache readFromFileDoc:[self getUserID]];
+    if (!otherData) {
+        STreamObject * so = [[STreamObject alloc]init];
+        [so loadAll:[sendToID stringByAppendingString:@"Avatar"]];
+        NSString *fileID = [so getValue:@"avatar"];
+        if (fileID) {
+            STreamFile * file  =[ [STreamFile alloc]init];
+            NSData * imgData = [file downloadAsData:fileID];
+            [cache writeFileDoc:sendToID withData:imgData];
+            otherData = [cache readFromFileDoc:sendToID];
+        }
 
+    }
+    if (!myData) {
+        STreamObject * so = [[STreamObject alloc]init];
+        [so loadAll:[[self getUserID] stringByAppendingString:@"Avatar"]];
+        NSString *fileID = [so getValue:@"avatar"];
+        if (fileID) {
+            STreamFile * file  =[ [STreamFile alloc]init];
+            NSData * imgData = [file downloadAsData:fileID];
+            [cache writeFileDoc:[self getUserID] withData:imgData];
+            myData = [cache readFromFileDoc:[self getUserID]];
+        }
+
+    }
+}
 -(void) back {
     MyFriendsViewController * myFriendsVC = [[MyFriendsViewController alloc]init];
     [self.navigationController pushViewController:myFriendsVC animated:YES];
@@ -120,6 +152,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationItem.hidesBackButton = YES;
+    
+    cache = [FileCache sharedObject];
     BackData *data = [BackData sharedObject];
     UIImage *bgImage =[data getImage];
     if (bgImage) {
@@ -167,13 +201,25 @@
     bubbleTableView.snapInterval = 120;
     bubbleTableView.showAvatars = YES;
     
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"loading friends...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self loadAvatar];
+    }completionBlock:^{
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
+
     [bubbleTableView reloadData];
    
 //给键盘注册通知
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-
+    
+    
+    
 }
 
 #pragma mark - UIBubbleTableViewDataSource implementation
@@ -201,6 +247,8 @@
         if ([body isEqualToString:@"photo"]) {
             UIImage * image = [UIImage imageWithData:data];
             NSBubbleData * bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+            if (otherData)
+                bubble.avatar = [UIImage imageWithData:otherData];
             [bubbleData addObject:bubble];
             bubble.delegate = self;
         }else if ([body isEqualToString:@"video"]){
@@ -214,10 +262,14 @@
             UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
             NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
             bdata.delegate = self;
+            if (otherData)
+                bdata.avatar = [UIImage imageWithData:otherData];
             [bubbleData addObject:bdata];
         }else{
             NSBubbleData *bubble = [NSBubbleData dataWithtimes:[body stringByAppendingString:@"\""] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withData:data];
             bubble.delegate = self;
+            if (otherData)
+                bubble.avatar = [UIImage imageWithData:otherData];
             [bubbleData addObject:bubble];
         }
         [bubbleTableView reloadData];
@@ -230,6 +282,8 @@
     NSString *receiveMessage = [message body];
     if ([fromID isEqualToString:sendToID]) {
         NSBubbleData *sendBubble = [NSBubbleData dataWithText:receiveMessage date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+        if (otherData)
+            sendBubble.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:sendBubble];
         [bubbleTableView reloadData];
         [self scrollBubbleViewToBottomAnimated:YES];
@@ -294,6 +348,8 @@
     
     NSBubbleData * bubbledata = [NSBubbleData dataWithImage:image withData:videoData withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withVidePath:_mp4Path];
     bubbledata .delegate = self;
+    if (myData)
+        bubbledata.avatar = [UIImage imageWithData:myData];
     [bubbleData addObject:bubbledata];
     [bubbleTableView reloadData];
     STreamXMPP *con = [STreamXMPP sharedObject];
@@ -308,17 +364,12 @@
 -(void) sendMessageClicked {
     
     if (sendToID) {
-//        STreamObject * avatarSO = [[STreamObject alloc]init];
-//        [avatarSO setObjectId:@"avatar"];
-//        NSString *fileID = [avatarSO getValue:[self getUserID]];
-//        STreamFile * file  =[ [STreamFile alloc]init];
-//        NSData * imgData = [file downloadAsData:fileID];
-//        UIImage *avatar = [UIImage imageWithData:imgData];
         
         NSString * messages = messageText.text;
         bubbleTableView.typingBubble = NSBubbleTypingTypeNobody;
         NSBubbleData *sendBubble = [NSBubbleData dataWithText:messages date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
-//        sendBubble.avatar = avatar;
+        if (myData)
+            sendBubble.avatar = [UIImage imageWithData:myData];
         [bubbleData addObject:sendBubble];
         [bubbleTableView reloadData];
     
@@ -352,8 +403,10 @@
     if (self.voice.recordTime >= 0.5f) {
         NSString * bodyData = [NSString stringWithFormat:@"%d",(int)self.voice.recordTime];
         
-        NSBubbleData *photoBubble = [NSBubbleData dataWithtimes:[NSString stringWithFormat:@"%d\"",(int)self.voice.recordTime] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withData:audioData];
-        [bubbleData addObject:photoBubble];
+        NSBubbleData *bubble = [NSBubbleData dataWithtimes:[NSString stringWithFormat:@"%d\"",(int)self.voice.recordTime] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withData:audioData];
+        if (myData)
+            bubble.avatar = [UIImage imageWithData:myData];
+        [bubbleData addObject:bubble];
         STreamXMPP *con = [STreamXMPP sharedObject];
         [con sendFileInBackground:audioData toUser:sendToID finished:^(NSString *res) {
             
@@ -959,11 +1012,14 @@
 -(void)  selectedIconView:(NSInteger) buttonTag{
     if(buttonTag == 0)
         [self addPhoto];
+    [self scrollBubbleViewToBottomAnimated:YES];
     if (buttonTag == 1) {
         [self takePhoto];
+        [self scrollBubbleViewToBottomAnimated:YES];
     }
     if (buttonTag == 2) {
         [self takeVideo];
+        [self scrollBubbleViewToBottomAnimated:YES];
     }
         
 }

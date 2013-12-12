@@ -117,6 +117,7 @@
         //avatar
         STreamObject * so = [[STreamObject alloc]init];
         [so setObjectId:[username stringByAppendingString:@"Avatar"]];
+        [so addStaff:@"avatar" withObject:@"nil"];
         [so createNewObject:^(BOOL succeed, NSString *objectId) {
             if (succeed) {
                 NSLog(@"objectId:%@",objectId);
