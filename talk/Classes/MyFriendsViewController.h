@@ -10,8 +10,8 @@
 
 @interface MyFriendsViewController : UITableViewController
 
-@property (nonatomic,retain) NSArray *userData;
-
-@property (nonatomic,retain) NSMutableDictionary *userDict;
+@property (nonatomic,retain) NSMutableArray *userData;
+@property (nonatomic, retain) NSMutableArray *sortedArrForArrays;
+@property (nonatomic, retain) NSMutableArray *sectionHeadsKeys;
 
 @end

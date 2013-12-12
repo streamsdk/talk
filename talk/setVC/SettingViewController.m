@@ -9,10 +9,15 @@
 #import "SettingViewController.h"
 #import "BackgroundImgViewController.h"
 #import "LoginViewController.h"
+#import <arcstreamsdk/STreamFile.h>
+#import <arcstreamsdk/STreamObject.h>
 
 #define IMAGE_TAG 10000
 @interface SettingViewController ()
-
+{
+    UIImage *avatarImg;
+    BOOL isaAatarImg;
+}
 @end
 
 @implementation SettingViewController
@@ -28,14 +33,34 @@
     }
     return self;
 }
+-(void) saveClicked {
+    if (avatarImg) {
+        isaAatarImg = YES;
+        UIAlertView * view = [[UIAlertView alloc]initWithTitle:@"" message:@"Are you sure you want to submit your avatar？" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+        view .delegate = self;
+        [view show];
+    }else {
+        UIAlertView * view = [[UIAlertView alloc]initWithTitle:@"" message:@"Please select your avatar！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [view show];
 
+    }
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
 
 	// Do any additional setup after loading the view.
+    
+    isaAatarImg = NO;
+    
+    UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithTitle:@"保存" style:UIBarButtonItemStyleDone target:self action:@selector(saveClicked)];
+    self.navigationItem.rightBarButtonItem = rightItem;
+    
     NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
+    NSString * loginName= [array objectAtIndex:0];
+    
     UIImageView * imageview = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - 100)/2, 70, 100, 100)];
     [imageview setImage:[UIImage imageNamed:@"headImage.jpg"]];
     imageview.userInteractionEnabled = YES;
@@ -43,8 +68,7 @@
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headImageClicked:)];
     [imageview addGestureRecognizer:tap];
     [self.view addSubview:imageview];
-    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-    NSString * loginName= [array objectAtIndex:0];
+   
     userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"SetChatBackground",@"Exit", nil];
     myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(0,170, self.view.bounds.size.width, self.view.bounds.size.height)];
     myTableView.backgroundColor = [UIColor clearColor];
@@ -110,9 +134,9 @@
 #pragma mark imagePickerController Delegate
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    UIImage * image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    avatarImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     UIImageView * imageview= (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
-    [imageview setImage:image];
+    [imageview setImage:avatarImg];
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -122,11 +146,45 @@
 #pragma mark alertview Delegate
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex == 1) {
-        LoginViewController *loginVC = [[LoginViewController alloc]init];
-        [self.navigationController pushViewController:loginVC animated:YES];
-    }
+     if (isaAatarImg) {
+         if (buttonIndex == 1) {
+             NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+             NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
+             NSString * loginName= [array objectAtIndex:0];
+             
+             STreamFile *file = [[STreamFile alloc] init];
+             UIImage *sImage = [self imageWithImageSimple:avatarImg scaledToSize:CGSizeMake(avatarImg.size.width*0.3, avatarImg.size.height*0.3)];
+             NSData * data = UIImageJPEGRepresentation(sImage, 1.0);
+             [file postData:data];
+             STreamObject * so = [[STreamObject alloc]init];
+             [so setObjectId:@"avatar"];
+             [so addStaff:loginName withObject:[file fileId]];
+             [so createNewObject:^(BOOL succeed, NSString *objectId) {
+                 if (succeed) {
+                     NSLog(@"objectId:%@",objectId);
+                 }
+             }];
+             
+             NSLog(@"ID:%@",[file fileId]);
+         }
+     }else{
+         if (buttonIndex == 1) {
+             LoginViewController *loginVC = [[LoginViewController alloc]init];
+             [self.navigationController pushViewController:loginVC animated:YES];
+         }
+     }
+    
 }
+
+
+-(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
+    UIGraphicsBeginImageContext(newSize);
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

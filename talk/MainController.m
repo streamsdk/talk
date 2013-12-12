@@ -146,8 +146,7 @@
         sendToID = [data getFriendId];
         self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
     }
-    
-    
+        
     bubbleData = [[NSMutableArray alloc]init];
     
     createUI = [[CreateUI alloc]init];
@@ -322,12 +321,20 @@
 -(void) sendMessageClicked {
     
     if (sendToID) {
+//        STreamObject * avatarSO = [[STreamObject alloc]init];
+//        [avatarSO setObjectId:@"avatar"];
+//        NSString *fileID = [avatarSO getValue:[self getUserID]];
+//        STreamFile * file  =[ [STreamFile alloc]init];
+//        NSData * imgData = [file downloadAsData:fileID];
+//        UIImage *avatar = [UIImage imageWithData:imgData];
+        
         NSString * messages = messageText.text;
         bubbleTableView.typingBubble = NSBubbleTypingTypeNobody;
         NSBubbleData *sendBubble = [NSBubbleData dataWithText:messages date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+//        sendBubble.avatar = avatar;
         [bubbleData addObject:sendBubble];
         [bubbleTableView reloadData];
-        
+    
         STreamXMPP *con = [STreamXMPP sharedObject];
         [con sendMessage:sendToID withMessage:messageText.text];
         TalkDB * db = [[TalkDB alloc]init];

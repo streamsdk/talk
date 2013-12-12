@@ -172,6 +172,8 @@
 		0E084793182736BC00350741 /* UIBubbleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E08478C182736BC00350741 /* UIBubbleTableViewCell.m */; };
 		0E084794182736BC00350741 /* UIBubbleTypingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E08478F182736BC00350741 /* UIBubbleTypingTableViewCell.m */; };
 		0E14FF98183B2CE900811FAD /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E00512F1821E54000BB50F8 /* arcstreamsdk.framework */; };
+		0E2918D4185957A500AA21B2 /* pinyin.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E2918D2185957A500AA21B2 /* pinyin.c */; };
+		0E2918D71859593F00AA21B2 /* ChineseString.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2918D61859593F00AA21B2 /* ChineseString.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0E8A4F33182B7F8000705C1F /* CreateUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F32182B7F8000705C1F /* CreateUI.m */; };
 		0E8A4F36182B7FE300705C1F /* TalkDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F35182B7FE300705C1F /* TalkDB.m */; };
 		0E8A4F38182B802600705C1F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8A4F37182B802600705C1F /* libsqlite3.dylib */; };
@@ -578,6 +580,10 @@
 		0E08478D182736BC00350741 /* UIBubbleTableViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBubbleTableViewDataSource.h; sourceTree = "<group>"; };
 		0E08478E182736BC00350741 /* UIBubbleTypingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBubbleTypingTableViewCell.h; sourceTree = "<group>"; };
 		0E08478F182736BC00350741 /* UIBubbleTypingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBubbleTypingTableViewCell.m; sourceTree = "<group>"; };
+		0E2918D2185957A500AA21B2 /* pinyin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pinyin.c; sourceTree = "<group>"; };
+		0E2918D3185957A500AA21B2 /* pinyin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinyin.h; sourceTree = "<group>"; };
+		0E2918D51859593F00AA21B2 /* ChineseString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChineseString.h; sourceTree = "<group>"; };
+		0E2918D61859593F00AA21B2 /* ChineseString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChineseString.m; sourceTree = "<group>"; };
 		0E8A4F31182B7F7100705C1F /* CreateUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreateUI.h; path = createUI/CreateUI.h; sourceTree = "<group>"; };
 		0E8A4F32182B7F8000705C1F /* CreateUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CreateUI.m; path = createUI/CreateUI.m; sourceTree = "<group>"; };
 		0E8A4F34182B7FE300705C1F /* TalkDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TalkDB.h; path = talkDB/TalkDB.h; sourceTree = "<group>"; };
@@ -787,12 +793,11 @@
 				0EF5A015185585C900B4EDE7 /* login&signUp */,
 				0EF79DFC18583A9E00EB8A64 /* setVC */,
 				0EF79DF018580D0E00EB8A64 /* IconSort */,
+				0E2918D11859579000AA21B2 /* friendsSort */,
 				0E00514818221D3D00BB50F8 /* MainController.h */,
 				0E00514918221D3D00BB50F8 /* MainController.m */,
 				03F5B05A1833BB3300A847A0 /* AllUserViewController.h */,
 				03F5B05B1833BB3300A847A0 /* AllUserViewController.m */,
-				0EA16BFE18516FC9009F2D3A /* MyFriendsViewController.h */,
-				0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */,
 				0EA16C01185176A7009F2D3A /* AddFriendsViewController.h */,
 				0EA16C02185176A7009F2D3A /* AddFriendsViewController.m */,
 				03DCB2A1181525B80024053E /* ViewController.h */,
@@ -1616,6 +1621,19 @@
 			path = libs;
 			sourceTree = "<group>";
 		};
+		0E2918D11859579000AA21B2 /* friendsSort */ = {
+			isa = PBXGroup;
+			children = (
+				0EA16BFE18516FC9009F2D3A /* MyFriendsViewController.h */,
+				0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */,
+				0E2918D51859593F00AA21B2 /* ChineseString.h */,
+				0E2918D61859593F00AA21B2 /* ChineseString.m */,
+				0E2918D2185957A500AA21B2 /* pinyin.c */,
+				0E2918D3185957A500AA21B2 /* pinyin.h */,
+			);
+			name = friendsSort;
+			sourceTree = "<group>";
+		};
 		0E8A4F30182B7EE300705C1F /* talkDB */ = {
 			isa = PBXGroup;
 			children = (
@@ -1982,6 +2000,7 @@
 				03D9C05F18145E410039118F /* XMPPUserMemoryStorageObject.m in Sources */,
 				03D9C08F18145E410039118F /* XMPPCapabilitiesCoreDataStorage.m in Sources */,
 				03D9C09B18145E410039118F /* XMPPMessage+XEP_0184.m in Sources */,
+				0E2918D4185957A500AA21B2 /* pinyin.c in Sources */,
 				03D9C05A18145E410039118F /* XMPPRoster.xcdatamodel in Sources */,
 				03D9C09918145E410039118F /* XMPPMessage+XEP_0172.m in Sources */,
 				03D9C06718145E410039118F /* XMPPPrivacy.m in Sources */,
@@ -2111,6 +2130,7 @@
 				03D9C06818145E410039118F /* XMPPRoom.xcdatamodeld in Sources */,
 				03D9C05518145E410039118F /* XMPPGoogleSharedStatus.m in Sources */,
 				03D9BF0818145C080039118F /* main.m in Sources */,
+				0E2918D71859593F00AA21B2 /* ChineseString.m in Sources */,
 				03D9C09018145E410039118F /* XMPPCapsCoreDataStorageObject.m in Sources */,
 				03D9C0A518145E410039118F /* NSXMLElement+XEP_0297.m in Sources */,
 			);
