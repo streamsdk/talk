@@ -15,6 +15,7 @@
 #import <arcstreamsdk/STreamQuery.h>
 #import <arcstreamsdk/STreamObject.h>
 #import "ChineseString.h"
+#import "SettingViewController.h"
 
 @interface MyFriendsViewController ()
 
@@ -36,15 +37,23 @@
     AddFriendsViewController * addVC = [[AddFriendsViewController alloc]init];
     [self.navigationController pushViewController:addVC animated:YES];
 }
+-(void) settingClicked {
+    SettingViewController *setVC = [[SettingViewController alloc]init];
+    [self.navigationController pushViewController:setVC animated:NO];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.title = @"MyFriends";
+    self.navigationController.navigationItem.hidesBackButton = YES;
    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
     userData = [[NSMutableArray alloc]init];
     sortedArrForArrays = [[NSMutableArray alloc] init];
     sectionHeadsKeys = [[NSMutableArray alloc] init];
+    UIBarButtonItem * leftItem = [[UIBarButtonItem alloc]initWithTitle:@"设置" style:UIBarButtonItemStyleDone target:self action:@selector(settingClicked)];
+    self.navigationItem.leftBarButtonItem = leftItem;
+
     
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addFriends)];

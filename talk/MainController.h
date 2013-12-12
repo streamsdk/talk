@@ -20,7 +20,7 @@
 #define  facialViewWidth 300
 #define facialViewHeight 170
 #define  buttonWh 34
-
+#define  ICONHEIGHT 80
 @interface MainController : UIViewController<UIBubbleTableViewDataSource,STreamXMPPProtocol,facialViewDelegate,UITextFieldDelegate,IconViewDelegate>
 {
     AVAudioRecorder *recorder;

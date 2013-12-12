@@ -7,6 +7,8 @@
 //
 
 #import "BackgroundImgViewController.h"
+#import "MyFriendsViewController.h"
+
 #define SPACE_WIDTH 10
 #define IMAGE_HEIGHT_WIDTH 52
 #define COLUMN 5
@@ -30,6 +32,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
     
     self.img = [[NSArray alloc]initWithObjects:@"b1.png",@"b2.png",@"b3.png",@"b4.png",@"b5.png",@"b6.png",@"background.png",nil];
@@ -64,10 +67,11 @@
     
     UIImageView * img = (UIImageView *)[gestureRecognizer view];
     UIImage *image = img.image;
-    MainController * mainVC = [[MainController alloc]init];
+   
     BackData * data = [BackData sharedObject];
     [data setImage:image];
-    [self.navigationController pushViewController:mainVC animated:NO];
+     MyFriendsViewController * friendVC = [[MyFriendsViewController alloc]init];
+    [self.navigationController pushViewController:friendVC animated:NO];
 }
 
 - (void)closeSelected:(id)sender 

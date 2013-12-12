@@ -113,6 +113,16 @@
             UIAlertView * view  = [[UIAlertView alloc]initWithTitle:@"" message:@"用户名或密码错误" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [view show];
         }
+        
+        //avatar
+        STreamObject * so = [[STreamObject alloc]init];
+        [so setObjectId:[username stringByAppendingString:@"Avatar"]];
+        [so createNewObject:^(BOOL succeed, NSString *objectId) {
+            if (succeed) {
+                NSLog(@"objectId:%@",objectId);
+            }
+        }];
+
         LoginViewController * loginVC = [[LoginViewController alloc]init];
         [self.navigationController pushViewController:loginVC animated:YES];
     }

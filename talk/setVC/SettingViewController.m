@@ -157,13 +157,9 @@
              NSData * data = UIImageJPEGRepresentation(sImage, 1.0);
              [file postData:data];
              STreamObject * so = [[STreamObject alloc]init];
-             [so setObjectId:@"avatar"];
+             [so setObjectId:[loginName stringByAppendingString:@"avatar"]];
              [so addStaff:loginName withObject:[file fileId]];
-             [so createNewObject:^(BOOL succeed, NSString *objectId) {
-                 if (succeed) {
-                     NSLog(@"objectId:%@",objectId);
-                 }
-             }];
+             [so updateInBackground];
              
              NSLog(@"ID:%@",[file fileId]);
          }
