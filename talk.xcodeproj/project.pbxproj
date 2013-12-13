@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		03451B8518326C5600030E79 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03451B8418326C5600030E79 /* SignUpViewController.m */; };
+		03C01B1D185ACFB600137E85 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C01B1C185ACFB600137E85 /* arcstreamsdk.framework */; };
 		03D9BEFC18145C080039118F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9BEFB18145C080039118F /* Foundation.framework */; };
 		03D9BEFE18145C080039118F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9BEFD18145C080039118F /* CoreGraphics.framework */; };
 		03D9BF0018145C080039118F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9BEFF18145C080039118F /* UIKit.framework */; };
@@ -171,7 +172,6 @@
 		0E084792182736BC00350741 /* UIBubbleTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E08478A182736BC00350741 /* UIBubbleTableView.m */; };
 		0E084793182736BC00350741 /* UIBubbleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E08478C182736BC00350741 /* UIBubbleTableViewCell.m */; };
 		0E084794182736BC00350741 /* UIBubbleTypingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E08478F182736BC00350741 /* UIBubbleTypingTableViewCell.m */; };
-		0E14FF98183B2CE900811FAD /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E00512F1821E54000BB50F8 /* arcstreamsdk.framework */; };
 		0E2918D4185957A500AA21B2 /* pinyin.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E2918D2185957A500AA21B2 /* pinyin.c */; };
 		0E2918D71859593F00AA21B2 /* ChineseString.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2918D61859593F00AA21B2 /* ChineseString.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0E2918DD1859AFD900AA21B2 /* FileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2918DA1859AFD900AA21B2 /* FileCache.m */; };
@@ -269,6 +269,7 @@
 /* Begin PBXFileReference section */
 		03451B8318326C5600030E79 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SignUpViewController.h; path = Classes/SignUpViewController.h; sourceTree = "<group>"; };
 		03451B8418326C5600030E79 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SignUpViewController.m; path = Classes/SignUpViewController.m; sourceTree = "<group>"; };
+		03C01B1C185ACFB600137E85 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
 		03D9BEF818145C080039118F /* talk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = talk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03D9BEFB18145C080039118F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		03D9BEFD18145C080039118F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -555,7 +556,6 @@
 		03F5B04F18339C1500A847A0 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		03F5B05A1833BB3300A847A0 /* AllUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AllUserViewController.h; path = Classes/AllUserViewController.h; sourceTree = "<group>"; };
 		03F5B05B1833BB3300A847A0 /* AllUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AllUserViewController.m; path = Classes/AllUserViewController.m; sourceTree = "<group>"; };
-		0E00512F1821E54000BB50F8 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
 		0E00514818221D3D00BB50F8 /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainController.h; sourceTree = "<group>"; };
 		0E00514918221D3D00BB50F8 /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainController.m; sourceTree = "<group>"; };
 		0E00514D1822293000BB50F8 /* bubbleMine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubbleMine.png; sourceTree = "<group>"; };
@@ -696,7 +696,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0ED6BFBF184823740061038D /* libidn.a in Frameworks */,
-				0E14FF98183B2CE900811FAD /* arcstreamsdk.framework in Frameworks */,
 				03F5B05018339C1500A847A0 /* MediaPlayer.framework in Frameworks */,
 				03D9BF2B18145C6B0039118F /* MobileCoreServices.framework in Frameworks */,
 				0E8A4F38182B802600705C1F /* libsqlite3.dylib in Frameworks */,
@@ -712,6 +711,7 @@
 				03D9BF2F18145C810039118F /* SystemConfiguration.framework in Frameworks */,
 				03D9BF2D18145C740039118F /* Security.framework in Frameworks */,
 				03D9BEFE18145C080039118F /* CoreGraphics.framework in Frameworks */,
+				03C01B1D185ACFB600137E85 /* arcstreamsdk.framework in Frameworks */,
 				03D9BF0018145C080039118F /* UIKit.framework in Frameworks */,
 				03D9BEFC18145C080039118F /* Foundation.framework in Frameworks */,
 			);
@@ -759,12 +759,12 @@
 		03D9BEFA18145C080039118F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				03C01B1C185ACFB600137E85 /* arcstreamsdk.framework */,
 				03F5B04F18339C1500A847A0 /* MediaPlayer.framework */,
 				0E8A4F37182B802600705C1F /* libsqlite3.dylib */,
 				0EDCAA7E1829F11500BF9101 /* CoreVideo.framework */,
 				0E0847371827305B00350741 /* AudioToolbox.framework */,
 				0E0847351827304400350741 /* AVFoundation.framework */,
-				0E00512F1821E54000BB50F8 /* arcstreamsdk.framework */,
 				03D9BF3A18145CC20039118F /* libxml2.dylib */,
 				03D9BF3818145CB80039118F /* libresolv.dylib */,
 				03D9BF3618145CB10039118F /* libz.dylib */,
@@ -2276,6 +2276,7 @@
 					"/Users/wangshuai/Desktop/talk-emoji/talk",
 					"/Users/wangsh/Desktop/talk-emoji/talk",
 					"/Users/wangsh/Desktop/projects/talk-emoji/talk",
+					/Users/wangshuai/Desktop/projects/talk,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "talk/talk-Prefix.pch";
@@ -2315,6 +2316,7 @@
 					"/Users/wangshuai/Desktop/talk-emoji/talk",
 					"/Users/wangsh/Desktop/talk-emoji/talk",
 					"/Users/wangsh/Desktop/projects/talk-emoji/talk",
+					/Users/wangshuai/Desktop/projects/talk,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "talk/talk-Prefix.pch";

@@ -73,6 +73,8 @@ typedef void (^FinishDownload)(NSData *, NSString *);
 
 - (void)convertJsonToMap: (NSArray *)jsonData;
 
+- (void)downloadAsDataAndPopulateMetadata: (NSString *)objectId downloadedData: (FinishDownload)doStaff;
+
 /*!
  Populate the file's metaData as NSMutableDictionary.
  @param fId The file's ID

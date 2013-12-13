@@ -37,7 +37,6 @@
 
 - (void)updateUserMetadata:(NSString *)userName withMetadata:(NSMutableDictionary *)metaData;
 
-- (NSString *)convertToJsonString: (NSString *)userName withMetadata:(NSMutableDictionary *)data;
 
 /*!
  Check if the user exists in the application. The method returns immediately once it is called.
@@ -45,6 +44,8 @@
  @param response The block to execute when checking in completed. First parameter returns TRUE if the user exists.
 */
 - (void)isUserExists: (NSString *)userId response:(void (^)(BOOL exists, NSString *resposne))doStaff;
+
+- (BOOL)searchUser: (NSString *)userId;
 
 /*!
  Username and password are required for authenticating the current user for logging in.
