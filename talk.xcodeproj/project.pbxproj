@@ -200,6 +200,8 @@
 		0ED8ECAC18288EB600C84741 /* VoiceHud.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED8ECAB18288EB600C84741 /* VoiceHud.m */; };
 		0EDCAA7F1829F11500BF9101 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EDCAA7E1829F11500BF9101 /* CoreVideo.framework */; };
 		0EDCAAC5182A10B100BF9101 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0847371827305B00350741 /* AudioToolbox.framework */; };
+		0EE10585185A9BBC00CC30C7 /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE10583185A9BBC00CC30C7 /* video.png */; };
+		0EE10586185A9BBC00CC30C7 /* video@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE10584185A9BBC00CC30C7 /* video@2x.png */; };
 		0EF5A00E18556A8600B4EDE7 /* selectAdd.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF5A00C18556A8600B4EDE7 /* selectAdd.png */; };
 		0EF5A00F18556A8600B4EDE7 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF5A00D18556A8600B4EDE7 /* add.png */; };
 		0EF5A01218557E5C00B4EDE7 /* SearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5A01118557E5C00B4EDE7 /* SearchData.m */; };
@@ -619,6 +621,8 @@
 		0ED8ECAA18288EB600C84741 /* VoiceHud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VoiceHud.h; path = Voice/VoiceHud.h; sourceTree = "<group>"; };
 		0ED8ECAB18288EB600C84741 /* VoiceHud.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VoiceHud.m; path = Voice/VoiceHud.m; sourceTree = "<group>"; };
 		0EDCAA7E1829F11500BF9101 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		0EE10583185A9BBC00CC30C7 /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
+		0EE10584185A9BBC00CC30C7 /* video@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video@2x.png"; sourceTree = "<group>"; };
 		0EF5A00C18556A8600B4EDE7 /* selectAdd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectAdd.png; sourceTree = "<group>"; };
 		0EF5A00D18556A8600B4EDE7 /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
 		0EF5A01018557E5C00B4EDE7 /* SearchData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchData.h; path = Classes/SearchData.h; sourceTree = "<group>"; };
@@ -1603,6 +1607,8 @@
 				0E0051541822293000BB50F8 /* typingMine@2x.png */,
 				0E0051551822293000BB50F8 /* typingSomeone.png */,
 				0E0051561822293000BB50F8 /* typingSomeone@2x.png */,
+				0EE10583185A9BBC00CC30C7 /* video.png */,
+				0EE10584185A9BBC00CC30C7 /* video@2x.png */,
 			);
 			path = images;
 			sourceTree = "<group>";
@@ -1949,6 +1955,7 @@
 				44A80E93183120A7006069DE /* Voice.png in Resources */,
 				0EF79DEA1858006C00EB8A64 /* segmented-pressed-Right@2x.png in Resources */,
 				44A80E8F183120A7006069DE /* Speak.png in Resources */,
+				0EE10585185A9BBC00CC30C7 /* video.png in Resources */,
 				0ED8BC1018506EA6007BD8CA /* background.png in Resources */,
 				0ECD894B183B0FC800B4AC1D /* camera_button_take@2x.png in Resources */,
 				0EF79DE61858006C00EB8A64 /* segmented-bg@2x.png in Resources */,
@@ -1961,6 +1968,7 @@
 				44A80E8818311E2A006069DE /* facesBack@2x.png in Resources */,
 				0E00515C1822293000BB50F8 /* missingAvatar@2x.png in Resources */,
 				44A80E8718311E2A006069DE /* facesBack.png in Resources */,
+				0EE10586185A9BBC00CC30C7 /* video@2x.png in Resources */,
 				44A80E8318311DEF006069DE /* faceDelete.png in Resources */,
 				0ED8ECA218288DC400C84741 /* mic_talk_358x358@2x.png in Resources */,
 				0E0051591822293000BB50F8 /* bubbleSomeone.png in Resources */,

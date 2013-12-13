@@ -73,13 +73,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "talk/Classes/SearchFriendsViewController.m"
-            timestampString = "408419896.309224"
+            filePath = "talk/MainController.m"
+            timestampString = "408590672.482987"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            startingLineNumber = "400"
+            endingLineNumber = "400"
+            landmarkName = "-sendRecordAudio"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
