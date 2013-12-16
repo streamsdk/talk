@@ -99,7 +99,7 @@
         
         button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.tag = indexPath.row;
-        [button setFrame:CGRectMake(cell.frame.size.width-60, 2, 40, 40)];
+        [button setFrame:CGRectMake(cell.frame.size.width-100, 2, 40, 40)];
         [cell addSubview:button];
         
     }

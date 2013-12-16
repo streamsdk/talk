@@ -130,7 +130,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-        [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
+        [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     if ([self.sortedArrForArrays count] > indexPath.section) {
@@ -229,7 +229,7 @@
             [imageCache saveUserMetadata:userName withMetadata:dic];
         }
     }];
-    sleep(0.01);
+    sleep(0.001);
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"loading friends...";
     [self.view addSubview:HUD];
