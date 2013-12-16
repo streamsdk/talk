@@ -228,6 +228,7 @@
 		0EE951F9185EA4B9003F4638 /* talk4s.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE951CD185EA4B9003F4638 /* talk4s.png */; };
 		0EE951FA185EA4B9003F4638 /* talkBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE951CE185EA4B9003F4638 /* talkBg.png */; };
 		0EE951FB185EA4B9003F4638 /* video1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE951CF185EA4B9003F4638 /* video1.png */; };
+		0EE951FE185EE9EC003F4638 /* UIImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE951FD185EE9EC003F4638 /* UIImageViewController.m */; };
 		0EF5A0201855B71400B4EDE7 /* SegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5A01F1855B71400B4EDE7 /* SegmentedControl.m */; };
 		0EF79DE11858006C00EB8A64 /* segmented-bg-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79DD41858006C00EB8A64 /* segmented-bg-left.png */; };
 		0EF79DE21858006C00EB8A64 /* segmented-bg-left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79DD51858006C00EB8A64 /* segmented-bg-left@2x.png */; };
@@ -649,6 +650,8 @@
 		0EE951CD185EA4B9003F4638 /* talk4s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = talk4s.png; sourceTree = "<group>"; };
 		0EE951CE185EA4B9003F4638 /* talkBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = talkBg.png; sourceTree = "<group>"; };
 		0EE951CF185EA4B9003F4638 /* video1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video1.png; sourceTree = "<group>"; };
+		0EE951FC185EE9EC003F4638 /* UIImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIImageViewController.h; path = Classes/UIImageViewController.h; sourceTree = "<group>"; };
+		0EE951FD185EE9EC003F4638 /* UIImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIImageViewController.m; path = Classes/UIImageViewController.m; sourceTree = "<group>"; };
 		0EF5A01E1855B71400B4EDE7 /* SegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SegmentedControl.h; path = Classes/SegmentedControl.h; sourceTree = "<group>"; };
 		0EF5A01F1855B71400B4EDE7 /* SegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SegmentedControl.m; path = Classes/SegmentedControl.m; sourceTree = "<group>"; };
 		0EF79DD41858006C00EB8A64 /* segmented-bg-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-bg-left.png"; sourceTree = "<group>"; };
@@ -1580,6 +1583,8 @@
 			children = (
 				0EE9518E185EA43C003F4638 /* MainController.h */,
 				0EE9518F185EA43C003F4638 /* MainController.m */,
+				0EE951FC185EE9EC003F4638 /* UIImageViewController.h */,
+				0EE951FD185EE9EC003F4638 /* UIImageViewController.m */,
 				0EE95190185EA43C003F4638 /* ViewController.h */,
 				0EE95191185EA43C003F4638 /* ViewController.m */,
 				0EA16BFE18516FC9009F2D3A /* MyFriendsViewController.h */,
@@ -2138,6 +2143,7 @@
 				0E084794182736BC00350741 /* UIBubbleTypingTableViewCell.m in Sources */,
 				0EE9519D185EA47D003F4638 /* ChineseString.m in Sources */,
 				03D9C0E418145E510039118F /* DDASLLogger.m in Sources */,
+				0EE951FE185EE9EC003F4638 /* UIImageViewController.m in Sources */,
 				03D9C06B18145E410039118F /* XMPPRoomOccupantCoreDataStorageObject.m in Sources */,
 				03D9BF5118145E270039118F /* XMPPDeprecatedDigestAuthentication.m in Sources */,
 				03D9C09F18145E410039118F /* XMPPAutoTime.m in Sources */,

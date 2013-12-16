@@ -22,7 +22,7 @@
 #define facialViewHeight 170
 #define  buttonWh 34
 #define  ICONHEIGHT 80
-@interface MainController : UIViewController<UIBubbleTableViewDataSource,STreamXMPPProtocol,facialViewDelegate,UITextFieldDelegate,IconViewDelegate>
+@interface MainController : UIViewController<UIBubbleTableViewDataSource,STreamXMPPProtocol,facialViewDelegate,UITextFieldDelegate,IconViewDelegate,UIAlertViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 {
     AVAudioRecorder *recorder;
     UIImagePickerControllerQualityType                  _qualityType;
@@ -55,6 +55,7 @@
 
 @property (nonatomic,retain) NSString *sendToID;
 
-@property (nonatomic,strong)NSData * otherData;
+@property(nonatomic,retain)UIActionSheet* actionSheet;
 
+@property(nonatomic,retain)NSMutableArray *timeArray;
 @end

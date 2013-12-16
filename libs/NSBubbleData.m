@@ -104,9 +104,11 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     imageView.layer.cornerRadius = 5.0;
     imageView.layer.masksToBounds = YES;
     imageView.userInteractionEnabled = YES;
-    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(bigToImage)];
-    [imageView addGestureRecognizer:tap];
-    
+    UILongPressGestureRecognizer *longpressGesutre=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(bigToImage)];
+    longpressGesutre.minimumPressDuration=1;
+    longpressGesutre.allowableMovement=15;
+    longpressGesutre.numberOfTouchesRequired=1;
+    [imageView addGestureRecognizer:longpressGesutre];
 #if !__has_feature(objc_arc)
     [imageView autorelease];
 #endif

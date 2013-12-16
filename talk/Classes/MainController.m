@@ -24,6 +24,7 @@
 #import "MBProgressHUD.h"
 #import "ImageCache.h"
 #import "FileCache.h"
+#import "UIImageViewController.h"
 
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
@@ -41,6 +42,8 @@
     BOOL isFace;
     
     NSData *myData;
+    NSData * otherData;
+    BOOL isTakeImage;
 }
 
 @property(nonatomic,retain) Voice * voice;
@@ -52,7 +55,8 @@
 @synthesize bubbleTableView,toolBar,messageText,sendButton,photoButton ,recordButton,recordOrKeyboardButton,keyBoardButton,faceButton;
 @synthesize sendToID;
 @synthesize voice;
-@synthesize otherData;
+@synthesize actionSheet;
+@synthesize timeArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -63,31 +67,6 @@
     return self;
 }
 
--(void) loadAvatar:(NSString *)userID {
-    ImageCache *imageCache = [ImageCache sharedObject];
-    if ([imageCache getUserMetadata:userID]!=nil) {
-        NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
-        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-        if ([imageCache getImage:pImageId] == nil && pImageId){
-            FileCache *fileCache = [FileCache sharedObject];
-            STreamFile *file = [[STreamFile alloc] init];
-            if (![imageCache getImage:pImageId]){
-                [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
-                    if ([pImageId isEqualToString:oId]){
-                        [imageCache selfImageDownload:imageData withFileId:pImageId];
-                        [fileCache writeFileDoc:pImageId withData:imageData];
-                        myData = [imageCache getImage:pImageId];
-                                           }
-                }];
-            }
-        }else{
-            if (pImageId) {
-                myData = [imageCache getImage:pImageId];
-            }
-        }
-    }
-    
-}
 -(void) back {
     MyFriendsViewController * myFriendsVC = [[MyFriendsViewController alloc]init];
     [self.navigationController pushViewController:myFriendsVC animated:YES];
@@ -97,6 +76,8 @@
     //初始化为NO added
     keyboardIsShow=NO;
     isFace = NO;
+    isTakeImage = NO;
+    
     faceButton = [createUI setButtonFrame:CGRectMake(0, 2,30, 36) withTitle:@"nil"];
     [faceButton setImage:[UIImage imageNamed:@"face.png"] forState:UIControlStateNormal];
     [faceButton addTarget:self action:@selector(faceClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -141,7 +122,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationItem.hidesBackButton = YES;
-    
+    self.navigationController.navigationBarHidden = NO;
     BackData *data = [BackData sharedObject];
     UIImage *bgImage =[data getImage];
     if (bgImage) {
@@ -149,14 +130,23 @@
     }else{
         [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     }
+    ImageCache * imageCache =  [ImageCache sharedObject];
+    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[self getUserID]];
+    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+    myData = [imageCache getImage:pImageId];
+    
+    NSMutableDictionary *metaData = [imageCache getUserMetadata:sendToID];
+    NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
+    otherData = [imageCache getImage:pImageId2];
+    
+    sendToID = [imageCache getFriendID];
+    self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
 
     _qualityType = UIImagePickerControllerQualityTypeHigh;
     _mp4Quality = AVAssetExportPresetHighestQuality;
     
     STreamXMPP *con = [STreamXMPP sharedObject];
     [con setXmppDelegate:self];
-
-     self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
     
     bubbleData = [[NSMutableArray alloc]init];
     
@@ -171,34 +161,29 @@
     UIBarButtonItem * leftitem = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
     self.navigationItem.leftBarButtonItem = leftitem;
 
+    UIImageView * backView = [[UIImageView alloc]initWithFrame:self.view.frame];
+    backView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *singleTouch = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
+    [backView addGestureRecognizer:singleTouch];
+    [backView setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:backView];
     //bubbleTableView
     bubbleTableView = [[UIBubbleTableView alloc]initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64-40)];
     bubbleTableView .bubbleDataSource = self;
     bubbleTableView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin |UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
-    [self.view addSubview:bubbleTableView];
+    [backView addSubview:bubbleTableView];
     
     toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-40, self.view.frame.size.width, 40)];
     toolBar.tag = TOOLBARTAG;
     toolBar.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin |UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
-    [self.view addSubview:toolBar];
+    [backView addSubview:toolBar];
     
     [self initWithToolBar];
     
     bubbleTableView.tag = TABLEVIEWTAG;
     bubbleTableView.snapInterval = 120;
     bubbleTableView.showAvatars = YES;
-    NSString *loginName  = [self getUserID];
     
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"loading friends...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        [self loadAvatar:loginName];
-    }completionBlock:^{
-        [HUD removeFromSuperview];
-        HUD = nil;
-    }];
-
     [bubbleTableView reloadData];
    
 //给键盘注册通知
@@ -206,6 +191,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
+    timeArray = [[NSMutableArray alloc]initWithObjects:@"1s",@"2s",@"3s",@"4s",@"5s",@"6s",@"7s",@"8s",@"9s",@"10s", nil];
     
     
 }
@@ -230,7 +216,7 @@
     
     STreamFile *sf = [[STreamFile alloc] init];
     NSData *data = [sf downloadAsData:fileId];
-//    [self loadAvatar:sendToID];
+    
     if ([fromID isEqualToString:sendToID]) {
         if ([body isEqualToString:@"photo"]) {
             UIImage * image = [UIImage imageWithData:data];
@@ -331,7 +317,7 @@
             NSLog(@"byteSent:%f",b);
         }withBodyData:@"photo"];
     }
-    
+    [self scrollBubbleViewToBottomAnimated:YES];
 }
 -(void) sendVideo :(UIImage *)image withData:(NSData *)videoData {
     
@@ -647,9 +633,6 @@
 }
 #pragma mark PhotoButton clicked
 -(void) photoClicked {
-//    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"插入图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"系统相册",@"拍摄相片",@"拍摄视频", nil];
-//    alert.delegate = self;
-//    [alert show];
     isFace = NO;
     [scrollView removeFromSuperview];
 
@@ -668,17 +651,8 @@
     scrollView.pagingEnabled=YES;
     scrollView.delegate=self;
     [self.view addSubview:scrollView];
-//    pageControl=[[UIPageControl alloc]initWithFrame:CGRectMake(94, self.view.frame.size.height-35, 150, 30)];
-//    [pageControl setCurrentPage:0];
-//    pageControl.pageIndicatorTintColor=RGBACOLOR(195, 179, 163, 1);
-//    pageControl.currentPageIndicatorTintColor=RGBACOLOR(132, 104, 77, 1);
-//    pageControl.numberOfPages = 1;//指定页面个数
-//    [pageControl setBackgroundColor:[UIColor clearColor]];
-//    pageControl.hidden=YES;
+
     isFace = YES;
-//    [pageControl addTarget:self action:@selector(changePage:)forControlEvents:UIControlEventValueChanged];
-//    [self.view addSubview:pageControl];
-    
     [self disIconKeyboard];
 }
 #pragma mark Face button 
@@ -705,16 +679,58 @@
     [self disFaceKeyboard];
 }
 
+//* UIPickerView
+-(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+-(NSInteger) pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return [timeArray count];
+    
+}
+-(NSString *) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return [timeArray objectAtIndex:row];
+}
+-(void) pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    
+}
+
+
+-(void)segmentAction:(UISegmentedControl*)seg{
+    NSInteger index = seg.selectedSegmentIndex;
+    NSLog(@"%d",index);
+    [self.actionSheet dismissWithClickedButtonIndex:index animated:YES];
+}
+
 #pragma mark UIAlertViewDelegate
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-//    if (buttonIndex == 1)
-//        [self addPhoto];
-//    else if(buttonIndex == 2)
-//        [self takePhoto];
-//    else if(buttonIndex == 3)
-//        [self takeVideo];
+    if (buttonIndex == 1) {
+        self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+        [self.actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
+        UIPickerView * pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 10, self.view.frame.size.width, 60)] ;
+        pickerView.tag = 101;
+        pickerView.delegate = self;
+        pickerView.dataSource = self;
+        pickerView.showsSelectionIndicator = YES;
+        
+        [self.actionSheet addSubview:pickerView];
+        
+        UISegmentedControl* button = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Done",nil]];
+        button.tintColor = [UIColor grayColor];
+        [button setSegmentedControlStyle:UISegmentedControlStyleBar];
+        [button setFrame:CGRectMake(250, 10, 50,30 )];
+        [button addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
+        [self.actionSheet addSubview:button];
+        [self.actionSheet showInView:self.view];
+        [self.actionSheet setBounds:CGRectMake(0, 0, 320,300)];
+        [self.actionSheet setBackgroundColor:[UIColor whiteColor]];
+        
+    }
 }
 #pragma mark - Tool Methods
 - (void)addPhoto
@@ -738,6 +754,7 @@
                                               otherButtonTitles:@"好", nil];
         [alert show];
     }else{
+        isTakeImage = YES;
         UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
         imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
         imagePickerController.delegate = self;
@@ -879,6 +896,13 @@
     if ([[info objectForKey:UIImagePickerControllerMediaType] isEqualToString:(NSString*)kUTTypeImage]) {
        
         UIImage * image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+       /* if (isTakeImage) {
+            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You Sure Send File?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+            view.delegate = self;
+            [view show];
+        }else{
+            [self sendPhoto:image];
+        }*/
         [self sendPhoto:image];
     }else{
         videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
@@ -900,6 +924,10 @@
 }
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
     [self scrollBubbleViewToBottomAnimated:YES];
+}
+
+-(void) dismissKeyboard:(UITapGestureRecognizer *)estureRecognizer {
+    [self dismissKeyBoard];
 }
 
 #pragma mark show bubbleview  lastrow
@@ -924,8 +952,12 @@
 //bibImage
 
 -(void) bigImage:(UIImage *)image {
+    
+    UIImageViewController * imageView = [[UIImageViewController alloc]init];
+    imageView.image = image;
+    [self.navigationController pushViewController:imageView animated:NO];
     //创建灰色透明背景，使其背后内容不可操作
-    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
+    /*UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
     background = bgView;
     [bgView setBackgroundColor:[UIColor colorWithRed:0.3
                                                green:0.3
@@ -964,7 +996,7 @@
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationDuration:2.0];//动画时间长度，单位秒，浮点数
     [self.bubbleTableView exchangeSubviewAtIndex:0 withSubviewAtIndex:1];
-    [UIView setAnimationDelegate:bgView];
+    [UIView setAnimationDelegate:bgView];*/
 }
 -(void)handleLongpressGesture
 {

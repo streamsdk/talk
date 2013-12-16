@@ -52,6 +52,7 @@
     [super viewDidLoad];
     self.title = @"MyFriends";
     self.navigationController.navigationItem.hidesBackButton = YES;
+    self.navigationController.navigationBarHidden = NO;
    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     userData = [[NSMutableArray alloc]init];
     sortedArrForArrays = [[NSMutableArray alloc] init];
@@ -229,7 +230,6 @@
             [imageCache saveUserMetadata:userName withMetadata:dic];
         }
     }];
-    sleep(0.001);
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"loading friends...";
     [self.view addSubview:HUD];
@@ -240,10 +240,13 @@
         HUD = nil;
     }];
     
+    MainController *mainVC = [[MainController alloc]init];
+    [self.navigationController pushViewController:mainVC animated:YES];
 }
+
 -(void) loadAvatar:(NSString *)userID {
     ImageCache *imageCache = [ImageCache sharedObject];
-    MainController *mainVC = [[MainController alloc]init];
+    [imageCache setFriendID:userID];
     if ([imageCache getUserMetadata:userID]!=nil) {
         NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
         NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
@@ -255,18 +258,13 @@
                     if ([pImageId isEqualToString:oId]){
                         [imageCache selfImageDownload:imageData withFileId:pImageId];
                         [fileCache writeFileDoc:pImageId withData:imageData];
-                        [mainVC setOtherData:[imageCache getImage:pImageId]];
+                        
                     }
                 }];
             }
-        }else{
-            if (pImageId) {
-              [mainVC setOtherData:[imageCache getImage:pImageId]];
-            }
         }
     }
-    [mainVC setSendToID:userID];
-    [self.navigationController pushViewController:mainVC animated:YES];
+    
 }
 
 @end

@@ -15,6 +15,11 @@
 #import "RootViewController.h"
 #import "MyFriendsViewController.h"
 #import "ImageCache.h"
+#import "MBProgressHUD.h"
+#import "ImageCache.h"
+#import "FileCache.h"
+#import <arcstreamsdk/STreamFile.h>
+
 @interface LoginViewController ()
 
 @end
@@ -36,6 +41,7 @@
     self.navigationController.navigationBarHidden = YES;
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -54,14 +60,13 @@
     
     CGRect frame = CGRectMake(20, 80, self.view.frame.size.width-40, 50);
     userNameText = [createUI setTextFrame:frame];
-    userNameText.placeholder = @"user name";
     userNameText.delegate = self;
     [userNameText becomeFirstResponder];
     userNameText.keyboardType = UIKeyboardTypeAlphabet;
     [imageview addSubview:userNameText];
     
     password = [createUI setTextFrame:CGRectMake(20,150, self.view.frame.size.width-40, 50)];
-    password.placeholder = @"password";
+    
     password.delegate = self;
     [password setSecureTextEntry:YES];
     password.keyboardType = UIKeyboardTypeAlphabet;
@@ -73,6 +78,17 @@
     [loginButton setBackgroundColor:[UIColor redColor]];
     [loginButton addTarget:self action:@selector(loginUser) forControlEvents:UIControlEventTouchUpInside];
     [imageview addSubview:loginButton];
+    
+    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
+    if (array && [array count]!=0){
+        userNameText.text = [array objectAtIndex:0];
+        password.text = [array objectAtIndex:1];
+    }else{
+        userNameText.placeholder = @"user name";
+        password.placeholder = @"password";
+    }
+    
 
 }
 -(NSString*)getCacheDirectory
@@ -104,6 +120,16 @@
                     [imageCache saveUserMetadata:userName withMetadata:dic];
                 }
             }];
+            __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            HUD.labelText = @"loading friends...";
+            [self.view addSubview:HUD];
+            [HUD showAnimated:YES whileExecutingBlock:^{
+                [self loadAvatar:userName];
+            }completionBlock:^{
+                [HUD removeFromSuperview];
+                HUD = nil;
+            }];
+            
             MyFriendsViewController *myFriendVC = [[MyFriendsViewController alloc]init];
             [self.navigationController pushViewController:myFriendVC animated:YES];
         } else {
@@ -116,6 +142,27 @@
         [alertView show];
     }
 
+}
+
+-(void) loadAvatar:(NSString *)userID {
+    ImageCache *imageCache = [ImageCache sharedObject];
+    if ([imageCache getUserMetadata:userID]!=nil) {
+        NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
+        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+        if ([imageCache getImage:pImageId] == nil && pImageId){
+            FileCache *fileCache = [FileCache sharedObject];
+            STreamFile *file = [[STreamFile alloc] init];
+            if (![imageCache getImage:pImageId]){
+                [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
+                    if ([pImageId isEqualToString:oId]){
+                        [imageCache selfImageDownload:imageData withFileId:pImageId];
+                        [fileCache writeFileDoc:pImageId withData:imageData];
+                       
+                    }
+                }];
+            }
+        }
+    }
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{

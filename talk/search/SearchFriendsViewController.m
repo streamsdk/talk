@@ -112,7 +112,7 @@
             NSLog(@"index = %d %@",indexPath.row,str);
             
         }else{
-            if (allFriend && [allFriend count]!=0) {
+           /* if (allFriend && [allFriend count]!=0) {
                 for (STreamObject *so in allFriend) {
                     if ([str isEqualToString:[so objectId]]) {
                         NSString *status = [so getValue:@"status"];
@@ -136,7 +136,9 @@
             }else{
                 [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
                 [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
-            }
+            }/*/
+            [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
         }
         cell.textLabel.text = str;
         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
@@ -194,16 +196,31 @@
     
     [searchBar resignFirstResponder];
      NSString *string = searchBar.text;
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    
+    STreamUser * user = [[STreamUser alloc]init];
+    NSString * loginName = [self getLoginName];
+    BOOL isUserExist = [user searchUser:string];
+    
+    if (isUserExist) {
+        if (![loginName isEqualToString:string]) {
+            [userData removeAllObjects];
+            [userData addObject:string];
+            isRefresh = YES;
+            [myTableview reloadData];
+        }
+    }else{
+        UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"No results found" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+        [alertview show];
+    }
+    /*__block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"loading friends...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
-        [self searchFriends:string];
     }completionBlock:^{
         [myTableview reloadData];
         [HUD removeFromSuperview];
         HUD = nil;
-    }];
+    }];*/
 }
 
 -(void) cancelSelected {

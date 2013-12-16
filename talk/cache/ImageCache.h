@@ -20,4 +20,8 @@
 
 -(NSMutableDictionary *)getUserMetadata:(NSString *)userName;
 
+-(void) setFriendID:(NSString *)friendID;
+
+-(NSString *) getFriendID;
+
 @end

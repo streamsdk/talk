@@ -14,6 +14,7 @@ static FileCache *fileCache;
 static NSMutableDictionary *_imageDictionary;
 static NSMutableDictionary *_selfImageDictionary;
 static NSMutableArray *_cachedSelfImageFiles;
+static NSString * _friendID;
 
 @implementation ImageCache
 
@@ -73,4 +74,11 @@ static NSMutableArray *_cachedSelfImageFiles;
     return data;
 }
 
+-(void) setFriendID:(NSString *)friendID{
+    _friendID = friendID;
+}
+
+-(NSString *) getFriendID{
+    return _friendID;
+}
 @end

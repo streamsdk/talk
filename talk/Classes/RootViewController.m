@@ -10,6 +10,7 @@
 #import "CreateUI.h"
 #import "LoginViewController.h"
 #import "SignUpViewController.h"
+#import "MyFriendsViewController.h"
 
 @interface RootViewController ()
 
@@ -57,10 +58,26 @@
     [imageview addSubview:signupBtn];
     
 }
--(void) login {
+-(NSString *) getUserID{
+    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
+    NSString *loginName = nil;
+    if (array && [array count]!=0)
+        loginName= [array objectAtIndex:0];
     
-    LoginViewController *loginVC = [[LoginViewController alloc]init];
-    [self.navigationController pushViewController:loginVC animated:YES];
+    return loginName;
+    
+}
+-(void) login {
+    NSString * loginName = [self getUserID];
+    if (loginName) {
+        MyFriendsViewController *myFriendVC = [[MyFriendsViewController alloc]init];
+        [self.navigationController pushViewController:myFriendVC animated:YES];
+    }else {
+        LoginViewController *loginVC = [[LoginViewController alloc]init];
+        [self.navigationController pushViewController:loginVC animated:YES];
+    }
+  
 }
 -(void) singUp {
     SignUpViewController *signupVC = [[SignUpViewController alloc]init];
