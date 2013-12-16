@@ -44,11 +44,12 @@
     [super viewDidLoad];
 
     self.title = @"Add Friends";
+    userData = [[NSMutableArray alloc]init];
      _searchData = [SearchData sharedObject];
     isRefresh = NO;
     userData = [_searchData getSearchData];
     self.navigationItem.hidesBackButton = YES;
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     
     UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelSelected)];
     self.navigationItem.rightBarButtonItem = rightItem;
@@ -137,7 +138,7 @@
                 [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
             }
         }
-        cell.textLabel.text = [userData objectAtIndex:indexPath.row];
+        cell.textLabel.text = str;
         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
     }
     
@@ -147,9 +148,22 @@
     STreamUser * user = [[STreamUser alloc]init];
     NSString * loginName = [self getLoginName];
    
-
     if (![userName isEqualToString:loginName]) {
-        [user isUserExists:userName response:^(BOOL exists, NSString *resposne) {
+        if ([user searchUser:userName]) {
+            if (![userData containsObject:userName]) {
+                STreamQuery *sq = [[STreamQuery alloc]initWithCategory:loginName];
+                [sq addLimitId:userName];
+                allFriend = [sq find];
+                [userData removeAllObjects];
+                [userData addObject:userName];
+                isRefresh = YES;
+                [myTableview reloadData];
+            }
+        }else{
+            UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"No results found" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+            [alertview show];
+        }
+       /* [user isUserExists:userName response:^(BOOL exists, NSString *resposne) {
             if (exists) {
                 if (![userData containsObject:userName]) {
                     STreamQuery *sq = [[STreamQuery alloc]initWithCategory:loginName];
@@ -158,13 +172,13 @@
                     [userData addObject:userData];
                     isRefresh = YES;
                     [myTableview reloadData];
-                }
-                NSLog(@"%@",resposne);
-            }else{
-                UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"No results found" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
-                [alertview show];
-            }
-        }];
+
+                }  NSLog(@"%@",resposne);
+        }else{
+        UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"No results found" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+        [alertview show];
+        }
+        }];*/
     }
 }
 
@@ -186,7 +200,7 @@
     [HUD showAnimated:YES whileExecutingBlock:^{
         [self searchFriends:string];
     }completionBlock:^{
-        
+        [myTableview reloadData];
         [HUD removeFromSuperview];
         HUD = nil;
     }];
@@ -203,6 +217,12 @@
    
     NSString * loginName= [self getLoginName];
     NSString *string= [userData objectAtIndex:sender.tag];
+    
+    [userData removeAllObjects];
+    [_searchData setSearchData:string];
+    userData = [_searchData getSearchData];
+    isRefresh = NO;
+    
     
     STreamObject * so = [[STreamObject alloc]init];
     [so setObjectId:string];
@@ -221,15 +241,18 @@
     [sco updateStreamCategoryObjects:updateArray];
 
     [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
-     [_searchData setSearchData:string];
-    userData = [_searchData getSearchData];
-    isRefresh = NO;
+    
     [myTableview reloadData];
 }
 -(void) addFriendSendRequest:(UIButton *) sender {
 
     NSString * loginName= [self getLoginName];
     NSString *string= [userData objectAtIndex:sender.tag];
+    
+    [userData removeAllObjects];
+    [_searchData setSearchData:string];
+    userData = [_searchData getSearchData];
+    isRefresh = NO;
     
     STreamObject * so = [[STreamObject alloc]init];
     [so setObjectId:string];
@@ -247,9 +270,7 @@
     [sco updateStreamCategoryObjects:updateArray];
     
     [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
-    [_searchData setSearchData:string];
-    userData = [_searchData getSearchData];
-    isRefresh = NO;
+    
     [myTableview reloadData];
 }
 

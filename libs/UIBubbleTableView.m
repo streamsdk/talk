@@ -198,7 +198,7 @@
         
         if (cell == nil) cell = [[UIBubbleTypingTableViewCell alloc] init];
 
-        [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
+        [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
         cell.type = self.typingBubble;
         cell.showAvatar = self.showAvatars;
         

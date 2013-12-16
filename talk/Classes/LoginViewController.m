@@ -9,15 +9,12 @@
 #import "LoginViewController.h"
 #import "MainController.h"
 #import <arcstreamsdk/STreamUser.h>
-#import <arcstreamsdk/STreamFile.h>
 #import "CreateUI.h"
 #import "STreamXMPP.h"
-#import "AllUserViewController.h"
 #import "SignUpViewController.h"
 #import "RootViewController.h"
 #import "MyFriendsViewController.h"
-#import "FileCache.h"
-
+#import "ImageCache.h"
 @interface LoginViewController ()
 
 @end
@@ -50,7 +47,7 @@
     UIBarButtonItem * leftitem = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
     self.navigationItem.leftBarButtonItem = leftitem;
     UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,self.view.frame.size.width, self.view.frame.size.height)];
-    [imageview setImage:[UIImage imageNamed:@"background.png"]];
+    [imageview setImage:[UIImage imageNamed:@"bg.png"]];
     imageview.userInteractionEnabled = YES;
     [self.view addSubview:imageview];
     CreateUI * createUI = [[CreateUI alloc]init];
@@ -99,23 +96,19 @@
             
             STreamXMPP *con = [STreamXMPP sharedObject];
             [con connect:userName withPassword:passWord];
+            STreamUser *user = [[STreamUser alloc] init];
+            [user loadUserMetadata:userName response:^(BOOL succeed, NSString *error){
+                if ([error isEqualToString:userName]){
+                    NSMutableDictionary *dic = [user userMetadata];
+                    ImageCache *imageCache = [ImageCache sharedObject];
+                    [imageCache saveUserMetadata:userName withMetadata:dic];
+                }
+            }];
             MyFriendsViewController *myFriendVC = [[MyFriendsViewController alloc]init];
             [self.navigationController pushViewController:myFriendVC animated:YES];
         } else {
             UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"user does not exist or password error,please sigUp" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
             [alertView show];
-        }
-        FileCache * cache = [FileCache sharedObject];
-        NSData *data = [cache readFromFileDoc:userName];
-        if (!data) {
-            STreamObject * so = [[STreamObject alloc]init];
-            [so loadAll:[userName stringByAppendingString:@"Avatar"]];
-            NSString *fileID = [so getValue:@"avatar"];
-            if (fileID) {
-                STreamFile * file  =[ [STreamFile alloc]init];
-                NSData * imgData = [file downloadAsData:fileID];
-                [cache writeFileDoc:userName withData:imgData];
-            }
         }
     }else {
         

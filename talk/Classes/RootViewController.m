@@ -34,7 +34,7 @@
     self.navigationController.navigationBarHidden = YES;
     
     UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,self.view.frame.size.width, self.view.frame.size.height)];
-    [imageview setImage:[UIImage imageNamed:@"talk.png"]];
+    [imageview setImage:[UIImage imageNamed:@"talk4s.png"]];
     imageview.userInteractionEnabled = YES;
     [self.view addSubview:imageview];
     

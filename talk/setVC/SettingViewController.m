@@ -10,7 +10,10 @@
 #import "BackgroundImgViewController.h"
 #import "LoginViewController.h"
 #import <arcstreamsdk/STreamFile.h>
-#import <arcstreamsdk/STreamObject.h>
+#import <arcstreamsdk/STreamUser.h>
+#import "ImageCache.h"
+#import "FileCache.h"
+#import "MBProgressHUD.h"
 
 #define IMAGE_TAG 10000
 @interface SettingViewController ()
@@ -45,10 +48,41 @@
 
     }
 }
+
+-(void) loadAvatar:(NSString *)userID {
+    
+    UIImageView * imageview = (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
+    ImageCache *imageCache = [ImageCache sharedObject];
+    if ([imageCache getUserMetadata:userID]!=nil) {
+        NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
+        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+        if ([imageCache getImage:pImageId] == nil && pImageId){
+            FileCache *fileCache = [FileCache sharedObject];
+            STreamFile *file = [[STreamFile alloc] init];
+            if (![imageCache getImage:pImageId]){
+                [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
+                    if ([pImageId isEqualToString:oId]){
+                        [imageCache selfImageDownload:imageData withFileId:pImageId];
+                        [fileCache writeFileDoc:pImageId withData:imageData];
+                        imageview.image = [UIImage imageWithData: [imageCache getImage:pImageId]];
+                    }
+                }];
+            }
+        }else{
+            if (pImageId) {
+               imageview.image = [UIImage imageWithData: [imageCache getImage:pImageId]];
+            }
+        }
+    }else{
+        [imageview setImage:[UIImage imageNamed:@"headImage.jpg"]];
+    }
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
 
 	// Do any additional setup after loading the view.
     
@@ -75,6 +109,16 @@
     myTableView.delegate = self;
     myTableView.dataSource = self;
     [self.view addSubview:myTableView];
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"loading friends...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self loadAvatar:loginName];
+    }completionBlock:^{
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
+
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return [userData count]-1;
@@ -136,7 +180,7 @@
 {
     avatarImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     UIImageView * imageview= (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
-    [imageview setImage:avatarImg];
+    imageview.image = avatarImg;
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -152,14 +196,26 @@
              NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
              NSString * loginName= [array objectAtIndex:0];
              
+             STreamUser * user = [[STreamUser alloc]init];
              STreamFile *file = [[STreamFile alloc] init];
              UIImage *sImage = [self imageWithImageSimple:avatarImg scaledToSize:CGSizeMake(avatarImg.size.width*0.3, avatarImg.size.height*0.3)];
              NSData * data = UIImageJPEGRepresentation(sImage, 1.0);
              [file postData:data];
-             STreamObject * so = [[STreamObject alloc]init];
-             [so setObjectId:[loginName stringByAppendingString:@"Avatar"]];
-             [so addStaff:@"avatar" withObject:[file fileId]];
-             [so updateInBackground];
+             sleep(1);
+             
+             NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
+             if ([[file errorMessage] isEqualToString:@""] && [file fileId])
+                 [metaData setValue:[file fileId] forKey:@"profileImageId"];
+             [user updateUserMetadata:loginName withMetadata:metaData];
+        
+             [user loadUserMetadata:loginName response:^(BOOL succeed, NSString *error){
+                 if ([error isEqualToString:loginName]){
+                     NSMutableDictionary *dic = [user userMetadata];
+                     ImageCache *imageCache = [ImageCache sharedObject];
+                     [imageCache saveUserMetadata:loginName withMetadata:dic];
+                 }
+             }];
+
              UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"save succeed!" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
              [view show];
              NSLog(@"ID:%@",[file fileId]);

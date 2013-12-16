@@ -47,7 +47,7 @@
     self.navigationItem.leftBarButtonItem = leftitem;
     
     UIImageView *bgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,self.view.frame.size.width, self.view.frame.size.height)];
-    [bgView setImage:[UIImage imageNamed:@"background.png"]];
+    [bgView setImage:[UIImage imageNamed:@"bg.png"]];
     bgView.userInteractionEnabled = YES;
     [self.view addSubview:bgView];
 
@@ -90,13 +90,14 @@
     NSString *username = userName.text;
     NSString *pword = password.text;
     NSString *secondWord = surePassword.text;
-    if (userName && password && [secondWord isEqualToString:secondWord]) {
+    if (username && pword && [secondWord isEqualToString:pword]) {
         
         STreamUser *user = [[STreamUser alloc] init];
         NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
         [metaData setValue:username forKey:@"name"];
         [metaData setValue:pword forKey:@"password"];
-        [user signUp:userName.text withPassword:pword withMetadata:metaData];
+        [metaData setValue:@"" forKey:@"profileImageId"];
+        [user signUp:username withPassword:pword withMetadata:metaData];
         
         NSString *error = [user errorMessage];
         if ([error isEqualToString:@""]){
@@ -113,17 +114,6 @@
             UIAlertView * view  = [[UIAlertView alloc]initWithTitle:@"" message:@"用户名或密码错误" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [view show];
         }
-        
-        //avatar
-        STreamObject * so = [[STreamObject alloc]init];
-        [so setObjectId:[username stringByAppendingString:@"Avatar"]];
-        [so addStaff:@"avatar" withObject:@"nil"];
-        [so createNewObject:^(BOOL succeed, NSString *objectId) {
-            if (succeed) {
-                NSLog(@"objectId:%@",objectId);
-            }
-        }];
-
         LoginViewController * loginVC = [[LoginViewController alloc]init];
         [self.navigationController pushViewController:loginVC animated:YES];
     }

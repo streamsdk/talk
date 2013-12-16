@@ -14,8 +14,13 @@
 #import "pinyin.h"
 #import <arcstreamsdk/STreamQuery.h>
 #import <arcstreamsdk/STreamObject.h>
+#import <arcstreamsdk/STreamUser.h>
+#import <arcstreamsdk/STreamFile.h>
+#import "ImageCache.h"
 #import "ChineseString.h"
 #import "SettingViewController.h"
+#import "FileCache.h"
+#import "ImageCache.h"
 
 @interface MyFriendsViewController ()
 
@@ -47,7 +52,7 @@
     [super viewDidLoad];
     self.title = @"MyFriends";
     self.navigationController.navigationItem.hidesBackButton = YES;
-   [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
+   [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     userData = [[NSMutableArray alloc]init];
     sortedArrForArrays = [[NSMutableArray alloc] init];
     sectionHeadsKeys = [[NSMutableArray alloc] init];
@@ -212,11 +217,55 @@
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     NSMutableArray * keys = [sortedArrForArrays objectAtIndex:indexPath.section];
-    ChineseString * user = [keys objectAtIndex:indexPath.row];
-    NSString *userName = [user string];
+    ChineseString * userStr = [keys objectAtIndex:indexPath.row];
+    NSString *userName = [userStr string];
+    STreamUser *user = [[STreamUser alloc] init];
+    [user loadUserMetadata:userName response:^(BOOL succeed, NSString *error){
+        if ([error isEqualToString:userName]){
+            NSMutableDictionary *dic = [user userMetadata];
+            ImageCache *imageCache = [ImageCache sharedObject];
+            [imageCache saveUserMetadata:userName withMetadata:dic];
+        }
+    }];
+    sleep(0.01);
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"loading friends...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self loadAvatar:userName];
+    }completionBlock:^{
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
+    
+}
+-(void) loadAvatar:(NSString *)userID {
+    ImageCache *imageCache = [ImageCache sharedObject];
     MainController *mainVC = [[MainController alloc]init];
-    [mainVC setSendToID:userName];
+    if ([imageCache getUserMetadata:userID]!=nil) {
+        NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
+        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+        if ([imageCache getImage:pImageId] == nil && pImageId){
+            FileCache *fileCache = [FileCache sharedObject];
+            STreamFile *file = [[STreamFile alloc] init];
+            if (![imageCache getImage:pImageId]){
+                [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
+                    if ([pImageId isEqualToString:oId]){
+                        [imageCache selfImageDownload:imageData withFileId:pImageId];
+                        [fileCache writeFileDoc:pImageId withData:imageData];
+                        [mainVC setOtherData:[imageCache getImage:pImageId]];
+                    }
+                }];
+            }
+        }else{
+            if (pImageId) {
+              [mainVC setOtherData:[imageCache getImage:pImageId]];
+            }
+        }
+    }
+    [mainVC setSendToID:userID];
     [self.navigationController pushViewController:mainVC animated:YES];
 }
 

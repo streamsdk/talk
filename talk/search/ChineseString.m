@@ -21,9 +21,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [_string release];
-    [_pinYin release];
-}
+
 
 @end

@@ -61,13 +61,17 @@
     
     
     userData = [[NSMutableArray alloc]init];
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
-    myTableview  = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height-64)];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
+    myTableview  = [[UITableView alloc]initWithFrame:CGRectMake(0, 60, self.view.bounds.size.width, self.view.bounds.size.height-64)];
     myTableview.backgroundColor = [UIColor clearColor];
     myTableview.delegate = self;
     myTableview.dataSource = self;
     [self.view addSubview:myTableview];
-    
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.myTableview.frame.size.width, 44)];
+    label.text =@"Chatters Who Added Me";
+    label.textColor = [UIColor grayColor];
+    label.font = [UIFont fontWithName:@"Arial" size:22.0f];
+    myTableview.tableHeaderView =label;
     
     _segmentedControl = [[SegmentedControl alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width,49)];
     [_segmentedControl setDelegate:self];
@@ -98,7 +102,7 @@
         
         button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.tag = indexPath.row;
-        [button setFrame:CGRectMake(cell.frame.size.width-200, 2, 40, 40)];
+        [button setFrame:CGRectMake(cell.frame.size.width-260, 2, 40, 40)];
         [cell addSubview:button];
     }
     STreamObject * so = [userData objectAtIndex:indexPath.row];

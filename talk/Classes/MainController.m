@@ -11,6 +11,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <arcstreamsdk/STreamSession.h>
 #import <arcstreamsdk/STreamFile.h>
+#import <arcstreamsdk/STreamUser.h>
 #import "NSBubbleData.h"
 #import "STreamXMPP.h"
 #import "Voice.h"
@@ -21,6 +22,8 @@
 #import "MyFriendsViewController.h"
 #import "BackData.h"
 #import "MBProgressHUD.h"
+#import "ImageCache.h"
+#import "FileCache.h"
 
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
@@ -33,13 +36,10 @@
     CreateUI * createUI;
     
     UIScrollView *scrollView;//表情滚动视图
-    UIPageControl *pageControl;
+    
     BOOL keyboardIsShow;//键盘是否显示
     BOOL isFace;
     
-    
-    FileCache * cache;
-    NSData *otherData;
     NSData *myData;
 }
 
@@ -52,6 +52,7 @@
 @synthesize bubbleTableView,toolBar,messageText,sendButton,photoButton ,recordButton,recordOrKeyboardButton,keyBoardButton,faceButton;
 @synthesize sendToID;
 @synthesize voice;
+@synthesize otherData;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -62,33 +63,30 @@
     return self;
 }
 
--(void) loadAvatar {
-    otherData = [cache readFromFileDoc:sendToID];
-    myData = [cache readFromFileDoc:[self getUserID]];
-    if (!otherData) {
-        STreamObject * so = [[STreamObject alloc]init];
-        [so loadAll:[sendToID stringByAppendingString:@"Avatar"]];
-        NSString *fileID = [so getValue:@"avatar"];
-        if (fileID) {
-            STreamFile * file  =[ [STreamFile alloc]init];
-            NSData * imgData = [file downloadAsData:fileID];
-            [cache writeFileDoc:sendToID withData:imgData];
-            otherData = [cache readFromFileDoc:sendToID];
+-(void) loadAvatar:(NSString *)userID {
+    ImageCache *imageCache = [ImageCache sharedObject];
+    if ([imageCache getUserMetadata:userID]!=nil) {
+        NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
+        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+        if ([imageCache getImage:pImageId] == nil && pImageId){
+            FileCache *fileCache = [FileCache sharedObject];
+            STreamFile *file = [[STreamFile alloc] init];
+            if (![imageCache getImage:pImageId]){
+                [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
+                    if ([pImageId isEqualToString:oId]){
+                        [imageCache selfImageDownload:imageData withFileId:pImageId];
+                        [fileCache writeFileDoc:pImageId withData:imageData];
+                        myData = [imageCache getImage:pImageId];
+                                           }
+                }];
+            }
+        }else{
+            if (pImageId) {
+                myData = [imageCache getImage:pImageId];
+            }
         }
-
     }
-    if (!myData) {
-        STreamObject * so = [[STreamObject alloc]init];
-        [so loadAll:[[self getUserID] stringByAppendingString:@"Avatar"]];
-        NSString *fileID = [so getValue:@"avatar"];
-        if (fileID) {
-            STreamFile * file  =[ [STreamFile alloc]init];
-            NSData * imgData = [file downloadAsData:fileID];
-            [cache writeFileDoc:[self getUserID] withData:imgData];
-            myData = [cache readFromFileDoc:[self getUserID]];
-        }
-
-    }
+    
 }
 -(void) back {
     MyFriendsViewController * myFriendsVC = [[MyFriendsViewController alloc]init];
@@ -123,19 +121,10 @@
     [toolBar addSubview:photoButton];
     [toolBar addSubview:messageText];
     [toolBar addSubview:sendButton];
-
 }
 - (void)scrollViewDidScroll:(UIScrollView *)sender {
-    int page = scrollView.contentOffset.x / 320;//通过滚动的偏移量来判断目前页面所对应的小白点
-    pageControl.currentPage = page;//pagecontroll响应值的变化
-}
-//pagecontroll的委托方法
 
-- (void)changePage:(id)sender {
-    int page = pageControl.currentPage;//获取当前pagecontroll的值
-    [scrollView setContentOffset:CGPointMake(320 * page, 0)];//根据pagecontroll的值来改变scrollview的滚动位置，以此切换到指定的页面
 }
-
 -(NSString *)getUserID{
     
     NSString * userID =nil;
@@ -153,13 +142,12 @@
 	// Do any additional setup after loading the view.
     self.navigationItem.hidesBackButton = YES;
     
-    cache = [FileCache sharedObject];
     BackData *data = [BackData sharedObject];
     UIImage *bgImage =[data getImage];
     if (bgImage) {
         [self.view setBackgroundColor:[UIColor colorWithPatternImage:bgImage]];
     }else{
-        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
+        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     }
 
     _qualityType = UIImagePickerControllerQualityTypeHigh;
@@ -167,10 +155,9 @@
     
     STreamXMPP *con = [STreamXMPP sharedObject];
     [con setXmppDelegate:self];
-    
+
      self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
-   
-        
+    
     bubbleData = [[NSMutableArray alloc]init];
     
     createUI = [[CreateUI alloc]init];
@@ -200,12 +187,13 @@
     bubbleTableView.tag = TABLEVIEWTAG;
     bubbleTableView.snapInterval = 120;
     bubbleTableView.showAvatars = YES;
+    NSString *loginName  = [self getUserID];
     
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"loading friends...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
-        [self loadAvatar];
+        [self loadAvatar:loginName];
     }completionBlock:^{
         [HUD removeFromSuperview];
         HUD = nil;
@@ -242,7 +230,7 @@
     
     STreamFile *sf = [[STreamFile alloc] init];
     NSData *data = [sf downloadAsData:fileId];
-
+//    [self loadAvatar:sendToID];
     if ([fromID isEqualToString:sendToID]) {
         if ([body isEqualToString:@"photo"]) {
             UIImage * image = [UIImage imageWithData:data];
@@ -279,6 +267,7 @@
 }
 
 - (void)didReceiveMessage:(XMPPMessage *)message withFrom:(NSString *)fromID{
+
     NSString *receiveMessage = [message body];
     if ([fromID isEqualToString:sendToID]) {
         NSBubbleData *sendBubble = [NSBubbleData dataWithText:receiveMessage date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
@@ -366,26 +355,31 @@
     if (sendToID) {
         
         NSString * messages = messageText.text;
-        bubbleTableView.typingBubble = NSBubbleTypingTypeNobody;
-        NSBubbleData *sendBubble = [NSBubbleData dataWithText:messages date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
-        if (myData)
-            sendBubble.avatar = [UIImage imageWithData:myData];
-        [bubbleData addObject:sendBubble];
-        [bubbleTableView reloadData];
-    
-        STreamXMPP *con = [STreamXMPP sharedObject];
-        [con sendMessage:sendToID withMessage:messageText.text];
-        TalkDB * db = [[TalkDB alloc]init];
-        NSString * userID = [self getUserID];
-
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [db insertDBUserID:userID fromID:sendToID withContent:messageText.text withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
-        messageText.text = @"";
-        [self dismissKeyBoard];
-        [messageText resignFirstResponder];
-        [self scrollBubbleViewToBottomAnimated:YES];
+        if ([messages length]!=0) {
+            bubbleTableView.typingBubble = NSBubbleTypingTypeNobody;
+            NSBubbleData *sendBubble = [NSBubbleData dataWithText:messages date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+            if (myData)
+                sendBubble.avatar = [UIImage imageWithData:myData];
+            [bubbleData addObject:sendBubble];
+            [bubbleTableView reloadData];
+            
+            STreamXMPP *con = [STreamXMPP sharedObject];
+            [con sendMessage:sendToID withMessage:messageText.text];
+            TalkDB * db = [[TalkDB alloc]init];
+            NSString * userID = [self getUserID];
+            
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+            [db insertDBUserID:userID fromID:sendToID withContent:messageText.text withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+            messageText.text = @"";
+            [self dismissKeyBoard];
+            [messageText resignFirstResponder];
+            [self scrollBubbleViewToBottomAnimated:YES];
+        }else {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"please input chat Contents" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+            [alert show];
+        }
         
     }else{
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"you are waiting..." delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
@@ -459,7 +453,6 @@
     
     [self dismissKeyBoard];
     [scrollView removeFromSuperview];
-    [pageControl removeFromSuperview];
     [recordOrKeyboardButton removeFromSuperview];
     [messageText removeFromSuperview];
     [sendButton removeFromSuperview];
@@ -495,7 +488,6 @@
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-ICONHEIGHT,self.view.frame.size.width, ICONHEIGHT)];
         }];
-        [pageControl setHidden:NO];
          return;
     }
     //如果键盘没有显示，点击表情了，隐藏表情，显示键盘
@@ -504,7 +496,6 @@
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, keyboardHeight)];
         }];
         [messageText becomeFirstResponder];
-        [pageControl setHidden:YES];
         
     }else{
         
@@ -519,7 +510,6 @@
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-ICONHEIGHT  ,self.view.frame.size.width, ICONHEIGHT)];
         }];
-        [pageControl setHidden:NO];
         [messageText resignFirstResponder];
     }
 
@@ -538,7 +528,6 @@
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-keyboardHeight,self.view.frame.size.width, keyboardHeight)];
         }];
-        [pageControl setHidden:NO];
         [faceButton setBackgroundImage:[UIImage imageNamed:@"Text"] forState:UIControlStateNormal];
 
         return;
@@ -549,7 +538,6 @@
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, keyboardHeight)];
         }];
         [messageText becomeFirstResponder];
-        [pageControl setHidden:YES];
         
     }else{
         
@@ -564,7 +552,6 @@
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-keyboardHeight,self.view.frame.size.width, keyboardHeight)];
         }];
-        [pageControl setHidden:NO];
         [messageText resignFirstResponder];
     }
 }
@@ -587,7 +574,6 @@
         }];
     }
     
-     [pageControl setHidden:YES];
     [messageText resignFirstResponder];
     
 }
@@ -625,7 +611,6 @@
          [faceButton setImage:[UIImage imageNamed:@"face.png"] forState:UIControlStateNormal];
     }
     keyboardIsShow=YES;
-    [pageControl setHidden:YES];
     
 }
 -(void)inputKeyboardWillHide:(NSNotification *)notification{
@@ -667,7 +652,6 @@
 //    [alert show];
     isFace = NO;
     [scrollView removeFromSuperview];
-    [pageControl removeFromSuperview];
 
     scrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, ICONHEIGHT)];
     [scrollView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"facesBack.png"]]];
@@ -684,22 +668,21 @@
     scrollView.pagingEnabled=YES;
     scrollView.delegate=self;
     [self.view addSubview:scrollView];
-    pageControl=[[UIPageControl alloc]initWithFrame:CGRectMake(94, self.view.frame.size.height-35, 150, 30)];
-    [pageControl setCurrentPage:0];
-    pageControl.pageIndicatorTintColor=RGBACOLOR(195, 179, 163, 1);
-    pageControl.currentPageIndicatorTintColor=RGBACOLOR(132, 104, 77, 1);
-    pageControl.numberOfPages = 1;//指定页面个数
-    [pageControl setBackgroundColor:[UIColor clearColor]];
-    pageControl.hidden=YES;
+//    pageControl=[[UIPageControl alloc]initWithFrame:CGRectMake(94, self.view.frame.size.height-35, 150, 30)];
+//    [pageControl setCurrentPage:0];
+//    pageControl.pageIndicatorTintColor=RGBACOLOR(195, 179, 163, 1);
+//    pageControl.currentPageIndicatorTintColor=RGBACOLOR(132, 104, 77, 1);
+//    pageControl.numberOfPages = 1;//指定页面个数
+//    [pageControl setBackgroundColor:[UIColor clearColor]];
+//    pageControl.hidden=YES;
     isFace = YES;
-    [pageControl addTarget:self action:@selector(changePage:)forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:pageControl];
+//    [pageControl addTarget:self action:@selector(changePage:)forControlEvents:UIControlEventValueChanged];
+//    [self.view addSubview:pageControl];
     
     [self disIconKeyboard];
 }
 #pragma mark Face button 
 -(void) faceClicked {
-    [pageControl removeFromSuperview];
     [scrollView removeFromSuperview];
     //创建表情键盘
     scrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, keyboardHeight)];
@@ -718,16 +701,6 @@
     scrollView.pagingEnabled=YES;
     scrollView.delegate=self;
     [self.view addSubview:scrollView];
-    pageControl=[[UIPageControl alloc]initWithFrame:CGRectMake(94, self.view.frame.size.height-35, 150, 30)];
-    [pageControl setCurrentPage:0];
-    pageControl.pageIndicatorTintColor=RGBACOLOR(195, 179, 163, 1);
-    pageControl.currentPageIndicatorTintColor=RGBACOLOR(132, 104, 77, 1);
-    pageControl.numberOfPages = 9;//指定页面个数
-    [pageControl setBackgroundColor:[UIColor clearColor]];
-    pageControl.hidden=YES;
-    [pageControl addTarget:self action:@selector(changePage:)forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:pageControl];
-    
     isFace = YES;
     [self disFaceKeyboard];
 }
@@ -960,40 +933,40 @@
                                                alpha:0.7]];
     [self.view addSubview:bgView];
     //创建边框视图
-    UIView *borderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,BIG_IMG_WIDTH+16, BIG_IMG_HEIGHT+16)];
+    UIView *borderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,self.view.frame.size.width, self.view.frame.size.height)];
     //将图层的边框设置为圆脚
-    borderView.layer.cornerRadius = 8;
+//    borderView.layer.cornerRadius = 8;
     borderView.layer.masksToBounds = YES;
     //给图层添加一个有色边框
-    borderView.layer.borderWidth = 8;
-    borderView.layer.borderColor = [[UIColor colorWithRed:0.9
-                                                    green:0.9
-                                                     blue:0.9
-                                                    alpha:0.7]CGColor];
+//    borderView.layer.borderWidth = 8;
+//    borderView.layer.borderColor = [[UIColor colorWithRed:0.9
+//                                                    green:0.9
+//                                                     blue:0.9
+//                                                    alpha:0.7]CGColor];
     [borderView setCenter:bgView.center];
     [bgView addSubview:borderView];
-    //创建关闭按钮
-    UIButton *closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [closeBtn setImage:[UIImage imageNamed:@"remove.png"] forState:UIControlStateNormal];
-    [closeBtn addTarget:self action:@selector(suoxiao) forControlEvents:UIControlEventTouchUpInside];
-    [closeBtn setFrame:CGRectMake(borderView.frame.origin.x+borderView.frame.size.width-20, borderView.frame.origin.y-6, 26, 27)];
-    [bgView addSubview:closeBtn];
+
     //创建显示图像视图
-    UIImageView *imgview = [[UIImageView alloc] initWithFrame:CGRectMake(8, 8, BIG_IMG_WIDTH, BIG_IMG_HEIGHT)];
+    UIImageView *imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     [imgview setImage:image];
-    
+    imgview.userInteractionEnabled = YES;
+    UILongPressGestureRecognizer *longpressGesutre=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(handleLongpressGesture)];
+    longpressGesutre.minimumPressDuration=1;
+    longpressGesutre.allowableMovement=15;
+    longpressGesutre.numberOfTouchesRequired=1;
+    [imgview addGestureRecognizer:longpressGesutre];
     [borderView addSubview:imgview];
-    [self shakeToShow:borderView];//放大过程中的动画
+//    [self shakeToShow:borderView];//放大过程中的动画
     
     //动画效果
     CGContextRef context = UIGraphicsGetCurrentContext();
     [UIView beginAnimations:nil context:context];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-    [UIView setAnimationDuration:2.6];//动画时间长度，单位秒，浮点数
+    [UIView setAnimationDuration:2.0];//动画时间长度，单位秒，浮点数
     [self.bubbleTableView exchangeSubviewAtIndex:0 withSubviewAtIndex:1];
     [UIView setAnimationDelegate:bgView];
 }
--(void)suoxiao
+-(void)handleLongpressGesture
 {
     [background removeFromSuperview];
 }
@@ -1010,14 +983,19 @@
 }
 
 -(void)  selectedIconView:(NSInteger) buttonTag{
-    if(buttonTag == 0)
+    
+    if(buttonTag == 0){
+        [self faceClicked];
+    }
+    if(buttonTag == 1){
         [self addPhoto];
-    [self scrollBubbleViewToBottomAnimated:YES];
-    if (buttonTag == 1) {
-        [self takePhoto];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
     if (buttonTag == 2) {
+        [self takePhoto];
+        [self scrollBubbleViewToBottomAnimated:YES];
+    }
+    if (buttonTag == 3) {
         [self takeVideo];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
