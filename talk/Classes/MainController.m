@@ -318,6 +318,7 @@
             NSLog(@"byteSent:%f",b);
         }withBodyData:@"photo"];
     }
+    [self dismissKeyBoard];
     [self scrollBubbleViewToBottomAnimated:YES];
 }
 -(void) sendVideo :(UIImage *)image withData:(NSData *)videoData {
@@ -334,6 +335,8 @@
     }byteSent:^(float b){
         NSLog(@"byteSent:%f",b);
     }withBodyData:@"video"];
+    
+    [self dismissKeyBoard];
     [self scrollBubbleViewToBottomAnimated:YES];
 }
 #pragma mark send  message
