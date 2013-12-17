@@ -13,6 +13,9 @@
 #import <arcstreamsdk/STreamCategoryObject.h>
 #import "MyFriendsViewController.h"
 #import "SearchFriendsViewController.h"
+#import "ImageCache.h"
+#import "FileCache.h"
+#import <arcstreamsdk/STreamFile.h>
 
 #define LEFT_BUTTON_TAG 1000
 #define RIGHT_BUTTON_TAG 2000
@@ -67,10 +70,11 @@
     myTableview.delegate = self;
     myTableview.dataSource = self;
     [self.view addSubview:myTableview];
+    
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.myTableview.frame.size.width, 44)];
     label.text =@"Chatters Who Added Me";
     label.textColor = [UIColor grayColor];
-    label.font = [UIFont fontWithName:@"Arial" size:22.0f];
+    label.font = [UIFont fontWithName:@"Arial" size:18.0f];
     myTableview.tableHeaderView =label;
     
     _segmentedControl = [[SegmentedControl alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width,49)];
@@ -110,10 +114,16 @@
     if ([status isEqualToString:@"friend"]) {
         [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
         [button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
+        [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
+        [self loadAvatar:[so objectId] withCell:cell];
         cell.textLabel.text = [so objectId];
         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
     }else if ([status isEqualToString:@"request"]){
         [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
+        [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
+        [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
+        [self loadAvatar:[so objectId] withCell:cell];
         [button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
         cell.textLabel.text = [so objectId];
         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
@@ -214,7 +224,31 @@
 
     }
 }
-
+-(void) loadAvatar:(NSString *)userID withCell:(UITableViewCell *)cell{
+    ImageCache *imageCache = [ImageCache sharedObject];
+    if ([imageCache getUserMetadata:userID]!=nil) {
+        NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
+        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+        if ([imageCache getImage:pImageId] == nil && pImageId){
+            FileCache *fileCache = [FileCache sharedObject];
+            STreamFile *file = [[STreamFile alloc] init];
+            if (![imageCache getImage:pImageId]){
+                [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
+                    if ([pImageId isEqualToString:oId]){
+                        [imageCache selfImageDownload:imageData withFileId:pImageId];
+                        [fileCache writeFileDoc:pImageId withData:imageData];
+                    }
+                }];
+            }
+        }else{
+            if (pImageId)
+                [cell.imageView setImage:[UIImage imageWithData:[imageCache getImage:pImageId]]];
+        }
+    }
+}
+-(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 60;
+}
 
 - (void)didReceiveMemoryWarning
 {

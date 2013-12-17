@@ -8,11 +8,10 @@
 
 #import "UIImageViewController.h"
 #import "MainController.h"
-
 @interface UIImageViewController ()
 
 @end
-
+#define IMAGE_TAG 2000
 @implementation UIImageViewController
 @synthesize image;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -32,16 +31,24 @@
     UIImageView *imageview  = [[UIImageView alloc]initWithFrame:self.view.frame];
     [imageview setImage:image];
     imageview.userInteractionEnabled = YES;
-    UILongPressGestureRecognizer *longpressGesutre=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(handleLongpressGesture)];
+    imageview.tag = IMAGE_TAG;
+    UILongPressGestureRecognizer *longpressGesutre=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(handleLongpressGesture:)];
     longpressGesutre.minimumPressDuration=1;
     longpressGesutre.allowableMovement=15;
     longpressGesutre.numberOfTouchesRequired=1;
     [imageview addGestureRecognizer:longpressGesutre];
     [self.view addSubview:imageview];
+  
+
 }
--(void) handleLongpressGesture {
-    MainController *mainVC = [[MainController alloc]init]; 
-    [self.navigationController pushViewController:mainVC animated:NO];
+-(void) handleLongpressGesture:(UILongPressGestureRecognizer *) longPressGestureRecognizer {
+    UIImageView *imageview = (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
+    [imageview removeFromSuperview];
+    MainController  *main = [[MainController alloc]init];
+    [self.navigationController pushViewController:main animated:YES];
+}
+-(void)handleTappressGesture{
+   
 }
 - (void)didReceiveMemoryWarning
 {

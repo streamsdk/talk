@@ -207,14 +207,10 @@
              if ([[file errorMessage] isEqualToString:@""] && [file fileId])
                  [metaData setValue:[file fileId] forKey:@"profileImageId"];
              [user updateUserMetadata:loginName withMetadata:metaData];
-        
-             [user loadUserMetadata:loginName response:^(BOOL succeed, NSString *error){
-                 if ([error isEqualToString:loginName]){
-                     NSMutableDictionary *dic = [user userMetadata];
-                     ImageCache *imageCache = [ImageCache sharedObject];
-                     [imageCache saveUserMetadata:loginName withMetadata:dic];
-                 }
-             }];
+             
+             NSMutableDictionary *dic = [user userMetadata];
+             ImageCache *imageCache = [ImageCache sharedObject];
+             [imageCache saveUserMetadata:loginName withMetadata:dic];
 
              UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"save succeed!" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
              [view show];

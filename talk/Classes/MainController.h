@@ -31,7 +31,6 @@
      NSDate*                                             _startDate;
     NSString*                                           _mp4Path;
     UIAlertView*                                         _alert;
-    
 }
 
 @property (nonatomic,strong) UIBubbleTableView *bubbleTableView;

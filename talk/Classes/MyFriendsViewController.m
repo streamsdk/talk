@@ -97,6 +97,14 @@
     NSMutableArray * friends = [sq find];
     for (STreamObject *so in friends) {
         [userData addObject:[so objectId]];
+        STreamUser *user = [[STreamUser alloc] init];
+        [user loadUserMetadata:[so objectId] response:^(BOOL succeed, NSString *error){
+            if ([error isEqualToString:[so objectId]]){
+                NSMutableDictionary *dic = [user userMetadata];
+                ImageCache *imageCache = [ImageCache sharedObject];
+                [imageCache saveUserMetadata:[so objectId] withMetadata:dic];
+            }
+        }];
     }
     sortedArrForArrays = [self getChineseStringArr:userData];
 }
@@ -126,7 +134,12 @@
         NSArray *arr = [sortedArrForArrays objectAtIndex:indexPath.section];
         if ([arr count] > indexPath.row) {
             ChineseString *str = (ChineseString *) [arr objectAtIndex:indexPath.row];
+           
+            [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
+            [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
+             [self loadAvatar:str.string withCell:cell];
             cell.textLabel.text = str.string;
+            
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
 
         } else {
@@ -172,7 +185,6 @@
     NSMutableArray *arrayForArrays = [NSMutableArray array];
     BOOL checkValueAtIndex= NO;  //flag to check
     NSMutableArray *TempArrForGrouping = nil;
-    
     for(int index = 0; index < [chineseStringsArray count]; index++)
     {
         ChineseString *chineseStr = (ChineseString *)[chineseStringsArray objectAtIndex:index];
@@ -210,32 +222,15 @@
     NSMutableArray * keys = [sortedArrForArrays objectAtIndex:indexPath.section];
     ChineseString * userStr = [keys objectAtIndex:indexPath.row];
     NSString *userName = [userStr string];
-    STreamUser *user = [[STreamUser alloc] init];
-    [user loadUserMetadata:userName response:^(BOOL succeed, NSString *error){
-        if ([error isEqualToString:userName]){
-            NSMutableDictionary *dic = [user userMetadata];
-            ImageCache *imageCache = [ImageCache sharedObject];
-            [imageCache saveUserMetadata:userName withMetadata:dic];
-        }
-    }];
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"loading friends...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        [self loadAvatar:userName];
-    }completionBlock:^{
-        [self.tableView reloadData];
-        [HUD removeFromSuperview];
-        HUD = nil;
-    }];
-    
+
+    ImageCache *imageCache = [ImageCache sharedObject];
+    [imageCache setFriendID:userName];
     MainController *mainVC = [[MainController alloc]init];
     [self.navigationController pushViewController:mainVC animated:YES];
 }
 
--(void) loadAvatar:(NSString *)userID {
+-(void) loadAvatar:(NSString *)userID withCell:(UITableViewCell *)cell{
     ImageCache *imageCache = [ImageCache sharedObject];
-    [imageCache setFriendID:userID];
     if ([imageCache getUserMetadata:userID]!=nil) {
         NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
         NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
@@ -250,8 +245,13 @@
                     }
                 }];
             }
+        }else{
+            if (pImageId)
+                [cell.imageView setImage:[UIImage imageWithData:[imageCache getImage:pImageId]]];
         }
     }
 }
-
+-(float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 60;
+}
 @end

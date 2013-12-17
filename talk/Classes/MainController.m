@@ -25,6 +25,7 @@
 #import "ImageCache.h"
 #import "FileCache.h"
 #import "UIImageViewController.h"
+#import <arcstreamsdk/JSONKit.h>
 
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
@@ -44,6 +45,10 @@
     NSData *myData;
     NSData * otherData;
     BOOL isTakeImage;
+    
+    NSMutableDictionary *jsonDic;
+    NSMutableDictionary *friendDic;
+    NSMutableDictionary *chatDic;
 }
 
 @property(nonatomic,retain) Voice * voice;
@@ -102,6 +107,7 @@
     [toolBar addSubview:photoButton];
     [toolBar addSubview:messageText];
     [toolBar addSubview:sendButton];
+    
 }
 - (void)scrollViewDidScroll:(UIScrollView *)sender {
 
@@ -117,12 +123,16 @@
     }
     return userID;
 }
+-(void)viewDidAppear:(BOOL)animated{
+    [bubbleTableView reloadData];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.navigationItem.hidesBackButton = YES;
     self.navigationController.navigationBarHidden = NO;
+    self.navigationItem.hidesBackButton = YES;
+    
     BackData *data = [BackData sharedObject];
     UIImage *bgImage =[data getImage];
     if (bgImage) {
@@ -176,14 +186,6 @@
     bubbleTableView.tag = TABLEVIEWTAG;
     bubbleTableView.snapInterval = 120;
     bubbleTableView.showAvatars = YES;
-    
-    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
-    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-    myData = [imageCache getImage:pImageId];
-    
-    NSMutableDictionary *metaData = [imageCache getUserMetadata:sendToID];
-    NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
-    otherData = [imageCache getImage:pImageId2];
 
     [bubbleTableView reloadData];
    
@@ -194,6 +196,19 @@
     
     timeArray = [[NSMutableArray alloc]initWithObjects:@"1s",@"2s",@"3s",@"4s",@"5s",@"6s",@"7s",@"8s",@"9s",@"10s", nil];
     
+    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
+    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+    myData = [imageCache getImage:pImageId];
+    
+    NSMutableDictionary *metaData = [imageCache getUserMetadata:sendToID];
+    NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
+    otherData = [imageCache getImage:pImageId2];
+    
+    jsonDic = [[NSMutableDictionary alloc]init];
+    friendDic = [[NSMutableDictionary alloc]init];
+    chatDic = [[NSMutableDictionary alloc]init];
+    [friendDic setObject:@"chat" forKey:userID];
+    [chatDic setObject:friendDic forKey:sendToID];
     
 }
 
@@ -214,7 +229,14 @@
     NSLog(@"");
 }
 - (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID{
+    ImageCache *imageCache = [ImageCache sharedObject];
+    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[self getUserID]];
+    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+    myData = [imageCache getImage:pImageId];
     
+    NSMutableDictionary *metaData = [imageCache getUserMetadata:sendToID];
+    NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
+    otherData = [imageCache getImage:pImageId2];
     STreamFile *sf = [[STreamFile alloc] init];
     NSData *data = [sf downloadAsData:fileId];
     
@@ -250,7 +272,6 @@
         [bubbleTableView reloadData];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
-
 }
 
 - (void)didReceiveMessage:(XMPPMessage *)message withFrom:(NSString *)fromID{
@@ -308,6 +329,9 @@
         NSData * data = UIImageJPEGRepresentation(image, 0.7);
         UIImage * _image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(image.size.width*0.7, image.size.height*0.7)];
         NSBubbleData * bubbledata = [NSBubbleData dataWithImage:_image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+        if (myData) {
+            bubbledata.avatar = [UIImage imageWithData:myData];
+        }
         [bubbleData addObject:bubbledata];
         bubbledata.delegate = self;
         [bubbleTableView reloadData];
@@ -352,6 +376,7 @@
                 sendBubble.avatar = [UIImage imageWithData:myData];
             [bubbleData addObject:sendBubble];
             [bubbleTableView reloadData];
+            [chatDic setObject:messages forKey:@"message"];
             
             STreamXMPP *con = [STreamXMPP sharedObject];
             [con sendMessage:sendToID withMessage:messageText.text];
@@ -900,14 +925,14 @@
     if ([[info objectForKey:UIImagePickerControllerMediaType] isEqualToString:(NSString*)kUTTypeImage]) {
        
         UIImage * image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-       /* if (isTakeImage) {
+        if (isTakeImage) {
             UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You Sure Send File?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
             view.delegate = self;
             [view show];
         }else{
             [self sendPhoto:image];
-        }*/
-        [self sendPhoto:image];
+        }
+//        [self sendPhoto:image];
     }else{
         videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
         [self encodeToMp4];
@@ -957,9 +982,9 @@
 
 -(void) bigImage:(UIImage *)image {
     
-    UIImageViewController * imageView = [[UIImageViewController alloc]init];
-    imageView.image = image;
-    [self.navigationController pushViewController:imageView animated:NO];
+    UIImageViewController * iView = [[UIImageViewController alloc]init];
+    iView.image = image;
+    [self.navigationController pushViewController:iView animated:YES];
 }
 
 -(void)  selectedIconView:(NSInteger) buttonTag{

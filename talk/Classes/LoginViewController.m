@@ -157,7 +157,6 @@
                     if ([pImageId isEqualToString:oId]){
                         [imageCache selfImageDownload:imageData withFileId:pImageId];
                         [fileCache writeFileDoc:pImageId withData:imageData];
-                       
                     }
                 }];
             }
