@@ -201,20 +201,19 @@
              UIImage *sImage = [self imageWithImageSimple:avatarImg scaledToSize:CGSizeMake(avatarImg.size.width*0.3, avatarImg.size.height*0.3)];
              NSData * data = UIImageJPEGRepresentation(sImage, 1.0);
              [file postData:data];
-             sleep(1);
              
              NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
-             if ([[file errorMessage] isEqualToString:@""] && [file fileId])
+             if ([[file errorMessage] isEqualToString:@""] && [file fileId]){
                  [metaData setValue:[file fileId] forKey:@"profileImageId"];
-             [user updateUserMetadata:loginName withMetadata:metaData];
-             
-             NSMutableDictionary *dic = [user userMetadata];
-             ImageCache *imageCache = [ImageCache sharedObject];
-             [imageCache saveUserMetadata:loginName withMetadata:dic];
+                 [user updateUserMetadata:loginName withMetadata:metaData];
+                 ImageCache *imageCache = [ImageCache sharedObject];
+                 [imageCache saveUserMetadata:loginName withMetadata:metaData];
+                 
+                 UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"save succeed!" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+                 [view show];
 
-             UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"save succeed!" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
-             [view show];
-             NSLog(@"ID:%@",[file fileId]);
+             }
+            NSLog(@"ID:%@",[file fileId]);
          }
      }else{
          if (buttonIndex == 1) {
