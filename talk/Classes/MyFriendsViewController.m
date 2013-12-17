@@ -98,18 +98,6 @@
     for (STreamObject *so in friends) {
         [userData addObject:[so objectId]];
     }
-   /* [userData addObject:@"Tim"];
-    [userData addObject:@"Young"];
-    [userData addObject:@"Jim"];
-    [userData addObject:@"Lily"];
-    [userData addObject:@"Ethan"];
-    [userData addObject:@"Green"];
-    [userData addObject:@"Green"];
-    [userData addObject:@"DavidSmall"];
-    [userData addObject:@"DavidBig"];
-    [userData addObject:@"James"];
-    [userData addObject:@"Kobe Brand"];
-    [userData addObject:@"Kobe Crand"];*/
     sortedArrForArrays = [self getChineseStringArr:userData];
 }
 
@@ -236,6 +224,7 @@
     [HUD showAnimated:YES whileExecutingBlock:^{
         [self loadAvatar:userName];
     }completionBlock:^{
+        [self.tableView reloadData];
         [HUD removeFromSuperview];
         HUD = nil;
     }];
@@ -258,13 +247,11 @@
                     if ([pImageId isEqualToString:oId]){
                         [imageCache selfImageDownload:imageData withFileId:pImageId];
                         [fileCache writeFileDoc:pImageId withData:imageData];
-                        
                     }
                 }];
             }
         }
     }
-    
 }
 
 @end

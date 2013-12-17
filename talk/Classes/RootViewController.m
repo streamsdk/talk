@@ -69,14 +69,14 @@
     
 }
 -(void) login {
-    NSString * loginName = [self getUserID];
-    if (loginName) {
-        MyFriendsViewController *myFriendVC = [[MyFriendsViewController alloc]init];
-        [self.navigationController pushViewController:myFriendVC animated:YES];
-    }else {
+//    NSString * loginName = [self getUserID];
+//    if (loginName) {
+//        MyFriendsViewController *myFriendVC = [[MyFriendsViewController alloc]init];
+//        [self.navigationController pushViewController:myFriendVC animated:YES];
+//    }else {
         LoginViewController *loginVC = [[LoginViewController alloc]init];
         [self.navigationController pushViewController:loginVC animated:YES];
-    }
+//    }
   
 }
 -(void) singUp {

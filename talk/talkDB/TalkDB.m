@@ -8,6 +8,8 @@
 
 #import "TalkDB.h"
 #import "NSBubbleData.h"
+#import "ImageCache.h"
+
 @implementation TalkDB
 
 -(NSString *) dataFilePath {
@@ -62,6 +64,16 @@
 }
 
 -(NSMutableArray *) readInitDB :(NSString *) fromID withOtherID:(NSString *)otherID{
+    
+    ImageCache * imageCache =  [ImageCache sharedObject];
+    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:otherID];
+    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+    NSData* myData = [imageCache getImage:pImageId];
+    
+    NSMutableDictionary *metaData = [imageCache getUserMetadata:fromID];
+    NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
+    NSData *otherData = [imageCache getImage:pImageId2];
+
     NSMutableArray *dataArray = [[NSMutableArray alloc]init];
     sqlite3 *database;
     
@@ -98,9 +110,13 @@
             if (([_uesrID isEqualToString:userID] && [_fromID isEqualToString:fromID])||([_uesrID isEqualToString:_fromID] && [fromID isEqualToString:userID])) {
                 if (ismine == 0) {
                     NSBubbleData * data = [[NSBubbleData alloc]initWithText:content date:date type:BubbleTypeMine];
+                    if(myData)
+                        data.avatar = [UIImage imageWithData:myData];
                     [dataArray addObject:data];
                 }else {
                      NSBubbleData * data = [[NSBubbleData alloc]initWithText:content date:date type:BubbleTypeSomeoneElse];
+                    if(otherID)
+                        data.avatar = [UIImage imageWithData:otherData];
                     [dataArray addObject:data];
                 }
             }

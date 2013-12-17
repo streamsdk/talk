@@ -112,7 +112,7 @@
             
             STreamXMPP *con = [STreamXMPP sharedObject];
             [con connect:userName withPassword:passWord];
-            STreamUser *user = [[STreamUser alloc] init];
+           STreamUser *user = [[STreamUser alloc] init];
             [user loadUserMetadata:userName response:^(BOOL succeed, NSString *error){
                 if ([error isEqualToString:userName]){
                     NSMutableDictionary *dic = [user userMetadata];

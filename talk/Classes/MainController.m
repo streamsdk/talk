@@ -131,15 +131,9 @@
         [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     }
     ImageCache * imageCache =  [ImageCache sharedObject];
-    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[self getUserID]];
-    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-    myData = [imageCache getImage:pImageId];
-    
-    NSMutableDictionary *metaData = [imageCache getUserMetadata:sendToID];
-    NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
-    otherData = [imageCache getImage:pImageId2];
-    
     sendToID = [imageCache getFriendID];
+    NSString * userID = [self getUserID];
+
     self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
 
     _qualityType = UIImagePickerControllerQualityTypeHigh;
@@ -155,7 +149,6 @@
     self.voice = [[Voice alloc] init];
     
     TalkDB * talk =[[TalkDB alloc]init];
-    NSString *userID = [self getUserID];
     bubbleData = [talk readInitDB:sendToID withOtherID:userID];
     
     UIBarButtonItem * leftitem = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
@@ -184,6 +177,14 @@
     bubbleTableView.snapInterval = 120;
     bubbleTableView.showAvatars = YES;
     
+    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
+    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+    myData = [imageCache getImage:pImageId];
+    
+    NSMutableDictionary *metaData = [imageCache getUserMetadata:sendToID];
+    NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
+    otherData = [imageCache getImage:pImageId2];
+
     [bubbleTableView reloadData];
    
 //给键盘注册通知
@@ -956,62 +957,6 @@
     UIImageViewController * imageView = [[UIImageViewController alloc]init];
     imageView.image = image;
     [self.navigationController pushViewController:imageView animated:NO];
-    //创建灰色透明背景，使其背后内容不可操作
-    /*UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
-    background = bgView;
-    [bgView setBackgroundColor:[UIColor colorWithRed:0.3
-                                               green:0.3
-                                                blue:0.3
-                                               alpha:0.7]];
-    [self.view addSubview:bgView];
-    //创建边框视图
-    UIView *borderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,self.view.frame.size.width, self.view.frame.size.height)];
-    //将图层的边框设置为圆脚
-//    borderView.layer.cornerRadius = 8;
-    borderView.layer.masksToBounds = YES;
-    //给图层添加一个有色边框
-//    borderView.layer.borderWidth = 8;
-//    borderView.layer.borderColor = [[UIColor colorWithRed:0.9
-//                                                    green:0.9
-//                                                     blue:0.9
-//                                                    alpha:0.7]CGColor];
-    [borderView setCenter:bgView.center];
-    [bgView addSubview:borderView];
-
-    //创建显示图像视图
-    UIImageView *imgview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    [imgview setImage:image];
-    imgview.userInteractionEnabled = YES;
-    UILongPressGestureRecognizer *longpressGesutre=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(handleLongpressGesture)];
-    longpressGesutre.minimumPressDuration=1;
-    longpressGesutre.allowableMovement=15;
-    longpressGesutre.numberOfTouchesRequired=1;
-    [imgview addGestureRecognizer:longpressGesutre];
-    [borderView addSubview:imgview];
-//    [self shakeToShow:borderView];//放大过程中的动画
-    
-    //动画效果
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    [UIView beginAnimations:nil context:context];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-    [UIView setAnimationDuration:2.0];//动画时间长度，单位秒，浮点数
-    [self.bubbleTableView exchangeSubviewAtIndex:0 withSubviewAtIndex:1];
-    [UIView setAnimationDelegate:bgView];*/
-}
--(void)handleLongpressGesture
-{
-    [background removeFromSuperview];
-}
-//*************放大过程中出现的缓慢动画*************
-- (void) shakeToShow:(UIView*)aView{
-    CAKeyframeAnimation* animation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
-    animation.duration = 0.5;
-    
-    NSMutableArray *values = [NSMutableArray array];
-    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(0.1, 0.1, 1.0)]];
-    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.0, 1.0, 1.0)]];
-    animation.values = values;
-    [aView.layer addAnimation:animation forKey:nil];
 }
 
 -(void)  selectedIconView:(NSInteger) buttonTag{

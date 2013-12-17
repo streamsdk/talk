@@ -12,7 +12,12 @@
 #import "LoginViewController.h"
 #import "RootViewController.h"
 #import <arcstreamsdk/STreamSession.h>
+#import <arcstreamsdk/STreamUser.h>
+#import "FileCache.h"
+#import <arcstreamsdk/STreamFile.h>
 #import "TalkDB.h"
+#import "ImageCache.h"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -24,9 +29,33 @@
     TalkDB * talkDB = [[TalkDB alloc ]init];
     [talkDB initDB];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-    
-   
-//    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+
+    /*NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
+    NSString *loginName = nil;
+    if (array && [array count]!=0)
+        loginName= [array objectAtIndex:0];
+    if (loginName) {
+        ImageCache *imageCache = [ImageCache sharedObject];
+        if ([imageCache getUserMetadata:loginName]!=nil) {
+            NSMutableDictionary *userMetaData = [imageCache getUserMetadata:loginName];
+            NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+            if ([imageCache getImage:pImageId] == nil && pImageId){
+                FileCache *fileCache = [FileCache sharedObject];
+                STreamFile *file = [[STreamFile alloc] init];
+                if (![imageCache getImage:pImageId]){
+                    [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
+                        if ([pImageId isEqualToString:oId]){
+                            [imageCache selfImageDownload:imageData withFileId:pImageId];
+                            [fileCache writeFileDoc:pImageId withData:imageData];
+                        }
+                    }];
+                }
+            }
+        }
+
+    }*/
+        //    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3"
                       clientKey:@"01D901D6EFBA42145E54F52E465F407B" response:^(BOOL succeed, NSString *response){
