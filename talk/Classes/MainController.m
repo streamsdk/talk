@@ -47,8 +47,6 @@
     BOOL isTakeImage;
     
     NSMutableDictionary *jsonDic;
-    NSMutableDictionary *friendDic;
-    NSMutableDictionary *chatDic;
 }
 
 @property(nonatomic,retain) Voice * voice;
@@ -205,11 +203,6 @@
     otherData = [imageCache getImage:pImageId2];
     
     jsonDic = [[NSMutableDictionary alloc]init];
-    friendDic = [[NSMutableDictionary alloc]init];
-    chatDic = [[NSMutableDictionary alloc]init];
-    [friendDic setObject:@"chat" forKey:userID];
-    [chatDic setObject:friendDic forKey:sendToID];
-    
 }
 
 #pragma mark - UIBubbleTableViewDataSource implementation
@@ -221,14 +214,6 @@
 
 - (NSBubbleData *)bubbleTableView:(UIBubbleTableView *)tableView dataForRow:(NSInteger)row
 {
-    return [bubbleData objectAtIndex:row];
-}
-
-- (void)didAuthenticate{
-    
-    NSLog(@"");
-}
-- (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID{
     ImageCache *imageCache = [ImageCache sharedObject];
     NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[self getUserID]];
     NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
@@ -237,6 +222,15 @@
     NSMutableDictionary *metaData = [imageCache getUserMetadata:sendToID];
     NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
     otherData = [imageCache getImage:pImageId2];
+    return [bubbleData objectAtIndex:row];
+}
+
+- (void)didAuthenticate{
+    
+    NSLog(@"");
+}
+- (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID{
+    
     STreamFile *sf = [[STreamFile alloc] init];
     NSData *data = [sf downloadAsData:fileId];
     
@@ -258,12 +252,24 @@
             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
             UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
             NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
+            TalkDB * db = [[TalkDB alloc]init];
+            NSString * userID = [self getUserID];
+            NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+            [friendDict setObject:mp4Path forKey:sendToID];
+            [jsonDic setObject:friendDict forKey:userID];
+            NSString  *str = [jsonDic JSONString];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+            [db insertDBUserID:fromID fromID:userID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
+
             bdata.delegate = self;
             if (otherData)
                 bdata.avatar = [UIImage imageWithData:otherData];
             [bubbleData addObject:bdata];
         }else{
             NSBubbleData *bubble = [NSBubbleData dataWithtimes:[body stringByAppendingString:@"\""] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withData:data];
+            
             bubble.delegate = self;
             if (otherData)
                 bubble.avatar = [UIImage imageWithData:otherData];
@@ -282,15 +288,19 @@
         if (otherData)
             sendBubble.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:sendBubble];
+        TalkDB * db = [[TalkDB alloc]init];
+        NSString * userID = [self getUserID];
+        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        [friendDict setObject:receiveMessage forKey:@"messages"];
+        [jsonDic setObject:friendDict forKey:sendToID];
+        NSString  *str = [jsonDic JSONString];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [db insertDBUserID:fromID fromID:userID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
         [bubbleTableView reloadData];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
-    TalkDB * db = [[TalkDB alloc]init];
-    NSString * userID = [self getUserID];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    [db insertDBUserID:fromID fromID:userID withContent:receiveMessage withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
     
 }
 - (void)didReceiveRosterItems:(NSMutableArray *)rosterItem{
@@ -333,8 +343,25 @@
             bubbledata.avatar = [UIImage imageWithData:myData];
         }
         [bubbleData addObject:bubbledata];
+        
         bubbledata.delegate = self;
         [bubbleTableView reloadData];
+        
+        NSDateFormatter* formater = [[NSDateFormatter alloc] init];
+        [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
+        NSString *photoPath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.mp4", [formater stringFromDate:[NSDate date]]];
+        [data writeToFile:photoPath atomically:YES];
+        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        [friendDict setObject:photoPath forKey:@"photo"];
+        [jsonDic setObject:friendDict forKey:sendToID];
+        NSString  *str = [jsonDic JSONString];
+        
+        TalkDB * db = [[TalkDB alloc]init];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [db insertDBUserID:[self getUserID] fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+
         STreamXMPP *con = [STreamXMPP sharedObject];
         [con sendFileInBackground:data toUser:sendToID finished:^(NSString *res){
             NSLog(@"res:%@",res);
@@ -352,6 +379,19 @@
     if (myData)
         bubbledata.avatar = [UIImage imageWithData:myData];
     [bubbleData addObject:bubbledata];
+    
+    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+    [friendDict setObject:_mp4Path forKey:@"video"];
+    [jsonDic setObject:friendDict forKey:sendToID];
+    NSString  *str = [jsonDic JSONString];
+    
+    TalkDB * db = [[TalkDB alloc]init];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [db insertDBUserID:[self getUserID] fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+
+    
     [bubbleTableView reloadData];
     STreamXMPP *con = [STreamXMPP sharedObject];
     [con sendFileInBackground:videoData toUser:sendToID finished:^(NSString *res){
@@ -376,17 +416,20 @@
                 sendBubble.avatar = [UIImage imageWithData:myData];
             [bubbleData addObject:sendBubble];
             [bubbleTableView reloadData];
-            [chatDic setObject:messages forKey:@"message"];
+            
             
             STreamXMPP *con = [STreamXMPP sharedObject];
-            [con sendMessage:sendToID withMessage:messageText.text];
-            TalkDB * db = [[TalkDB alloc]init];
-            NSString * userID = [self getUserID];
+            [con sendMessage:sendToID withMessage:messages];
+            NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+            [friendDict setObject:messages forKey:@"messages"];
+            [jsonDic setObject:friendDict forKey:sendToID];
+            NSString  *str = [jsonDic JSONString];
             
+            TalkDB * db = [[TalkDB alloc]init];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
             [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-            [db insertDBUserID:userID fromID:sendToID withContent:messageText.text withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+            [db insertDBUserID:[self getUserID] fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
             messageText.text = @"";
             [self dismissKeyBoard];
             [messageText resignFirstResponder];
@@ -416,6 +459,18 @@
         if (myData)
             bubble.avatar = [UIImage imageWithData:myData];
         [bubbleData addObject:bubble];
+       /* NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        NSArray *array = [[NSArray alloc]initWithObjects:bodyData,audioData, nil];
+        [friendDict setObject:array forKey:@"audio"];
+        [jsonDic setObject:friendDict forKey:sendToID];
+        NSString  *str = [jsonDic JSONString];
+        
+        TalkDB * db = [[TalkDB alloc]init];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [db insertDBUserID:[self getUserID] fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];*/
+        
         STreamXMPP *con = [STreamXMPP sharedObject];
         [con sendFileInBackground:audioData toUser:sendToID finished:^(NSString *res) {
             

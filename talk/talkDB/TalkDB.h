@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
-
-@interface TalkDB : NSObject
+#import "NSBubbleData.h"
+@interface TalkDB : NSObject<PlayerDelegate>
 
 
 -(void) initDB;
