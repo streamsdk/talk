@@ -7,7 +7,7 @@
 //
 
 #import "TalkDB.h"
-
+#import "UIImageViewController.h"
 #import "ImageCache.h"
 #import <arcstreamsdk/JSONKit.h>
 #import <MediaPlayer/MediaPlayer.h>
@@ -65,14 +65,14 @@
 
 }
 
--(NSMutableArray *) readInitDB :(NSString *) fromID withOtherID:(NSString *)otherID{
+-(NSMutableArray *) readInitDB :(NSString *) _userID withOtherID:(NSString *)_friendID{
     
     ImageCache * imageCache =  [ImageCache sharedObject];
-    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:otherID];
+    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:_userID];
     NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
     NSData* myData = [imageCache getImage:pImageId];
     
-    NSMutableDictionary *metaData = [imageCache getUserMetadata:fromID];
+    NSMutableDictionary *metaData = [imageCache getUserMetadata:_friendID];
     NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
     NSData *otherData = [imageCache getImage:pImageId2];
 
@@ -89,17 +89,17 @@
     if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
         while (sqlite3_step(statement) == SQLITE_ROW) {
             char *userId = (char*)sqlite3_column_text(statement, 1);
-            char *fromId =(char*) sqlite3_column_text(statement, 2);
+            char *friendId =(char*) sqlite3_column_text(statement, 2);
             char *_content = (char*)sqlite3_column_text(statement, 3);
             char *time1  = (char*)sqlite3_column_text(statement, 4);
             int ismine = sqlite3_column_int(statement, 5);
             
             NSString * userID = [[NSString alloc]initWithUTF8String:userId];
-            NSString *_fromID = [[NSString alloc]initWithUTF8String:fromId];
+            NSString *friendID = [[NSString alloc]initWithUTF8String:friendId];
             NSString *jsonstring = [[NSString alloc]initWithUTF8String:_content];
             NSString * time2 =[[NSString alloc]initWithUTF8String:time1];
             NSDictionary *ret = [jsonstring objectFromJSONString];
-            NSDictionary * chatDic = [ret objectForKey:fromID];
+            NSDictionary * chatDic = [ret objectForKey:friendID];
         
              NSString *nameFilePath = [self getCacheDirectory];
             NSArray *array = [[NSArray alloc]initWithContentsOfFile:nameFilePath];
@@ -111,84 +111,86 @@
             [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
             [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
             NSDate *date = [dateFormatter dateFromString:time2];
-            if (([_uesrID isEqualToString:userID] && [_fromID isEqualToString:fromID])||([_uesrID isEqualToString:_fromID] && [fromID isEqualToString:userID])) {
+            if ([userID isEqualToString:_userID] && [friendID isEqualToString:_friendID]) {
                 if (ismine == 0) {
                     NSArray * keys = [chatDic allKeys];
                     for (NSString * key in keys) {
                         NSLog(@"key = %@",[chatDic objectForKey:@"messages"]);
+                        NSLog(@"key4 = %@",[chatDic objectForKey:@"audio"]);
                         if ([key isEqualToString:@"messages"]) {
                             NSBubbleData * data = [[NSBubbleData alloc]initWithText:[chatDic objectForKey:@"messages"] date:date type:BubbleTypeMine];
                             if(myData)
                                 data.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:data];
-                        }
-                        if ([key isEqualToString:@"video"]) {
+                        }else if ([key isEqualToString:@"video"]) {
                             NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"video"]];
                             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
                             UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"video"]];;
-                            NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withVidePath:[chatDic objectForKey:@"video"]];
-                            bdata.delegate = self;
+                            NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:date type:BubbleTypeMine withVidePath:[chatDic objectForKey:@"video"]];
+//                            bdata.delegate = self;
                             if(myData)
                                 bdata.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:bdata];
-                        }
-                        if ([key isEqualToString:@"photo"]) {
+                        }else if ([key isEqualToString:@"photo"]) {
                     
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];;
-                            NSBubbleData *bdata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
-                            bdata.delegate = self;
+                            NSBubbleData *bdata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeMine];
+//                            bdata.delegate = self;
                             if(myData)
                                 bdata.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:bdata];
-                        }
-                        if ([key isEqualToString:@"audio"]) {
-                            NSArray * array = [chatDic objectForKey:@"audio"];
-                            NSBubbleData *bubble = [NSBubbleData dataWithtimes:[array objectAtIndex:0] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withData:[array objectAtIndex:1]];
+                        }else if ([key isEqualToString:@"audio"]) {
+                           /* NSArray * array = [chatDic objectForKey:@"audio"];
+                            NSBubbleData *bubble = [NSBubbleData dataWithtimes:[array objectAtIndex:0] date:date type:BubbleTypeMine withData:[array objectAtIndex:1]];
                             if (myData)
                                 bubble.avatar = [UIImage imageWithData:myData];
-                            [dataArray addObject:bubble];
+                            [dataArray addObject:bubble];*/
                         }
 
                     }
                    
-                }else {
+                }else if(ismine == 1){
                     NSArray * keys = [chatDic allKeys];
                     for (NSString * key in keys) {
+                        NSLog(@"key2 = %@",[chatDic objectForKey:@"messages"]);
+                         NSLog(@"key4 = %@",[chatDic objectForKey:@"audio"]);
                         if ([key isEqualToString:@"messages"]) {
-                            NSBubbleData * data = [[NSBubbleData alloc]initWithText:[chatDic objectForKey:@"message"] date:date type:BubbleTypeSomeoneElse];
+                            NSBubbleData * data = [[NSBubbleData alloc]initWithText:[chatDic objectForKey:@"messages"] date:date type:BubbleTypeSomeoneElse];
                             if(otherData)
                                 data.avatar = [UIImage imageWithData:otherData];
                             [dataArray addObject:data];
-                        }
-                        if ([key isEqualToString:@"video"]) {
+                        }else if ([key isEqualToString:@"video"]) {
                             NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"video"]];
                             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
                             UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"video"]];;
-                            NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withVidePath:[chatDic objectForKey:@"video"]];
-                            bdata.delegate = self;
+                            NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:date type:BubbleTypeSomeoneElse withVidePath:[chatDic objectForKey:@"video"]];
+//                            bdata.delegate = self;
                             if(otherData)
                                 bdata.avatar = [UIImage imageWithData:otherData];
-
                             [dataArray addObject:bdata];
-                        }
-                        if ([key isEqualToString:@"photo"]) {
+                        }else if ([key isEqualToString:@"photo"]) {
                             
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];;
-                            NSBubbleData *bdata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
-                            bdata.delegate = self;
+                            NSBubbleData *bdata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeSomeoneElse];
+//                            bdata.delegate = self;
                             if(otherData)
                                 bdata.avatar = [UIImage imageWithData:otherData];
                             [dataArray addObject:bdata];
+                        }else if ([key isEqualToString:@"audio"]) {
+                          /*  NSArray * array = [chatDic objectForKey:@"audio"];
+                            NSBubbleData *bubble = [NSBubbleData dataWithtimes:[array objectAtIndex:0] date:date type:BubbleTypeSomeoneElse withData:[array objectAtIndex:1]];
+                            if (otherData)
+                                bubble.avatar = [UIImage imageWithData:otherData];
+                           [dataArray addObject:bubble];*/
                         }
-
+                
                     }
                 }
             }
-        
-        
         }
+            
     }
     sqlite3_finalize(statement);
     sqlite3_close(database);
@@ -200,6 +202,10 @@
     NSLog(@"<#string#>");
 }
 -(void) bigImage:(UIImage *)image{
+//    UIImageViewController * iView = [[UIImageViewController alloc]init];
+//    iView .image = image;
+//    iView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+//    [self presentViewController:iView animated:YES completion:nil];
      NSLog(@"<#string#>");
 }
 -(NSString*)getCacheDirectory

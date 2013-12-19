@@ -7,7 +7,6 @@
 //
 
 #import "UIImageViewController.h"
-#import "MainController.h"
 @interface UIImageViewController ()
 
 @end
@@ -41,11 +40,13 @@
   
 
 }
--(void) handleLongpressGesture:(UILongPressGestureRecognizer *) longPressGestureRecognizer {
-    UIImageView *imageview = (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
-    [imageview removeFromSuperview];
-    MainController  *main = [[MainController alloc]init];
-    [self.navigationController pushViewController:main animated:YES];
+-(void) handleLongpressGesture:(UILongPressGestureRecognizer *) longPressGestureRecognizer
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+        NSLog(@"back");
+        
+    }];
 }
 -(void)handleTappressGesture{
    

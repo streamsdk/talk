@@ -16,5 +16,5 @@
 
 -(void)insertDBUserID:(NSString *)userID fromID:(NSString *)fromID withContent:(NSString *)content withTime:(NSString *)time withIsMine: (int)isMine;
 
--(NSMutableArray *) readInitDB : (NSString *)fromID  withOtherID:(NSString *)otherID;
+-(NSMutableArray *) readInitDB :(NSString *) _userID withOtherID:(NSString *)_friendID;
 @end

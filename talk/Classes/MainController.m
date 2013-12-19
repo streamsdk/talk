@@ -127,8 +127,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    self.navigationController.navigationBarHidden = NO;
+	// Do any additional setup after loading the view
     self.navigationItem.hidesBackButton = YES;
     
     BackData *data = [BackData sharedObject];
@@ -157,7 +156,7 @@
     self.voice = [[Voice alloc] init];
     
     TalkDB * talk =[[TalkDB alloc]init];
-    bubbleData = [talk readInitDB:sendToID withOtherID:userID];
+    bubbleData = [talk readInitDB:userID withOtherID:sendToID];
     
     UIBarButtonItem * leftitem = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
     self.navigationItem.leftBarButtonItem = leftitem;
@@ -230,7 +229,15 @@
     NSLog(@"");
 }
 - (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID{
+    ImageCache *imageCache = [ImageCache sharedObject];
+    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[self getUserID]];
+    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+    myData = [imageCache getImage:pImageId];
     
+    NSMutableDictionary *metaData = [imageCache getUserMetadata:sendToID];
+    NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
+    otherData = [imageCache getImage:pImageId2];
+
     STreamFile *sf = [[STreamFile alloc] init];
     NSData *data = [sf downloadAsData:fileId];
     
@@ -240,8 +247,25 @@
             NSBubbleData * bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
             if (otherData)
                 bubble.avatar = [UIImage imageWithData:otherData];
-            [bubbleData addObject:bubble];
             bubble.delegate = self;
+            [bubbleData addObject:bubble];
+
+            NSDateFormatter* formater = [[NSDateFormatter alloc] init];
+            [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
+            NSString *photoPath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.png", [formater stringFromDate:[NSDate date]]];
+            [data writeToFile:photoPath atomically:YES];
+            NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+            [friendDict setObject:photoPath forKey:@"photo"];
+            [jsonDic setObject:friendDict forKey:sendToID];
+            TalkDB * db = [[TalkDB alloc]init];
+            NSString * userID = [self getUserID];
+            NSString  *str = [jsonDic JSONString];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+            [db insertDBUserID:userID fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
+    
+            
         }else if ([body isEqualToString:@"video"]){
             
             NSDateFormatter* formater = [[NSDateFormatter alloc] init];
@@ -261,8 +285,7 @@
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
             [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-            [db insertDBUserID:fromID fromID:userID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
-
+            [db insertDBUserID:userID fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
             bdata.delegate = self;
             if (otherData)
                 bdata.avatar = [UIImage imageWithData:otherData];
@@ -282,6 +305,7 @@
 
 - (void)didReceiveMessage:(XMPPMessage *)message withFrom:(NSString *)fromID{
 
+    
     NSString *receiveMessage = [message body];
     if ([fromID isEqualToString:sendToID]) {
         NSBubbleData *sendBubble = [NSBubbleData dataWithText:receiveMessage date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
@@ -297,7 +321,7 @@
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [db insertDBUserID:fromID fromID:userID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
+        [db insertDBUserID:userID fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
         [bubbleTableView reloadData];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
@@ -349,7 +373,7 @@
         
         NSDateFormatter* formater = [[NSDateFormatter alloc] init];
         [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
-        NSString *photoPath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.mp4", [formater stringFromDate:[NSDate date]]];
+        NSString *photoPath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.png", [formater stringFromDate:[NSDate date]]];
         [data writeToFile:photoPath atomically:YES];
         NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
         [friendDict setObject:photoPath forKey:@"photo"];
@@ -459,8 +483,8 @@
         if (myData)
             bubble.avatar = [UIImage imageWithData:myData];
         [bubbleData addObject:bubble];
-       /* NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-        NSArray *array = [[NSArray alloc]initWithObjects:bodyData,audioData, nil];
+      /* NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        NSMutableArray *array = [[NSMutableArray alloc]initWithObjects:bodyData,audioData, nil];
         [friendDict setObject:array forKey:@"audio"];
         [jsonDic setObject:friendDict forKey:sendToID];
         NSString  *str = [jsonDic JSONString];
@@ -469,8 +493,8 @@
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [db insertDBUserID:[self getUserID] fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];*/
-        
+        [db insertDBUserID:[self getUserID] fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+        */
         STreamXMPP *con = [STreamXMPP sharedObject];
         [con sendFileInBackground:audioData toUser:sendToID finished:^(NSString *res) {
             
@@ -819,6 +843,7 @@
 #pragma mark - Tool Methods
 - (void)addPhoto
 {
+    isTakeImage = NO;
     UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
     imagePickerController.navigationBar.tintColor = [UIColor colorWithRed:72.0/255.0 green:106.0/255.0 blue:154.0/255.0 alpha:1.0];
 	imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -984,6 +1009,7 @@
             UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You Sure Send File?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
             view.delegate = self;
             [view show];
+            
         }else{
             [self sendPhoto:image];
         }
@@ -1039,7 +1065,9 @@
     
     UIImageViewController * iView = [[UIImageViewController alloc]init];
     iView.image = image;
-    [self.navigationController pushViewController:iView animated:YES];
+    iView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:iView animated:YES completion:nil];
+//    [self.navigationController pushViewController:iView animated:YES];
 }
 
 -(void)  selectedIconView:(NSInteger) buttonTag{
