@@ -16,6 +16,7 @@
 #import "ImageCache.h"
 #import "FileCache.h"
 #import <arcstreamsdk/STreamFile.h>
+#import "MBProgressHUD.h"
 
 #define LEFT_BUTTON_TAG 1000
 #define RIGHT_BUTTON_TAG 2000
@@ -105,14 +106,19 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [button setFrame:CGRectMake(cell.frame.size.width-100, 15,60, 30)];
         button.tag = indexPath.row;
-        [button setFrame:CGRectMake(cell.frame.size.width-100, 2, 40, 40)];
+        [[button layer] setBorderColor:[[UIColor blueColor] CGColor]];
+        [[button layer] setBorderWidth:1];
+        [[button layer] setCornerRadius:4];
+        [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [cell addSubview:button];
     }
     STreamObject * so = [userData objectAtIndex:indexPath.row];
     NSString *status = [so getValue:@"status"];
     if ([status isEqualToString:@"friend"]) {
-        [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
+        [button setTitle:@"friend" forState:UIControlStateNormal];
+//        [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
         [button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
         [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
         [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
@@ -120,7 +126,8 @@
         cell.textLabel.text = [so objectId];
         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
     }else if ([status isEqualToString:@"request"]){
-        [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
+        [button setTitle:@"add" forState:UIControlStateNormal];
+//        [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
         [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
         [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
         [self loadAvatar:[so objectId] withCell:cell];
@@ -134,47 +141,69 @@
 }
 -(void)deleteFriends:(UIButton *)sender {
     
-    STreamObject * so = [userData objectAtIndex:sender.tag];
-    [so setObjectId:[so objectId]];
-    [so addStaff:@"status" withObject:@"request"];
-    [so updateInBackground];
-    
-    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-    NSString * loginName= [array objectAtIndex:0];
-    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[so objectId]];
-    STreamObject *my = [[STreamObject alloc]init];
-    
-    [my setObjectId:loginName];
-    [my addStaff:@"status" withObject:@"sendRequest"];
-    NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
-    
-    [updateArray addObject:my];
-    [sco updateStreamCategoryObjects:updateArray];
-    [sender setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"loading friends...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        STreamObject * so = [userData objectAtIndex:sender.tag];
+        [so setObjectId:[so objectId]];
+        [so addStaff:@"status" withObject:@"request"];
+        [so updateInBackground];
+        
+        NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+        NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
+        NSString * loginName= [array objectAtIndex:0];
+        STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[so objectId]];
+        STreamObject *my = [[STreamObject alloc]init];
+        
+        [my setObjectId:loginName];
+        [my addStaff:@"status" withObject:@"sendRequest"];
+        NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
+        
+        [updateArray addObject:my];
+        [sco updateStreamCategoryObjects:updateArray];
+
+    }completionBlock:^{
+        [myTableview reloadData];
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
+        [sender setTitle:@"add" forState:UIControlStateNormal];
+//    [sender setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
     [sender addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
 
 }
 -(void)addFriends:(UIButton *)sender {
-    
-    STreamObject * so = [userData objectAtIndex:sender.tag];
-    [so setObjectId:[so objectId]];
-    [so addStaff:@"status" withObject:@"friend"];
-    [so updateInBackground];
-    
-    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[so objectId]];
-    STreamObject *my = [[STreamObject alloc]init];
-    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-    NSString * loginName= [array objectAtIndex:0];
-    [my setObjectId:loginName];
-    [my addStaff:@"status" withObject:@"friend"];
-    NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"add friends...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        STreamObject * so = [userData objectAtIndex:sender.tag];
+        [so setObjectId:[so objectId]];
+        [so addStaff:@"status" withObject:@"friend"];
+        [so updateInBackground];
+        
+        STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[so objectId]];
+        STreamObject *my = [[STreamObject alloc]init];
+        NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+        NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
+        NSString * loginName= [array objectAtIndex:0];
+        [my setObjectId:loginName];
+        [my addStaff:@"status" withObject:@"friend"];
+        NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
+        
+        [updateArray addObject:my];
+        [sco updateStreamCategoryObjects:updateArray];
+        
+    }completionBlock:^{
+        [myTableview reloadData];
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
 
-    [updateArray addObject:my];
-    [sco updateStreamCategoryObjects:updateArray];
-    
-    [sender setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
+   
+    [sender setTitle:@"friend" forState:UIControlStateNormal];
+//    [sender setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
     [sender addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
     
 }
@@ -209,7 +238,7 @@
 - (void)segmentedViewController:(SegmentedControl *)segmentedControl touchedAtIndex:(NSUInteger)index
 {
     if (_segmentedControl == segmentedControl)
-        NSLog(@"SegmentedControl #1 : Selected Index %d", index);
+       
     if (index ==1 ) {
         SearchFriendsViewController * search = [[SearchFriendsViewController alloc]init];
         [self.navigationController pushViewController:search animated:NO];

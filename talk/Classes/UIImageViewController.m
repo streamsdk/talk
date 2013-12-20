@@ -31,16 +31,18 @@
     [imageview setImage:image];
     imageview.userInteractionEnabled = YES;
     imageview.tag = IMAGE_TAG;
-    UILongPressGestureRecognizer *longpressGesutre=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(handleLongpressGesture:)];
-    longpressGesutre.minimumPressDuration=1;
-    longpressGesutre.allowableMovement=15;
-    longpressGesutre.numberOfTouchesRequired=1;
-    [imageview addGestureRecognizer:longpressGesutre];
+//    UITapGestureRecognizer *TapGesutre=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleTapGesture:)];
+//    [imageview addGestureRecognizer:TapGesutre];
     [self.view addSubview:imageview];
   
+    UIButton * backButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 10, 60, 60)];
+    [backButton setTitle:@"back" forState:UIControlStateNormal];
+    [backButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(handleTapGesture) forControlEvents:UIControlEventTouchUpInside];
+    [imageview addSubview:backButton];
 
 }
--(void) handleLongpressGesture:(UILongPressGestureRecognizer *) longPressGestureRecognizer
+-(void) handleTapGesture
 {
     [self dismissViewControllerAnimated:YES completion:^{
         

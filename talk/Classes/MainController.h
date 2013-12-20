@@ -25,12 +25,9 @@
 @interface MainController : UIViewController<UIBubbleTableViewDataSource,STreamXMPPProtocol,facialViewDelegate,UITextFieldDelegate,IconViewDelegate,UIAlertViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 {
     AVAudioRecorder *recorder;
-    UIImagePickerControllerQualityType                  _qualityType;
-    NSString*                                           _mp4Quality;
     NSURL                                                *videoPath;
      NSDate*                                             _startDate;
     NSString*                                           _mp4Path;
-    UIAlertView*                                         _alert;
 }
 
 @property (nonatomic,strong) UIBubbleTableView *bubbleTableView;
@@ -43,11 +40,9 @@
 
 @property (nonatomic,strong) UIButton * recordButton;
 
-@property (nonatomic,strong) UIButton * photoButton;
+@property (nonatomic,strong) UIButton * iconButton;
 
 @property (nonatomic,strong) UIButton * sendButton;
-
-@property (nonatomic,strong) UIButton * faceButton;
 
 @property (nonatomic,strong) UITextField *messageText;
 

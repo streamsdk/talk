@@ -55,7 +55,7 @@
 
 @implementation MainController
 
-@synthesize bubbleTableView,toolBar,messageText,sendButton,photoButton ,recordButton,recordOrKeyboardButton,keyBoardButton,faceButton;
+@synthesize bubbleTableView,toolBar,messageText,sendButton,iconButton ,recordButton,recordOrKeyboardButton,keyBoardButton;
 @synthesize sendToID;
 @synthesize voice;
 @synthesize actionSheet;
@@ -81,28 +81,23 @@
     isFace = NO;
     isTakeImage = NO;
     
-    faceButton = [createUI setButtonFrame:CGRectMake(0, 2,30, 36) withTitle:@"nil"];
-    [faceButton setImage:[UIImage imageNamed:@"face.png"] forState:UIControlStateNormal];
-    [faceButton addTarget:self action:@selector(faceClicked) forControlEvents:UIControlEventTouchUpInside];
-  
-    recordOrKeyboardButton = [createUI setButtonFrame:CGRectMake(30, 2, 30, 36) withTitle:(@"nil")];
+    recordOrKeyboardButton = [createUI setButtonFrame:CGRectMake(0, 2, 30, 36) withTitle:(@"nil")];
     [recordOrKeyboardButton setImage:[UIImage imageNamed:@"Voice.png"] forState:UIControlStateNormal];
     [recordOrKeyboardButton addTarget:self action:@selector(KeyboardTorecordClicked) forControlEvents:UIControlEventTouchUpInside];
    
-    photoButton = [createUI setButtonFrame:CGRectMake(60, 2, 30, 36) withTitle:@"nil"];
-    [photoButton setImage:[UIImage imageNamed:@"addIcon.png"] forState:UIControlStateNormal];
-    [photoButton addTarget:self action:@selector(photoClicked) forControlEvents:UIControlEventTouchUpInside];
+    iconButton = [createUI setButtonFrame:CGRectMake(30, 2, 30, 36) withTitle:@"nil"];
+    [iconButton setImage:[UIImage imageNamed:@"addIcon.png"] forState:UIControlStateNormal];
+    [iconButton addTarget:self action:@selector(photoClicked) forControlEvents:UIControlEventTouchUpInside];
     
-    messageText = [createUI setTextFrame:CGRectMake(90, 3, toolBar.frame.size.width-150, 34)];
+    messageText = [createUI setTextFrame:CGRectMake(60, 3, toolBar.frame.size.width-120, 34)];
     messageText.delegate = self;
     
     sendButton = [createUI setButtonFrame:CGRectMake(toolBar.frame.size.width-50,4, 45, 32) withTitle:@"send"];
     [sendButton.titleLabel setFont:[UIFont systemFontOfSize:15.0f]];
     [sendButton addTarget:self action:@selector(sendMessageClicked) forControlEvents:UIControlEventTouchUpInside];
   
-    [toolBar addSubview:faceButton];
     [toolBar addSubview:recordOrKeyboardButton];
-    [toolBar addSubview:photoButton];
+    [toolBar addSubview:iconButton];
     [toolBar addSubview:messageText];
     [toolBar addSubview:sendButton];
     
@@ -143,9 +138,6 @@
 
     self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
 
-    _qualityType = UIImagePickerControllerQualityTypeHigh;
-    _mp4Quality = AVAssetExportPresetHighestQuality;
-    
     STreamXMPP *con = [STreamXMPP sharedObject];
     [con setXmppDelegate:self];
     
@@ -168,7 +160,7 @@
     [backView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:backView];
     //bubbleTableView
-    bubbleTableView = [[UIBubbleTableView alloc]initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64-40)];
+    bubbleTableView = [[UIBubbleTableView alloc]initWithFrame:CGRectMake(0, 44, self.view.frame.size.width, self.view.frame.size.height-44-40)];
     bubbleTableView .bubbleDataSource = self;
     bubbleTableView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin |UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
     [backView addSubview:bubbleTableView];
@@ -186,6 +178,7 @@
 
     [bubbleTableView reloadData];
    
+    [self scrollBubbleViewToBottomAnimated:YES];
 //给键盘注册通知
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -257,15 +250,7 @@
             NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
             [friendDict setObject:photoPath forKey:@"photo"];
             [jsonDic setObject:friendDict forKey:sendToID];
-            TalkDB * db = [[TalkDB alloc]init];
-            NSString * userID = [self getUserID];
-            NSString  *str = [jsonDic JSONString];
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-            [db insertDBUserID:userID fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
-    
-            
+           
         }else if ([body isEqualToString:@"video"]){
             
             NSDateFormatter* formater = [[NSDateFormatter alloc] init];
@@ -276,16 +261,10 @@
             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
             UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
             NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
-            TalkDB * db = [[TalkDB alloc]init];
             NSString * userID = [self getUserID];
             NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
             [friendDict setObject:mp4Path forKey:sendToID];
             [jsonDic setObject:friendDict forKey:userID];
-            NSString  *str = [jsonDic JSONString];
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-            [db insertDBUserID:userID fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
             bdata.delegate = self;
             if (otherData)
                 bdata.avatar = [UIImage imageWithData:otherData];
@@ -297,10 +276,31 @@
             if (otherData)
                 bubble.avatar = [UIImage imageWithData:otherData];
             [bubbleData addObject:bubble];
+            
+            NSDateFormatter *dateformat=[[NSDateFormatter  alloc]init];
+            [dateformat setDateFormat:@"yyyyMMddHHmmss"];
+            NSString * recordFilePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0]stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.aac",[dateformat stringFromDate:[NSDate date]]]];
+            [data writeToFile:recordFilePath atomically:YES];
+            NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
+            [friendsDict setObject:[body stringByAppendingString:@"\""] forKey:@"time"];
+            [friendsDict setObject:recordFilePath forKey:@"audiodata"];
+            [jsonDic setObject:friendsDict forKey:sendToID];
+
         }
         [bubbleTableView reloadData];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
+    
+    TalkDB * db = [[TalkDB alloc]init];
+    NSString * userID = [self getUserID];
+    NSString  *str = [jsonDic JSONString];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [db insertDBUserID:userID fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
+    
+    
+
 }
 
 - (void)didReceiveMessage:(XMPPMessage *)message withFrom:(NSString *)fromID{
@@ -312,19 +312,19 @@
         if (otherData)
             sendBubble.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:sendBubble];
-        TalkDB * db = [[TalkDB alloc]init];
-        NSString * userID = [self getUserID];
-        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-        [friendDict setObject:receiveMessage forKey:@"messages"];
-        [jsonDic setObject:friendDict forKey:sendToID];
-        NSString  *str = [jsonDic JSONString];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [db insertDBUserID:userID fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
-        [bubbleTableView reloadData];
-        [self scrollBubbleViewToBottomAnimated:YES];
     }
+    TalkDB * db = [[TalkDB alloc]init];
+    NSString * userID = [self getUserID];
+    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+    [friendDict setObject:receiveMessage forKey:@"messages"];
+    [jsonDic setObject:friendDict forKey:sendToID];
+    NSString  *str = [jsonDic JSONString];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [db insertDBUserID:userID fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
+    [bubbleTableView reloadData];
+    [self scrollBubbleViewToBottomAnimated:YES];
     
 }
 - (void)didReceiveRosterItems:(NSMutableArray *)rosterItem{
@@ -479,24 +479,26 @@
     if (self.voice.recordTime >= 0.5f) {
         NSString * bodyData = [NSString stringWithFormat:@"%d",(int)self.voice.recordTime];
         
-        NSBubbleData *bubble = [NSBubbleData dataWithtimes:[NSString stringWithFormat:@"%d\"",(int)self.voice.recordTime] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withData:audioData];
+        NSBubbleData *bubble = [NSBubbleData dataWithtimes:bodyData date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withData:audioData];
         if (myData)
             bubble.avatar = [UIImage imageWithData:myData];
         [bubbleData addObject:bubble];
-      /* NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-        NSMutableArray *array = [[NSMutableArray alloc]initWithObjects:bodyData,audioData, nil];
-        [friendDict setObject:array forKey:@"audio"];
-        [jsonDic setObject:friendDict forKey:sendToID];
-        NSString  *str = [jsonDic JSONString];
-        
+     
+        NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
+        [friendsDict setObject:bodyData forKey:@"time"];
+        [friendsDict setObject:[url path] forKey:@"audiodata"];
+        [jsonDic setObject:friendsDict forKey:sendToID];
+        NSString * str = [jsonDic JSONString];
+        NSLog(@"json===:%@",str);
         TalkDB * db = [[TalkDB alloc]init];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [db insertDBUserID:[self getUserID] fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
-        */
+         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+         [db insertDBUserID:[self getUserID] fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+        
         STreamXMPP *con = [STreamXMPP sharedObject];
-        [con sendFileInBackground:audioData toUser:sendToID finished:^(NSString *res) {
+
+            [con sendFileInBackground:audioData toUser:sendToID finished:^(NSString *res) {
             
             NSLog(@"%@", res);
             
@@ -550,8 +552,7 @@
     [recordOrKeyboardButton removeFromSuperview];
     [messageText removeFromSuperview];
     [sendButton removeFromSuperview];
-    [faceButton removeFromSuperview];
-    [photoButton removeFromSuperview];
+    [iconButton removeFromSuperview];
     CGRect frame = CGRectMake(0, 2, 30, 36);
      keyBoardButton = [createUI setButtonFrame:frame withTitle:@"nil"];
     [keyBoardButton setImage:[UIImage imageNamed:@"Text.png"] forState:UIControlStateNormal];
@@ -571,7 +572,7 @@
 #pragma MARK Icon button 表情事件
 -(void) disIconKeyboard {
     [self scrollBubbleViewToBottomAnimated:YES];
-    //如果直接点击表情，通过toolbar的位置来判断
+    //如果直接点击，通过toolbar的位置来判断
     if (toolBar.frame.origin.y== self.view.bounds.size.height - toolBarHeight&&toolBar.frame.size.height==toolBarHeight) {
         [UIView animateWithDuration:Time animations:^{
             toolBar.frame = CGRectMake(0, self.view.frame.size.height-ICONHEIGHT-toolBarHeight,  self.view.bounds.size.width,toolBarHeight);
@@ -585,9 +586,9 @@
          return;
     }
     //如果键盘没有显示，点击表情了，隐藏表情，显示键盘
-    if (!keyboardIsShow) {
+    if (isFace) {
         [UIView animateWithDuration:Time animations:^{
-            [scrollView setFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, keyboardHeight)];
+            [scrollView setFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, TABLEVIEWTAG)];
         }];
         [messageText becomeFirstResponder];
         
@@ -622,12 +623,10 @@
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-keyboardHeight,self.view.frame.size.width, keyboardHeight)];
         }];
-        [faceButton setBackgroundImage:[UIImage imageNamed:@"Text"] forState:UIControlStateNormal];
-
         return;
     }
     //如果键盘没有显示，点击表情了，隐藏表情，显示键盘
-    if (!keyboardIsShow) {
+    if (keyboardIsShow) {
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, keyboardHeight)];
         }];
@@ -661,7 +660,6 @@
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, keyboardHeight)];
         }];
-        [faceButton setBackgroundImage:[UIImage imageNamed:@"face"] forState:UIControlStateNormal];
     }else{
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, ICONHEIGHT)];
@@ -701,9 +699,7 @@
             [self autoMovekeyBoard:keyBoardFrame.size.height];
         }
     }];
-    if (isFace) {
-         [faceButton setImage:[UIImage imageNamed:@"face.png"] forState:UIControlStateNormal];
-    }
+    
     keyboardIsShow=YES;
     
 }
@@ -712,9 +708,7 @@
     NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSTimeInterval animationDuration;
     [animationDurationValue getValue:&animationDuration];
-    if (isFace) {
-        [faceButton setImage:[UIImage imageNamed:@"Text.png"] forState:UIControlStateNormal];
-    }
+    
     keyboardIsShow=NO;
 }
 
@@ -759,8 +753,6 @@
     scrollView.pagingEnabled=YES;
     scrollView.delegate=self;
     [self.view addSubview:scrollView];
-
-    isFace = YES;
     [self disIconKeyboard];
 }
 #pragma mark Face button 
@@ -897,11 +889,11 @@
 {
     AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:videoPath options:nil];
     NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
-    
+    NSString*  _mp4Quality = AVAssetExportPresetHighestQuality;
     if ([compatiblePresets containsObject:_mp4Quality])
         
     {
-        _alert = [[UIAlertView alloc] init];
+        UIAlertView *_alert = [[UIAlertView alloc] init];
         [_alert setTitle:@"Waiting.."];
         
         UIActivityIndicatorView* activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -991,7 +983,6 @@
 
 - (void) convertFinish
 {
-    [_alert dismissWithClickedButtonIndex:0 animated:YES];
     MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:videoPath];
     NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
     UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];

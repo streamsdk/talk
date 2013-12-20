@@ -116,7 +116,6 @@
                     NSArray * keys = [chatDic allKeys];
                     for (NSString * key in keys) {
                         NSLog(@"key = %@",[chatDic objectForKey:@"messages"]);
-                        NSLog(@"key4 = %@",[chatDic objectForKey:@"audio"]);
                         if ([key isEqualToString:@"messages"]) {
                             NSBubbleData * data = [[NSBubbleData alloc]initWithText:[chatDic objectForKey:@"messages"] date:date type:BubbleTypeMine];
                             if(myData)
@@ -140,12 +139,16 @@
                             if(myData)
                                 bdata.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:bdata];
-                        }else if ([key isEqualToString:@"audio"]) {
-                           /* NSArray * array = [chatDic objectForKey:@"audio"];
-                            NSBubbleData *bubble = [NSBubbleData dataWithtimes:[array objectAtIndex:0] date:date type:BubbleTypeMine withData:[array objectAtIndex:1]];
+                        }else  {
+                            NSError * err = nil;
+                            NSString * time = [chatDic objectForKey:@"time"];
+                            NSString * dataPath = [chatDic objectForKey:@"audiodata"];
+                            NSData * audioData = [NSData dataWithContentsOfFile:dataPath options: 0 error:&err];
+                            NSBubbleData *bubble = [NSBubbleData dataWithtimes:time date:date type:BubbleTypeMine withData:audioData];
                             if (myData)
                                 bubble.avatar = [UIImage imageWithData:myData];
-                            [dataArray addObject:bubble];*/
+                            [dataArray addObject:bubble];
+                            break;
                         }
 
                     }
@@ -178,12 +181,16 @@
                             if(otherData)
                                 bdata.avatar = [UIImage imageWithData:otherData];
                             [dataArray addObject:bdata];
-                        }else if ([key isEqualToString:@"audio"]) {
-                          /*  NSArray * array = [chatDic objectForKey:@"audio"];
-                            NSBubbleData *bubble = [NSBubbleData dataWithtimes:[array objectAtIndex:0] date:date type:BubbleTypeSomeoneElse withData:[array objectAtIndex:1]];
+                        }else  {
+                            NSError * err = nil;
+                            NSString * time = [chatDic objectForKey:@"time"];
+                            NSString * dataPath = [chatDic objectForKey:@"audiodata"];
+                            NSData * audioData = [NSData dataWithContentsOfFile:dataPath options: 0 error:&err];
+                            NSBubbleData *bubble = [NSBubbleData dataWithtimes:time date:date type:BubbleTypeSomeoneElse withData:audioData];
                             if (otherData)
                                 bubble.avatar = [UIImage imageWithData:otherData];
-                           [dataArray addObject:bubble];*/
+                            [dataArray addObject:bubble];
+                            break;
                         }
                 
                     }

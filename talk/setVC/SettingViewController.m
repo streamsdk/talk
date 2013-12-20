@@ -192,29 +192,17 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
      if (isaAatarImg) {
          if (buttonIndex == 1) {
-             NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-             NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-             NSString * loginName= [array objectAtIndex:0];
-             
-             STreamUser * user = [[STreamUser alloc]init];
-             STreamFile *file = [[STreamFile alloc] init];
-             UIImage *sImage = [self imageWithImageSimple:avatarImg scaledToSize:CGSizeMake(avatarImg.size.width*0.3, avatarImg.size.height*0.3)];
-             NSData * data = UIImageJPEGRepresentation(sImage, 1.0);
-             [file postData:data];
-             
-             NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
-             if ([[file errorMessage] isEqualToString:@""] && [file fileId]){
-                 [metaData setValue:[file fileId] forKey:@"profileImageId"];
-                 [user updateUserMetadata:loginName withMetadata:metaData];
-                 ImageCache *imageCache = [ImageCache sharedObject];
-                 [imageCache saveUserMetadata:loginName withMetadata:metaData];
-                 
-                 UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"save succeed!" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
-                 [view show];
+             __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+             HUD.labelText = @"uploading profileImage...";
+             [self.view addSubview:HUD];
+             [HUD showAnimated:YES whileExecutingBlock:^{
+                 [self uploadProfileImage];
+             }completionBlock:^{
+                 [HUD removeFromSuperview];
+                 HUD = nil;
+             }];
 
-             }
-            NSLog(@"ID:%@",[file fileId]);
-         }
+        }
      }else{
          if (buttonIndex == 1) {
              LoginViewController *loginVC = [[LoginViewController alloc]init];
@@ -223,7 +211,27 @@
      }
     
 }
+-(void) uploadProfileImage{
+    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
+    NSString * loginName= [array objectAtIndex:0];
+    
+    STreamUser * user = [[STreamUser alloc]init];
+    STreamFile *file = [[STreamFile alloc] init];
+    UIImage *sImage = [self imageWithImageSimple:avatarImg scaledToSize:CGSizeMake(avatarImg.size.width*0.3, avatarImg.size.height*0.3)];
+    NSData * data = UIImageJPEGRepresentation(sImage, 1.0);
+    [file postData:data];
+    
+    NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
+    if ([[file errorMessage] isEqualToString:@""] && [file fileId]){
+        [metaData setValue:[file fileId] forKey:@"profileImageId"];
+        [user updateUserMetadata:loginName withMetadata:metaData];
+        ImageCache *imageCache = [ImageCache sharedObject];
+        [imageCache saveUserMetadata:loginName withMetadata:metaData];
+    }
+    NSLog(@"ID:%@",[file fileId]);
 
+}
 
 -(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
     UIGraphicsBeginImageContext(newSize);
