@@ -266,19 +266,19 @@
             [data writeToFile : mp4Path atomically: YES ];
             NSURL *url = [NSURL fileURLWithPath:mp4Path];
             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
+            player.shouldAutoplay = NO;
             UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
             NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
-            NSString * userID = [self getUserID];
-            NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-            [friendDict setObject:mp4Path forKey:sendToID];
-            [jsonDic setObject:friendDict forKey:userID];
             bdata.delegate = self;
             if (otherData)
                 bdata.avatar = [UIImage imageWithData:otherData];
             [bubbleData addObject:bdata];
+            NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+            [friendDict setObject:mp4Path forKey:@"video"];
+            [jsonDic setObject:friendDict forKey:sendToID];
+            
         }else{
             NSBubbleData *bubble = [NSBubbleData dataWithtimes:[body stringByAppendingString:@"\""] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withData:data];
-            
             bubble.delegate = self;
             if (otherData)
                 bubble.avatar = [UIImage imageWithData:otherData];
@@ -989,6 +989,7 @@
 - (void) convertFinish
 {
     MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:videoPath];
+    player.shouldAutoplay = NO;
     NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
     UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
     [self sendVideo:fileImage withData:videoData];

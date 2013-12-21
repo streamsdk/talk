@@ -130,10 +130,10 @@
                         }else if ([key isEqualToString:@"video"]) {
                             NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"video"]];
                             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
+                            player.shouldAutoplay = NO;
                             UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"video"]];;
                             NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:date type:BubbleTypeMine withVidePath:[chatDic objectForKey:@"video"]];
-//                            bdata.delegate = self;
                             if(myData)
                                 bdata.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:bdata];
@@ -141,7 +141,6 @@
                     
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];;
                             NSBubbleData *bdata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeMine];
-//                            bdata.delegate = self;
                             if(myData)
                                 bdata.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:bdata];
@@ -172,10 +171,10 @@
                         }else if ([key isEqualToString:@"video"]) {
                             NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"video"]];
                             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
+                            player.shouldAutoplay = NO;
                             UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"video"]];;
                             NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:date type:BubbleTypeSomeoneElse withVidePath:[chatDic objectForKey:@"video"]];
-//                            bdata.delegate = self;
                             if(otherData)
                                 bdata.avatar = [UIImage imageWithData:otherData];
                             [dataArray addObject:bdata];
@@ -183,7 +182,7 @@
                             
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];;
                             NSBubbleData *bdata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeSomeoneElse];
-//                            bdata.delegate = self;
+
                             if(otherData)
                                 bdata.avatar = [UIImage imageWithData:otherData];
                             [dataArray addObject:bdata];
