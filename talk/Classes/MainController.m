@@ -229,6 +229,7 @@
     NSLog(@"");
 }
 - (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID{
+  
     ImageCache *imageCache = [ImageCache sharedObject];
     NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[self getUserID]];
     NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
@@ -237,33 +238,39 @@
     NSMutableDictionary *metaData = [imageCache getUserMetadata:sendToID];
     NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
     otherData = [imageCache getImage:pImageId2];
-
+    
     STreamFile *sf = [[STreamFile alloc] init];
     NSData *data = [sf downloadAsData:fileId];
     
-    if ([fromID isEqualToString:sendToID]) {
-        if ([body isEqualToString:@"photo"]) {
+    
+    if ([body isEqualToString:@"photo"]) {
+        if ([fromID isEqualToString:sendToID]) {
             UIImage * image = [UIImage imageWithData:data];
             NSBubbleData * bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
             if (otherData)
                 bubble.avatar = [UIImage imageWithData:otherData];
             bubble.delegate = self;
             [bubbleData addObject:bubble];
-
-            NSDateFormatter* formater = [[NSDateFormatter alloc] init];
-            [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
-            NSString *photoPath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.png", [formater stringFromDate:[NSDate date]]];
-            [data writeToFile:photoPath atomically:YES];
-            NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-            [friendDict setObject:photoPath forKey:@"photo"];
-            [jsonDic setObject:friendDict forKey:sendToID];
-           
-        }else if ([body isEqualToString:@"video"]){
-            
-            NSDateFormatter* formater = [[NSDateFormatter alloc] init];
-            [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
-           NSString *mp4Path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.mp4", [formater stringFromDate:[NSDate date]]];
-            [data writeToFile : mp4Path atomically: YES ];
+        }
+        
+        NSDateFormatter* formater = [[NSDateFormatter alloc] init];
+        [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
+        NSString *photoPath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.png", [formater stringFromDate:[NSDate date]]];
+        [data writeToFile:photoPath atomically:YES];
+        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        [friendDict setObject:photoPath forKey:@"photo"];
+        [jsonDic setObject:friendDict forKey:sendToID];
+        
+    }else if ([body isEqualToString:@"video"]){
+        NSDateFormatter* formater = [[NSDateFormatter alloc] init];
+        [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
+        NSString *mp4Path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.mp4", [formater stringFromDate:[NSDate date]]];
+        [data writeToFile : mp4Path atomically: YES ];
+        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        [friendDict setObject:mp4Path forKey:@"video"];
+        [jsonDic setObject:friendDict forKey:sendToID];
+        
+        if ([fromID isEqualToString:sendToID]) {
             NSURL *url = [NSURL fileURLWithPath:mp4Path];
             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
             player.shouldAutoplay = NO;
@@ -273,30 +280,27 @@
             if (otherData)
                 bdata.avatar = [UIImage imageWithData:otherData];
             [bubbleData addObject:bdata];
-            NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-            [friendDict setObject:mp4Path forKey:@"video"];
-            [jsonDic setObject:friendDict forKey:sendToID];
-            
-        }else{
+        }
+        
+    }else{
+        if ([fromID isEqualToString:sendToID]) {
             NSBubbleData *bubble = [NSBubbleData dataWithtimes:[body stringByAppendingString:@"\""] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withData:data];
             bubble.delegate = self;
             if (otherData)
                 bubble.avatar = [UIImage imageWithData:otherData];
             [bubbleData addObject:bubble];
-            
-            NSDateFormatter *dateformat=[[NSDateFormatter  alloc]init];
-            [dateformat setDateFormat:@"yyyyMMddHHmmss"];
-            NSString * recordFilePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0]stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.aac",[dateformat stringFromDate:[NSDate date]]]];
-            [data writeToFile:recordFilePath atomically:YES];
-            NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
-            [friendsDict setObject:[body stringByAppendingString:@"\""] forKey:@"time"];
-            [friendsDict setObject:recordFilePath forKey:@"audiodata"];
-            [jsonDic setObject:friendsDict forKey:sendToID];
-
         }
-        [bubbleTableView reloadData];
-        [self scrollBubbleViewToBottomAnimated:YES];
+        NSDateFormatter *dateformat=[[NSDateFormatter  alloc]init];
+        [dateformat setDateFormat:@"yyyyMMddHHmmss"];
+        NSString * recordFilePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0]stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.aac",[dateformat stringFromDate:[NSDate date]]]];
+        [data writeToFile:recordFilePath atomically:YES];
+        NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
+        [friendsDict setObject:[body stringByAppendingString:@"\""] forKey:@"time"];
+        [friendsDict setObject:recordFilePath forKey:@"audiodata"];
+        [jsonDic setObject:friendsDict forKey:sendToID];
     }
+    [bubbleTableView reloadData];
+    [self scrollBubbleViewToBottomAnimated:YES];
     
     TalkDB * db = [[TalkDB alloc]init];
     NSString * userID = [self getUserID];
