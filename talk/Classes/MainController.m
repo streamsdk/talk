@@ -26,7 +26,6 @@
 #import "FileCache.h"
 #import "UIImageViewController.h"
 #import <arcstreamsdk/JSONKit.h>
-
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
 #define BIG_IMG_WIDTH  300.0
@@ -116,9 +115,7 @@
     }
     return userID;
 }
--(void)viewDidAppear:(BOOL)animated{
-    [bubbleTableView reloadData];
-}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -149,6 +146,9 @@
     
     TalkDB * talk =[[TalkDB alloc]init];
     bubbleData = [talk readInitDB:userID withOtherID:sendToID];
+    for (NSBubbleData * data in bubbleData) {
+        data.delegate = self;
+    }
     
     UIBarButtonItem * leftitem = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
     self.navigationItem.leftBarButtonItem = leftitem;
@@ -195,6 +195,13 @@
     otherData = [imageCache getImage:pImageId2];
     
     jsonDic = [[NSMutableDictionary alloc]init];
+    
+    // save time
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    NSDate * time = [NSDate dateWithTimeIntervalSinceNow:0];
+    [imageCache messageTime:time];
 }
 
 #pragma mark - UIBubbleTableViewDataSource implementation
@@ -298,8 +305,6 @@
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
     [db insertDBUserID:userID fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
-    
-    
 
 }
 
@@ -1046,8 +1051,8 @@
 #pragma mark player delegate 
 -(void) playerVideo:(NSString *)path {
     NSURL * url = [NSURL fileURLWithPath:path];
-    MPMoviePlayerViewController* playerView = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
-    [self presentViewController:playerView animated:YES completion:NULL];
+    MPMoviePlayerViewController* pView = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
+    [self presentViewController:pView animated:YES completion:NULL];
 }
 
 //bibImage

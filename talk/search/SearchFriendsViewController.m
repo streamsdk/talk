@@ -99,7 +99,10 @@
         
         button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.tag = indexPath.row;
-        [button setFrame:CGRectMake(cell.frame.size.width-100, 2, 40, 40)];
+        [[button layer] setBorderColor:[[UIColor blueColor] CGColor]];
+        [[button layer] setBorderWidth:1];
+        [[button layer] setCornerRadius:4];
+        [button setFrame:CGRectMake(cell.frame.size.width-100, 7, 60, 30)];
         [cell addSubview:button];
         
     }
@@ -108,7 +111,9 @@
         
         NSString * str = [userData objectAtIndex:indexPath.row];
         if (!isRefresh) {
-            [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
+            [button setTitle:@"friend" forState:UIControlStateNormal];
+
+//            [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
             NSLog(@"index = %d %@",indexPath.row,str);
             
         }else{
@@ -137,7 +142,8 @@
                 [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
                 [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
             }/*/
-            [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
+            [button setTitle:@"add" forState:UIControlStateNormal];
+//            [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
             [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
         }
         cell.textLabel.text = str;

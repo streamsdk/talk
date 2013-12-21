@@ -229,6 +229,8 @@
 		0EE951FA185EA4B9003F4638 /* talkBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE951CE185EA4B9003F4638 /* talkBg.png */; };
 		0EE951FB185EA4B9003F4638 /* video1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE951CF185EA4B9003F4638 /* video1.png */; };
 		0EE951FE185EE9EC003F4638 /* UIImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE951FD185EE9EC003F4638 /* UIImageViewController.m */; };
+		0EEFFF30186556C400018A57 /* message_count.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EEFFF2E186556C400018A57 /* message_count.png */; };
+		0EEFFF31186556C400018A57 /* message_count@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EEFFF2F186556C400018A57 /* message_count@2x.png */; };
 		0EF5A0201855B71400B4EDE7 /* SegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5A01F1855B71400B4EDE7 /* SegmentedControl.m */; };
 		0EF79DE11858006C00EB8A64 /* segmented-bg-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79DD41858006C00EB8A64 /* segmented-bg-left.png */; };
 		0EF79DE21858006C00EB8A64 /* segmented-bg-left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79DD51858006C00EB8A64 /* segmented-bg-left@2x.png */; };
@@ -240,7 +242,6 @@
 		0EF79DE81858006C00EB8A64 /* segmented-pressed-left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79DDB1858006C00EB8A64 /* segmented-pressed-left@2x.png */; };
 		0EF79DE91858006C00EB8A64 /* segmented-pressed-Right.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79DDC1858006C00EB8A64 /* segmented-pressed-Right.png */; };
 		0EF79DEA1858006C00EB8A64 /* segmented-pressed-Right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79DDD1858006C00EB8A64 /* segmented-pressed-Right@2x.png */; };
-		0EF79DEB1858006C00EB8A64 /* segmented-pressed-Right@2xx.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79DDE1858006C00EB8A64 /* segmented-pressed-Right@2xx.png */; };
 		0EF79DEC1858006C00EB8A64 /* segmented-separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79DDF1858006C00EB8A64 /* segmented-separator.png */; };
 		0EF79DED1858006C00EB8A64 /* segmented-separator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF79DE01858006C00EB8A64 /* segmented-separator@2x.png */; };
 		0EF79DF318580D9100EB8A64 /* IconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF79DF218580D9100EB8A64 /* IconView.m */; };
@@ -652,6 +653,8 @@
 		0EE951CF185EA4B9003F4638 /* video1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video1.png; sourceTree = "<group>"; };
 		0EE951FC185EE9EC003F4638 /* UIImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIImageViewController.h; path = Classes/UIImageViewController.h; sourceTree = "<group>"; };
 		0EE951FD185EE9EC003F4638 /* UIImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIImageViewController.m; path = Classes/UIImageViewController.m; sourceTree = "<group>"; };
+		0EEFFF2E186556C400018A57 /* message_count.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message_count.png; sourceTree = "<group>"; };
+		0EEFFF2F186556C400018A57 /* message_count@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message_count@2x.png"; sourceTree = "<group>"; };
 		0EF5A01E1855B71400B4EDE7 /* SegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SegmentedControl.h; path = Classes/SegmentedControl.h; sourceTree = "<group>"; };
 		0EF5A01F1855B71400B4EDE7 /* SegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SegmentedControl.m; path = Classes/SegmentedControl.m; sourceTree = "<group>"; };
 		0EF79DD41858006C00EB8A64 /* segmented-bg-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-bg-left.png"; sourceTree = "<group>"; };
@@ -664,7 +667,6 @@
 		0EF79DDB1858006C00EB8A64 /* segmented-pressed-left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-pressed-left@2x.png"; sourceTree = "<group>"; };
 		0EF79DDC1858006C00EB8A64 /* segmented-pressed-Right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-pressed-Right.png"; sourceTree = "<group>"; };
 		0EF79DDD1858006C00EB8A64 /* segmented-pressed-Right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-pressed-Right@2x.png"; sourceTree = "<group>"; };
-		0EF79DDE1858006C00EB8A64 /* segmented-pressed-Right@2xx.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-pressed-Right@2xx.png"; sourceTree = "<group>"; };
 		0EF79DDF1858006C00EB8A64 /* segmented-separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-separator.png"; sourceTree = "<group>"; };
 		0EF79DE01858006C00EB8A64 /* segmented-separator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-separator@2x.png"; sourceTree = "<group>"; };
 		0EF79DF118580D9100EB8A64 /* IconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IconView.h; path = IconSort/IconView.h; sourceTree = "<group>"; };
@@ -1673,6 +1675,8 @@
 		0EE951A1185EA4B9003F4638 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0EEFFF2E186556C400018A57 /* message_count.png */,
+				0EEFFF2F186556C400018A57 /* message_count@2x.png */,
 				0EE951AE185EA4B9003F4638 /* images */,
 				0EE951A2185EA4B9003F4638 /* add.png */,
 				0EE951A3185EA4B9003F4638 /* addIcon.png */,
@@ -1784,7 +1788,6 @@
 				0EF79DDB1858006C00EB8A64 /* segmented-pressed-left@2x.png */,
 				0EF79DDC1858006C00EB8A64 /* segmented-pressed-Right.png */,
 				0EF79DDD1858006C00EB8A64 /* segmented-pressed-Right@2x.png */,
-				0EF79DDE1858006C00EB8A64 /* segmented-pressed-Right@2xx.png */,
 				0EF79DDF1858006C00EB8A64 /* segmented-separator.png */,
 				0EF79DE01858006C00EB8A64 /* segmented-separator@2x.png */,
 			);
@@ -1946,7 +1949,6 @@
 				0EE951F0185EA4B9003F4638 /* typingSomeone.png in Resources */,
 				0EE951E0185EA4B9003F4638 /* camera_button_take@2x.png in Resources */,
 				0EF79DE41858006C00EB8A64 /* segmented-bg-Right@2x.png in Resources */,
-				0EF79DEB1858006C00EB8A64 /* segmented-pressed-Right@2xx.png in Resources */,
 				0EF79DE31858006C00EB8A64 /* segmented-bg-Right.png in Resources */,
 				0EF79DE51858006C00EB8A64 /* segmented-bg.png in Resources */,
 				03D9C0EA18145E510039118F /* README.txt in Resources */,
@@ -1958,6 +1960,7 @@
 				0EE951E3185EA4B9003F4638 /* faceDelete.png in Resources */,
 				0EE951F9185EA4B9003F4638 /* talk4s.png in Resources */,
 				0EF79DE91858006C00EB8A64 /* segmented-pressed-Right.png in Resources */,
+				0EEFFF30186556C400018A57 /* message_count.png in Resources */,
 				0EE951E2185EA4B9003F4638 /* face@2x.png in Resources */,
 				0EF79DEA1858006C00EB8A64 /* segmented-pressed-Right@2x.png in Resources */,
 				0EE951D5185EA4B9003F4638 /* b4.png in Resources */,
@@ -1967,6 +1970,7 @@
 				0EE951F6185EA4B9003F4638 /* photoMark.png in Resources */,
 				03D9C0EF18145E510039118F /* build-libidn.sh in Resources */,
 				0EE951F1185EA4B9003F4638 /* typingSomeone@2x.png in Resources */,
+				0EEFFF31186556C400018A57 /* message_count@2x.png in Resources */,
 				0EE951EB185EA4B9003F4638 /* Speak@2x.png in Resources */,
 				0EE951F4185EA4B9003F4638 /* Voice.png in Resources */,
 				0EE951D0185EA4B9003F4638 /* add.png in Resources */,

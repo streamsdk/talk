@@ -86,6 +86,12 @@
     
     NSString *sqlQuery = @"SELECT * FROM FILEID";
     sqlite3_stmt * statement;
+    /*NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    NSDate * nowTime = [NSDate dateWithTimeIntervalSinceNow:0];
+    NSDate *formerTime = [imageCache getMessageTime];*/
+    
     if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
         while (sqlite3_step(statement) == SQLITE_ROW) {
             char *userId = (char*)sqlite3_column_text(statement, 1);
@@ -205,16 +211,9 @@
     
     return dataArray;
 }
--(void) playerVideo:(NSString *)path{
-    NSLog(@"<#string#>");
-}
--(void) bigImage:(UIImage *)image{
-//    UIImageViewController * iView = [[UIImageViewController alloc]init];
-//    iView .image = image;
-//    iView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-//    [self presentViewController:iView animated:YES completion:nil];
-     NSLog(@"<#string#>");
-}
+//-(NSMutableArray *) readInitDB :(NSString *) _userID withOtherID:(NSString *)_friendID: withTime:(NSString *)_nowTime{
+//    
+//}
 -(NSString*)getCacheDirectory
 {
     return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];

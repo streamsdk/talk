@@ -24,4 +24,7 @@
 
 -(NSString *) getFriendID;
 
+-(void) messageTime :(NSDate *) time ;
+-(NSDate *) getMessageTime;
+
 @end

@@ -66,7 +66,7 @@
     
     userData = [[NSMutableArray alloc]init];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
-    myTableview  = [[UITableView alloc]initWithFrame:CGRectMake(0, 60, self.view.bounds.size.width, self.view.bounds.size.height-64)];
+    myTableview  = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, self.view.bounds.size.width, self.view.bounds.size.height-44)];
     myTableview.backgroundColor = [UIColor clearColor];
     myTableview.delegate = self;
     myTableview.dataSource = self;
@@ -74,6 +74,7 @@
     
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.myTableview.frame.size.width, 44)];
     label.text =@"Chatters Who Added Me";
+    label.backgroundColor = [UIColor colorWithRed:251.0/255.0 green:203.0/255.0 blue:198.0/255.0 alpha:1.0];
     label.textColor = [UIColor grayColor];
     label.font = [UIFont fontWithName:@"Arial" size:18.0f];
     myTableview.tableHeaderView =label;

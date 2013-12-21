@@ -9,12 +9,14 @@
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
 #import "NSBubbleData.h"
-@interface TalkDB : NSObject<PlayerDelegate>
 
+
+@interface TalkDB : NSObject<PlayerDelegate>
 
 -(void) initDB;
 
 -(void)insertDBUserID:(NSString *)userID fromID:(NSString *)fromID withContent:(NSString *)content withTime:(NSString *)time withIsMine: (int)isMine;
 
 -(NSMutableArray *) readInitDB :(NSString *) _userID withOtherID:(NSString *)_friendID;
+-(NSMutableArray *) readInitDB :(NSString *) _userID withOtherID:(NSString *)_friendID: withTime:(NSString *)_nowTime;
 @end
