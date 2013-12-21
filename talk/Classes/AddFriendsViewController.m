@@ -66,22 +66,24 @@
     
     userData = [[NSMutableArray alloc]init];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
+    
     myTableview  = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, self.view.bounds.size.width, self.view.bounds.size.height-44)];
     myTableview.backgroundColor = [UIColor clearColor];
     myTableview.delegate = self;
     myTableview.dataSource = self;
     [self.view addSubview:myTableview];
     
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.myTableview.frame.size.width, 44)];
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 64+49, self.myTableview.frame.size.width, 44)];
     label.text =@"Chatters Who Added Me";
-    label.backgroundColor = [UIColor colorWithRed:251.0/255.0 green:203.0/255.0 blue:198.0/255.0 alpha:1.0];
+    label.backgroundColor = [UIColor colorWithRed:248.0/255.0 green:168.0/255.0 blue:160.0/255.0 alpha:1.0];
     label.textColor = [UIColor grayColor];
     label.font = [UIFont fontWithName:@"Arial" size:18.0f];
     myTableview.tableHeaderView =label;
-    
+//    [self.view addSubview:label];
     _segmentedControl = [[SegmentedControl alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width,49)];
     [_segmentedControl setDelegate:self];
     [self setupSegmentedControl];
+    
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"loading friends...";
     [self.view addSubview:HUD];
@@ -92,7 +94,7 @@
         [HUD removeFromSuperview];
         HUD = nil;
     }];
-  
+
 }
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [userData count];
@@ -211,9 +213,9 @@
 
 - (void)setupSegmentedControl
 {
-    UIImage *backgroundImage = [[UIImage imageNamed:@"segmented-bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10.0, 10.0, 10.0, 10.0)];
+    UIImage *backgroundImage = [[UIImage imageNamed:@"segmented-bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0, 0.0, 10.0, 10.0)];
     [_segmentedControl setBackgroundImage:backgroundImage];
-    [_segmentedControl setContentEdgeInsets:UIEdgeInsetsMake(2.0, 2.0, 3.0, 2.0)];
+    [_segmentedControl setContentEdgeInsets:UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)];
     [_segmentedControl setSegmentedControlMode:SegmentedControlModeButton];
     [_segmentedControl setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin];
 

@@ -86,11 +86,6 @@
     
     NSString *sqlQuery = @"SELECT * FROM FILEID";
     sqlite3_stmt * statement;
-    /*NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    NSDate * nowTime = [NSDate dateWithTimeIntervalSinceNow:0];
-    NSDate *formerTime = [imageCache getMessageTime];*/
     
     if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
         while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -210,9 +205,61 @@
     
     return dataArray;
 }
-//-(NSMutableArray *) readInitDB :(NSString *) _userID withOtherID:(NSString *)_friendID: withTime:(NSString *)_nowTime{
-//    
-//}
+/*-(NSMutableArray *) readInitDB :(NSString *) _userID withOtherID:(NSString *)_friendID withTime:(NSString *)_nowTime{
+   
+    ImageCache *imageCache = [ImageCache sharedObject];
+    NSMutableArray *dataArray = [[NSMutableArray alloc]init];
+    sqlite3 *database;
+    
+    if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
+        sqlite3_close(database);
+        NSAssert(0, @"Failed to open database");
+    }
+    
+    NSString *sqlQuery = @"SELECT * FROM FILEID";
+    sqlite3_stmt * statement;
+    
+    NSDate *formerTime = [imageCache getMessageTime];
+    
+    if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
+        while (sqlite3_step(statement) == SQLITE_ROW) {
+            char *userId = (char*)sqlite3_column_text(statement, 1);
+            char *friendId =(char*) sqlite3_column_text(statement, 2);
+            char *_content = (char*)sqlite3_column_text(statement, 3);
+            char *time1  = (char*)sqlite3_column_text(statement, 4);
+            int ismine = sqlite3_column_int(statement, 5);
+            
+            NSString * userID = [[NSString alloc]initWithUTF8String:userId];
+            NSString *friendID = [[NSString alloc]initWithUTF8String:friendId];
+            NSString *jsonstring = [[NSString alloc]initWithUTF8String:_content];
+            NSString * time2 =[[NSString alloc]initWithUTF8String:time1];
+            NSDictionary *ret = [jsonstring objectFromJSONString];
+            NSDictionary * chatDic = [ret objectForKey:friendID];
+            
+            NSString *nameFilePath = [self getCacheDirectory];
+            NSArray *array = [[NSArray alloc]initWithContentsOfFile:nameFilePath];
+            NSString * _uesrID = nil;
+            if (array && [array count]!= 0) {
+                _uesrID = [array objectAtIndex:0];
+            }
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+            NSDate *date = [dateFormatter dateFromString:time2];
+            if ([userID isEqualToString:_userID] && [friendID isEqualToString:_friendID]) {
+                
+            }
+        }
+    }
+    
+    sqlite3_finalize(statement);
+    sqlite3_close(database);
+    
+    
+    return dataArray;
+
+}*/
+
 -(NSString*)getCacheDirectory
 {
     return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];

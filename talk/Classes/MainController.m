@@ -312,7 +312,7 @@
 
 }
 
-- (void)didReceiveMessage:(XMPPMessage *)message withFrom:(NSString *)fromID{
+- (void)didReceiveMessage:(XMPPMessage *) message withFrom:(NSString *)fromID{
 
     
     NSString *receiveMessage = [message body];
