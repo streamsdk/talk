@@ -73,13 +73,14 @@
     myTableview.dataSource = self;
     [self.view addSubview:myTableview];
     
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 64+49, self.myTableview.frame.size.width, 44)];
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.myTableview.frame.size.width, 36)];
     label.text =@"Chatters Who Added Me";
-    label.backgroundColor = [UIColor colorWithRed:248.0/255.0 green:168.0/255.0 blue:160.0/255.0 alpha:1.0];
-    label.textColor = [UIColor grayColor];
-    label.font = [UIFont fontWithName:@"Arial" size:18.0f];
+    label.backgroundColor = [UIColor blueColor];
+//    label.backgroundColor = [UIColor colorWithRed:249.0/255.0 green:140.0/255.0 blue:130.0/255.0 alpha:1.0];
+    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont fontWithName:@"DIN Alternate" size:15.0f];
     myTableview.tableHeaderView =label;
-//    [self.view addSubview:label];
+    
     _segmentedControl = [[SegmentedControl alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width,49)];
     [_segmentedControl setDelegate:self];
     [self setupSegmentedControl];
@@ -219,7 +220,6 @@
     [_segmentedControl setSegmentedControlMode:SegmentedControlModeButton];
     [_segmentedControl setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin];
 
-    [_segmentedControl setSeparatorImage:[UIImage imageNamed:@"segmented-separator.png"]];
     // Button 1
     UIButton *buttonSocial = [[UIButton alloc] init];
     UIImage *buttonSocialImageNormal = [UIImage imageNamed:@"segmented-pressed-left.png"];
@@ -233,6 +233,7 @@
     [buttonStar setImage:buttonStarImageNormal forState:UIControlStateNormal];
 
     [_segmentedControl setButtonsArray:@[buttonSocial, buttonStar]];
+    [_segmentedControl setSeparatorImage:[UIImage imageNamed:@"segmented-separator.png"]];
     [self.view addSubview:_segmentedControl];
 }
 #pragma mark -
