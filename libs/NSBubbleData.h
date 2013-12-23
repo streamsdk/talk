@@ -6,13 +6,9 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import<UIKit/UIKit.h>
+#import "PlayerDelegate.h"
 
-@protocol PlayerDelegate <NSObject>
 
--(void) playerVideo:(NSString *)path;
-
--(void)bigImage:(UIImage *)image;
-@end
 
 typedef enum _NSBubbleType
 {

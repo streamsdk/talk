@@ -25,7 +25,10 @@
 #import "ImageCache.h"
 #import "FileCache.h"
 #import "UIImageViewController.h"
+#import "PlayerDelegate.h"
 #import <arcstreamsdk/JSONKit.h>
+#import "PhotoHandler.h"
+
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
 #define BIG_IMG_WIDTH  300.0
@@ -46,6 +49,8 @@
     BOOL isTakeImage;
     
     NSMutableDictionary *jsonDic;
+    
+    PhotoHandler *photoHandler;
 }
 
 @property(nonatomic,retain) Voice * voice;
@@ -202,6 +207,12 @@
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
     NSDate * time = [NSDate dateWithTimeIntervalSinceNow:0];
     [imageCache messageTime:time];
+    
+    
+    //handler
+    photoHandler = [[PhotoHandler alloc] init];
+    [photoHandler setController:self];
+    
 }
 
 #pragma mark - UIBubbleTableViewDataSource implementation
@@ -244,22 +255,7 @@
     
     
     if ([body isEqualToString:@"photo"]) {
-        if ([fromID isEqualToString:sendToID]) {
-            UIImage * image = [UIImage imageWithData:data];
-            NSBubbleData * bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
-            if (otherData)
-                bubble.avatar = [UIImage imageWithData:otherData];
-            bubble.delegate = self;
-            [bubbleData addObject:bubble];
-        }
-        
-        NSDateFormatter* formater = [[NSDateFormatter alloc] init];
-        [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
-        NSString *photoPath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.png", [formater stringFromDate:[NSDate date]]];
-        [data writeToFile:photoPath atomically:YES];
-        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-        [friendDict setObject:photoPath forKey:@"photo"];
-        [jsonDic setObject:friendDict forKey:sendToID];
+        jsonDic = [photoHandler receiveFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
         
     }else if ([body isEqualToString:@"video"]){
         NSDateFormatter* formater = [[NSDateFormatter alloc] init];
@@ -369,42 +365,14 @@
 }
 -(void) sendPhoto :(UIImage *)image {
     if (sendToID) {
-        NSData * data = UIImageJPEGRepresentation(image, 0.7);
-        UIImage * _image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(image.size.width*0.7, image.size.height*0.7)];
-        NSBubbleData * bubbledata = [NSBubbleData dataWithImage:_image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
-        if (myData) {
-            bubbledata.avatar = [UIImage imageWithData:myData];
-        }
-        [bubbleData addObject:bubbledata];
-        
-        bubbledata.delegate = self;
-        [bubbleTableView reloadData];
-        
-        NSDateFormatter* formater = [[NSDateFormatter alloc] init];
-        [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
-        NSString *photoPath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.png", [formater stringFromDate:[NSDate date]]];
-        [data writeToFile:photoPath atomically:YES];
-        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-        [friendDict setObject:photoPath forKey:@"photo"];
-        [jsonDic setObject:friendDict forKey:sendToID];
-        NSString  *str = [jsonDic JSONString];
-        
-        TalkDB * db = [[TalkDB alloc]init];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [db insertDBUserID:[self getUserID] fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
-
-        STreamXMPP *con = [STreamXMPP sharedObject];
-        [con sendFileInBackground:data toUser:sendToID finished:^(NSString *res){
-            NSLog(@"res:%@",res);
-        }byteSent:^(float b){
-            NSLog(@"byteSent:%f",b);
-        }withBodyData:@"photo"];
+        [photoHandler sendPhoto:image forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
     }
+    
+    [bubbleTableView reloadData];
     [self dismissKeyBoard];
     [self scrollBubbleViewToBottomAnimated:YES];
 }
+
 -(void) sendVideo :(UIImage *)image withData:(NSData *)videoData {
     
     NSBubbleData * bubbledata = [NSBubbleData dataWithImage:image withData:videoData withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withVidePath:_mp4Path];
@@ -847,7 +815,7 @@
     isTakeImage = NO;
     UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
     imagePickerController.navigationBar.tintColor = [UIColor colorWithRed:72.0/255.0 green:106.0/255.0 blue:154.0/255.0 alpha:1.0];
-	imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+	imagePickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
 	imagePickerController.delegate = self;
 	imagePickerController.allowsEditing = NO;
     imagePickerController.mediaTypes =  [[NSArray alloc] initWithObjects: (NSString *) kUTTypeImage, nil];

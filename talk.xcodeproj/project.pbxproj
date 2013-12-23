@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		03451B8518326C5600030E79 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03451B8418326C5600030E79 /* SignUpViewController.m */; };
+		037E0431186605A8005ADCEC /* libidn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9C0E018145E510039118F /* libidn.a */; };
 		03C01B1D185ACFB600137E85 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C01B1C185ACFB600137E85 /* arcstreamsdk.framework */; };
 		03D9BEFC18145C080039118F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9BEFB18145C080039118F /* Foundation.framework */; };
 		03D9BEFE18145C080039118F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9BEFD18145C080039118F /* CoreGraphics.framework */; };
@@ -152,6 +153,10 @@
 		03D9C0EE18145E510039118F /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D9C0DA18145E510039118F /* DDXMLNode.m */; };
 		03D9C0EF18145E510039118F /* build-libidn.sh in Resources */ = {isa = PBXBuildFile; fileRef = 03D9C0DE18145E510039118F /* build-libidn.sh */; };
 		03D9C0F91814623B0039118F /* STreamXMPP.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D9C0F81814623B0039118F /* STreamXMPP.m */; };
+		03F50C6A1867B4EB00E08C22 /* VideoHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F50C691867B4EB00E08C22 /* VideoHandler.m */; };
+		03F50C6D1867B50000E08C22 /* MessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F50C6C1867B50000E08C22 /* MessageHandler.m */; };
+		03F50C701867B54300E08C22 /* AudioHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F50C6F1867B54300E08C22 /* AudioHandler.m */; };
+		03F5A18F1867376400CD60FD /* PhotoHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F5A18E1867376400CD60FD /* PhotoHandler.m */; };
 		03F5B05018339C1500A847A0 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03F5B04F18339C1500A847A0 /* MediaPlayer.framework */; };
 		0E0847361827304400350741 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0847351827304400350741 /* AVFoundation.framework */; };
 		0E084790182736BC00350741 /* NSBubbleData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E084786182736BC00350741 /* NSBubbleData.m */; };
@@ -166,7 +171,6 @@
 		0EA16BF918516F28009F2D3A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16BF818516F28009F2D3A /* MBProgressHUD.m */; };
 		0EA16C0018516FC9009F2D3A /* MyFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */; };
 		0EA16C03185176A7009F2D3A /* AddFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16C02185176A7009F2D3A /* AddFriendsViewController.m */; };
-		0ED6BFBF184823740061038D /* libidn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9C0E018145E510039118F /* libidn.a */; };
 		0ED8BC0C185065D7007BD8CA /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED8BC0B185065D7007BD8CA /* RootViewController.m */; };
 		0ED8ECA018288DC400C84741 /* black_bg_ip5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ED8EC9C18288DC400C84741 /* black_bg_ip5@2x.png */; };
 		0ED8ECA118288DC400C84741 /* mic_normal_358x358@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ED8EC9D18288DC400C84741 /* mic_normal_358x358@2x.png */; };
@@ -551,6 +555,15 @@
 		03D9C0F6181462210039118F /* STreamXMPPProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STreamXMPPProtocol.h; path = ../STreamXMPPProtocol.h; sourceTree = "<group>"; };
 		03D9C0F71814623B0039118F /* STreamXMPP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STreamXMPP.h; path = ../STreamXMPP.h; sourceTree = "<group>"; };
 		03D9C0F81814623B0039118F /* STreamXMPP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = STreamXMPP.m; path = ../STreamXMPP.m; sourceTree = "<group>"; };
+		03F50C671867A79400E08C22 /* PlayerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerDelegate.h; sourceTree = "<group>"; };
+		03F50C681867B4EB00E08C22 /* VideoHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoHandler.h; path = handler/VideoHandler.h; sourceTree = "<group>"; };
+		03F50C691867B4EB00E08C22 /* VideoHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoHandler.m; path = handler/VideoHandler.m; sourceTree = "<group>"; };
+		03F50C6B1867B50000E08C22 /* MessageHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageHandler.h; path = handler/MessageHandler.h; sourceTree = "<group>"; };
+		03F50C6C1867B50000E08C22 /* MessageHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageHandler.m; path = handler/MessageHandler.m; sourceTree = "<group>"; };
+		03F50C6E1867B54300E08C22 /* AudioHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioHandler.h; path = handler/AudioHandler.h; sourceTree = "<group>"; };
+		03F50C6F1867B54300E08C22 /* AudioHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioHandler.m; path = handler/AudioHandler.m; sourceTree = "<group>"; };
+		03F5A18D1867376400CD60FD /* PhotoHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoHandler.h; path = handler/PhotoHandler.h; sourceTree = "<group>"; };
+		03F5A18E1867376400CD60FD /* PhotoHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoHandler.m; path = handler/PhotoHandler.m; sourceTree = "<group>"; };
 		03F5B04F18339C1500A847A0 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		0E0847351827304400350741 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0E0847371827305B00350741 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -696,8 +709,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				037E0431186605A8005ADCEC /* libidn.a in Frameworks */,
 				03C01B1D185ACFB600137E85 /* arcstreamsdk.framework in Frameworks */,
-				0ED6BFBF184823740061038D /* libidn.a in Frameworks */,
 				03F5B05018339C1500A847A0 /* MediaPlayer.framework in Frameworks */,
 				03D9BF2B18145C6B0039118F /* MobileCoreServices.framework in Frameworks */,
 				0E8A4F38182B802600705C1F /* libsqlite3.dylib in Frameworks */,
@@ -787,6 +800,7 @@
 		03D9BF0118145C080039118F /* talk */ = {
 			isa = PBXGroup;
 			children = (
+				03F5A1891867367500CD60FD /* handler */,
 				0E8A4F30182B7EE300705C1F /* talkDB */,
 				0ED8EC9A18288D8500C84741 /* Voice */,
 				0EE07675182B53540052BC02 /* creatUI */,
@@ -1558,6 +1572,21 @@
 			path = libidn;
 			sourceTree = "<group>";
 		};
+		03F5A1891867367500CD60FD /* handler */ = {
+			isa = PBXGroup;
+			children = (
+				03F5A18D1867376400CD60FD /* PhotoHandler.h */,
+				03F5A18E1867376400CD60FD /* PhotoHandler.m */,
+				03F50C681867B4EB00E08C22 /* VideoHandler.h */,
+				03F50C691867B4EB00E08C22 /* VideoHandler.m */,
+				03F50C6B1867B50000E08C22 /* MessageHandler.h */,
+				03F50C6C1867B50000E08C22 /* MessageHandler.m */,
+				03F50C6E1867B54300E08C22 /* AudioHandler.h */,
+				03F50C6F1867B54300E08C22 /* AudioHandler.m */,
+			);
+			name = handler;
+			sourceTree = "<group>";
+		};
 		0E084784182736BC00350741 /* libs */ = {
 			isa = PBXGroup;
 			children = (
@@ -1572,6 +1601,7 @@
 				0E08478D182736BC00350741 /* UIBubbleTableViewDataSource.h */,
 				0E08478E182736BC00350741 /* UIBubbleTypingTableViewCell.h */,
 				0E08478F182736BC00350741 /* UIBubbleTypingTableViewCell.m */,
+				03F50C671867A79400E08C22 /* PlayerDelegate.h */,
 			);
 			path = libs;
 			sourceTree = "<group>";
@@ -2056,6 +2086,7 @@
 				03D9C0F91814623B0039118F /* STreamXMPP.m in Sources */,
 				03D9BF7718145E370039118F /* XMPPMessage.m in Sources */,
 				0E084793182736BC00350741 /* UIBubbleTableViewCell.m in Sources */,
+				03F50C6D1867B50000E08C22 /* MessageHandler.m in Sources */,
 				03D9C07818145E410039118F /* XMPPvCardCoreDataStorage.m in Sources */,
 				03D9C06218145E410039118F /* XMPPIQ+JabberRPC.m in Sources */,
 				0EA16BF918516F28009F2D3A /* MBProgressHUD.m in Sources */,
@@ -2070,6 +2101,7 @@
 				03D9C07E18145E410039118F /* XMPPvCardTempBase.m in Sources */,
 				03D9C05318145E410039118F /* XMPPBandwidthMonitor.m in Sources */,
 				03D9C05718145E410039118F /* XMPPReconnect.m in Sources */,
+				03F50C6A1867B4EB00E08C22 /* VideoHandler.m in Sources */,
 				03D9C06418145E410039118F /* XMPPJabberRPCModule.m in Sources */,
 				03D9C09C18145E410039118F /* XMPPMessageDeliveryReceipts.m in Sources */,
 				03D9BF5218145E270039118F /* XMPPDeprecatedPlainAuthentication.m in Sources */,
@@ -2143,6 +2175,7 @@
 				03D9C06B18145E410039118F /* XMPPRoomOccupantCoreDataStorageObject.m in Sources */,
 				03D9BF5118145E270039118F /* XMPPDeprecatedDigestAuthentication.m in Sources */,
 				03D9C09F18145E410039118F /* XMPPAutoTime.m in Sources */,
+				03F5A18F1867376400CD60FD /* PhotoHandler.m in Sources */,
 				03D9C05618145E410039118F /* XMPPProcessOne.m in Sources */,
 				03D9BF7518145E370039118F /* XMPPIQ.m in Sources */,
 				03D9BF5018145E270039118F /* XMPPAnonymousAuthentication.m in Sources */,
@@ -2152,6 +2185,7 @@
 				0ED8ECAC18288EB600C84741 /* VoiceHud.m in Sources */,
 				03D9C09618145E410039118F /* XMPPMessageArchivingCoreDataStorage.m in Sources */,
 				03D9C0A418145E410039118F /* XMPPMessage+XEP_0224.m in Sources */,
+				03F50C701867B54300E08C22 /* AudioHandler.m in Sources */,
 				03D9C06818145E410039118F /* XMPPRoom.xcdatamodeld in Sources */,
 				03D9C05518145E410039118F /* XMPPGoogleSharedStatus.m in Sources */,
 				03D9BF0818145C080039118F /* main.m in Sources */,
@@ -2302,6 +2336,7 @@
 					"/Users/wangshuai/Desktop/talk-emoji/talk/Vendor/libidn",
 					"/Users/wangsh/Desktop/talk-emoji/talk/Vendor/libidn",
 					"/Users/wangsh/Desktop/projects/talk-emoji/talk/Vendor/libidn",
+					/Users/wangshuai/Desktop/projects/talk/Vendor/libidn,
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2343,6 +2378,7 @@
 					"/Users/wangshuai/Desktop/talk-emoji/talk/Vendor/libidn",
 					"/Users/wangsh/Desktop/talk-emoji/talk/Vendor/libidn",
 					"/Users/wangsh/Desktop/projects/talk-emoji/talk/Vendor/libidn",
+					/Users/wangshuai/Desktop/projects/talk/Vendor/libidn,
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
