@@ -28,6 +28,9 @@
 #import "PlayerDelegate.h"
 #import <arcstreamsdk/JSONKit.h>
 #import "PhotoHandler.h"
+#import "VideoHandler.h"
+#import "MessageHandler.h"
+#import "AudioHandler.h"
 
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
@@ -51,6 +54,9 @@
     NSMutableDictionary *jsonDic;
     
     PhotoHandler *photoHandler;
+    VideoHandler *videoHandler;
+    MessageHandler *messageHandler;
+    AudioHandler *audioHandler;
 }
 
 @property(nonatomic,retain) Voice * voice;
@@ -213,6 +219,13 @@
     photoHandler = [[PhotoHandler alloc] init];
     [photoHandler setController:self];
     
+    videoHandler = [[VideoHandler alloc]init];
+    [videoHandler setController:self];
+    
+    messageHandler = [[MessageHandler alloc] init];
+    
+    audioHandler = [[AudioHandler alloc]init];
+    
 }
 
 #pragma mark - UIBubbleTableViewDataSource implementation
@@ -258,42 +271,11 @@
         jsonDic = [photoHandler receiveFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
         
     }else if ([body isEqualToString:@"video"]){
-        NSDateFormatter* formater = [[NSDateFormatter alloc] init];
-        [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
-        NSString *mp4Path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.mp4", [formater stringFromDate:[NSDate date]]];
-        [data writeToFile : mp4Path atomically: YES ];
-        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-        [friendDict setObject:mp4Path forKey:@"video"];
-        [jsonDic setObject:friendDict forKey:sendToID];
-        
-        if ([fromID isEqualToString:sendToID]) {
-            NSURL *url = [NSURL fileURLWithPath:mp4Path];
-            MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
-            player.shouldAutoplay = NO;
-            UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-            NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
-            bdata.delegate = self;
-            if (otherData)
-                bdata.avatar = [UIImage imageWithData:otherData];
-            [bubbleData addObject:bdata];
-        }
-        
+        [videoHandler setController:self];
+        jsonDic = [videoHandler receiveVideoFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+                
     }else{
-        if ([fromID isEqualToString:sendToID]) {
-            NSBubbleData *bubble = [NSBubbleData dataWithtimes:[body stringByAppendingString:@"\""] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withData:data];
-            bubble.delegate = self;
-            if (otherData)
-                bubble.avatar = [UIImage imageWithData:otherData];
-            [bubbleData addObject:bubble];
-        }
-        NSDateFormatter *dateformat=[[NSDateFormatter  alloc]init];
-        [dateformat setDateFormat:@"yyyyMMddHHmmss"];
-        NSString * recordFilePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0]stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.aac",[dateformat stringFromDate:[NSDate date]]]];
-        [data writeToFile:recordFilePath atomically:YES];
-        NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
-        [friendsDict setObject:[body stringByAppendingString:@"\""] forKey:@"time"];
-        [friendsDict setObject:recordFilePath forKey:@"audiodata"];
-        [jsonDic setObject:friendsDict forKey:sendToID];
+        jsonDic = [audioHandler receiveAudioFile:data withBody:body forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
     }
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
@@ -312,22 +294,7 @@
 
     
     NSString *receiveMessage = [message body];
-    if ([fromID isEqualToString:sendToID]) {
-        NSBubbleData *sendBubble = [NSBubbleData dataWithText:receiveMessage date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
-        if (otherData)
-            sendBubble.avatar = [UIImage imageWithData:otherData];
-        [bubbleData addObject:sendBubble];
-    }
-    TalkDB * db = [[TalkDB alloc]init];
-    NSString * userID = [self getUserID];
-    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-    [friendDict setObject:receiveMessage forKey:@"messages"];
-    [jsonDic setObject:friendDict forKey:sendToID];
-    NSString  *str = [jsonDic JSONString];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    [db insertDBUserID:userID fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
+    [messageHandler receiveMessage:receiveMessage forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
     
@@ -373,36 +340,17 @@
     [self scrollBubbleViewToBottomAnimated:YES];
 }
 
--(void) sendVideo :(UIImage *)image withData:(NSData *)videoData {
+-(void) sendVideo {
     
-    NSBubbleData * bubbledata = [NSBubbleData dataWithImage:image withData:videoData withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withVidePath:_mp4Path];
-    bubbledata .delegate = self;
-    if (myData)
-        bubbledata.avatar = [UIImage imageWithData:myData];
-    [bubbleData addObject:bubbledata];
+    if (sendToID) {
+        [videoHandler setController:self];
+        [videoHandler setVideoPath:videoPath];
+        [videoHandler encodeToMp4forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
+        [bubbleTableView reloadData];
+        [self dismissKeyBoard];
+        [self scrollBubbleViewToBottomAnimated:YES];
+    }
     
-    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-    [friendDict setObject:_mp4Path forKey:@"video"];
-    [jsonDic setObject:friendDict forKey:sendToID];
-    NSString  *str = [jsonDic JSONString];
-    
-    TalkDB * db = [[TalkDB alloc]init];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    [db insertDBUserID:[self getUserID] fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
-
-    
-    [bubbleTableView reloadData];
-    STreamXMPP *con = [STreamXMPP sharedObject];
-    [con sendFileInBackground:videoData toUser:sendToID finished:^(NSString *res){
-        NSLog(@"res:%@",res);
-    }byteSent:^(float b){
-        NSLog(@"byteSent:%f",b);
-    }withBodyData:@"video"];
-    
-    [self dismissKeyBoard];
-    [self scrollBubbleViewToBottomAnimated:YES];
 }
 #pragma mark send  message
 -(void) sendMessageClicked {
@@ -411,26 +359,7 @@
         
         NSString * messages = messageText.text;
         if ([messages length]!=0) {
-            bubbleTableView.typingBubble = NSBubbleTypingTypeNobody;
-            NSBubbleData *sendBubble = [NSBubbleData dataWithText:messages date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
-            if (myData)
-                sendBubble.avatar = [UIImage imageWithData:myData];
-            [bubbleData addObject:sendBubble];
-            [bubbleTableView reloadData];
-            
-            
-            STreamXMPP *con = [STreamXMPP sharedObject];
-            [con sendMessage:sendToID withMessage:messages];
-            NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-            [friendDict setObject:messages forKey:@"messages"];
-            [jsonDic setObject:friendDict forKey:sendToID];
-            NSString  *str = [jsonDic JSONString];
-            
-            TalkDB * db = [[TalkDB alloc]init];
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-            [db insertDBUserID:[self getUserID] fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+            [messageHandler sendMessage:messages forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
             messageText.text = @"";
             [self dismissKeyBoard];
             [messageText resignFirstResponder];
@@ -450,40 +379,8 @@
 #pragma mark send audio
 -(void) sendRecordAudio {
     
-    NSURL* url = [NSURL fileURLWithPath:self.voice.recordPath];
-    NSError * err = nil;
-    NSData * audioData = [NSData dataWithContentsOfFile:[url path] options: 0 error:&err];
     if (self.voice.recordTime >= 0.5f) {
-        NSString * bodyData = [NSString stringWithFormat:@"%d",(int)self.voice.recordTime];
-        
-        NSBubbleData *bubble = [NSBubbleData dataWithtimes:bodyData date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withData:audioData];
-        if (myData)
-            bubble.avatar = [UIImage imageWithData:myData];
-        [bubbleData addObject:bubble];
-     
-        NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
-        [friendsDict setObject:bodyData forKey:@"time"];
-        [friendsDict setObject:[url path] forKey:@"audiodata"];
-        [jsonDic setObject:friendsDict forKey:sendToID];
-        NSString * str = [jsonDic JSONString];
-        NSLog(@"json===:%@",str);
-        TalkDB * db = [[TalkDB alloc]init];
-         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-         [db insertDBUserID:[self getUserID] fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
-        
-        STreamXMPP *con = [STreamXMPP sharedObject];
-
-            [con sendFileInBackground:audioData toUser:sendToID finished:^(NSString *res) {
-            
-            NSLog(@"%@", res);
-            
-        }byteSent:^(float b){
-            
-            NSLog(@"%@", [NSString stringWithFormat:@"%1.6f", b]);
-            
-        }withBodyData:bodyData];
+        [audioHandler sendAudio:voice forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
         [bubbleTableView reloadData];
         [self scrollBubbleViewToBottomAnimated:YES];
         
@@ -491,6 +388,7 @@
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Send Failed" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"", nil];
         [alert show];
     }
+
 }
 
 -(void) recordStart
@@ -862,111 +760,6 @@
    
 }
 #pragma mark 
-- (void)encodeToMp4
-{
-    AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:videoPath options:nil];
-    NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
-    NSString*  _mp4Quality = AVAssetExportPresetHighestQuality;
-    if ([compatiblePresets containsObject:_mp4Quality])
-        
-    {
-        UIAlertView *_alert = [[UIAlertView alloc] init];
-        [_alert setTitle:@"Waiting.."];
-        
-        UIActivityIndicatorView* activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        activity.frame = CGRectMake(140,
-                                    80,
-                                    CGRectGetWidth(_alert.frame),
-                                    CGRectGetHeight(_alert.frame));
-        [_alert addSubview:activity];
-        [activity startAnimating];
-        _startDate = [NSDate date];
-        
-        AVAssetExportSession *exportSession = [[AVAssetExportSession alloc]initWithAsset:avAsset
-                                                                              presetName:_mp4Quality];
-        NSDateFormatter* formater = [[NSDateFormatter alloc] init];
-        [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
-        _mp4Path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.mp4", [formater stringFromDate:[NSDate date]]];
-     
-        
-        exportSession.outputURL = [NSURL fileURLWithPath: _mp4Path];
-        exportSession.outputFileType = AVFileTypeMPEG4;
-        [exportSession exportAsynchronouslyWithCompletionHandler:^{
-            switch ([exportSession status]) {
-                case AVAssetExportSessionStatusFailed:
-                {
-                    [_alert dismissWithClickedButtonIndex:0 animated:NO];
-                    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                    message:[[exportSession error] localizedDescription]
-                                                                   delegate:nil
-                                                          cancelButtonTitle:@"OK"
-                                                          otherButtonTitles: nil];
-                    [alert show];
-                    break;
-                }
-                    
-                case AVAssetExportSessionStatusCancelled:
-                    NSLog(@"Export canceled");
-                    [_alert dismissWithClickedButtonIndex:0
-                                                 animated:YES];
-                    break;
-                case AVAssetExportSessionStatusCompleted:
-                    NSLog(@"Successful!");
-                    [self performSelectorOnMainThread:@selector(convertFinish) withObject:nil waitUntilDone:NO];
-                    break;
-                default:
-                    break;
-            }
-        }];
-    }
-    else
-    {
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"AVAsset doesn't support mp4 quality"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles: nil];
-        [alert show];
-    }
-}
-#pragma mark - private Method
-
-- (NSInteger) getFileSize:(NSString*) path
-{
-    NSFileManager * filemanager = [[NSFileManager alloc]init];
-    if([filemanager fileExistsAtPath:path]){
-        NSDictionary * attributes = [filemanager attributesOfItemAtPath:path error:nil];
-        NSNumber *theFileSize;
-        if ( (theFileSize = [attributes objectForKey:NSFileSize]) )
-            return  [theFileSize intValue]/1024;
-        else
-            return -1;
-    }
-    else
-    {
-        return -1;
-    }
-}
-
-- (CGFloat) getVideoDuration:(NSURL*) URL
-{
-    NSDictionary *opts = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO]
-                                                     forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
-    AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:URL options:opts];
-    float second = 0;
-    second = urlAsset.duration.value/urlAsset.duration.timescale;
-    return second;
-}
-
-- (void) convertFinish
-{
-    MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:videoPath];
-    player.shouldAutoplay = NO;
-    NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
-    UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-    [self sendVideo:fileImage withData:videoData];
-}
-
 
 #pragma mark - UIImagePickerControllerDelegate
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
@@ -985,7 +778,7 @@
 //        [self sendPhoto:image];
     }else{
         videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
-        [self encodeToMp4];
+        [self sendVideo];
         
     }
     [picker dismissViewControllerAnimated:YES completion:NULL];
@@ -1020,25 +813,6 @@
     }
 }
 
-
-#pragma mark player delegate 
--(void) playerVideo:(NSString *)path {
-    NSURL * url = [NSURL fileURLWithPath:path];
-    MPMoviePlayerViewController* pView = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
-    [self presentViewController:pView animated:YES completion:NULL];
-}
-
-//bibImage
-
--(void) bigImage:(UIImage *)image {
-    
-    UIImageViewController * iView = [[UIImageViewController alloc]init];
-    iView.image = image;
-    iView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentViewController:iView animated:YES completion:nil];
-//    [self.navigationController pushViewController:iView animated:YES];
-}
-
 -(void)  selectedIconView:(NSInteger) buttonTag{
     
     if(buttonTag == 0){
@@ -1058,6 +832,22 @@
     }
         
 }
+-(void)bigImage:(UIImage *)image{
+    UIImageViewController * iView = [[UIImageViewController alloc]init];
+    iView.image = image;
+    iView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:iView animated:YES completion:nil];
+}
+
+-(void) playerVideo:(NSString *)path{
+    
+    NSURL * url = [NSURL fileURLWithPath:path];
+    MPMoviePlayerViewController* pView = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
+    [self presentViewController:pView animated:YES completion:NULL];
+ 
+}
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

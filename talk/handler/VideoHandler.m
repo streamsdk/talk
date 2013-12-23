@@ -7,7 +7,201 @@
 //
 
 #import "VideoHandler.h"
+#import <MediaPlayer/MediaPlayer.h>
+#import "NSBubbleData.h"
+#import "TalkDB.h"
+#import "STreamXMPP.h"
+#import <arcstreamsdk/JSONKit.h>
 
 @implementation VideoHandler
+
+@synthesize controller,videoPath;
+
+-(NSString *)getUserID{
+    
+    NSString * userID =nil;
+    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
+    if (array && [array count]!=0) {
+        
+        userID = [array objectAtIndex:0];
+    }
+    return userID;
+}
+- (NSMutableDictionary *)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
+    
+    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+    
+    NSDateFormatter* formater = [[NSDateFormatter alloc] init];
+    [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
+    NSString * mp4Path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.mp4", [formater stringFromDate:[NSDate date]]];
+    [data writeToFile : mp4Path atomically: YES ];
+    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+    [friendDict setObject:mp4Path forKey:@"video"];
+    [jsonDic setObject:friendDict forKey:sendID];
+    
+    if ([fromID isEqualToString:sendID]) {
+        NSURL *url = [NSURL fileURLWithPath:mp4Path];
+        MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
+        player.shouldAutoplay = NO;
+        UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+        NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
+        bdata.delegate = self;
+        if (otherData)
+            bdata.avatar = [UIImage imageWithData:otherData];
+        [bubbleData addObject:bdata];
+    }
+    return jsonDic;
+
+}
+-(void) sendVideo :(UIImage *)image withData:(NSData *)videoData {
+    
+    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+    
+    NSBubbleData * bdata = [NSBubbleData dataWithImage:image withData:videoData withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withVidePath:_mp4Path];
+    bdata .delegate = self;
+    if (_myData)
+        bdata.avatar = [UIImage imageWithData:_myData];
+    [_bubbleData addObject:bdata];
+    
+    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+    [friendDict setObject:_mp4Path forKey:@"video"];
+    [jsonDic setObject:friendDict forKey:_sendID];
+    NSString  *str = [jsonDic JSONString];
+    
+    TalkDB * db = [[TalkDB alloc]init];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [db insertDBUserID:[self getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+    
+
+    STreamXMPP *con = [STreamXMPP sharedObject];
+    [con sendFileInBackground:videoData toUser:_sendID finished:^(NSString *res){
+        NSLog(@"res:%@",res);
+    }byteSent:^(float b){
+        NSLog(@"byteSent:%f",b);
+    }withBodyData:@"video"];
+
+}
+- (void)encodeToMp4forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID
+{
+    _bubbleData = bubbleData;
+    _myData = myData;
+    _sendID = sendID;
+    AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:videoPath options:nil];
+    NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
+    NSString*  _mp4Quality = AVAssetExportPresetHighestQuality;
+    if ([compatiblePresets containsObject:_mp4Quality])
+        
+    {
+        UIAlertView *_alert = [[UIAlertView alloc] init];
+        [_alert setTitle:@"Waiting.."];
+        
+        UIActivityIndicatorView* activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        activity.frame = CGRectMake(140,
+                                    80,
+                                    CGRectGetWidth(_alert.frame),
+                                    CGRectGetHeight(_alert.frame));
+        [_alert addSubview:activity];
+        [activity startAnimating];
+        
+        AVAssetExportSession *exportSession = [[AVAssetExportSession alloc]initWithAsset:avAsset
+                                                                              presetName:_mp4Quality];
+        NSDateFormatter* formater = [[NSDateFormatter alloc] init];
+        [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
+        _mp4Path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.mp4", [formater stringFromDate:[NSDate date]]];
+        
+        
+        exportSession.outputURL = [NSURL fileURLWithPath: _mp4Path];
+        exportSession.outputFileType = AVFileTypeMPEG4;
+        [exportSession exportAsynchronouslyWithCompletionHandler:^{
+            switch ([exportSession status]) {
+                case AVAssetExportSessionStatusFailed:
+                {
+                    [_alert dismissWithClickedButtonIndex:0 animated:NO];
+                    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                    message:[[exportSession error] localizedDescription]
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles: nil];
+                    [alert show];
+                    break;
+                }
+                    
+                case AVAssetExportSessionStatusCancelled:
+                    NSLog(@"Export canceled");
+                    [_alert dismissWithClickedButtonIndex:0
+                                                 animated:YES];
+                    break;
+                case AVAssetExportSessionStatusCompleted:
+                    NSLog(@"Successful!");
+                    [self performSelectorOnMainThread:@selector(convertFinish) withObject:nil waitUntilDone:NO];
+                    break;
+                default:
+                    break;
+            }
+        }];
+    }
+    else
+    {
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"AVAsset doesn't support mp4 quality"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles: nil];
+        [alert show];
+    }
+}
+#pragma mark - private Method
+
+- (NSInteger) getFileSize:(NSString*) path
+{
+    NSFileManager * filemanager = [[NSFileManager alloc]init];
+    if([filemanager fileExistsAtPath:path]){
+        NSDictionary * attributes = [filemanager attributesOfItemAtPath:path error:nil];
+        NSNumber *theFileSize;
+        if ( (theFileSize = [attributes objectForKey:NSFileSize]) )
+            return  [theFileSize intValue]/1024;
+        else
+            return -1;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+- (CGFloat) getVideoDuration:(NSURL*) URL
+{
+    NSDictionary *opts = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO]
+                                                     forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
+    AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:URL options:opts];
+    float second = 0;
+    second = urlAsset.duration.value/urlAsset.duration.timescale;
+    return second;
+}
+
+- (void) convertFinish
+{
+    MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:videoPath];
+    player.shouldAutoplay = NO;
+    NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
+    UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+    [self sendVideo:fileImage withData:videoData];
+}
+
+
+-(void)bigImage:(UIImage *)image{
+    NSLog(@"");
+}
+
+-(void) playerVideo:(NSString *)path{
+    NSURL * url = [NSURL fileURLWithPath:path];
+    MPMoviePlayerViewController* pView = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
+    [controller presentViewController:pView animated:YES completion:NULL];
+
+    
+}
 
 @end
