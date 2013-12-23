@@ -16,6 +16,7 @@
 @implementation VideoHandler
 
 @synthesize controller,videoPath;
+@synthesize delegate;
 
 -(NSString *)getUserID{
     
@@ -54,41 +55,17 @@
     return jsonDic;
 
 }
--(void) sendVideo :(UIImage *)image withData:(NSData *)videoData {
-    
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
-    
-    NSBubbleData * bdata = [NSBubbleData dataWithImage:image withData:videoData withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withVidePath:_mp4Path];
-    bdata .delegate = self;
-    if (_myData)
-        bdata.avatar = [UIImage imageWithData:_myData];
-    [_bubbleData addObject:bdata];
-    
-    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-    [friendDict setObject:_mp4Path forKey:@"video"];
-    [jsonDic setObject:friendDict forKey:_sendID];
-    NSString  *str = [jsonDic JSONString];
-    
-    TalkDB * db = [[TalkDB alloc]init];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    [db insertDBUserID:[self getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
-    
-
-    STreamXMPP *con = [STreamXMPP sharedObject];
-    [con sendFileInBackground:videoData toUser:_sendID finished:^(NSString *res){
-        NSLog(@"res:%@",res);
-    }byteSent:^(float b){
-        NSLog(@"byteSent:%f",b);
-    }withBodyData:@"video"];
-
-}
-- (void)encodeToMp4forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID
+-(void)sendVideoforBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID
 {
     _bubbleData = bubbleData;
     _myData = myData;
     _sendID = sendID;
+    [self encodeToMp4];
+  
+}
+- (void)encodeToMp4
+{
+    
     AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:videoPath options:nil];
     NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
     NSString*  _mp4Quality = AVAssetExportPresetHighestQuality;
@@ -191,7 +168,37 @@
     [self sendVideo:fileImage withData:videoData];
 }
 
+-(void) sendVideo:(UIImage *)image withData:(NSData *)videoData{
+    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+    
+    NSBubbleData * bdata = [NSBubbleData dataWithImage:image withData:videoData withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withVidePath:_mp4Path];
+    bdata .delegate = self;
+    if (_myData)
+        bdata.avatar = [UIImage imageWithData:_myData];
+    [_bubbleData addObject:bdata];
+    
+    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+    [friendDict setObject:_mp4Path forKey:@"video"];
+    [jsonDic setObject:friendDict forKey:_sendID];
+    NSString  *str = [jsonDic JSONString];
+    
+    TalkDB * db = [[TalkDB alloc]init];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [db insertDBUserID:[self getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+    
+    
+    STreamXMPP *con = [STreamXMPP sharedObject];
+    [con sendFileInBackground:videoData toUser:_sendID finished:^(NSString *res){
+        NSLog(@"res:%@",res);
+    }byteSent:^(float b){
+        NSLog(@"byteSent:%f",b);
+    }withBodyData:@"video"];
+    
+    [delegate reloadTable];
 
+}
 -(void)bigImage:(UIImage *)image{
     NSLog(@"");
 }

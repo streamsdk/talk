@@ -37,7 +37,7 @@
 #define BIG_IMG_WIDTH  300.0
 #define BIG_IMG_HEIGHT 340.0
 
-@interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate>
+@interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate,reloadTableDeleage>
 {
     NSMutableArray *bubbleData;
     CreateUI * createUI;
@@ -343,9 +343,11 @@
 -(void) sendVideo {
     
     if (sendToID) {
+        
         [videoHandler setController:self];
         [videoHandler setVideoPath:videoPath];
-        [videoHandler encodeToMp4forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
+        [videoHandler sendVideoforBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
+        videoHandler.delegate = self;
         [bubbleTableView reloadData];
         [self dismissKeyBoard];
         [self scrollBubbleViewToBottomAnimated:YES];
@@ -846,7 +848,10 @@
     [self presentViewController:pView animated:YES completion:NULL];
  
 }
-
+-(void)reloadTable{
+    [bubbleTableView reloadData];
+    [self scrollBubbleViewToBottomAnimated:YES];
+}
 
 - (void)didReceiveMemoryWarning
 {

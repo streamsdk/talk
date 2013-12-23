@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "PlayerDelegate.h"
 
+@protocol reloadTableDeleage <NSObject>
+
+-(void)reloadTable;
+
+@end
 @interface VideoHandler : NSObject <PlayerDelegate>
 {
    
@@ -20,9 +25,10 @@
 }
 @property(nonatomic, strong)UIViewController *controller;
 @property (nonatomic,strong) NSURL  *videoPath;
+@property (assign)id<reloadTableDeleage>delegate;
 
 - (NSMutableDictionary *)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID;
 
-- (void)encodeToMp4forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID;
+-(void)sendVideoforBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID;
 
 @end
