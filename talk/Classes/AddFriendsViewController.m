@@ -17,7 +17,9 @@
 #import "FileCache.h"
 #import <arcstreamsdk/STreamFile.h>
 #import "MBProgressHUD.h"
-
+#import "TabBarViewController.h"
+#import "HandleViewController.h"
+#import "HandlerUserIdAndDateFormater.h"
 #define LEFT_BUTTON_TAG 1000
 #define RIGHT_BUTTON_TAG 2000
 
@@ -37,9 +39,8 @@
 }
 
 -(void) loadFriends {
-    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-    NSString * loginName= [array objectAtIndex:0];
+    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+    NSString * loginName= [handler getUserID];
     STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:loginName];
     [sq setQueryLogicAnd:FALSE];
     [sq whereEqualsTo:@"status" forValue:@"friend"];
@@ -244,12 +245,33 @@
     if (_segmentedControl == segmentedControl)
        
     if (index ==1 ) {
-        SearchFriendsViewController * search = [[SearchFriendsViewController alloc]init];
-        [self.navigationController pushViewController:search animated:NO];
+        SearchFriendsViewController * searchVC = [[SearchFriendsViewController alloc]init];
+        
+//        [self.navigationController pushViewController:search animated:NO];
         UIButton * button =(UIButton *) [self.view viewWithTag:LEFT_BUTTON_TAG];
         [button setImage:[UIImage imageNamed:@"segmented-bg-left.png"] forState:UIControlStateNormal];
         UIButton * button2 =(UIButton *) [self.view viewWithTag:RIGHT_BUTTON_TAG];
         [button2 setImage:[UIImage imageNamed:@"segmented-pressed-Right.png"] forState:UIControlStateNormal];
+        HandleViewController * handleVC =[[HandleViewController alloc]init];
+        
+        UITabBarItem *searchBar=[[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemSearch tag:1001];
+        UITabBarItem *handleBar=[[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemHistory tag:1002];
+        
+        searchVC.tabBarItem = searchBar;
+        
+        handleVC.tabBarItem = handleBar;
+        
+        NSMutableArray * array = [[NSMutableArray alloc]init];
+        
+        UINavigationController * searchNav = [[UINavigationController alloc]initWithRootViewController:searchVC];
+        UINavigationController * handleNav =[[UINavigationController alloc]initWithRootViewController:handleVC];
+        
+        [array addObject:searchNav];
+        [array addObject:handleNav];
+        
+        TabBarViewController * tabBar = [[TabBarViewController alloc]init];
+        tabBar.viewControllers = array;
+        [self presentViewController:tabBar animated:NO completion:NULL];
     }
     if (index == 0) {
         UIButton * button =(UIButton *) [self.view viewWithTag:LEFT_BUTTON_TAG];

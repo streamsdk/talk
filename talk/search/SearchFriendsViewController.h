@@ -11,7 +11,7 @@
 @interface SearchFriendsViewController : UIViewController <UISearchBarDelegate, UISearchDisplayDelegate,UITableViewDelegate,UITableViewDataSource,SegmentedControlDelegate>
 {
      SegmentedControl *_segmentedControl;
-     BOOL isRefresh;
+
 }
 @property (nonatomic,strong) UITableView * myTableview;
 @property (nonatomic,strong) NSMutableArray *userData;

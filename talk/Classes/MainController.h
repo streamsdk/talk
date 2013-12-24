@@ -43,8 +43,6 @@
 
 @property (nonatomic,strong) UITextField *messageText;
 
-@property (nonatomic,retain) NSString *sendToID;
-
 @property(nonatomic,retain)UIActionSheet* actionSheet;
 
 @property(nonatomic,retain)NSMutableArray *timeArray;

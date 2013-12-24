@@ -11,8 +11,8 @@
 @interface SearchData : NSObject
 + (SearchData *)sharedObject;
 
--(void) setSearchData:(NSString * )string;
+-(void) setSearchData:(NSString *)string withUserID:(NSString *)id;
 
--(NSMutableArray*) getSearchData;
+-(NSMutableArray *) getSearchData:(NSString * )id;
 
 @end

@@ -232,6 +232,7 @@
 -(void) loadAvatar:(NSString *)userID withCell:(UITableViewCell *)cell{
     ImageCache *imageCache = [ImageCache sharedObject];
     if ([imageCache getUserMetadata:userID]!=nil) {
+
         NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
         NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
         if ([imageCache getImage:pImageId] == nil && pImageId){

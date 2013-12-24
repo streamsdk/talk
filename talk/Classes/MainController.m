@@ -51,9 +51,7 @@
     NSData *myData;
     NSData * otherData;
     BOOL isTakeImage;
-    
-    NSMutableDictionary *jsonDic;
-    
+
     PhotoHandler *photoHandler;
     VideoHandler *videoHandler;
     MessageHandler *messageHandler;
@@ -67,7 +65,6 @@
 @implementation MainController
 
 @synthesize bubbleTableView,toolBar,messageText,sendButton,iconButton ,recordButton,recordOrKeyboardButton,keyBoardButton;
-@synthesize sendToID;
 @synthesize voice;
 @synthesize actionSheet;
 @synthesize timeArray;
@@ -124,7 +121,7 @@
         [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     }
     ImageCache * imageCache =  [ImageCache sharedObject];
-    sendToID = [imageCache getFriendID];
+    NSString *sendToID = [imageCache getFriendID];
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * userID = [handler getUserID];
 
@@ -186,8 +183,6 @@
     NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
     otherData = [imageCache getImage:pImageId2];
     
-    jsonDic = [[NSMutableDictionary alloc]init];
-    
     // save time
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
@@ -223,7 +218,7 @@
     NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[handler getUserID]];
     NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
     myData = [imageCache getImage:pImageId];
-    
+    NSString *sendToID =[imageCache getFriendID];
     NSMutableDictionary *metaData = [imageCache getUserMetadata:sendToID];
     NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
     otherData = [imageCache getImage:pImageId2];
@@ -242,7 +237,7 @@
     NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[handler getUserID]];
     NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
     myData = [imageCache getImage:pImageId];
-    
+     NSString *sendToID =[imageCache getFriendID];
     NSMutableDictionary *metaData = [imageCache getUserMetadata:sendToID];
     NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
     otherData = [imageCache getImage:pImageId2];
@@ -250,7 +245,7 @@
     STreamFile *sf = [[STreamFile alloc] init];
     NSData *data = [sf downloadAsData:fileId];
     
-    
+     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
     if ([body isEqualToString:@"photo"]) {
         jsonDic = [photoHandler receiveFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
         
@@ -276,7 +271,8 @@
 
 - (void)didReceiveMessage:(XMPPMessage *) message withFrom:(NSString *)fromID{
 
-    
+    ImageCache *imageCache = [ImageCache sharedObject];
+    NSString *sendToID =[imageCache getFriendID];
     NSString *receiveMessage = [message body];
     [messageHandler receiveMessage:receiveMessage forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
     [bubbleTableView reloadData];
@@ -315,6 +311,8 @@
     return newImage;
 }
 -(void) sendPhoto :(UIImage *)image {
+    ImageCache *imageCache = [ImageCache sharedObject];
+    NSString *sendToID =[imageCache getFriendID];
     if (sendToID) {
         [photoHandler sendPhoto:image forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
     }
@@ -325,7 +323,8 @@
 }
 
 -(void) sendVideo {
-    
+    ImageCache *imageCache = [ImageCache sharedObject];
+    NSString *sendToID =[imageCache getFriendID];
     if (sendToID) {
         
         [videoHandler setController:self];
@@ -341,7 +340,8 @@
 }
 #pragma mark send  message
 -(void) sendMessageClicked {
-    
+    ImageCache *imageCache = [ImageCache sharedObject];
+    NSString *sendToID =[imageCache getFriendID];
     if (sendToID) {
         
         NSString * messages = messageText.text;
@@ -366,7 +366,8 @@
 
 #pragma mark send audio
 -(void) sendRecordAudio {
-    
+    ImageCache *imageCache = [ImageCache sharedObject];
+    NSString *sendToID =[imageCache getFriendID];
     if (self.voice.recordTime >= 0.5f) {
         [audioHandler sendAudio:voice forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
         [bubbleTableView reloadData];
