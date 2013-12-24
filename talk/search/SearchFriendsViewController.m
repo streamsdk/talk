@@ -75,11 +75,7 @@
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     STreamQuery *sq = [[STreamQuery alloc]initWithCategory:[handler getUserID]];
     allFriend = [sq find];
-//    for (STreamObject * so in array) {
-//        [allFriend addObject:[so objectId]];
-//        
-//    }
-    NSLog(@"allFriend:%@",allFriend);
+
     //searchbar background
   /* UIView *segment = [searchBar.subviews objectAtIndex:0];
     UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
@@ -109,7 +105,7 @@
         [[button layer] setBorderWidth:1];
         [[button layer] setCornerRadius:4];
         [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [button setFrame:CGRectMake(cell.frame.size.width-100, 7, 60, 30)];
+        button.titleLabel.font = [UIFont systemFontOfSize:16.0f];
         [cell addSubview:button];
         
     }
@@ -127,26 +123,28 @@
         }
         if (status) {
             if ([status isEqualToString:@"friend"]){
+                [button setFrame:CGRectMake(cell.frame.size.width-100, 7, 60, 30)];
                 [button setTitle:@"friend" forState:UIControlStateNormal];
                 //                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You are already friends！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Cancel", nil];
                 //                [alert show];
             }else  if ([status isEqualToString:@"request"]) {
+                [button setFrame:CGRectMake(cell.frame.size.width-100, 7,60, 30)];
                 [button setTitle:@"add" forState:UIControlStateNormal];
                 [button addTarget:self action:@selector(addFriend:) forControlEvents:UIControlEventTouchUpInside];
                 
             }else  if ([status isEqualToString:@"sendRequest"]) {
-                [button setTitle:@"add" forState:UIControlStateNormal];
+                
+               [button setFrame:CGRectMake(cell.frame.size.width-100, 7, 100, 30)];
+                [button setTitle:@"sendRequest" forState:UIControlStateNormal];
             }
-
         }else{
-            STreamObject * so = [[STreamObject alloc]init];
-            [so setObjectId:str];
+            [button setFrame:CGRectMake(cell.frame.size.width-100, 7, 60, 30)];
             [button setTitle:@"add" forState:UIControlStateNormal];
             [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
-       
+            
          }
         cell.textLabel.text = str;
-        cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
+        cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20.0f];
     }
     return cell;
 }
@@ -190,47 +188,62 @@
 }
 
 -(void)addFriend:(UIButton *)sender {
-    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-    NSString *string= [userData objectAtIndex:sender.tag];
-    [_searchData setSearchData:string withUserID:[handler getUserID]];
-   
-    STreamObject * so = [[STreamObject alloc]init];
-    [so setObjectId:string];
-    [so addStaff:@"status" withObject:@"friend"];
-    [so updateInBackground];
- 
-    
-    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:string];
-    STreamObject *my = [[STreamObject alloc]init];
-    [my setObjectId:[handler getUserID]];
-    [my addStaff:@"status" withObject:@"friend"];
-    NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
-    [updateArray addObject:my];
-    [sco updateStreamCategoryObjects:updateArray];
-
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"add friends...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+        NSString *string= [userData objectAtIndex:sender.tag];
+        [_searchData setSearchData:string withUserID:[handler getUserID]];
+        
+        STreamObject * so = [[STreamObject alloc]init];
+        [so setObjectId:string];
+        [so addStaff:@"status" withObject:@"friend"];
+        [so updateInBackground];
+        
+        
+        STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:string];
+        STreamObject *my = [[STreamObject alloc]init];
+        [my setObjectId:[handler getUserID]];
+        [my addStaff:@"status" withObject:@"friend"];
+        NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
+        [updateArray addObject:my];
+        [sco updateStreamCategoryObjects:updateArray];
+    }completionBlock:^{
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
      [button setTitle:@"friend" forState:UIControlStateNormal];
 }
 -(void) addFriendSendRequest:(UIButton *) sender {
-
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * loginName= [handler getUserID];
     NSString *string= [userData objectAtIndex:sender.tag];
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"send request friends...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        
+        STreamObject * so = [[STreamObject alloc]init];
+        [so setObjectId:string];
+        [so addStaff:@"status" withObject:@"sendRequest"];
+        [so setCategory:loginName];
+        [so updateInBackground];
+        
+        
+        STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:string];
+        STreamObject *my = [[STreamObject alloc]init];
+        [my setObjectId:loginName];
+        [my addStaff:@"status" withObject:@"request"];
+        NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
+        [updateArray addObject:my];
+        [sco updateStreamCategoryObjects:updateArray];
+    }completionBlock:^{
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
+    
     [_searchData setSearchData:string withUserID:[handler getUserID]];
-
-    STreamObject * so = [[STreamObject alloc]init];
-    [so setObjectId:string];
-    [so addStaff:@"status" withObject:@"sendRequest"];
-    [so setCategory:loginName];
-    [so updateInBackground];
-    
-    
-    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:string];
-    STreamObject *my = [[STreamObject alloc]init];
-    [my setObjectId:loginName];
-    [my addStaff:@"status" withObject:@"request"];
-    NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
-    [updateArray addObject:my];
-    [sco updateStreamCategoryObjects:updateArray];
     
     [button setTitle:@"sendRequest" forState:UIControlStateNormal];
   
