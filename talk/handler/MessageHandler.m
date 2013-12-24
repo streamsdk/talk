@@ -11,19 +11,8 @@
 #import "TalkDB.h"
 #import "NSBubbleData.h"
 #import "STreamXMPP.h"
+#import "HandlerUserIdAndDateFormater.h"
 @implementation MessageHandler
-
--(NSString *)getUserID{
-    
-    NSString * userID =nil;
-    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-    if (array && [array count]!=0) {
-        
-        userID = [array objectAtIndex:0];
-    }
-    return userID;
-}
 
 - ( void)receiveMessage:(NSString *)receiveMessage forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
@@ -33,8 +22,9 @@
             sendBubble.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:sendBubble];
     }
+    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
     TalkDB * db = [[TalkDB alloc]init];
-    NSString * userID = [self getUserID];
+    NSString * userID = [handler getUserID];
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
     [friendDict setObject:receiveMessage forKey:@"messages"];
     [jsonDic setObject:friendDict forKey:sendID];
@@ -59,12 +49,12 @@
     [friendDict setObject:messages forKey:@"messages"];
     [jsonDic setObject:friendDict forKey:sendID];
     NSString  *str = [jsonDic JSONString];
-    
+    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
     TalkDB * db = [[TalkDB alloc]init];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    [db insertDBUserID:[self getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+    [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
     
 }
 @end

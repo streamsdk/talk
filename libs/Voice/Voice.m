@@ -37,7 +37,7 @@
 -(NSString*)getCurrentTimeString
 {
     NSDateFormatter *dateformat=[[NSDateFormatter  alloc]init];
-    [dateformat setDateFormat:@"yyyyMMddHHmmss"];
+    [dateformat setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
     return [dateformat stringFromDate:[NSDate date]];
 }
 -(NSString*)getCacheDirectory

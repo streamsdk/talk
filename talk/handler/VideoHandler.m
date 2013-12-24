@@ -12,30 +12,19 @@
 #import "TalkDB.h"
 #import "STreamXMPP.h"
 #import <arcstreamsdk/JSONKit.h>
-
+#import "HandlerUserIdAndDateFormater.h"
 @implementation VideoHandler
 
 @synthesize controller,videoPath;
 @synthesize delegate;
 
--(NSString *)getUserID{
-    
-    NSString * userID =nil;
-    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-    if (array && [array count]!=0) {
-        
-        userID = [array objectAtIndex:0];
-    }
-    return userID;
-}
 - (NSMutableDictionary *)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
     
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     
-    NSDateFormatter* formater = [[NSDateFormatter alloc] init];
-    [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
-    NSString * mp4Path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.mp4", [formater stringFromDate:[NSDate date]]];
+    NSString * mp4Path = [[handler getPath] stringByAppendingString:@".mp4"];
+    
     [data writeToFile : mp4Path atomically: YES ];
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
     [friendDict setObject:mp4Path forKey:@"video"];
@@ -85,10 +74,9 @@
         
         AVAssetExportSession *exportSession = [[AVAssetExportSession alloc]initWithAsset:avAsset
                                                                               presetName:_mp4Quality];
-        NSDateFormatter* formater = [[NSDateFormatter alloc] init];
-        [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
-        _mp4Path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.mp4", [formater stringFromDate:[NSDate date]]];
+        HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
         
+        _mp4Path = [[handler getPath] stringByAppendingString:@".mp4"];
         
         exportSession.outputURL = [NSURL fileURLWithPath: _mp4Path];
         exportSession.outputFileType = AVFileTypeMPEG4;
@@ -186,7 +174,9 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    [db insertDBUserID:[self getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+
+    [db insertDBUserID:[handler getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
     
     
     STreamXMPP *con = [STreamXMPP sharedObject];

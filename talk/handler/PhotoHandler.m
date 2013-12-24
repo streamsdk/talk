@@ -13,6 +13,7 @@
 #import "TalkDB.h"
 #import "STreamXMPP.h"
 #import <arcstreamsdk/JSONKit.h>
+#import "HandlerUserIdAndDateFormater.h"
 
 @interface PhotoHandler() <PlayerDelegate>{}
 
@@ -38,10 +39,9 @@
         bubble.delegate = self;
         [bubbleData addObject:bubble];
     }
-    
-    NSDateFormatter* formater = [[NSDateFormatter alloc] init];
-    [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
-    NSString *photoPath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.png", [formater stringFromDate:[NSDate date]]];
+    HandlerUserIdAndDateFormater * handler = [[HandlerUserIdAndDateFormater alloc]init];
+   
+    NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];
     [data writeToFile:photoPath atomically:YES];
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
     [friendDict setObject:photoPath forKey:@"photo"];
@@ -49,19 +49,6 @@
 
     return jsonDic;
     
-    
-}
-
--(NSString *)getUserID{
-    
-    NSString * userID =nil;
-    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-    if (array && [array count]!=0) {
-        
-        userID = [array objectAtIndex:0];
-    }
-    return userID;
 }
 
 -(void) sendPhoto :(UIImage *)image forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID{
@@ -77,9 +64,10 @@
     
     bubbledata.delegate = self;
     
-    NSDateFormatter* formater = [[NSDateFormatter alloc] init];
-    [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
-    NSString *photoPath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@.png", [formater stringFromDate:[NSDate date]]];
+    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+
+    NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];
+    
     [data writeToFile:photoPath atomically:YES];
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
     [friendDict setObject:photoPath forKey:@"photo"];
@@ -90,7 +78,7 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    [db insertDBUserID:[self getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+    [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
     
     STreamXMPP *con = [STreamXMPP sharedObject];
     [con sendFileInBackground:data toUser:sendID finished:^(NSString *res){

@@ -11,19 +11,9 @@
 #import "TalkDB.h"
 #import "STreamXMPP.h"
 #import <arcstreamsdk/JSONKit.h> 
-@implementation AudioHandler
+#import "HandlerUserIdAndDateFormater.h"
 
--(NSString *)getUserID{
-    
-    NSString * userID =nil;
-    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-    if (array && [array count]!=0) {
-        
-        userID = [array objectAtIndex:0];
-    }
-    return userID;
-}
+@implementation AudioHandler
 
 - (NSMutableDictionary *)receiveAudioFile:(NSData *)data withBody:(NSString *)body forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
@@ -33,9 +23,9 @@
             bubble.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:bubble];
     }
-    NSDateFormatter *dateformat=[[NSDateFormatter  alloc]init];
-    [dateformat setDateFormat:@"yyyyMMddHHmmss"];
-    NSString * recordFilePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0]stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.aac",[dateformat stringFromDate:[NSDate date]]]];
+    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
+    
+    NSString * recordFilePath = [[handler getPath] stringByAppendingString:@".aac"];
     [data writeToFile:recordFilePath atomically:YES];
     NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
     [friendsDict setObject:[body stringByAppendingString:@"\""] forKey:@"time"];
@@ -63,10 +53,12 @@
     NSString * str = [jsonDic JSONString];
     NSLog(@"json===:%@",str);
     TalkDB * db = [[TalkDB alloc]init];
+    HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
+    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    [db insertDBUserID:[self getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+    [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
     
     STreamXMPP *con = [STreamXMPP sharedObject];
     

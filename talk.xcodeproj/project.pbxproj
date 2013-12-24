@@ -249,6 +249,7 @@
 		0EF79DF318580D9100EB8A64 /* IconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF79DF218580D9100EB8A64 /* IconView.m */; };
 		0EF79DFF18583ACF00EB8A64 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF79DFE18583ACF00EB8A64 /* SettingViewController.m */; };
 		0EF79E1218584CAF00EB8A64 /* BackData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF79E1118584CAF00EB8A64 /* BackData.m */; };
+		0EFAD95B18682AF2001F0DED /* HandlerUserIdAndDateFormater.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */; };
 		4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4413D0A0182FA98E00B01C14 /* LoginViewController.m */; };
 		44A80EAC183129E2006069DE /* Emoji.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A80E9B183129E2006069DE /* Emoji.m */; };
 		44A80EAD183129E2006069DE /* EmojiEmoticons.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A80E9D183129E2006069DE /* EmojiEmoticons.m */; };
@@ -684,6 +685,8 @@
 		0EF79DFE18583ACF00EB8A64 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingViewController.m; path = setVC/SettingViewController.m; sourceTree = "<group>"; };
 		0EF79E1018584CAF00EB8A64 /* BackData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BackData.h; path = setVC/BackData.h; sourceTree = "<group>"; };
 		0EF79E1118584CAF00EB8A64 /* BackData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BackData.m; path = setVC/BackData.m; sourceTree = "<group>"; };
+		0EFAD95918682AF2001F0DED /* HandlerUserIdAndDateFormater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HandlerUserIdAndDateFormater.h; path = cache/HandlerUserIdAndDateFormater.h; sourceTree = "<group>"; };
+		0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HandlerUserIdAndDateFormater.m; path = cache/HandlerUserIdAndDateFormater.m; sourceTree = "<group>"; };
 		4413D09F182FA98E00B01C14 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Classes/LoginViewController.h; sourceTree = "<group>"; };
 		4413D0A0182FA98E00B01C14 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Classes/LoginViewController.m; sourceTree = "<group>"; };
 		44A80E9A183129E2006069DE /* Emoji.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Emoji.h; sourceTree = "<group>"; };
@@ -1583,6 +1586,8 @@
 				03F50C6C1867B50000E08C22 /* MessageHandler.m */,
 				03F50C6E1867B54300E08C22 /* AudioHandler.h */,
 				03F50C6F1867B54300E08C22 /* AudioHandler.m */,
+				0EFAD95918682AF2001F0DED /* HandlerUserIdAndDateFormater.h */,
+				0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */,
 			);
 			name = handler;
 			sourceTree = "<group>";
@@ -2116,6 +2121,7 @@
 				03D9C07B18145E410039118F /* XMPPvCardTemp.m in Sources */,
 				03D9C06018145E410039118F /* XMPPRoster.m in Sources */,
 				03D9C0B618145E480039118F /* LibIDN.m in Sources */,
+				0EFAD95B18682AF2001F0DED /* HandlerUserIdAndDateFormater.m in Sources */,
 				03D9C06118145E410039118F /* XMPPSystemInputActivityMonitor.m in Sources */,
 				03D9C06A18145E410039118F /* XMPPRoomMessageCoreDataStorageObject.m in Sources */,
 				03D9C06518145E410039118F /* XMPPIQ+LastActivity.m in Sources */,

@@ -12,6 +12,7 @@
 #import <arcstreamsdk/STreamSession.h>
 #import <arcstreamsdk/STreamFile.h>
 #import <arcstreamsdk/STreamUser.h>
+#import <arcstreamsdk/STreamQuery.h>
 #import "NSBubbleData.h"
 #import "STreamXMPP.h"
 #import "Voice.h"
@@ -31,7 +32,7 @@
 #import "VideoHandler.h"
 #import "MessageHandler.h"
 #import "AudioHandler.h"
-
+#import "HandlerUserIdAndDateFormater.h"
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
 #define BIG_IMG_WIDTH  300.0
@@ -80,10 +81,6 @@
     return self;
 }
 
--(void) back {
-    MyFriendsViewController * myFriendsVC = [[MyFriendsViewController alloc]init];
-    [self.navigationController pushViewController:myFriendsVC animated:YES];
-}
 -(void)initWithToolBar{
     
     //初始化为NO added
@@ -115,24 +112,10 @@
 - (void)scrollViewDidScroll:(UIScrollView *)sender {
 
 }
--(NSString *)getUserID{
-    
-    NSString * userID =nil;
-    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-    if (array && [array count]!=0) {
-        
-       userID = [array objectAtIndex:0];
-    }
-    return userID;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view
-    self.navigationItem.hidesBackButton = YES;
-    
     BackData *data = [BackData sharedObject];
     UIImage *bgImage =[data getImage];
     if (bgImage) {
@@ -142,7 +125,8 @@
     }
     ImageCache * imageCache =  [ImageCache sharedObject];
     sendToID = [imageCache getFriendID];
-    NSString * userID = [self getUserID];
+    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+    NSString * userID = [handler getUserID];
 
     self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
 
@@ -160,10 +144,7 @@
     for (NSBubbleData * data in bubbleData) {
         data.delegate = self;
     }
-    
-    UIBarButtonItem * leftitem = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
-    self.navigationItem.leftBarButtonItem = leftitem;
-
+ 
     UIImageView * backView = [[UIImageView alloc]initWithFrame:self.view.frame];
     backView.userInteractionEnabled = YES;
     UITapGestureRecognizer *singleTouch = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
@@ -238,7 +219,8 @@
 - (NSBubbleData *)bubbleTableView:(UIBubbleTableView *)tableView dataForRow:(NSInteger)row
 {
     ImageCache *imageCache = [ImageCache sharedObject];
-    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[self getUserID]];
+    HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
+    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[handler getUserID]];
     NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
     myData = [imageCache getImage:pImageId];
     
@@ -255,7 +237,9 @@
 - (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID{
   
     ImageCache *imageCache = [ImageCache sharedObject];
-    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[self getUserID]];
+    HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
+
+    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[handler getUserID]];
     NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
     myData = [imageCache getImage:pImageId];
     
@@ -281,7 +265,7 @@
     [self scrollBubbleViewToBottomAnimated:YES];
     
     TalkDB * db = [[TalkDB alloc]init];
-    NSString * userID = [self getUserID];
+    NSString * userID = [handler getUserID];
     NSString  *str = [jsonDic JSONString];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
@@ -348,11 +332,12 @@
         [videoHandler setVideoPath:videoPath];
         [videoHandler sendVideoforBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
         videoHandler.delegate = self;
-        [bubbleTableView reloadData];
-        [self dismissKeyBoard];
-        [self scrollBubbleViewToBottomAnimated:YES];
+        
     }
-    
+   
+    [self dismissKeyBoard];
+     [bubbleTableView reloadData];
+    [self scrollBubbleViewToBottomAnimated:YES];
 }
 #pragma mark send  message
 -(void) sendMessageClicked {
@@ -365,6 +350,7 @@
             messageText.text = @"";
             [self dismissKeyBoard];
             [messageText resignFirstResponder];
+            [bubbleTableView reloadData];
             [self scrollBubbleViewToBottomAnimated:YES];
         }else {
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"please input chat Contents" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];

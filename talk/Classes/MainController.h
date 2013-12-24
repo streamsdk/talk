@@ -24,10 +24,7 @@
 #define  ICONHEIGHT 80
 @interface MainController : UIViewController<UIBubbleTableViewDataSource,STreamXMPPProtocol,facialViewDelegate,UITextFieldDelegate,IconViewDelegate,UIAlertViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 {
-    AVAudioRecorder *recorder;
-    NSURL                                                *videoPath;
-     NSDate*                                             _startDate;
-    NSString*                                           _mp4Path;
+    NSURL  *videoPath;
 }
 
 @property (nonatomic,strong) UIBubbleTableView *bubbleTableView;

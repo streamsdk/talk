@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/handler/VideoHandler.m"
-            timestampString = "409466966.511791"
+            timestampString = "409483378.493719"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
+            startingLineNumber = "123"
+            endingLineNumber = "123"
             landmarkName = "-getFileSize:"
             landmarkType = "5">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/handler/VideoHandler.m"
-            timestampString = "409466966.511791"
+            timestampString = "409483378.493719"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "152"
-            endingLineNumber = "152"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
             landmarkName = "-getVideoDuration:"
             landmarkType = "5">
          </BreakpointContent>

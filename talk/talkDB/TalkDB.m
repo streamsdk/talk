@@ -205,10 +205,10 @@
     
     return dataArray;
 }
-/*-(NSMutableArray *) readInitDB :(NSString *) _userID withOtherID:(NSString *)_friendID withTime:(NSString *)_nowTime{
+-(NSMutableArray *) readInitDB :(NSString *) _userID withOtherID:(NSString *)_friendID withTime:(NSDate *)_nowTime{
    
     ImageCache *imageCache = [ImageCache sharedObject];
-    NSMutableArray *dataArray = [[NSMutableArray alloc]init];
+   
     sqlite3 *database;
     
     if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
@@ -216,49 +216,40 @@
         NSAssert(0, @"Failed to open database");
     }
     
-    NSString *sqlQuery = @"SELECT * FROM FILEID";
+    NSString *sqlQuery = @"SELECT USERID, FROMID,TIME FROM FILEID";
     sqlite3_stmt * statement;
     
     NSDate *formerTime = [imageCache getMessageTime];
     
+    NSMutableArray *timeArray = [[NSMutableArray alloc] init];
+    
     if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
         while (sqlite3_step(statement) == SQLITE_ROW) {
-            char *userId = (char*)sqlite3_column_text(statement, 1);
-            char *friendId =(char*) sqlite3_column_text(statement, 2);
-            char *_content = (char*)sqlite3_column_text(statement, 3);
-            char *time1  = (char*)sqlite3_column_text(statement, 4);
-            int ismine = sqlite3_column_int(statement, 5);
+            char *userId = (char*)sqlite3_column_text(statement, 0);
+            char *friendId =(char*) sqlite3_column_text(statement, 1);
             
             NSString * userID = [[NSString alloc]initWithUTF8String:userId];
             NSString *friendID = [[NSString alloc]initWithUTF8String:friendId];
-            NSString *jsonstring = [[NSString alloc]initWithUTF8String:_content];
+
+            char *time1  = (char*)sqlite3_column_text(statement,2);
             NSString * time2 =[[NSString alloc]initWithUTF8String:time1];
-            NSDictionary *ret = [jsonstring objectFromJSONString];
-            NSDictionary * chatDic = [ret objectForKey:friendID];
-            
-            NSString *nameFilePath = [self getCacheDirectory];
-            NSArray *array = [[NSArray alloc]initWithContentsOfFile:nameFilePath];
-            NSString * _uesrID = nil;
-            if (array && [array count]!= 0) {
-                _uesrID = [array objectAtIndex:0];
-            }
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
             [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
             NSDate *date = [dateFormatter dateFromString:time2];
             if ([userID isEqualToString:_userID] && [friendID isEqualToString:_friendID]) {
-                
+                if (date >formerTime && date < _nowTime) {
+                    [timeArray addObject:date];
+                }
             }
+           
         }
     }
-    
     sqlite3_finalize(statement);
     sqlite3_close(database);
-    
-    
-    return dataArray;
+    return timeArray;
 
-}*/
+}
 
 -(NSString*)getCacheDirectory
 {

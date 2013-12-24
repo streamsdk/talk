@@ -57,7 +57,7 @@ static NSDate * _time;
         
     }
     [_cachedSelfImageFiles addObject:fileId];
-    [_selfImageDictionary setObject:file forKey:fileId];
+    [_selfImageDictionary setObject:file forKey:fileId]; 
 }
 
 -(NSData *)getImage:(NSString *)fileId{
