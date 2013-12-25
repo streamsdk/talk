@@ -214,11 +214,17 @@
         sqlite3_close(database);
         NSAssert(0, @"Failed to open database");
     }
+     NSDate *formerTime = [imageCache getMessageTime];
+    if (formerTime==nil) formerTime = _nowTime;
     
-    NSString *sqlQuery = @"SELECT USERID, FROMID,TIME, ISMINE FROM FILEID";
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString *formerDateString = [dateFormatter stringFromDate:formerTime];
+    NSString *nowDateString = [dateFormatter stringFromDate:_nowTime];
+    NSString *sqlQuery = [NSString stringWithFormat:@"SELECT USERID, FROMID,TIME,ISMINE FROM FILEID WHERE TIME BETWEEN '%@' AND '%@'",formerDateString,nowDateString];
     sqlite3_stmt * statement;
     NSMutableArray *timeArray = [[NSMutableArray alloc] init];
-    NSDate *formerTime = [imageCache getMessageTime];
+   
     if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
             while (sqlite3_step(statement) == SQLITE_ROW) {
                 char *userId = (char*)sqlite3_column_text(statement, 0);
@@ -235,13 +241,8 @@
                 int ismine = sqlite3_column_int(statement, 3);
                 
                 if ([userID isEqualToString:_userID] && [_friendID isEqualToString:friendID]) {
-                    if (formerTime !=nil) {
-                        if (date >formerTime && date < _nowTime) {
-                            if (ismine==1) {
-                                [timeArray addObject:date];
-                            }
-                            
-                        }
+                    if (ismine==1) {
+                        [timeArray addObject:date];
                     }
                     
                 }

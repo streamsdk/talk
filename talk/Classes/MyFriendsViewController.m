@@ -148,18 +148,13 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *cellId = @"CellId";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    UILabel * label;
+    
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
         [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-         label= [[UILabel alloc]initWithFrame:CGRectMake(280, 0, 40, cell.frame.size.height)];
-        label.textColor = [UIColor redColor];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.backgroundColor = [UIColor clearColor];
-        label.tag = LABEL_TAG;
-        label.font = [UIFont fontWithName:@"Arial" size:22.0f];
-        [cell addSubview:label];
+        
+        
     }
     if ([self.sortedArrForArrays count] > indexPath.section) {
         NSArray *arr = [sortedArrForArrays objectAtIndex:indexPath.section];
@@ -172,8 +167,14 @@
             cell.textLabel.text = str.string;
             NSString * num = [countDict objectForKey:str.string];
             if (![num isEqualToString:@"0"]) {
-                NSString * str = num;
-                label.text = str;
+                UILabel * label= [[UILabel alloc]initWithFrame:CGRectMake(260, 0, 40, cell.frame.size.height)];
+                label.textColor = [UIColor redColor];
+                label.textAlignment = NSTextAlignmentCenter;
+                label.backgroundColor = [UIColor clearColor];
+                label.tag = LABEL_TAG;
+                label.font = [UIFont fontWithName:@"Arial" size:22.0f];
+                label.text = num;
+                [cell addSubview:label];
             }
             
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
