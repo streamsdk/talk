@@ -191,15 +191,6 @@ static XMPPReconnect *xmppReconnect;
 	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
 	
 	[self goOnline];
-    userFriends = [[STreamObject alloc] init];
-    NSMutableString *userFriendsId = [[NSMutableString alloc] init];
-    [userFriendsId appendString:@"streamsdk.reservedid"];
-    [userFriendsId appendString:[STreamSession getClientAuthKey]];
-    [userFriendsId appendString:uName];
-    [userFriends loadAll:userFriendsId];
-    
-    [self sendRosterRequest];
-    
     [xmppDelegate didAuthenticate];
     
 }
