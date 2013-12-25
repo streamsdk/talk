@@ -271,6 +271,7 @@
         
         TabBarViewController * tabBar = [[TabBarViewController alloc]init];
         tabBar.viewControllers = array;
+        [tabBar.tabBar setBackgroundColor:[UIColor colorWithRed:247.0/255.0 green:229.0/255.0 blue:227.0/255.0 alpha:1.0]];
         [self presentViewController:tabBar animated:NO completion:NULL];
     }
     if (index == 0) {

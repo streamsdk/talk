@@ -30,7 +30,7 @@
     NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
     [friendsDict setObject:[body stringByAppendingString:@"\""] forKey:@"time"];
     [friendsDict setObject:recordFilePath forKey:@"audiodata"];
-    [jsonDic setObject:friendsDict forKey:sendID];
+    [jsonDic setObject:friendsDict forKey:fromID];
     return jsonDic;
 }
 -(void) sendAudio :(Voice *)voice forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID
@@ -56,8 +56,7 @@
     HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
     
     STreamXMPP *con = [STreamXMPP sharedObject];

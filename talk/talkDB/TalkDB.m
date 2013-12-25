@@ -109,8 +109,7 @@
                 _uesrID = [array objectAtIndex:0];
             }
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
             NSDate *date = [dateFormatter dateFromString:time2];
             if ([userID isEqualToString:_userID] && [friendID isEqualToString:_friendID]) {
                 if (ismine == 0) {
@@ -216,35 +215,40 @@
         NSAssert(0, @"Failed to open database");
     }
     
-    NSString *sqlQuery = @"SELECT USERID, FROMID,TIME FROM FILEID";
+    NSString *sqlQuery = @"SELECT USERID, FROMID,TIME, ISMINE FROM FILEID";
     sqlite3_stmt * statement;
-    
-    NSDate *formerTime = [imageCache getMessageTime];
-    
     NSMutableArray *timeArray = [[NSMutableArray alloc] init];
-    
+    NSDate *formerTime = [imageCache getMessageTime];
     if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
-        while (sqlite3_step(statement) == SQLITE_ROW) {
-            char *userId = (char*)sqlite3_column_text(statement, 0);
-            char *friendId =(char*) sqlite3_column_text(statement, 1);
-            
-            NSString * userID = [[NSString alloc]initWithUTF8String:userId];
-            NSString *friendID = [[NSString alloc]initWithUTF8String:friendId];
-
-            char *time1  = (char*)sqlite3_column_text(statement,2);
-            NSString * time2 =[[NSString alloc]initWithUTF8String:time1];
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-            NSDate *date = [dateFormatter dateFromString:time2];
-            if ([userID isEqualToString:_userID] && [friendID isEqualToString:_friendID]) {
-                if (date >formerTime && date < _nowTime) {
-                    [timeArray addObject:date];
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                char *userId = (char*)sqlite3_column_text(statement, 0);
+                char *friendId =(char*) sqlite3_column_text(statement, 1);
+                
+                NSString * userID = [[NSString alloc]initWithUTF8String:userId];
+                NSString *friendID = [[NSString alloc]initWithUTF8String:friendId];
+                
+                char *time1  = (char*)sqlite3_column_text(statement,2);
+                NSString * time2 =[[NSString alloc]initWithUTF8String:time1];
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+                NSDate *date = [dateFormatter dateFromString:time2];
+                int ismine = sqlite3_column_int(statement, 3);
+                
+                if ([userID isEqualToString:_userID] && [_friendID isEqualToString:friendID]) {
+                    if (formerTime !=nil) {
+                        if (date >formerTime && date < _nowTime) {
+                            if (ismine==1) {
+                                [timeArray addObject:date];
+                            }
+                            
+                        }
+                    }
+                    
                 }
+                
             }
-           
         }
-    }
+    
     sqlite3_finalize(statement);
     sqlite3_close(database);
     return timeArray;

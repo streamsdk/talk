@@ -28,7 +28,7 @@
     [data writeToFile : mp4Path atomically: YES ];
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
     [friendDict setObject:mp4Path forKey:@"video"];
-    [jsonDic setObject:friendDict forKey:sendID];
+    [jsonDic setObject:friendDict forKey:fromID];
     
     if ([fromID isEqualToString:sendID]) {
         NSURL *url = [NSURL fileURLWithPath:mp4Path];
@@ -172,8 +172,7 @@
     
     TalkDB * db = [[TalkDB alloc]init];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
 
     [db insertDBUserID:[handler getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];

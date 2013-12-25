@@ -21,9 +21,15 @@
 #import "SettingViewController.h"
 #import "FileCache.h"
 #import "ImageCache.h"
+#import "TalkDB.h"
+#import "HandlerUserIdAndDateFormater.h"
+
+#define LABEL_TAG 10000
 
 @interface MyFriendsViewController ()
-
+{
+    NSMutableDictionary *countDict;
+}
 @end
 
 @implementation MyFriendsViewController
@@ -46,7 +52,19 @@
     SettingViewController *setVC = [[SettingViewController alloc]init];
     [self.navigationController pushViewController:setVC animated:NO];
 }
+-(void)viewWillAppear:(BOOL)animated{
 
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"loading friends...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self loadFriends];
+    }completionBlock:^{
+        [self.tableView reloadData];
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -54,9 +72,7 @@
     self.navigationController.navigationItem.hidesBackButton = YES;
     self.navigationController.navigationBarHidden = NO;
    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
-    userData = [[NSMutableArray alloc]init];
-    sortedArrForArrays = [[NSMutableArray alloc] init];
-    sectionHeadsKeys = [[NSMutableArray alloc] init];
+    
     UIBarButtonItem * leftItem = [[UIBarButtonItem alloc]initWithTitle:@"设置" style:UIBarButtonItemStyleDone target:self action:@selector(settingClicked)];
     self.navigationItem.leftBarButtonItem = leftItem;
 
@@ -74,19 +90,15 @@
     label.textColor = [UIColor grayColor];
     label.font = [UIFont fontWithName:@"Arial" size:22.0f];
     self.tableView.tableHeaderView =label;
-    
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"loading friends...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        [self loadFriends];
-    }completionBlock:^{
-        [self.tableView reloadData];
-       [HUD removeFromSuperview];
-        HUD = nil;
-    }];    
+   
 }
 -(void) loadFriends {
+    
+    countDict= [[NSMutableDictionary alloc]init];
+    
+    userData = [[NSMutableArray alloc]init];
+    sortedArrForArrays = [[NSMutableArray alloc] init];
+    sectionHeadsKeys = [[NSMutableArray alloc] init];
     NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
     NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
     NSString * loginName= [array objectAtIndex:0];
@@ -106,7 +118,18 @@
             }
         }];
     }
+    
     sortedArrForArrays = [self getChineseStringArr:userData];
+    for (NSString * str in userData) {
+        NSDate * time = [NSDate dateWithTimeIntervalSinceNow:0];
+        HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+        TalkDB * db = [[TalkDB alloc]init];
+        NSArray * array = [db readInitDB:[handle getUserID] withOtherID:str withTime:time];
+        NSString *num=[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:[array count]]];
+        [countDict setObject:num forKey:str];
+        [self.tableView reloadData];
+        
+    }
 }
 
 #pragma mark - Table view data source
@@ -125,10 +148,18 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *cellId = @"CellId";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    UILabel * label;
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
         [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+         label= [[UILabel alloc]initWithFrame:CGRectMake(280, 0, 40, cell.frame.size.height)];
+        label.textColor = [UIColor redColor];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.backgroundColor = [UIColor clearColor];
+        label.tag = LABEL_TAG;
+        label.font = [UIFont fontWithName:@"Arial" size:22.0f];
+        [cell addSubview:label];
     }
     if ([self.sortedArrForArrays count] > indexPath.section) {
         NSArray *arr = [sortedArrForArrays objectAtIndex:indexPath.section];
@@ -139,6 +170,11 @@
             [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
              [self loadAvatar:str.string withCell:cell];
             cell.textLabel.text = str.string;
+            NSString * num = [countDict objectForKey:str.string];
+            if (![num isEqualToString:@"0"]) {
+                NSString * str = num;
+                label.text = str;
+            }
             
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
 
@@ -218,12 +254,19 @@
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    UILabel * label = (UILabel *)[self.view viewWithTag:LABEL_TAG];
+    label.text = @" ";
+     ImageCache *imageCache = [ImageCache sharedObject];
+    // save time
+   
+    NSDate * time = [NSDate dateWithTimeIntervalSinceNow:0];
+    [imageCache messageTime:time];
     
     NSMutableArray * keys = [sortedArrForArrays objectAtIndex:indexPath.section];
     ChineseString * userStr = [keys objectAtIndex:indexPath.row];
     NSString *userName = [userStr string];
 
-    ImageCache *imageCache = [ImageCache sharedObject];
+   
     [imageCache setFriendID:userName];
     MainController *mainVC = [[MainController alloc]init];
     [self.navigationController pushViewController:mainVC animated:YES];

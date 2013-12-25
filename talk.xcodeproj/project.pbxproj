@@ -188,7 +188,6 @@
 		0EE95193185EA43C003F4638 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE95191185EA43C003F4638 /* ViewController.m */; };
 		0EE9519D185EA47D003F4638 /* ChineseString.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE95196185EA47D003F4638 /* ChineseString.m */; };
 		0EE9519E185EA47D003F4638 /* pinyin.c in Sources */ = {isa = PBXBuildFile; fileRef = 0EE95197185EA47D003F4638 /* pinyin.c */; };
-		0EE9519F185EA47D003F4638 /* SearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE9519A185EA47D003F4638 /* SearchData.m */; };
 		0EE951A0185EA47D003F4638 /* SearchFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE9519C185EA47D003F4638 /* SearchFriendsViewController.m */; };
 		0EE951D0185EA4B9003F4638 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE951A2185EA4B9003F4638 /* add.png */; };
 		0EE951D1185EA4B9003F4638 /* addIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE951A3185EA4B9003F4638 /* addIcon.png */; };
@@ -621,8 +620,6 @@
 		0EE95196185EA47D003F4638 /* ChineseString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChineseString.m; sourceTree = "<group>"; };
 		0EE95197185EA47D003F4638 /* pinyin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pinyin.c; sourceTree = "<group>"; };
 		0EE95198185EA47D003F4638 /* pinyin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinyin.h; sourceTree = "<group>"; };
-		0EE95199185EA47D003F4638 /* SearchData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchData.h; sourceTree = "<group>"; };
-		0EE9519A185EA47D003F4638 /* SearchData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchData.m; sourceTree = "<group>"; };
 		0EE9519B185EA47D003F4638 /* SearchFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchFriendsViewController.h; sourceTree = "<group>"; };
 		0EE9519C185EA47D003F4638 /* SearchFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchFriendsViewController.m; sourceTree = "<group>"; };
 		0EE951A2185EA4B9003F4638 /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
@@ -1701,8 +1698,6 @@
 				0EE95196185EA47D003F4638 /* ChineseString.m */,
 				0EE95197185EA47D003F4638 /* pinyin.c */,
 				0EE95198185EA47D003F4638 /* pinyin.h */,
-				0EE95199185EA47D003F4638 /* SearchData.h */,
-				0EE9519A185EA47D003F4638 /* SearchData.m */,
 				0EE9519B185EA47D003F4638 /* SearchFriendsViewController.h */,
 				0EE9519C185EA47D003F4638 /* SearchFriendsViewController.m */,
 				0E2FC7FA186931940069CB03 /* HandleViewController.h */,
@@ -2127,7 +2122,6 @@
 				03D9C0B718145E480039118F /* RFImageToDataTransformer.m in Sources */,
 				03D9C09518145E410039118F /* XMPPMessageArchiving_Message_CoreDataObject.m in Sources */,
 				03D9C09318145E410039118F /* XMPPMessageArchiving.xcdatamodeld in Sources */,
-				0EE9519F185EA47D003F4638 /* SearchData.m in Sources */,
 				03D9BF7918145E370039118F /* XMPPParser.m in Sources */,
 				03D9C07B18145E410039118F /* XMPPvCardTemp.m in Sources */,
 				03D9C06018145E410039118F /* XMPPRoster.m in Sources */,

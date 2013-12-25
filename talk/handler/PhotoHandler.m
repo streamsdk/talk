@@ -45,7 +45,7 @@
     [data writeToFile:photoPath atomically:YES];
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
     [friendDict setObject:photoPath forKey:@"photo"];
-    [jsonDic setObject:friendDict forKey:sendID];
+    [jsonDic setObject:friendDict forKey:fromID];
 
     return jsonDic;
     
@@ -76,8 +76,7 @@
     
     TalkDB * db = [[TalkDB alloc]init];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
     
     STreamXMPP *con = [STreamXMPP sharedObject];

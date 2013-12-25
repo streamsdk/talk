@@ -183,13 +183,6 @@
     NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
     otherData = [imageCache getImage:pImageId2];
     
-    // save time
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    NSDate * time = [NSDate dateWithTimeIntervalSinceNow:0];
-    [imageCache messageTime:time];
-    
     
     //handler
     photoHandler = [[PhotoHandler alloc] init];
@@ -263,9 +256,8 @@
     NSString * userID = [handler getUserID];
     NSString  *str = [jsonDic JSONString];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    [db insertDBUserID:userID fromID:sendToID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [db insertDBUserID:userID fromID:fromID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
 
 }
 

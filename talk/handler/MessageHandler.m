@@ -27,12 +27,13 @@
     NSString * userID = [handler getUserID];
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
     [friendDict setObject:receiveMessage forKey:@"messages"];
-    [jsonDic setObject:friendDict forKey:sendID];
+    [jsonDic setObject:friendDict forKey:fromID];
     NSString  *str = [jsonDic JSONString];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    [db insertDBUserID:userID fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate * date =[NSDate dateWithTimeIntervalSinceNow:0];
+    NSString * str2 = [dateFormatter stringFromDate:date];
+    [db insertDBUserID:userID fromID:fromID withContent:str withTime:str2 withIsMine:1];
 
 }
 
@@ -52,8 +53,7 @@
     HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
     TalkDB * db = [[TalkDB alloc]init];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
     
 }

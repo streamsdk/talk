@@ -13,7 +13,6 @@
 #import <arcstreamsdk/STreamObject.h>
 #import <arcstreamsdk/STreamQuery.h>
 #import <arcstreamsdk/STreamCategoryObject.h>
-#import "SearchData.h"
 #import "AddFriendsViewController.h"
 #import "HandlerUserIdAndDateFormater.h"
 
@@ -23,7 +22,6 @@
 @interface SearchFriendsViewController ()
 {
     UIButton *button;
-    SearchData * _searchData;
     NSMutableArray *allFriend;
 }
 @end
@@ -46,14 +44,13 @@
 
     self.title = @"Add Friends";
     userData = [[NSMutableArray alloc]init];
-     _searchData = [SearchData sharedObject];
     self.navigationItem.hidesBackButton = YES;
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     
     UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelSelected)];
     self.navigationItem.rightBarButtonItem = rightItem;
     
-    myTableview  = [[UITableView alloc]initWithFrame:CGRectMake(0,90, self.view.bounds.size.width, self.view.bounds.size.height-90)];
+    myTableview  = [[UITableView alloc]initWithFrame:CGRectMake(0,90, self.view.bounds.size.width, self.view.bounds.size.height-90-50)];
     myTableview.backgroundColor = [UIColor clearColor];
     myTableview.delegate = self;
     myTableview.dataSource = self;
@@ -194,8 +191,6 @@
     [HUD showAnimated:YES whileExecutingBlock:^{
         HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
         NSString *string= [userData objectAtIndex:sender.tag];
-        [_searchData setSearchData:string withUserID:[handler getUserID]];
-        
         STreamObject * so = [[STreamObject alloc]init];
         [so setObjectId:string];
         [so addStaff:@"status" withObject:@"friend"];
@@ -242,10 +237,7 @@
         [HUD removeFromSuperview];
         HUD = nil;
     }];
-    
-    [_searchData setSearchData:string withUserID:[handler getUserID]];
-    
-    [button setTitle:@"sendRequest" forState:UIControlStateNormal];
+      [button setTitle:@"sendRequest" forState:UIControlStateNormal];
   
 }
 
