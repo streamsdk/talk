@@ -127,8 +127,7 @@
 
     self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
 
-    STreamXMPP *con = [STreamXMPP sharedObject];
-    [con setXmppDelegate:self];
+   
     
     bubbleData = [[NSMutableArray alloc]init];
     
@@ -195,6 +194,10 @@
     
     audioHandler = [[AudioHandler alloc]init];
     
+    
+    STreamXMPP *con = [STreamXMPP sharedObject];
+    //[con connect:@"yangyang" withPassword:@"111"];
+    [con setXmppDelegate:self];
 }
 
 #pragma mark - UIBubbleTableViewDataSource implementation
