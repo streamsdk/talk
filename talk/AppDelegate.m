@@ -81,8 +81,6 @@
             }
         }
 
-        STreamXMPP *con = [STreamXMPP sharedObject];
-        [con connect:loginName withPassword:[array objectAtIndex:1]];
         [self showFriendsView];
     }else{
         RootViewController * rootVC = [[RootViewController alloc]init];

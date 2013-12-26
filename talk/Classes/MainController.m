@@ -130,10 +130,6 @@
 
     bubbleData = [[NSMutableArray alloc]init];
     
-    STreamXMPP *con = [STreamXMPP sharedObject];
-    [con connect:userID withPassword:[handler getUserIDPassword]];
-    [con setXmppDelegate:self];
-    
     TalkDB * talk =[[TalkDB alloc]init];
     bubbleData = [talk readInitDB:userID withOtherID:sendToID];
     for (NSBubbleData * data in bubbleData) {
@@ -196,6 +192,12 @@
     messageHandler = [[MessageHandler alloc] init];
     
     audioHandler = [[AudioHandler alloc]init];
+    
+    
+    STreamXMPP *con = [STreamXMPP sharedObject];
+    [con connect:userID withPassword:[handler getUserIDPassword]];
+    [con setXmppDelegate:self];
+
     
 }
 
