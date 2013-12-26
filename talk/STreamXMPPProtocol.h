@@ -25,6 +25,6 @@ typedef void (^FinishCall)(NSString *);
 
 - (void)didReceivePresence:(XMPPPresence *)presence;
 
-- (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID;;
+- (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID;
 
 @end

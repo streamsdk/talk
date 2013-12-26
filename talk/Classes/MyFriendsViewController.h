@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface MyFriendsViewController : UITableViewController
+#import "STreamXMPPProtocol.h"
+#import "GetAllMessagesProtocol.h"
+@interface MyFriendsViewController : UITableViewController<STreamXMPPProtocol>
 
 @property (nonatomic,retain) NSMutableArray *userData;
 @property (nonatomic, retain) NSMutableArray *sortedArrForArrays;
 @property (nonatomic, retain) NSMutableArray *sectionHeadsKeys;
-
+@property (assign,nonatomic)id <GetAllMessagesProtocol>messagesProtocol;
 @end

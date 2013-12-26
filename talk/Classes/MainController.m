@@ -193,12 +193,7 @@
     
     audioHandler = [[AudioHandler alloc]init];
     
-    
-    STreamXMPP *con = [STreamXMPP sharedObject];
-    [con setXmppDelegate:self];
-    [con connect:userID withPassword:[handler getUserIDPassword]];
-    
-    
+
 }
 
 #pragma mark - UIBubbleTableViewDataSource implementation
@@ -222,34 +217,27 @@
     return [bubbleData objectAtIndex:row];
 }
 
-- (void)didAuthenticate{
+-(void)getFiles:(NSData *)data withFromID:(NSString *)fromID withBody:(NSString *)body{
     
-    NSLog(@"");
-}
-- (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID{
-  
     ImageCache *imageCache = [ImageCache sharedObject];
     HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
-
+    
     NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[handler getUserID]];
     NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
     myData = [imageCache getImage:pImageId];
-     NSString *sendToID =[imageCache getFriendID];
+    NSString *sendToID =[imageCache getFriendID];
     NSMutableDictionary *metaData = [imageCache getUserMetadata:sendToID];
     NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
     otherData = [imageCache getImage:pImageId2];
     
-    STreamFile *sf = [[STreamFile alloc] init];
-    NSData *data = [sf downloadAsData:fileId];
-    
-     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
+    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
     if ([body isEqualToString:@"photo"]) {
         jsonDic = [photoHandler receiveFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
         
     }else if ([body isEqualToString:@"video"]){
         [videoHandler setController:self];
         jsonDic = [videoHandler receiveVideoFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
-                
+        
     }else{
         jsonDic = [audioHandler receiveAudioFile:data withBody:body forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
     }
@@ -262,7 +250,54 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     [db insertDBUserID:userID fromID:fromID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
+    
 
+}
+-(void)getMessages:(NSString *)messages withFromID:(NSString *)fromID{
+    ImageCache *imageCache = [ImageCache sharedObject];
+    NSString *sendToID =[imageCache getFriendID];
+    [messageHandler receiveMessage:messages forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+    [bubbleTableView reloadData];
+    [self scrollBubbleViewToBottomAnimated:YES];
+
+}
+/*- (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID{
+  
+    ImageCache *imageCache = [ImageCache sharedObject];
+    HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
+    
+    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[handler getUserID]];
+    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+    myData = [imageCache getImage:pImageId];
+    NSString *sendToID =[imageCache getFriendID];
+    NSMutableDictionary *metaData = [imageCache getUserMetadata:sendToID];
+    NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
+    otherData = [imageCache getImage:pImageId2];
+    
+    STreamFile *sf = [[STreamFile alloc] init];
+    NSData *data = [sf downloadAsData:fileId];
+    
+    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
+    if ([body isEqualToString:@"photo"]) {
+        jsonDic = [photoHandler receiveFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+        
+    }else if ([body isEqualToString:@"video"]){
+        [videoHandler setController:self];
+        jsonDic = [videoHandler receiveVideoFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+        
+    }else{
+        jsonDic = [audioHandler receiveAudioFile:data withBody:body forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+    }
+    [bubbleTableView reloadData];
+    [self scrollBubbleViewToBottomAnimated:YES];
+    
+    TalkDB * db = [[TalkDB alloc]init];
+    NSString * userID = [handler getUserID];
+    NSString  *str = [jsonDic JSONString];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [db insertDBUserID:userID fromID:fromID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
+    
 }
 
 - (void)didReceiveMessage:(XMPPMessage *) message withFrom:(NSString *)fromID{
@@ -282,7 +317,6 @@
     
     NSLog(@"");
 }
-
 - (void)didReceivePresence:(XMPPPresence *)presence{
     
     NSString *presenceType = [presence type];
@@ -294,7 +328,7 @@
     if ([presenceType isEqualToString:@"unavailable"]){
        
     }
-}
+}*/
 
 #pragma mark - Actions
 #pragma mark send photo

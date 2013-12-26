@@ -23,6 +23,7 @@
 #import "ImageCache.h"
 #import "TalkDB.h"
 #import "HandlerUserIdAndDateFormater.h"
+#import "STreamXMPP.h"
 
 #define LABEL_TAG 10000
 
@@ -35,7 +36,7 @@
 @implementation MyFriendsViewController
 
 @synthesize userData,sortedArrForArrays,sectionHeadsKeys;
-
+@synthesize messagesProtocol;
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -89,8 +90,20 @@
     label.textColor = [UIColor grayColor];
     label.font = [UIFont fontWithName:@"Arial" size:22.0f];
     self.tableView.tableHeaderView =label;
-   
+    
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"connecting ...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self connect];
+    }completionBlock:^{
+        [self.tableView reloadData];
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
+ 
 }
+
 -(void) loadFriends {
     
     countDict= [[NSMutableDictionary alloc]init];
@@ -130,7 +143,44 @@
         
     }
 }
+-(void) connect {
+    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    STreamXMPP *con = [STreamXMPP sharedObject];
+    [con setXmppDelegate:self];
+    [con connect:[handle getUserID] withPassword:[handle getUserIDPassword]];
+}
 
+#pragma mark - STreamXMPPProtocol
+- (void)didAuthenticate{
+    NSLog(@"");
+}
+
+- (void)didNotAuthenticate:(NSXMLElement *)error{
+    NSLog(@" ");
+}
+
+- (void)didReceivePresence:(XMPPPresence *)presence{
+    NSString *presenceType = [presence type];
+    if ([presenceType isEqualToString:@"subscribe"]){
+        
+    }
+    if ([presenceType isEqualToString:@"available"]){
+    }
+    if ([presenceType isEqualToString:@"unavailable"]){
+        
+    }
+
+}
+- (void)didReceiveMessage:(XMPPMessage *)message withFrom:(NSString *)fromID{
+    NSString *receiveMessage = [message body];
+    [messagesProtocol getMessages:receiveMessage withFromID:fromID];
+}
+
+- (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID{
+    STreamFile *sf = [[STreamFile alloc] init];
+    NSData *data = [sf downloadAsData:fileId];
+    [messagesProtocol getFiles:data withFromID:fromID withBody:body];
+}
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return  [[sortedArrForArrays objectAtIndex:section] count];
