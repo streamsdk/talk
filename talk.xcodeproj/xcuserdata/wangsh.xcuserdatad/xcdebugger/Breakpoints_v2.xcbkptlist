@@ -137,29 +137,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "talk/talkDB/TalkDB.m"
-            timestampString = "409647158.974256"
+            filePath = "talk/Classes/MainController.m"
+            timestampString = "409729074.69825"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "245"
-            endingLineNumber = "245"
-            landmarkName = "-readInitDB:withOtherID:withTime:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "talk/talkDB/TalkDB.m"
-            timestampString = "409647159.954621"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "244"
-            endingLineNumber = "244"
-            landmarkName = "-readInitDB:withOtherID:withTime:"
+            startingLineNumber = "233"
+            endingLineNumber = "233"
+            landmarkName = "-didReceiveFile:withBody:withFrom:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

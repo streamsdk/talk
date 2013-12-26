@@ -33,6 +33,7 @@
 #import "MessageHandler.h"
 #import "AudioHandler.h"
 #import "HandlerUserIdAndDateFormater.h"
+
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
 #define BIG_IMG_WIDTH  300.0
@@ -127,20 +128,23 @@
 
     self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
 
-   
-    
     bubbleData = [[NSMutableArray alloc]init];
     
-    createUI = [[CreateUI alloc]init];
-    
-    self.voice = [[Voice alloc] init];
+    STreamXMPP *con = [STreamXMPP sharedObject];
+    [con connect:userID withPassword:[handler getUserIDPassword]];
+    [con setXmppDelegate:self];
     
     TalkDB * talk =[[TalkDB alloc]init];
     bubbleData = [talk readInitDB:userID withOtherID:sendToID];
     for (NSBubbleData * data in bubbleData) {
         data.delegate = self;
     }
- 
+
+
+    createUI = [[CreateUI alloc]init];
+    
+    self.voice = [[Voice alloc] init];
+    
     UIImageView * backView = [[UIImageView alloc]initWithFrame:self.view.frame];
     backView.userInteractionEnabled = YES;
     UITapGestureRecognizer *singleTouch = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
@@ -163,7 +167,7 @@
     bubbleTableView.tag = TABLEVIEWTAG;
     bubbleTableView.snapInterval = 120;
     bubbleTableView.showAvatars = YES;
-
+    
     [bubbleTableView reloadData];
    
     [self scrollBubbleViewToBottomAnimated:YES];
@@ -181,8 +185,7 @@
     NSMutableDictionary *metaData = [imageCache getUserMetadata:sendToID];
     NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
     otherData = [imageCache getImage:pImageId2];
-    
-    
+
     //handler
     photoHandler = [[PhotoHandler alloc] init];
     [photoHandler setController:self];
@@ -194,10 +197,6 @@
     
     audioHandler = [[AudioHandler alloc]init];
     
-    
-    STreamXMPP *con = [STreamXMPP sharedObject];
-    //[con connect:@"yangyang" withPassword:@"111"];
-    [con setXmppDelegate:self];
 }
 
 #pragma mark - UIBubbleTableViewDataSource implementation

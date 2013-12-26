@@ -10,7 +10,6 @@
 #import "MainController.h"
 #import <arcstreamsdk/STreamUser.h>
 #import "CreateUI.h"
-#import "STreamXMPP.h"
 #import "SignUpViewController.h"
 #import "RootViewController.h"
 #import "MyFriendsViewController.h"
@@ -19,6 +18,7 @@
 #import "ImageCache.h"
 #import "FileCache.h"
 #import <arcstreamsdk/STreamFile.h>
+
 
 @interface LoginViewController ()
 
@@ -106,13 +106,10 @@
     if (userName && ([userName length] != 0) && passWord &&([passWord length]!= 0)) {
         
         [user logIn:userName withPassword:passWord];
-        
+
         NSLog(@"%@",[user errorMessage]);
         if ([[user errorMessage] length] == 0) {
-            
-            STreamXMPP *con = [STreamXMPP sharedObject];
-            [con connect:userName withPassword:passWord];
-           STreamUser *user = [[STreamUser alloc] init];
+            STreamUser *user = [[STreamUser alloc] init];
             [user loadUserMetadata:userName response:^(BOOL succeed, NSString *error){
                 if ([error isEqualToString:userName]){
                     NSMutableDictionary *dic = [user userMetadata];

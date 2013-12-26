@@ -33,6 +33,18 @@
     }
     return userID;
 }
+-(NSString *)getUserIDPassword{
+    
+    NSString * password =nil;
+    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
+    if (array && [array count]!=0) {
+        
+        password = [array objectAtIndex:1];
+    }
+    return password;
+}
+
 -(NSString *)getPath {
     NSDateFormatter* formater = [[NSDateFormatter alloc] init];
     [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];

@@ -27,5 +27,4 @@ typedef void (^FinishCall)(NSString *);
 
 - (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID;;
 
-
 @end

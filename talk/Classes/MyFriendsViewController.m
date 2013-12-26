@@ -81,12 +81,11 @@
     UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addFriends)];
     self.navigationItem.rightBarButtonItem = rightItem;
     
-    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-    NSString * loginName= [array objectAtIndex:0];
+    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    
     
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44)];
-    label.text =loginName;
+    label.text =[handle getUserID];
     label.textColor = [UIColor grayColor];
     label.font = [UIFont fontWithName:@"Arial" size:22.0f];
     self.tableView.tableHeaderView =label;

@@ -14,6 +14,8 @@
 
 -(NSString *)getUserID;
 
+-(NSString *)getUserIDPassword;
+
 -(NSString *)getPath;
 
 @end
