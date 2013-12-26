@@ -39,7 +39,7 @@
 #define BIG_IMG_WIDTH  300.0
 #define BIG_IMG_HEIGHT 340.0
 
-@interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate,reloadTableDeleage>
+@interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate,reloadTableDeleage, GetAllMessagesProtocol>
 {
     NSMutableArray *bubbleData;
     CreateUI * createUI;
@@ -110,24 +110,16 @@
 - (void)scrollViewDidScroll:(UIScrollView *)sender {
 
 }
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view
-    BackData *data = [BackData sharedObject];
-    UIImage *bgImage =[data getImage];
-    if (bgImage) {
-        [self.view setBackgroundColor:[UIColor colorWithPatternImage:bgImage]];
-    }else{
-        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
-    }
+
+-(void)viewWillAppear:(BOOL)animated{
+    
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSString *sendToID = [imageCache getFriendID];
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * userID = [handler getUserID];
-
+    
     self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
-
+    
     bubbleData = [[NSMutableArray alloc]init];
     
     TalkDB * talk =[[TalkDB alloc]init];
@@ -135,8 +127,23 @@
     for (NSBubbleData * data in bubbleData) {
         data.delegate = self;
     }
-
-
+    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
+    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+    myData = [imageCache getImage:pImageId];
+    
+    NSMutableDictionary *metaData = [imageCache getUserMetadata:sendToID];
+    NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
+    otherData = [imageCache getImage:pImageId2];
+    
+    BackData *data = [BackData sharedObject];
+    UIImage *bgImage =[data getImage];
+    if (bgImage) {
+        [self.view setBackgroundColor:[UIColor colorWithPatternImage:bgImage]];
+    }else{
+        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
+    }
+    
+    
     createUI = [[CreateUI alloc]init];
     
     self.voice = [[Voice alloc] init];
@@ -165,22 +172,26 @@
     bubbleTableView.showAvatars = YES;
     
     [bubbleTableView reloadData];
-   
+    
     [self scrollBubbleViewToBottomAnimated:YES];
-//给键盘注册通知
+    //给键盘注册通知
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     timeArray = [[NSMutableArray alloc]initWithObjects:@"1s",@"2s",@"3s",@"4s",@"5s",@"6s",@"7s",@"8s",@"9s",@"10s", nil];
+
+
     
-    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
-    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-    myData = [imageCache getImage:pImageId];
+    NSLog(@"");
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view
     
-    NSMutableDictionary *metaData = [imageCache getUserMetadata:sendToID];
-    NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
-    otherData = [imageCache getImage:pImageId2];
+   
 
     //handler
     photoHandler = [[PhotoHandler alloc] init];

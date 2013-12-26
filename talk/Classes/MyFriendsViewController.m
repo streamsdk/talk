@@ -30,13 +30,14 @@
 @interface MyFriendsViewController ()
 {
     NSMutableDictionary *countDict;
+    MainController *mainVC;
 }
 @end
 
 @implementation MyFriendsViewController
 
-@synthesize userData,sortedArrForArrays,sectionHeadsKeys;
-@synthesize messagesProtocol;
+@synthesize userData,sortedArrForArrays,sectionHeadsKeys,messagesProtocol;
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -91,6 +92,8 @@
     label.font = [UIFont fontWithName:@"Arial" size:22.0f];
     self.tableView.tableHeaderView =label;
     
+    mainVC = [[MainController alloc]init];
+
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"connecting ...";
     [self.view addSubview:HUD];
@@ -101,6 +104,7 @@
         [HUD removeFromSuperview];
         HUD = nil;
     }];
+    
  
 }
 
@@ -145,6 +149,7 @@
 }
 -(void) connect {
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    [self setMessagesProtocol:mainVC];
     STreamXMPP *con = [STreamXMPP sharedObject];
     [con setXmppDelegate:self];
     [con connect:[handle getUserID] withPassword:[handle getUserIDPassword]];
@@ -318,7 +323,7 @@
 
    
     [imageCache setFriendID:userName];
-    MainController *mainVC = [[MainController alloc]init];
+    
     [self.navigationController pushViewController:mainVC animated:YES];
 }
 

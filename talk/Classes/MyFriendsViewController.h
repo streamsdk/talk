@@ -14,5 +14,6 @@
 @property (nonatomic,retain) NSMutableArray *userData;
 @property (nonatomic, retain) NSMutableArray *sortedArrForArrays;
 @property (nonatomic, retain) NSMutableArray *sectionHeadsKeys;
-@property (assign,nonatomic)id <GetAllMessagesProtocol>messagesProtocol;
+@property (assign,nonatomic) id<GetAllMessagesProtocol> messagesProtocol;
+
 @end

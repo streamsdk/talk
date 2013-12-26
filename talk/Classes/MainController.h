@@ -22,10 +22,11 @@
 #define facialViewHeight 170
 #define  buttonWh 34
 #define  ICONHEIGHT 80
-@interface MainController : UIViewController<UIBubbleTableViewDataSource,STreamXMPPProtocol,facialViewDelegate,UITextFieldDelegate,IconViewDelegate,UIAlertViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,GetAllMessagesProtocol>
+@interface MainController : UIViewController<UIBubbleTableViewDataSource,facialViewDelegate,UITextFieldDelegate,IconViewDelegate,UIAlertViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,GetAllMessagesProtocol>
 {
     NSURL  *videoPath;
 }
+
 
 @property (nonatomic,strong) UIBubbleTableView *bubbleTableView;
 
