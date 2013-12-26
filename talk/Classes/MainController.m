@@ -117,7 +117,7 @@
     NSString *sendToID = [imageCache getFriendID];
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * userID = [handler getUserID];
-    
+    bubbleData = [[NSMutableArray alloc]init];
     
     TalkDB * talk =[[TalkDB alloc]init];
     bubbleData = [talk readInitDB:userID withOtherID:sendToID];
@@ -140,7 +140,7 @@
         [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     }
     
-    
+    [bubbleTableView reloadData];
     NSLog(@"");
 }
 
@@ -154,8 +154,6 @@
 
     self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
     
-    bubbleData = [[NSMutableArray alloc]init];
-
     createUI = [[CreateUI alloc]init];
     
     self.voice = [[Voice alloc] init];
