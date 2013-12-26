@@ -195,9 +195,9 @@
     
     
     STreamXMPP *con = [STreamXMPP sharedObject];
-    [con connect:userID withPassword:[handler getUserIDPassword]];
     [con setXmppDelegate:self];
-
+    [con connect:userID withPassword:[handler getUserIDPassword]];
+    
     
 }
 
