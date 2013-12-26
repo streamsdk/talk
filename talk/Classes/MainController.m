@@ -118,9 +118,6 @@
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * userID = [handler getUserID];
     
-    self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
-    
-    bubbleData = [[NSMutableArray alloc]init];
     
     TalkDB * talk =[[TalkDB alloc]init];
     bubbleData = [talk readInitDB:userID withOtherID:sendToID];
@@ -144,6 +141,21 @@
     }
     
     
+    NSLog(@"");
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view
+    
+    ImageCache * imageCache =  [ImageCache sharedObject];
+    NSString *sendToID = [imageCache getFriendID];
+
+    self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
+    
+    bubbleData = [[NSMutableArray alloc]init];
+
     createUI = [[CreateUI alloc]init];
     
     self.voice = [[Voice alloc] init];
@@ -180,18 +192,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     timeArray = [[NSMutableArray alloc]initWithObjects:@"1s",@"2s",@"3s",@"4s",@"5s",@"6s",@"7s",@"8s",@"9s",@"10s", nil];
-
-
-    
-    NSLog(@"");
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view
-    
-   
 
     //handler
     photoHandler = [[PhotoHandler alloc] init];

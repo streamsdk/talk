@@ -321,7 +321,6 @@
     ChineseString * userStr = [keys objectAtIndex:indexPath.row];
     NSString *userName = [userStr string];
 
-   
     [imageCache setFriendID:userName];
     
     [self.navigationController pushViewController:mainVC animated:YES];
