@@ -34,6 +34,7 @@
 #import "AudioHandler.h"
 #import "HandlerUserIdAndDateFormater.h"
 
+#define BUTTON_TAG 20000
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
 #define BIG_IMG_WIDTH  300.0
@@ -45,6 +46,7 @@
     CreateUI * createUI;
     
     UIScrollView *scrollView;//表情滚动视图
+    UIPageControl *pageControl;
     
     BOOL keyboardIsShow;//键盘是否显示
     BOOL isFace;
@@ -65,7 +67,7 @@
 
 @implementation MainController
 
-@synthesize bubbleTableView,toolBar,messageText,sendButton,iconButton ,recordButton,recordOrKeyboardButton,keyBoardButton;
+@synthesize bubbleTableView,toolBar,messageText,iconButton ,recordButton,recordOrKeyboardButton,keyBoardButton;
 @synthesize voice;
 @synthesize actionSheet;
 @synthesize timeArray;
@@ -94,21 +96,14 @@
     [iconButton setImage:[UIImage imageNamed:@"addIcon.png"] forState:UIControlStateNormal];
     [iconButton addTarget:self action:@selector(photoClicked) forControlEvents:UIControlEventTouchUpInside];
     
-    messageText = [createUI setTextFrame:CGRectMake(60, 3, toolBar.frame.size.width-120, 34)];
+    messageText = [createUI setTextFrame:CGRectMake(60, 3, toolBar.frame.size.width-65, 34)];
     messageText.delegate = self;
+    messageText.returnKeyType = UIReturnKeySend;
     
-    sendButton = [createUI setButtonFrame:CGRectMake(toolBar.frame.size.width-50,4, 45, 32) withTitle:@"send"];
-    [sendButton.titleLabel setFont:[UIFont systemFontOfSize:15.0f]];
-    [sendButton addTarget:self action:@selector(sendMessageClicked) forControlEvents:UIControlEventTouchUpInside];
-  
     [toolBar addSubview:recordOrKeyboardButton];
     [toolBar addSubview:iconButton];
     [toolBar addSubview:messageText];
-    [toolBar addSubview:sendButton];
     
-}
-- (void)scrollViewDidScroll:(UIScrollView *)sender {
-
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -117,13 +112,13 @@
     NSString *sendToID = [imageCache getFriendID];
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * userID = [handler getUserID];
-    bubbleData = [[NSMutableArray alloc]init];
     
     TalkDB * talk =[[TalkDB alloc]init];
     bubbleData = [talk readInitDB:userID withOtherID:sendToID];
     for (NSBubbleData * data in bubbleData) {
         data.delegate = self;
     }
+    
     NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
     NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
     myData = [imageCache getImage:pImageId];
@@ -141,6 +136,7 @@
     }
     
     [bubbleTableView reloadData];
+    [self scrollBubbleViewToBottomAnimated:YES];
     NSLog(@"");
 }
 
@@ -157,7 +153,9 @@
     createUI = [[CreateUI alloc]init];
     
     self.voice = [[Voice alloc] init];
-    
+   
+     bubbleData = [[NSMutableArray alloc]init];
+   
     UIImageView * backView = [[UIImageView alloc]initWithFrame:self.view.frame];
     backView.userInteractionEnabled = YES;
     UITapGestureRecognizer *singleTouch = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
@@ -180,10 +178,6 @@
     bubbleTableView.tag = TABLEVIEWTAG;
     bubbleTableView.snapInterval = 120;
     bubbleTableView.showAvatars = YES;
-    
-    [bubbleTableView reloadData];
-    
-    [self scrollBubbleViewToBottomAnimated:YES];
     //给键盘注册通知
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -270,76 +264,36 @@
     [self scrollBubbleViewToBottomAnimated:YES];
 
 }
-/*- (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID{
-  
+#pragma mark - Actions
+
+#pragma mark send  message
+-(void)sendMessages {
     ImageCache *imageCache = [ImageCache sharedObject];
-    HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
-    
-    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[handler getUserID]];
-    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-    myData = [imageCache getImage:pImageId];
     NSString *sendToID =[imageCache getFriendID];
-    NSMutableDictionary *metaData = [imageCache getUserMetadata:sendToID];
-    NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
-    otherData = [imageCache getImage:pImageId2];
-    
-    STreamFile *sf = [[STreamFile alloc] init];
-    NSData *data = [sf downloadAsData:fileId];
-    
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
-    if ([body isEqualToString:@"photo"]) {
-        jsonDic = [photoHandler receiveFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+    if (sendToID) {
         
-    }else if ([body isEqualToString:@"video"]){
-        [videoHandler setController:self];
-        jsonDic = [videoHandler receiveVideoFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+        NSString * messages = messageText.text;
+        if ([messages length]!=0) {
+            [messageHandler sendMessage:messages forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
+            messageText.text = @"";
+            [self dismissKeyBoard];
+            [messageText resignFirstResponder];
+            [bubbleTableView reloadData];
+            [self scrollBubbleViewToBottomAnimated:YES];
+        }else {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"please input chat Contents" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+            [alert show];
+        }
         
     }else{
-        jsonDic = [audioHandler receiveAudioFile:data withBody:body forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"you are waiting..." delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alert show];
     }
-    [bubbleTableView reloadData];
-    [self scrollBubbleViewToBottomAnimated:YES];
     
-    TalkDB * db = [[TalkDB alloc]init];
-    NSString * userID = [handler getUserID];
-    NSString  *str = [jsonDic JSONString];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    [db insertDBUserID:userID fromID:fromID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
+    
+    [self dismissKeyBoard];
     
 }
-
-- (void)didReceiveMessage:(XMPPMessage *) message withFrom:(NSString *)fromID{
-
-    ImageCache *imageCache = [ImageCache sharedObject];
-    NSString *sendToID =[imageCache getFriendID];
-    NSString *receiveMessage = [message body];
-    [messageHandler receiveMessage:receiveMessage forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
-    [bubbleTableView reloadData];
-    [self scrollBubbleViewToBottomAnimated:YES];
-    
-}
-- (void)didReceiveRosterItems:(NSMutableArray *)rosterItem{
-    NSLog(@"");
-}
-- (void)didNotAuthenticate:(DDXMLElement *)error{
-    
-    NSLog(@"");
-}
-- (void)didReceivePresence:(XMPPPresence *)presence{
-    
-    NSString *presenceType = [presence type];
-    if ([presenceType isEqualToString:@"subscribe"]){
-
-    }
-    if ([presenceType isEqualToString:@"available"]){
-    }
-    if ([presenceType isEqualToString:@"unavailable"]){
-       
-    }
-}*/
-
-#pragma mark - Actions
 #pragma mark send photo
 
 -(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
@@ -377,32 +331,6 @@
      [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
 }
-#pragma mark send  message
--(void) sendMessageClicked {
-    ImageCache *imageCache = [ImageCache sharedObject];
-    NSString *sendToID =[imageCache getFriendID];
-    if (sendToID) {
-        
-        NSString * messages = messageText.text;
-        if ([messages length]!=0) {
-            [messageHandler sendMessage:messages forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
-            messageText.text = @"";
-            [self dismissKeyBoard];
-            [messageText resignFirstResponder];
-            [bubbleTableView reloadData];
-            [self scrollBubbleViewToBottomAnimated:YES];
-        }else {
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"please input chat Contents" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
-            [alert show];
-        }
-        
-    }else{
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"you are waiting..." delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
-        [alert show];
-    }
-    
-}
-
 #pragma mark send audio
 -(void) sendRecordAudio {
     ImageCache *imageCache = [ImageCache sharedObject];
@@ -454,7 +382,6 @@
     [scrollView removeFromSuperview];
     [recordOrKeyboardButton removeFromSuperview];
     [messageText removeFromSuperview];
-    [sendButton removeFromSuperview];
     [iconButton removeFromSuperview];
     CGRect frame = CGRectMake(0, 2, 30, 36);
      keyBoardButton = [createUI setButtonFrame:frame withTitle:@"nil"];
@@ -526,6 +453,7 @@
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-keyboardHeight,self.view.frame.size.width, keyboardHeight)];
         }];
+        [pageControl setHidden:NO];
         return;
     }
     //如果键盘没有显示，点击表情了，隐藏表情，显示键盘
@@ -533,6 +461,7 @@
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, keyboardHeight)];
         }];
+        [pageControl setHidden:YES];
         [messageText becomeFirstResponder];
         
     }else{
@@ -548,6 +477,7 @@
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-keyboardHeight,self.view.frame.size.width, keyboardHeight)];
         }];
+        [pageControl setHidden:NO];
         [messageText resignFirstResponder];
     }
 }
@@ -568,7 +498,9 @@
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, ICONHEIGHT)];
         }];
     }
-    
+    UIButton *button = (UIButton *)[self.view viewWithTag:BUTTON_TAG];
+    [button removeFromSuperview];
+    [pageControl setHidden:YES];
     [messageText resignFirstResponder];
     
 }
@@ -679,9 +611,34 @@
     scrollView.delegate=self;
     [self.view addSubview:scrollView];
     isFace = YES;
+    pageControl=[[UIPageControl alloc]initWithFrame:CGRectMake(84, self.view.frame.size.height-35, 150, 30)];
+    [pageControl setCurrentPage:0];
+    pageControl.pageIndicatorTintColor=RGBACOLOR(195, 179, 163, 1);
+    pageControl.currentPageIndicatorTintColor=RGBACOLOR(132, 104, 77, 1);
+    pageControl.numberOfPages = 9;//指定页面个数
+    [pageControl setBackgroundColor:[UIColor clearColor]];
+    pageControl.hidden=NO;
+    [pageControl addTarget:self action:@selector(changePage:)forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:pageControl];
+    
+    UIButton *sendButton = [createUI setButtonFrame:CGRectMake(260, self.view.frame.size.height-35, 50, 30) withTitle:@"send"];
+    [sendButton.titleLabel setFont:[UIFont systemFontOfSize:15.0f]];
+    sendButton.tag = BUTTON_TAG;
+    [sendButton addTarget:self action:@selector(sendClicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:sendButton];
     [self disFaceKeyboard];
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)sender {
+    int page = scrollView.contentOffset.x / 320;//通过滚动的偏移量来判断目前页面所对应的小白点
+    pageControl.currentPage = page;//pagecontroll响应值的变化
+}
+//pagecontroll的委托方法
+
+- (void)changePage:(id)sender {
+    int page = pageControl.currentPage;//获取当前pagecontroll的值
+    [scrollView setContentOffset:CGPointMake(320 * page, 0)];//根据pagecontroll的值来改变scrollview的滚动位置，以此切换到指定的页面
+}
 //* UIPickerView
 -(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
@@ -816,11 +773,15 @@
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
+-(void)sendClicked{
+    [self sendMessages];
+}
 #pragma mark textFiledDelegate
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [self dismissKeyBoard];
+    [self sendMessages];
     return  YES;
+
 }
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
     [self scrollBubbleViewToBottomAnimated:YES];

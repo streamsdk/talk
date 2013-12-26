@@ -29,6 +29,7 @@
 @implementation SearchFriendsViewController
 
 @synthesize myTableview,userData;
+@synthesize searchBar=_searchBar;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -61,22 +62,17 @@
     [_segmentedControl setDelegate:self];
     [self setupSegmentedControl];
 
-    UISearchBar * searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64+47, self.view.bounds.size.width, 50)];
-    searchBar.delegate = self;
-    searchBar.tag =SEARCH_TAG;
-    searchBar.barStyle=UIBarStyleDefault;
-    searchBar.placeholder=@"search";
-    searchBar.keyboardType=UIKeyboardTypeNamePhonePad;
-    [self.view addSubview:searchBar];
+    _searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64+47, self.view.bounds.size.width, 50)];
+    _searchBar.delegate = self;
+    _searchBar.tag =SEARCH_TAG;
+    _searchBar.barStyle=UIBarStyleDefault;
+    _searchBar.placeholder=@"search";
+    _searchBar.keyboardType=UIKeyboardTypeNamePhonePad;
+    [self.view addSubview:_searchBar];
     
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     STreamQuery *sq = [[STreamQuery alloc]initWithCategory:[handler getUserID]];
     allFriend = [sq find];
-
-    //searchbar background
-  /* UIView *segment = [searchBar.subviews objectAtIndex:0];
-    UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-    [segment addSubview: bgImage];*/
     
 }
 
@@ -237,7 +233,8 @@
         [HUD removeFromSuperview];
         HUD = nil;
     }];
-      [button setTitle:@"sendRequest" forState:UIControlStateNormal];
+    [button setFrame:CGRectMake(220, 7, 100, 30)];
+    [button setTitle:@"sendRequest" forState:UIControlStateNormal];
   
 }
 

@@ -201,35 +201,36 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *cellId = @"CellId";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
         [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
+        UILabel * label= [[UILabel alloc]initWithFrame:CGRectMake(260, 0, 40, cell.frame.size.height)];
+        label.textColor = [UIColor redColor];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.backgroundColor = [UIColor clearColor];
+        label.tag = LABEL_TAG;
+        label.font = [UIFont fontWithName:@"Arial" size:22.0f];
+        [cell addSubview:label];
         
     }
     if ([self.sortedArrForArrays count] > indexPath.section) {
         NSArray *arr = [sortedArrForArrays objectAtIndex:indexPath.section];
         if ([arr count] > indexPath.row) {
             ChineseString *str = (ChineseString *) [arr objectAtIndex:indexPath.row];
-           
+
             [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
             [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
              [self loadAvatar:str.string withCell:cell];
             cell.textLabel.text = str.string;
             NSString * num = [countDict objectForKey:str.string];
             if (![num isEqualToString:@"0"]) {
-                UILabel * label= [[UILabel alloc]initWithFrame:CGRectMake(260, 0, 40, cell.frame.size.height)];
-                label.textColor = [UIColor redColor];
-                label.textAlignment = NSTextAlignmentCenter;
-                label.backgroundColor = [UIColor clearColor];
-                label.tag = LABEL_TAG;
-                label.font = [UIFont fontWithName:@"Arial" size:22.0f];
+                
+                UILabel * label = (UILabel *)[self.view viewWithTag:LABEL_TAG];
                 label.text = num;
-                [cell addSubview:label];
-            }
+              }
             
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
 

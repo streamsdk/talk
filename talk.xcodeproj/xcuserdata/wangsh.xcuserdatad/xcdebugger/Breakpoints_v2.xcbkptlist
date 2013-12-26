@@ -137,13 +137,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "talk/Classes/MyFriendsViewController.m"
-            timestampString = "409740338.590622"
+            filePath = "talk/Classes/MainController.m"
+            timestampString = "409757024.626995"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "175"
-            endingLineNumber = "175"
-            landmarkName = "-didReceivePresence:"
+            startingLineNumber = "694"
+            endingLineNumber = "694"
+            landmarkName = "-alertView:clickedButtonAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/Classes/MainController.m"
-            timestampString = "409747084.939255"
+            timestampString = "409757341.183239"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "255"
-            endingLineNumber = "255"
+            startingLineNumber = "225"
+            endingLineNumber = "225"
             landmarkName = "-getFiles:withFromID:withBody:"
             landmarkType = "5">
          </BreakpointContent>
@@ -169,13 +169,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "talk/Classes/MyFriendsViewController.m"
-            timestampString = "409746879.13456"
+            filePath = "talk/Classes/MainController.m"
+            timestampString = "409757669.113451"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "180"
-            endingLineNumber = "180"
-            landmarkName = "-didReceiveMessage:withFrom:"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
+            landmarkName = "-getMessages:withFromID:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -185,13 +185,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "talk/Classes/MainController.m"
-            timestampString = "409747011.282727"
+            filePath = "talk/setVC/SettingViewController.m"
+            timestampString = "409758234.082582"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
-            landmarkName = "-viewWillAppear:"
+            startingLineNumber = "229"
+            endingLineNumber = "229"
+            landmarkName = "-uploadProfileImage"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "talk/setVC/SettingViewController.m"
+            timestampString = "409758235.623927"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
+            landmarkName = "-uploadProfileImage"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

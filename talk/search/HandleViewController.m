@@ -32,6 +32,15 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self.searchBar removeFromSuperview];
+    [self.myTableview setFrame:CGRectMake(0, 44, self.view.bounds.size.width, self.view.bounds.size.height-44)];
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.myTableview.frame.size.width, 36)];
+    label.text =@"I added chatters";
+    label.backgroundColor = [UIColor blueColor];
+    label.textColor = [UIColor whiteColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.font = [UIFont fontWithName:@"DIN Alternate" size:15.0f];
+    self.myTableview.tableHeaderView =label;
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"loading friends...";

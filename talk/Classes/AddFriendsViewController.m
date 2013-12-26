@@ -77,7 +77,6 @@
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.myTableview.frame.size.width, 36)];
     label.text =@"Chatters Who Added Me";
     label.backgroundColor = [UIColor blueColor];
-//    label.backgroundColor = [UIColor colorWithRed:249.0/255.0 green:140.0/255.0 blue:130.0/255.0 alpha:1.0];
     label.textColor = [UIColor whiteColor];
     label.font = [UIFont fontWithName:@"DIN Alternate" size:15.0f];
     myTableview.tableHeaderView =label;

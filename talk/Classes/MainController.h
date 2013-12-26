@@ -40,8 +40,6 @@
 
 @property (nonatomic,strong) UIButton * iconButton;
 
-@property (nonatomic,strong) UIButton * sendButton;
-
 @property (nonatomic,strong) UITextField *messageText;
 
 @property(nonatomic,retain)UIActionSheet* actionSheet;

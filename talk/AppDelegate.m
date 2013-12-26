@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "ViewController.h"
 #import "MainController.h"
 #import "LoginViewController.h"
 #import "RootViewController.h"
