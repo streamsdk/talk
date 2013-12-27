@@ -14,7 +14,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        icon = [[NSArray alloc]initWithObjects:@"face.png", @"photoMark.png",@"camera_button_take.png",@"video1.png",nil];
+        icon = [[NSArray alloc]initWithObjects:@"face.png", @"photog150.png",@"camera_icon150.png",@"video150.png",nil];
     }
     return self;
 }

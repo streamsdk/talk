@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		030D10C9186D343700910292 /* plus24.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10C8186D343700910292 /* plus24.png */; };
+		030D10CE186D344700910292 /* keyboard34.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10CA186D344700910292 /* keyboard34.png */; };
+		030D10CF186D344700910292 /* photog150.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10CB186D344700910292 /* photog150.png */; };
+		030D10D0186D344700910292 /* camera_icon150.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10CC186D344700910292 /* camera_icon150.png */; };
+		030D10D1186D344700910292 /* video150.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10CD186D344700910292 /* video150.png */; };
+		030D10D3186D34F400910292 /* microphone24.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10D2186D34F400910292 /* microphone24.png */; };
 		03451B8518326C5600030E79 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03451B8418326C5600030E79 /* SignUpViewController.m */; };
 		037E0431186605A8005ADCEC /* libidn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9C0E018145E510039118F /* libidn.a */; };
 		03C01B1D185ACFB600137E85 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C01B1C185ACFB600137E85 /* arcstreamsdk.framework */; };
@@ -273,6 +279,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		030D10C8186D343700910292 /* plus24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus24.png; sourceTree = "<group>"; };
+		030D10CA186D344700910292 /* keyboard34.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = keyboard34.png; sourceTree = "<group>"; };
+		030D10CB186D344700910292 /* photog150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photog150.png; sourceTree = "<group>"; };
+		030D10CC186D344700910292 /* camera_icon150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_icon150.png; sourceTree = "<group>"; };
+		030D10CD186D344700910292 /* video150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video150.png; sourceTree = "<group>"; };
+		030D10D2186D34F400910292 /* microphone24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = microphone24.png; sourceTree = "<group>"; };
 		03451B8318326C5600030E79 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SignUpViewController.h; path = Classes/SignUpViewController.h; sourceTree = "<group>"; };
 		03451B8418326C5600030E79 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SignUpViewController.m; path = Classes/SignUpViewController.m; sourceTree = "<group>"; };
 		03C01B1C185ACFB600137E85 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
@@ -1713,6 +1725,12 @@
 		0EE951A1185EA4B9003F4638 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				030D10D2186D34F400910292 /* microphone24.png */,
+				030D10C8186D343700910292 /* plus24.png */,
+				030D10CA186D344700910292 /* keyboard34.png */,
+				030D10CB186D344700910292 /* photog150.png */,
+				030D10CC186D344700910292 /* camera_icon150.png */,
+				030D10CD186D344700910292 /* video150.png */,
 				0EEFFF2E186556C400018A57 /* message_count.png */,
 				0EEFFF2F186556C400018A57 /* message_count@2x.png */,
 				0EE951AE185EA4B9003F4638 /* images */,
@@ -1978,6 +1996,9 @@
 				0EE951E8185EA4B9003F4638 /* missingAvatar.png in Resources */,
 				0EEFFF7418659DE900018A57 /* segmented-bg-left.png in Resources */,
 				0EE951DA185EA4B9003F4638 /* camera.png in Resources */,
+				030D10C9186D343700910292 /* plus24.png in Resources */,
+				030D10D3186D34F400910292 /* microphone24.png in Resources */,
+				030D10CF186D344700910292 /* photog150.png in Resources */,
 				0EE951EE185EA4B9003F4638 /* typingMine.png in Resources */,
 				0EE951E1185EA4B9003F4638 /* face.png in Resources */,
 				0EE951FB185EA4B9003F4638 /* video1.png in Resources */,
@@ -2012,8 +2033,11 @@
 				0EE951F5185EA4B9003F4638 /* Voice@2x.png in Resources */,
 				0ED8ECA018288DC400C84741 /* black_bg_ip5@2x.png in Resources */,
 				0EE951DD185EA4B9003F4638 /* bubbleSomeone.png in Resources */,
+				030D10D0186D344700910292 /* camera_icon150.png in Resources */,
 				0EE951F8185EA4B9003F4638 /* selectAdd.png in Resources */,
 				0EE951D2185EA4B9003F4638 /* b1.png in Resources */,
+				030D10D1186D344700910292 /* video150.png in Resources */,
+				030D10CE186D344700910292 /* keyboard34.png in Resources */,
 				0ED8ECA218288DC400C84741 /* mic_talk_358x358@2x.png in Resources */,
 				0EE951D7185EA4B9003F4638 /* b6.png in Resources */,
 				0EE951E4185EA4B9003F4638 /* faceDelete@2x.png in Resources */,

@@ -89,11 +89,11 @@
     isTakeImage = NO;
     
     recordOrKeyboardButton = [createUI setButtonFrame:CGRectMake(0, 2, 30, 36) withTitle:(@"nil")];
-    [recordOrKeyboardButton setImage:[UIImage imageNamed:@"Voice.png"] forState:UIControlStateNormal];
+    [recordOrKeyboardButton setImage:[UIImage imageNamed:@"microphone24.png"] forState:UIControlStateNormal];
     [recordOrKeyboardButton addTarget:self action:@selector(KeyboardTorecordClicked) forControlEvents:UIControlEventTouchUpInside];
    
     iconButton = [createUI setButtonFrame:CGRectMake(30, 2, 30, 36) withTitle:@"nil"];
-    [iconButton setImage:[UIImage imageNamed:@"addIcon.png"] forState:UIControlStateNormal];
+    [iconButton setImage:[UIImage imageNamed:@"plus24.png"] forState:UIControlStateNormal];
     [iconButton addTarget:self action:@selector(photoClicked) forControlEvents:UIControlEventTouchUpInside];
     
     messageText = [createUI setTextFrame:CGRectMake(60, 3, toolBar.frame.size.width-65, 34)];
@@ -385,7 +385,7 @@
     [iconButton removeFromSuperview];
     CGRect frame = CGRectMake(0, 2, 30, 36);
      keyBoardButton = [createUI setButtonFrame:frame withTitle:@"nil"];
-    [keyBoardButton setImage:[UIImage imageNamed:@"Text.png"] forState:UIControlStateNormal];
+    [keyBoardButton setImage:[UIImage imageNamed:@"keyboard34.png"] forState:UIControlStateNormal];
     [keyBoardButton addTarget:self action:@selector(recordToKeyboardClicked) forControlEvents:UIControlEventTouchUpInside];
     
     NSString *title =@"按住说话";
