@@ -22,11 +22,12 @@
 
 @property (nonatomic, readonly) XMPPStream *xmppStream;
 @property (nonatomic, strong) id<STreamXMPPProtocol> xmppDelegate;
-@property (nonatomic, strong) STreamObject *userFriends;
+
 
 
 -(BOOL)connect: (NSString *)userName withPassword:(NSString *)password;
 -(void)disconnect;
+-(BOOL)connected;
 
 -(void)sendMessage:(NSString *)toUser withMessage:(NSString *)message;
 

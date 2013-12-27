@@ -29,7 +29,7 @@ FinishCall finishCall;
 
 @synthesize xmppStream;
 @synthesize xmppDelegate;
-@synthesize userFriends;
+
 
 BOOL allowSelfSignedCertificates = YES;
 BOOL allowSSLHostNameMismatch = NO;
@@ -106,6 +106,11 @@ static XMPPReconnect *xmppReconnect;
 {
 	[self goOffline];
 	[xmppStream disconnect];
+}
+
+- (BOOL)connected{
+    BOOL isConnected = [xmppStream isAuthenticated];
+    return isConnected;
 }
 
 - (void)goOnline

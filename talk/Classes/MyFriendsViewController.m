@@ -56,7 +56,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
 
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    /*__block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"loading friends...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
@@ -65,7 +65,8 @@
         [self.tableView reloadData];
         [HUD removeFromSuperview];
         HUD = nil;
-    }];
+    }];*/
+    [self loadFriends];
 }
 - (void)viewDidLoad
 {
@@ -110,11 +111,13 @@
 
 -(void) loadFriends {
     
-    countDict= [[NSMutableDictionary alloc]init];
+    if (!userData){
+        countDict= [[NSMutableDictionary alloc]init];
+        userData = [[NSMutableArray alloc]init];
+        sortedArrForArrays = [[NSMutableArray alloc] init];
+        sectionHeadsKeys = [[NSMutableArray alloc] init];
+    }
     
-    userData = [[NSMutableArray alloc]init];
-    sortedArrForArrays = [[NSMutableArray alloc] init];
-    sectionHeadsKeys = [[NSMutableArray alloc] init];
     NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
     NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
     NSString * loginName= [array objectAtIndex:0];
@@ -122,37 +125,33 @@
     STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:loginName];
     [sq setQueryLogicAnd:true];
     [sq whereEqualsTo:@"status" forValue:@"friend"];
-    NSMutableArray * friends = [sq find];
-    for (STreamObject *so in friends) {
-        [userData addObject:[so objectId]];
-        STreamUser *user = [[STreamUser alloc] init];
-        [user loadUserMetadata:[so objectId] response:^(BOOL succeed, NSString *error){
-            if ([error isEqualToString:[so objectId]]){
-                NSMutableDictionary *dic = [user userMetadata];
-                ImageCache *imageCache = [ImageCache sharedObject];
-                [imageCache saveUserMetadata:[so objectId] withMetadata:dic];
-            }
-        }];
-    }
-    
-    sortedArrForArrays = [self getChineseStringArr:userData];
-    for (NSString * str in userData) {
-        NSDate * time = [NSDate dateWithTimeIntervalSinceNow:0];
-        HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
-        TalkDB * db = [[TalkDB alloc]init];
-        NSArray * array = [db readInitDB:[handle getUserID] withOtherID:str withTime:time];
-        NSString *num=[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:[array count]]];
-        [countDict setObject:num forKey:str];
+    [sq find:^(NSMutableArray *friends){
+        for (STreamObject *so in friends) {
+            if (![userData containsObject:[so objectId]])
+                [userData addObject:[so objectId]];
+        }
+        sortedArrForArrays = [self getChineseStringArr:userData];
+        for (NSString * str in userData) {
+            NSDate * time = [NSDate dateWithTimeIntervalSinceNow:0];
+            HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+            TalkDB * db = [[TalkDB alloc]init];
+            NSArray * array = [db readInitDB:[handle getUserID] withOtherID:str withTime:time];
+            NSString *num=[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:[array count]]];
+            [countDict setObject:num forKey:str];
+            [self.tableView reloadData];
+            
+        }
         [self.tableView reloadData];
-        
-    }
+    }];
+    
 }
 -(void) connect {
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     [self setMessagesProtocol:mainVC];
     STreamXMPP *con = [STreamXMPP sharedObject];
     [con setXmppDelegate:self];
-    [con connect:[handle getUserID] withPassword:[handle getUserIDPassword]];
+    if (![con connected])
+       [con connect:[handle getUserID] withPassword:[handle getUserIDPassword]];
 }
 
 #pragma mark - STreamXMPPProtocol
