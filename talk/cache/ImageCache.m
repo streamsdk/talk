@@ -15,7 +15,9 @@ static NSMutableDictionary *_imageDictionary;
 static NSMutableDictionary *_selfImageDictionary;
 static NSMutableArray *_cachedSelfImageFiles;
 static NSString * _friendID;
-static NSDate * _time;
+
+static NSMutableArray *_messagesCount;
+
 @implementation ImageCache
 
 
@@ -30,6 +32,7 @@ static NSDate * _time;
         _cachedSelfImageFiles = [[NSMutableArray alloc] init];
         _imageDictionary = [[NSMutableDictionary alloc] init];
         _selfImageDictionary = [[NSMutableDictionary alloc] init];
+        _messagesCount = [[NSMutableArray alloc]init];
     });
     
     return sharedInstance;
@@ -80,12 +83,11 @@ static NSDate * _time;
 -(NSString *) getFriendID{
     return _friendID;
 }
-
--(void) messageTime :(NSDate *) time {
-    _time = time;
+-(void)setMessagesCount:(NSString *)fromId {
+    [_messagesCount addObject:fromId];
 }
--(NSDate *) getMessageTime{
-
-    return _time;
+-(NSMutableArray *)getMessagesCount {
+    return _messagesCount;
 }
+
 @end

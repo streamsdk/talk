@@ -204,57 +204,6 @@
     
     return dataArray;
 }
--(NSMutableArray *) readInitDB :(NSString *) _userID withOtherID:(NSString *)_friendID withTime:(NSDate *)_nowTime{
-   
-    ImageCache *imageCache = [ImageCache sharedObject];
-   
-    sqlite3 *database;
-    
-    if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
-        sqlite3_close(database);
-        NSAssert(0, @"Failed to open database");
-    }
-     NSDate *formerTime = [imageCache getMessageTime];
-    if (formerTime==nil) formerTime = _nowTime;
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSString *formerDateString = [dateFormatter stringFromDate:formerTime];
-    NSString *nowDateString = [dateFormatter stringFromDate:_nowTime];
-    NSString *sqlQuery = [NSString stringWithFormat:@"SELECT USERID, FROMID,TIME,ISMINE FROM FILEID WHERE TIME BETWEEN '%@' AND '%@'",formerDateString,nowDateString];
-    sqlite3_stmt * statement;
-    NSMutableArray *timeArray = [[NSMutableArray alloc] init];
-   
-    if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
-            while (sqlite3_step(statement) == SQLITE_ROW) {
-                char *userId = (char*)sqlite3_column_text(statement, 0);
-                char *friendId =(char*) sqlite3_column_text(statement, 1);
-                
-                NSString * userID = [[NSString alloc]initWithUTF8String:userId];
-                NSString *friendID = [[NSString alloc]initWithUTF8String:friendId];
-                
-                char *time1  = (char*)sqlite3_column_text(statement,2);
-                NSString * time2 =[[NSString alloc]initWithUTF8String:time1];
-                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-                NSDate *date = [dateFormatter dateFromString:time2];
-                int ismine = sqlite3_column_int(statement, 3);
-                
-                if ([userID isEqualToString:_userID] && [_friendID isEqualToString:friendID]) {
-                    if (ismine==1) {
-                        [timeArray addObject:date];
-                    }
-                    
-                }
-                
-            }
-        }
-    
-    sqlite3_finalize(statement);
-    sqlite3_close(database);
-    return timeArray;
-
-}
 
 -(NSString*)getCacheDirectory
 {

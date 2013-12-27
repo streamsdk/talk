@@ -16,6 +16,7 @@
 #import "FileCache.h"
 #import <arcstreamsdk/STreamFile.h>
 #import "TalkDB.h"
+#import "AddDB.h"
 #import "ImageCache.h"
 #import "STreamXMPP.h"
 @implementation AppDelegate
@@ -33,6 +34,9 @@
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:247.0/255.0 green:229.0/255.0 blue:227.0/255.0 alpha:1.0]];
     TalkDB * talkDB = [[TalkDB alloc ]init];
     [talkDB initDB];
+    AddDB * addDb = [[AddDB alloc]init];
+    [addDb initDB];
+    
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
 
            //    [[UIApplication sharedApplication] setStatusBarHidden:YES];

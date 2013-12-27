@@ -24,7 +24,7 @@
 
 -(NSString *) getFriendID;
 
--(void) messageTime :(NSDate *) time ;
--(NSDate *) getMessageTime;
+-(void) setMessagesCount:(NSString *)fromId;
 
+-(NSMutableArray *)getMessagesCount;
 @end

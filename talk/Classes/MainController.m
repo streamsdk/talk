@@ -855,11 +855,10 @@
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {
-    }else if (buttonIndex == 1) {
         [self takeVideo];
-    }else if(buttonIndex == 2) {
+    }else if (buttonIndex == 1) {
         [self addVideo];
-    }else if(buttonIndex == 3) {
+        
     }
     
 }

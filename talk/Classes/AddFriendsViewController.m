@@ -20,6 +20,7 @@
 #import "TabBarViewController.h"
 #import "HandleViewController.h"
 #import "HandlerUserIdAndDateFormater.h"
+#import "AddDB.h"
 #define LEFT_BUTTON_TAG 1000
 #define RIGHT_BUTTON_TAG 2000
 
@@ -50,6 +51,21 @@
     userData = [sq find];
 
 }
+-(void) refresh {
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+
+    HUD.labelText = @"refresh friends...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self loadFriends];
+    }completionBlock:^{
+        [myTableview reloadData];
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
+
+    NSLog(@"");
+}
 -(void) back{
     MyFriendsViewController * myFriendsVC = [[MyFriendsViewController alloc]init];
     self.tabBarController.tabBar.hidden = YES;
@@ -61,9 +77,12 @@
 	// Do any additional setup after loading the view.
     self.title = @"Add Friends";
     self .navigationItem.hidesBackButton = YES;
+    self.tabBarController.tabBar.hidden = YES;
     UIBarButtonItem * leftitem = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
     self.navigationItem.leftBarButtonItem = leftitem;
     
+    UIBarButtonItem *refreshitem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
+    self.navigationItem.rightBarButtonItem = refreshitem;
     
     userData = [[NSMutableArray alloc]init];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
@@ -95,7 +114,9 @@
         [HUD removeFromSuperview];
         HUD = nil;
     }];
-
+   /* HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    AddDB * addDB = [[AddDB alloc]init];
+     NSMutableDictionary * dict = [addDB readDB:[handle getUserID]];*/
 }
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [userData count];
@@ -122,7 +143,6 @@
     NSString *status = [so getValue:@"status"];
     if ([status isEqualToString:@"friend"]) {
         [button setTitle:@"friend" forState:UIControlStateNormal];
-//        [button setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
         [button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
         [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
         [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
@@ -131,7 +151,6 @@
         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
     }else if ([status isEqualToString:@"request"]){
         [button setTitle:@"add" forState:UIControlStateNormal];
-//        [button setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
         [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
         [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
         [self loadAvatar:[so objectId] withCell:cell];
@@ -173,7 +192,6 @@
         HUD = nil;
     }];
         [sender setTitle:@"add" forState:UIControlStateNormal];
-//    [sender setImage:[UIImage imageNamed:@"add.png"]forState:UIControlStateNormal];
     [sender addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
 
 }
@@ -207,7 +225,6 @@
 
    
     [sender setTitle:@"friend" forState:UIControlStateNormal];
-//    [sender setImage:[UIImage imageNamed:@"selectAdd.png"]forState:UIControlStateNormal];
     [sender addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
     
 }
@@ -246,7 +263,6 @@
     if (index ==1 ) {
         SearchFriendsViewController * searchVC = [[SearchFriendsViewController alloc]init];
         
-//        [self.navigationController pushViewController:search animated:NO];
         UIButton * button =(UIButton *) [self.view viewWithTag:LEFT_BUTTON_TAG];
         [button setImage:[UIImage imageNamed:@"segmented-bg-left.png"] forState:UIControlStateNormal];
         UIButton * button2 =(UIButton *) [self.view viewWithTag:RIGHT_BUTTON_TAG];

@@ -12,7 +12,7 @@
 #import "MBProgressHUD.h"
 #import <arcstreamsdk/STreamQuery.h>
 #import <arcstreamsdk/STreamObject.h>
-
+#import "SearchDB.h"
 @interface HandleViewController ()
 
 @end
@@ -27,12 +27,18 @@
     }
     return self;
 }
-
+-(void) refresh {
+    NSLog(@"");
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self.searchBar removeFromSuperview];
+    
+    UIBarButtonItem *refreshitem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
+    self.navigationItem.rightBarButtonItem = refreshitem;
+    
     [self.myTableview setFrame:CGRectMake(0, 44, self.view.bounds.size.width, self.view.bounds.size.height-44)];
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.myTableview.frame.size.width, 36)];
     label.text =@"I added chatters";
@@ -55,6 +61,9 @@
         [HUD removeFromSuperview];
         HUD = nil;
     }];
+    
+    /*SearchDB * searchDB = [[SearchDB alloc]init];
+    self.userData = [searchDB readDB:[handler getUserID]];*/
 
 }
 -(NSInteger )tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

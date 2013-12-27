@@ -81,7 +81,6 @@
     UIBarButtonItem * leftItem = [[UIBarButtonItem alloc]initWithTitle:@"设置" style:UIBarButtonItemStyleDone target:self action:@selector(settingClicked)];
     self.navigationItem.leftBarButtonItem = leftItem;
 
-    
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addFriends)];
     self.navigationItem.rightBarButtonItem = rightItem;
@@ -111,12 +110,14 @@
 
 -(void) loadFriends {
     
+    ImageCache * imageCache = [ImageCache sharedObject];
+    countArray = [imageCache getMessagesCount];
     if(!userData){
         countDict= [[NSMutableDictionary alloc]init];
         userData = [[NSMutableArray alloc]init];
         sortedArrForArrays = [[NSMutableArray alloc] init];
     }
-    countArray = [[NSMutableArray alloc]init];
+   
     sectionHeadsKeys = [[NSMutableArray alloc] init];
     
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
@@ -142,16 +143,6 @@
                 [userData addObject:[so objectId]];
             }
         sortedArrForArrays = [self getChineseStringArr:userData];
-        for (NSString * str in userData) {
-            NSDate * time = [NSDate dateWithTimeIntervalSinceNow:0];
-            HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
-            TalkDB * db = [[TalkDB alloc]init];
-            NSArray * array = [db readInitDB:[handle getUserID] withOtherID:str withTime:time];
-            NSString *num=[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:[array count]]];
-            [countDict setObject:num forKey:str];
-            [self.tableView reloadData];
-            
-        }
         [self.tableView reloadData];
     }];*/
     
@@ -187,7 +178,8 @@
 
 }
 - (void)didReceiveMessage:(XMPPMessage *)message withFrom:(NSString *)fromID{
-    [countArray addObject:fromID];
+    ImageCache *imageCache = [ImageCache sharedObject];
+    [imageCache setMessagesCount:fromID];
     NSString *receiveMessage = [message body];
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
 
@@ -209,7 +201,8 @@
 }
 
 - (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID{
-    [countArray addObject:fromID];
+    ImageCache *imageCache = [ImageCache sharedObject];
+    [imageCache setMessagesCount:fromID];
     STreamFile *sf = [[STreamFile alloc] init];
     NSData *data = [sf downloadAsData:fileId];
     
@@ -388,10 +381,6 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
   
      ImageCache *imageCache = [ImageCache sharedObject];
-    // save time
-   
-    NSDate * time = [NSDate dateWithTimeIntervalSinceNow:0];
-    [imageCache messageTime:time];
     
     NSMutableArray * keys = [sortedArrForArrays objectAtIndex:indexPath.section];
     ChineseString * userStr = [keys objectAtIndex:indexPath.row];
