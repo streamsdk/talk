@@ -57,7 +57,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
 
-    /*__block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"loading friends...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
@@ -66,8 +66,8 @@
         [self.tableView reloadData];
         [HUD removeFromSuperview];
         HUD = nil;
-    }];*/
-    [self loadFriends];
+    }];
+//    [self loadFriends];
     
 }
 - (void)viewDidLoad
@@ -125,19 +125,22 @@
     STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:loginName];
     [sq setQueryLogicAnd:true];
     [sq whereEqualsTo:@"status" forValue:@"friend"];
+    NSMutableArray * friends = [sq find];
+    for (STreamObject *so in friends) {
+        if (![userData containsObject:[so objectId]]){
+            [userData addObject:[so objectId]];
+        }
+    }
+    
+    sortedArrForArrays = [self getChineseStringArr:userData];
+   /* STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:loginName];
+    [sq setQueryLogicAnd:true];
+    [sq whereEqualsTo:@"status" forValue:@"friend"];
     [sq find:^(NSMutableArray *friends){
         for (STreamObject *so in friends) {
             if (![userData containsObject:[so objectId]])
                 [userData addObject:[so objectId]];
-                STreamUser *user = [[STreamUser alloc] init];
-                [user loadUserMetadata:[so objectId] response:^(BOOL succeed, NSString *error){
-                if ([error isEqualToString:[so objectId]]){
-                    NSMutableDictionary *dic = [user userMetadata];
-                    ImageCache *imageCache = [ImageCache sharedObject];
-                    [imageCache saveUserMetadata:[so objectId] withMetadata:dic];
-                }
-            }];
-        }
+            }
         sortedArrForArrays = [self getChineseStringArr:userData];
         for (NSString * str in userData) {
             NSDate * time = [NSDate dateWithTimeIntervalSinceNow:0];
@@ -150,7 +153,7 @@
             
         }
         [self.tableView reloadData];
-    }];
+    }];*/
     
 }
 -(void) connect {
@@ -258,10 +261,12 @@
 }
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSLog(@"11：%d",[sortedArrForArrays count]);
     return  [[sortedArrForArrays objectAtIndex:section] count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    NSLog(@"22：%d",[sortedArrForArrays count]);
     return [sortedArrForArrays count];
 }
 
@@ -272,7 +277,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
    
     NSString *cellId = @"CellId";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
@@ -420,6 +425,16 @@
             if (pImageId)
                 [cell.imageView setImage:[UIImage imageWithData:[imageCache getImage:pImageId]]];
         }
+    }else{
+        STreamUser *user = [[STreamUser alloc] init];
+        [user loadUserMetadata:userID response:^(BOOL succeed, NSString *error){
+            if ([error isEqualToString:userID]){
+                NSMutableDictionary *dic = [user userMetadata];
+                ImageCache *imageCache = [ImageCache sharedObject];
+                [imageCache saveUserMetadata:userID withMetadata:dic];
+            }
+        }];
+
     }
 }
 -(float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

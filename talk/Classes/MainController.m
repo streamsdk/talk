@@ -729,6 +729,18 @@
         [self presentViewController:imagePickerController animated:YES completion:NULL];
     }
 }
+-(void)addVideo
+{
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.navigationBar.tintColor = [UIColor colorWithRed:72.0/255.0 green:106.0/255.0 blue:154.0/255.0 alpha:1.0];
+    imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    imagePicker.delegate = self;
+    imagePicker.allowsEditing = YES;
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    imagePicker.mediaTypes =  [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
+    [self presentViewController:imagePicker animated:YES completion:NULL];
+}
+
 -(void) takeVideo {
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
@@ -825,10 +837,31 @@
         [self scrollBubbleViewToBottomAnimated:YES];
     }
     if (buttonTag == 3) {
-        [self takeVideo];
+//        [self takeVideo];
+        UIActionSheet *actionsheet = [[UIActionSheet alloc]
+                                      initWithTitle:nil
+                                      delegate:self
+                                      cancelButtonTitle:@"取消"
+                                      destructiveButtonTitle:nil
+                                      otherButtonTitles:@"Video", @"Local Video",nil];
+        actionsheet.delegate = self;
+        actionsheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+        [actionsheet showInView:self.view];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
         
+}
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+    }else if (buttonIndex == 1) {
+        [self takeVideo];
+    }else if(buttonIndex == 2) {
+        [self addVideo];
+    }else if(buttonIndex == 3) {
+    }
+    
 }
 -(void)bigImage:(UIImage *)image{
     UIImageViewController * iView = [[UIImageViewController alloc]init];
