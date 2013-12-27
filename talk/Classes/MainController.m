@@ -59,6 +59,8 @@
     VideoHandler *videoHandler;
     MessageHandler *messageHandler;
     AudioHandler *audioHandler;
+    
+    UIImage * sendImage;
 }
 
 @property(nonatomic,retain) Voice * voice;
@@ -110,9 +112,14 @@
     
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSString *sendToID = [imageCache getFriendID];
+    
+    self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
+
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * userID = [handler getUserID];
     
+    
+    bubbleData = [[NSMutableArray alloc]init];
     TalkDB * talk =[[TalkDB alloc]init];
     bubbleData = [talk readInitDB:userID withOtherID:sendToID];
     for (NSBubbleData * data in bubbleData) {
@@ -145,16 +152,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view
     
-    ImageCache * imageCache =  [ImageCache sharedObject];
-    NSString *sendToID = [imageCache getFriendID];
-
-    self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
-    
     createUI = [[CreateUI alloc]init];
     
     self.voice = [[Voice alloc] init];
-   
-     bubbleData = [[NSMutableArray alloc]init];
    
     UIImageView * backView = [[UIImageView alloc]initWithFrame:self.view.frame];
     backView.userInteractionEnabled = YES;
@@ -190,7 +190,6 @@
     [photoHandler setController:self];
     
     videoHandler = [[VideoHandler alloc]init];
-    [videoHandler setController:self];
     
     messageHandler = [[MessageHandler alloc] init];
     
@@ -233,26 +232,18 @@
     NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
     otherData = [imageCache getImage:pImageId2];
     
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
     if ([body isEqualToString:@"photo"]) {
-        jsonDic = [photoHandler receiveFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+        [photoHandler receiveFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
         
     }else if ([body isEqualToString:@"video"]){
         [videoHandler setController:self];
-        jsonDic = [videoHandler receiveVideoFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+        [videoHandler receiveVideoFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
         
     }else{
-        jsonDic = [audioHandler receiveAudioFile:data withBody:body forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+        [audioHandler receiveAudioFile:data withBody:body forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
     }
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
-    
-    TalkDB * db = [[TalkDB alloc]init];
-    NSString * userID = [handler getUserID];
-    NSString  *str = [jsonDic JSONString];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    [db insertDBUserID:userID fromID:fromID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
     
 
 }
@@ -319,16 +310,15 @@
     ImageCache *imageCache = [ImageCache sharedObject];
     NSString *sendToID =[imageCache getFriendID];
     if (sendToID) {
-        
         [videoHandler setController:self];
         [videoHandler setVideoPath:videoPath];
         [videoHandler sendVideoforBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
         videoHandler.delegate = self;
         
     }
-   
+    
     [self dismissKeyBoard];
-     [bubbleTableView reloadData];
+    [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
 }
 #pragma mark send audio
@@ -669,28 +659,43 @@
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 1) {
-        self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-        [self.actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
-        UIPickerView * pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 10, self.view.frame.size.width, 60)] ;
-        pickerView.tag = 101;
-        pickerView.delegate = self;
-        pickerView.dataSource = self;
-        pickerView.showsSelectionIndicator = YES;
-        
-        [self.actionSheet addSubview:pickerView];
-        
-        UISegmentedControl* button = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Done",nil]];
-        button.tintColor = [UIColor grayColor];
-        [button setSegmentedControlStyle:UISegmentedControlStyleBar];
-        [button setFrame:CGRectMake(250, 10, 50,30 )];
-        [button addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
-        [self.actionSheet addSubview:button];
-        [self.actionSheet showInView:self.view];
-        [self.actionSheet setBounds:CGRectMake(0, 0, 320,300)];
-        [self.actionSheet setBackgroundColor:[UIColor whiteColor]];
-        
+    if (isTakeImage) {
+        if (buttonIndex == 0) {
+            __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            HUD.labelText = @"uploading file...";
+            [self.view addSubview:HUD];
+            [HUD showAnimated:YES whileExecutingBlock:^{
+                [self sendPhoto:sendImage];
+            }completionBlock:^{
+                [HUD removeFromSuperview];
+                HUD = nil;
+            }];
+            
+            
+        }else if (buttonIndex == 1) {
+            self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+            [self.actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
+            UIPickerView * pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 10, self.view.frame.size.width, 60)] ;
+            pickerView.tag = 101;
+            pickerView.delegate = self;
+            pickerView.dataSource = self;
+            pickerView.showsSelectionIndicator = YES;
+            
+            [self.actionSheet addSubview:pickerView];
+            
+            UISegmentedControl* button = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Done",nil]];
+            button.tintColor = [UIColor grayColor];
+            [button setSegmentedControlStyle:UISegmentedControlStyleBar];
+            [button setFrame:CGRectMake(250, 10, 50,30 )];
+            [button addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
+            [self.actionSheet addSubview:button];
+            [self.actionSheet showInView:self.view];
+            [self.actionSheet setBounds:CGRectMake(0, 0, 320,300)];
+            [self.actionSheet setBackgroundColor:[UIColor whiteColor]];
+            
+        }
     }
+    isTakeImage = NO;
 }
 #pragma mark - Tool Methods
 - (void)addPhoto
@@ -752,26 +757,30 @@
     if ([[info objectForKey:UIImagePickerControllerMediaType] isEqualToString:(NSString*)kUTTypeImage]) {
        
         UIImage * image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        sendImage = image;
         if (isTakeImage) {
-            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You Sure Send File?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"Do you want to set a time for the picture?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
             view.delegate = self;
-            [view show];
             
+            [view show];
+        
         }else{
             [self sendPhoto:image];
         }
-//        [self sendPhoto:image];
+        [picker dismissViewControllerAnimated:YES completion:NULL];
+
     }else{
         videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
-        [self sendVideo];
-        
+        [picker dismissViewControllerAnimated:YES completion:NULL];
+        [self sendVideo];   
     }
-    [picker dismissViewControllerAnimated:YES completion:NULL];
+    
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
+
 
 -(void)sendClicked{
     [self sendMessages];
@@ -836,6 +845,7 @@
  
 }
 -(void)reloadTable{
+    
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
 }

@@ -24,13 +24,14 @@
 #import "TalkDB.h"
 #import "HandlerUserIdAndDateFormater.h"
 #import "STreamXMPP.h"
-
-#define LABEL_TAG 10000
+#import <arcstreamsdk/JSONKit.h>
+#define TABLECELL_TAG 10000
 
 @interface MyFriendsViewController ()
 {
     NSMutableDictionary *countDict;
     MainController *mainVC;
+    NSMutableArray * countArray;
 }
 @end
 
@@ -67,6 +68,7 @@
         HUD = nil;
     }];*/
     [self loadFriends];
+    
 }
 - (void)viewDidLoad
 {
@@ -94,7 +96,7 @@
     self.tableView.tableHeaderView =label;
     
     mainVC = [[MainController alloc]init];
-
+    
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"connecting ...";
     [self.view addSubview:HUD];
@@ -105,22 +107,20 @@
         [HUD removeFromSuperview];
         HUD = nil;
     }];
-    
- 
 }
 
 -(void) loadFriends {
     
-    if (!userData){
+    if(!userData){
         countDict= [[NSMutableDictionary alloc]init];
         userData = [[NSMutableArray alloc]init];
         sortedArrForArrays = [[NSMutableArray alloc] init];
-        sectionHeadsKeys = [[NSMutableArray alloc] init];
     }
+    countArray = [[NSMutableArray alloc]init];
+    sectionHeadsKeys = [[NSMutableArray alloc] init];
     
-    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-    NSString * loginName= [array objectAtIndex:0];
+    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    NSString * loginName= [handle getUserID];
     
     STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:loginName];
     [sq setQueryLogicAnd:true];
@@ -129,6 +129,14 @@
         for (STreamObject *so in friends) {
             if (![userData containsObject:[so objectId]])
                 [userData addObject:[so objectId]];
+                STreamUser *user = [[STreamUser alloc] init];
+                [user loadUserMetadata:[so objectId] response:^(BOOL succeed, NSString *error){
+                if ([error isEqualToString:[so objectId]]){
+                    NSMutableDictionary *dic = [user userMetadata];
+                    ImageCache *imageCache = [ImageCache sharedObject];
+                    [imageCache saveUserMetadata:[so objectId] withMetadata:dic];
+                }
+            }];
         }
         sortedArrForArrays = [self getChineseStringArr:userData];
         for (NSString * str in userData) {
@@ -176,14 +184,77 @@
 
 }
 - (void)didReceiveMessage:(XMPPMessage *)message withFrom:(NSString *)fromID{
+    [countArray addObject:fromID];
     NSString *receiveMessage = [message body];
+    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
+
+    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
+    TalkDB * db = [[TalkDB alloc]init];
+    NSString * userID = [handler getUserID];
+    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+    [friendDict setObject:receiveMessage forKey:@"messages"];
+    [jsonDic setObject:friendDict forKey:fromID];
+    NSString  *str = [jsonDic JSONString];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate * date =[NSDate dateWithTimeIntervalSinceNow:0];
+    NSString * str2 = [dateFormatter stringFromDate:date];
+    [db insertDBUserID:userID fromID:fromID withContent:str withTime:str2 withIsMine:1];
+    
     [messagesProtocol getMessages:receiveMessage withFromID:fromID];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID{
+    [countArray addObject:fromID];
     STreamFile *sf = [[STreamFile alloc] init];
     NSData *data = [sf downloadAsData:fileId];
+    
+    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
+   
+    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
+    if ([body isEqualToString:@"photo"]) {
+        NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];
+        [data writeToFile:photoPath atomically:YES];
+        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        [friendDict setObject:photoPath forKey:@"photo"];
+        [jsonDic setObject:friendDict forKey:fromID];
+    }else if ([body isEqualToString:@"video"]){
+        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+         NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        
+        HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+        NSString * mp4Path = [[handler getPath] stringByAppendingString:@".mp4"];
+        
+        [data writeToFile : mp4Path atomically: YES ];
+       
+        [friendDict setObject:mp4Path forKey:@"video"];
+        [jsonDic setObject:friendDict forKey:fromID];
+    }else{
+        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
+        
+        HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
+        
+        NSString * recordFilePath = [[handler getPath] stringByAppendingString:@".aac"];
+        [data writeToFile:recordFilePath atomically:YES];
+        
+        [friendsDict setObject:[body stringByAppendingString:@"\""] forKey:@"time"];
+        [friendsDict setObject:recordFilePath forKey:@"audiodata"];
+        [jsonDic setObject:friendsDict forKey:fromID];
+       
+    }
+    
+    
+    TalkDB * db = [[TalkDB alloc]init];
+    NSString * userID = [handler getUserID];
+    NSString  *str = [jsonDic JSONString];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [db insertDBUserID:userID fromID:fromID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
+    
     [messagesProtocol getFiles:data withFromID:fromID withBody:body];
+     [self.tableView reloadData];
 }
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -199,36 +270,37 @@
     return [sectionHeadsKeys objectAtIndex:section];
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+   
     NSString *cellId = @"CellId";
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     
     if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
         [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        UILabel * label= [[UILabel alloc]initWithFrame:CGRectMake(260, 0, 40, cell.frame.size.height)];
-        label.textColor = [UIColor redColor];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.backgroundColor = [UIColor clearColor];
-        label.tag = LABEL_TAG;
-        label.font = [UIFont fontWithName:@"Arial" size:22.0f];
-        [cell addSubview:label];
-        
+        cell.tag = TABLECELL_TAG;
     }
     if ([self.sortedArrForArrays count] > indexPath.section) {
         NSArray *arr = [sortedArrForArrays objectAtIndex:indexPath.section];
         if ([arr count] > indexPath.row) {
             ChineseString *str = (ChineseString *) [arr objectAtIndex:indexPath.row];
 
-            [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
+            [cell.imageView setFrame:CGRectMake(0, 10, 50, 40)];
             [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
-             [self loadAvatar:str.string withCell:cell];
+            [self loadAvatar:str.string withCell:cell];
             cell.textLabel.text = str.string;
-            NSString * num = [countDict objectForKey:str.string];
-            if (![num isEqualToString:@"0"]) {
-                
-                UILabel * label = (UILabel *)[self.view viewWithTag:LABEL_TAG];
-                label.text = num;
+            NSMutableArray * array = [[NSMutableArray alloc]init];
+            if (countArray && [countArray count]!= 0) {
+                for (NSString * id in countArray) {
+                    if ([id isEqualToString:str.string]) {
+                        [array addObject:id];
+                    }
+                }
+            }
+            int num = [array count];
+            if (num!= 0) {
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%d",num];
+                cell.detailTextLabel.textColor = [UIColor redColor];
               }
             
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
@@ -309,8 +381,7 @@
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    UILabel * label = (UILabel *)[self.view viewWithTag:LABEL_TAG];
-    label.text = @" ";
+  
      ImageCache *imageCache = [ImageCache sharedObject];
     // save time
    
@@ -320,9 +391,11 @@
     NSMutableArray * keys = [sortedArrForArrays objectAtIndex:indexPath.section];
     ChineseString * userStr = [keys objectAtIndex:indexPath.row];
     NSString *userName = [userStr string];
-
     [imageCache setFriendID:userName];
     
+    [countArray removeObject:userName];
+    
+    [self.tableView reloadData];
     [self.navigationController pushViewController:mainVC animated:YES];
 }
 

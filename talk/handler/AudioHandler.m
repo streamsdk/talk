@@ -15,23 +15,14 @@
 
 @implementation AudioHandler
 
-- (NSMutableDictionary *)receiveAudioFile:(NSData *)data withBody:(NSString *)body forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+- (void)receiveAudioFile:(NSData *)data withBody:(NSString *)body forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
+    
     if ([fromID isEqualToString:sendID]) {
         NSBubbleData *bubble = [NSBubbleData dataWithtimes:[body stringByAppendingString:@"\""] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withData:data];
         if (otherData)
             bubble.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:bubble];
     }
-    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
-    
-    NSString * recordFilePath = [[handler getPath] stringByAppendingString:@".aac"];
-    [data writeToFile:recordFilePath atomically:YES];
-    NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
-    [friendsDict setObject:[body stringByAppendingString:@"\""] forKey:@"time"];
-    [friendsDict setObject:recordFilePath forKey:@"audiodata"];
-    [jsonDic setObject:friendsDict forKey:fromID];
-    return jsonDic;
 }
 -(void) sendAudio :(Voice *)voice forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID
 {

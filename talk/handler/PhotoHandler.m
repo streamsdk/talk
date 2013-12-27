@@ -27,10 +27,8 @@
 
 @synthesize controller;
 
-- (NSMutableDictionary *)receiveFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
+- (void)receiveFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
    
-    
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
     if ([fromID isEqualToString:sendID]) {
         UIImage * image = [UIImage imageWithData:data];
         NSBubbleData * bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
@@ -39,21 +37,22 @@
         bubble.delegate = self;
         [bubbleData addObject:bubble];
     }
-    HandlerUserIdAndDateFormater * handler = [[HandlerUserIdAndDateFormater alloc]init];
+   /* HandlerUserIdAndDateFormater * handler = [[HandlerUserIdAndDateFormater alloc]init];
    
     NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];
     [data writeToFile:photoPath atomically:YES];
+    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
     [friendDict setObject:photoPath forKey:@"photo"];
     [jsonDic setObject:friendDict forKey:fromID];
 
-    return jsonDic;
+    return jsonDic;*/
     
 }
 
 -(void) sendPhoto :(UIImage *)image forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID{
     
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+    
     NSData * data = UIImageJPEGRepresentation(image, 0.7);
     UIImage * _image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(image.size.width*0.7, image.size.height*0.7)];
     NSBubbleData * bubbledata = [NSBubbleData dataWithImage:_image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
@@ -69,6 +68,7 @@
     NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];
     
     [data writeToFile:photoPath atomically:YES];
+    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
     [friendDict setObject:photoPath forKey:@"photo"];
     [jsonDic setObject:friendDict forKey:sendID];

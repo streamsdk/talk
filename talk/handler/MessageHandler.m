@@ -15,13 +15,14 @@
 @implementation MessageHandler
 
 - ( void)receiveMessage:(NSString *)receiveMessage forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
     if ([fromID isEqualToString:sendID]) {
         NSBubbleData *sendBubble = [NSBubbleData dataWithText:receiveMessage date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
         if (otherData)
             sendBubble.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:sendBubble];
     }
+    /*NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
+
     HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
     TalkDB * db = [[TalkDB alloc]init];
     NSString * userID = [handler getUserID];
@@ -33,7 +34,7 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSDate * date =[NSDate dateWithTimeIntervalSinceNow:0];
     NSString * str2 = [dateFormatter stringFromDate:date];
-    [db insertDBUserID:userID fromID:fromID withContent:str withTime:str2 withIsMine:1];
+    [db insertDBUserID:userID fromID:fromID withContent:str withTime:str2 withIsMine:1];*/
 
 }
 

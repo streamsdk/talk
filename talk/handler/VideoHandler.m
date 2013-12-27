@@ -18,17 +18,11 @@
 @synthesize controller,videoPath;
 @synthesize delegate;
 
-- (NSMutableDictionary *)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
+- (void)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
     
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     
     NSString * mp4Path = [[handler getPath] stringByAppendingString:@".mp4"];
-    
-    [data writeToFile : mp4Path atomically: YES ];
-    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-    [friendDict setObject:mp4Path forKey:@"video"];
-    [jsonDic setObject:friendDict forKey:fromID];
     
     if ([fromID isEqualToString:sendID]) {
         NSURL *url = [NSURL fileURLWithPath:mp4Path];
@@ -41,7 +35,6 @@
             bdata.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:bdata];
     }
-    return jsonDic;
 
 }
 -(void)sendVideoforBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID
