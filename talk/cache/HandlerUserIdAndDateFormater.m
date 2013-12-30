@@ -7,6 +7,7 @@
 //
 
 #import "HandlerUserIdAndDateFormater.h"
+static NSString * _videoPath;
 
 @implementation HandlerUserIdAndDateFormater
 +(HandlerUserIdAndDateFormater *)sharedObject {
@@ -48,8 +49,16 @@
 -(NSString *)getPath {
     NSDateFormatter* formater = [[NSDateFormatter alloc] init];
     [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
-    NSString *path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/output-%@", [formater stringFromDate:[NSDate date]]];
+    NSString *path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/out-%@", [formater stringFromDate:[NSDate date]]];
     return path;
 }
+-(void) videoPath:(NSString *)video{
+    
+    _videoPath =video;
+}
 
+-(NSString *)getVideopath{
+    
+    return _videoPath;
+}
 @end

@@ -115,7 +115,7 @@
                 if (ismine == 0) {
                     NSArray * keys = [chatDic allKeys];
                     for (NSString * key in keys) {
-                        NSLog(@"key = %@",[chatDic objectForKey:@"messages"]);
+//                        NSLog(@"key = %@",[chatDic objectForKey:@"messages"]);
                         if ([key isEqualToString:@"messages"]) {
                             NSBubbleData * data = [[NSBubbleData alloc]initWithText:[chatDic objectForKey:@"messages"] date:date type:BubbleTypeMine];
                             if(myData)
@@ -155,8 +155,8 @@
                 }else if(ismine == 1){
                     NSArray * keys = [chatDic allKeys];
                     for (NSString * key in keys) {
-                        NSLog(@"key2 = %@",[chatDic objectForKey:@"messages"]);
-                         NSLog(@"key4 = %@",[chatDic objectForKey:@"audio"]);
+//                        NSLog(@"key2 = %@",[chatDic objectForKey:@"messages"]);
+//                         NSLog(@"key4 = %@",[chatDic objectForKey:@"audio"]);
                         if ([key isEqualToString:@"messages"]) {
                             NSBubbleData * data = [[NSBubbleData alloc]initWithText:[chatDic objectForKey:@"messages"] date:date type:BubbleTypeSomeoneElse];
                             if(otherData)

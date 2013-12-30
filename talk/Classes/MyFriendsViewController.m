@@ -228,18 +228,16 @@
         [friendDict setObject:photoPath forKey:@"photo"];
         [jsonDic setObject:friendDict forKey:fromID];
     }else if ([body isEqualToString:@"video"]){
-        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
          NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
         
         HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
         NSString * mp4Path = [[handler getPath] stringByAppendingString:@".mp4"];
         
         [data writeToFile : mp4Path atomically: YES ];
-       
+        [handler videoPath:mp4Path];
         [friendDict setObject:mp4Path forKey:@"video"];
         [jsonDic setObject:friendDict forKey:fromID];
     }else{
-        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
         NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
         
         HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];

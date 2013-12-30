@@ -750,21 +750,18 @@
         [alert show];
     }else {
         
-        NSArray *mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
-        if([mediaTypes containsObject:@"public.movie"]){
-            UIImagePickerController *imagePickerController=[[UIImagePickerController alloc] init];
-            imagePickerController.mediaTypes =  [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
-            imagePickerController.sourceType=UIImagePickerControllerSourceTypeCamera;
-            imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
-            imagePickerController.delegate = self;
-            imagePickerController.modalTransitionStyle=UIModalTransitionStyleFlipHorizontal;
-            imagePickerController.videoMaximumDuration = 15;
-
-            [self presentViewController:imagePickerController animated:YES completion:NULL];
-            
-          
-        }
-
+        UIImagePickerController *imagePickerController=[[UIImagePickerController alloc] init];
+//        imagePickerController.mediaTypes =  [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
+        imagePickerController.sourceType=UIImagePickerControllerSourceTypeCamera;
+        imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
+        imagePickerController.delegate = self;
+        imagePickerController.modalTransitionStyle=UIModalTransitionStyleFlipHorizontal;
+         imagePickerController.mediaTypes = [NSArray arrayWithObjects:(NSString*)kUTTypeImage,(NSString*)kUTTypeMovie,nil];
+        imagePickerController.videoMaximumDuration = 15;
+        
+        [self presentViewController:imagePickerController animated:YES completion:NULL];
+        
+        
        /* UIImagePickerController* pickerView = [[UIImagePickerController alloc] init];
         pickerView.sourceType = UIImagePickerControllerSourceTypeCamera;
         NSArray* availableMedia = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
@@ -782,7 +779,7 @@
 {
     if ([[info objectForKey:UIImagePickerControllerMediaType] isEqualToString:(NSString*)kUTTypeImage]) {
        
-        UIImage * image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
         sendImage = image;
         if (isTakeImage) {
             UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"Do you want to set a time for the picture?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
@@ -800,7 +797,7 @@
         NSString *tempFilePath = [videoPath path];
         [picker dismissViewControllerAnimated:YES completion:NULL];
         UISaveVideoAtPathToSavedPhotosAlbum(tempFilePath,self, @selector(errorVideoCheck:didFinishSavingWithError:contextInfo:),NULL);
-        [self sendVideo];   
+        [self sendVideo];
     }
 
 }

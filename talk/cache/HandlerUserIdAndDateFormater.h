@@ -18,4 +18,8 @@
 
 -(NSString *)getPath;
 
+-(void) videoPath:(NSString *)video;
+
+-(NSString *)getVideopath;
+
 @end

@@ -22,7 +22,7 @@
     
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     
-    NSString * mp4Path = [[handler getPath] stringByAppendingString:@".mp4"];
+    NSString * mp4Path = [handler getVideopath];
     
     if ([fromID isEqualToString:sendID]) {
         NSURL *url = [NSURL fileURLWithPath:mp4Path];
