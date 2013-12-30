@@ -55,8 +55,18 @@
     for (STreamObject *so in array) {
         [db insertDB:[handler getUserID] withFriendID:[so objectId] withStatus:[so getValue:@"status"]];
     }
-    addDict = [db readDB:[handler getUserID]];
-    userData  = [addDict allKeys];
+    userData = [[NSMutableArray alloc]init];
+    AddDB * addDB = [[AddDB alloc]init];
+    addDict = [addDB readDB:[handler getUserID]];
+    NSArray * array2 = [addDict allKeys];
+    for (int i = 0; i<[array2 count]; i++) {
+        NSString *status = [addDict objectForKey:[array2 objectAtIndex:i]];
+        if (![status isEqualToString:@"sendRequest"]) {
+            [userData addObject:[array2 objectAtIndex:i]];
+        }
+    }
+
+    
     [myTableview reloadData];
 }
 -(void) refresh {
@@ -125,7 +135,13 @@
    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * addDB = [[AddDB alloc]init];
     addDict = [addDB readDB:[handle getUserID]];
-    userData  = [addDict allKeys];
+    NSArray * array = [addDict allKeys];
+    for (int i = 0; i<[array count]; i++) {
+         NSString *status = [addDict objectForKey:[array objectAtIndex:i]];
+        if (![status isEqualToString:@"sendRequest"]) {
+            [userData addObject:[array objectAtIndex:i]];
+        }
+    }
     
 }
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -217,16 +233,16 @@
 -(void)addFriends:(UIButton *)sender {
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * db = [[AddDB alloc]init];
+
     [db updateDB:[handle getUserID] withFriendID:[userData objectAtIndex:sender.tag] withStatus:@"friend"];
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"add friends...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
-         STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[userData objectAtIndex:sender.tag]];
+         STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handle getUserID]];
         STreamObject * so = [[STreamObject alloc]init];
         [so setObjectId:[userData objectAtIndex:sender.tag]];
         [so addStaff:@"status" withObject:@"friend"];
-        [so updateInBackground];
         NSMutableArray *update = [[NSMutableArray alloc] init] ;
         
         [update addObject:so];
