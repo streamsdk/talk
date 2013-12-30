@@ -7,7 +7,6 @@
 //
 
 #import "MainController.h"
-#import <MobileCoreServices/MobileCoreServices.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <arcstreamsdk/STreamSession.h>
 #import <arcstreamsdk/STreamFile.h>
@@ -194,7 +193,6 @@
     messageHandler = [[MessageHandler alloc] init];
     
     audioHandler = [[AudioHandler alloc]init];
-    
 
 }
 
@@ -751,13 +749,29 @@
                                               otherButtonTitles:@"好", nil];
         [alert show];
     }else {
-        UIImagePickerController* pickerView = [[UIImagePickerController alloc] init];
+        
+        NSArray *mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
+        if([mediaTypes containsObject:@"public.movie"]){
+            UIImagePickerController *imagePickerController=[[UIImagePickerController alloc] init];
+            imagePickerController.mediaTypes =  [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
+            imagePickerController.sourceType=UIImagePickerControllerSourceTypeCamera;
+            imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
+            imagePickerController.delegate = self;
+            imagePickerController.modalTransitionStyle=UIModalTransitionStyleFlipHorizontal;
+            imagePickerController.videoMaximumDuration = 15;
+
+            [self presentViewController:imagePickerController animated:YES completion:NULL];
+            
+          
+        }
+
+       /* UIImagePickerController* pickerView = [[UIImagePickerController alloc] init];
         pickerView.sourceType = UIImagePickerControllerSourceTypeCamera;
         NSArray* availableMedia = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
         pickerView.mediaTypes = [NSArray arrayWithObject:availableMedia[1]];
         [self presentViewController:pickerView animated:YES completion:NULL];
         pickerView.videoMaximumDuration = 15;
-        pickerView.delegate = self;
+        pickerView.delegate = self;*/
     }
    
 }
@@ -783,16 +797,20 @@
 
     }else{
         videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
+        NSString *tempFilePath = [videoPath path];
         [picker dismissViewControllerAnimated:YES completion:NULL];
+        UISaveVideoAtPathToSavedPhotosAlbum(tempFilePath,self, @selector(errorVideoCheck:didFinishSavingWithError:contextInfo:),NULL);
         [self sendVideo];   
     }
-    
+
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
-
+- (void)errorVideoCheck:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
+	
+}
 
 -(void)sendClicked{
     [self sendMessages];

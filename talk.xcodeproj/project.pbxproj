@@ -171,6 +171,7 @@
 		0E084793182736BC00350741 /* UIBubbleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E08478C182736BC00350741 /* UIBubbleTableViewCell.m */; };
 		0E084794182736BC00350741 /* UIBubbleTypingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E08478F182736BC00350741 /* UIBubbleTypingTableViewCell.m */; };
 		0E19E8061870FC3800523232 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E19E8051870FC3800523232 /* EGORefreshTableHeaderView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		0E19E80C18711C5A00523232 /* Target.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E80B18711C5A00523232 /* Target.png */; };
 		0E1F9750186D8D7400C709CE /* AddDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1F974F186D8D7400C709CE /* AddDB.m */; };
 		0E1F9753186D964A00C709CE /* SearchDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1F9752186D964A00C709CE /* SearchDB.m */; };
 		0E2A5142185C6A6600D93C9B /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2A5141185C6A6600D93C9B /* ImageCache.m */; };
@@ -607,6 +608,7 @@
 		0E178C4C186C1F8000E16F71 /* GetAllMessagesProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GetAllMessagesProtocol.h; path = Classes/GetAllMessagesProtocol.h; sourceTree = "<group>"; };
 		0E19E8041870FC3800523232 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
 		0E19E8051870FC3800523232 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
+		0E19E80B18711C5A00523232 /* Target.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Target.png; sourceTree = "<group>"; };
 		0E1F974E186D8D7400C709CE /* AddDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddDB.h; path = talkDB/AddDB.h; sourceTree = "<group>"; };
 		0E1F974F186D8D7400C709CE /* AddDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddDB.m; path = talkDB/AddDB.m; sourceTree = "<group>"; };
 		0E1F9751186D964A00C709CE /* SearchDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchDB.h; path = talkDB/SearchDB.h; sourceTree = "<group>"; };
@@ -1776,6 +1778,7 @@
 		0EE951A1185EA4B9003F4638 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0E19E80B18711C5A00523232 /* Target.png */,
 				030D10D2186D34F400910292 /* microphone24.png */,
 				030D10C8186D343700910292 /* plus24.png */,
 				030D10CA186D344700910292 /* keyboard34.png */,
@@ -2028,6 +2031,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EE951D6185EA4B9003F4638 /* b5.png in Resources */,
+				0E19E80C18711C5A00523232 /* Target.png in Resources */,
 				0EE951ED185EA4B9003F4638 /* Text@2x.png in Resources */,
 				0EEFFF7118659B2000018A57 /* segmented-pressed-Right.png in Resources */,
 				0E421B5A186EA939009C1763 /* whiteArrow.png in Resources */,
