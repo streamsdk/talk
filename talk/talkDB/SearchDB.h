@@ -13,8 +13,8 @@
 
 -(void) initDB;
 
--(void)insertDB:(NSString *)userID ewithFriendID:(NSString *)friendID;
+-(void)insertDB:(NSString *)userID withFriendID:(NSString *)friendID;
 
--(NSMutableArray *) readDB:(NSString *)userID;
+-(NSMutableArray *) readSearchDB:(NSString *)userID;
 
 @end

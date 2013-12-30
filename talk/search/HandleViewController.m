@@ -28,6 +28,34 @@
     return self;
 }
 -(void) refresh {
+    
+    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+    SearchDB * searchDB = [[SearchDB alloc]init];
+    STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:[handler getUserID]];
+    [sq setQueryLogicAnd:true];
+    [sq whereEqualsTo:@"status" forValue:@"sendRequest"];
+    [sq find:^(NSMutableArray *friends){
+        for (STreamObject *so in friends) {
+            if (![self.userData containsObject:[so objectId]]) {
+                [searchDB insertDB:[handler getUserID] withFriendID:[so objectId]];
+            }
+            
+        }
+        
+        [self.myTableview reloadData];
+    }];
+    self.userData = [searchDB readSearchDB:[handler getUserID]];
+    [self.myTableview reloadData];
+    /*__block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"loading friends...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+    
+    }completionBlock:^{
+        [self.myTableview reloadData];
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];*/
     NSLog(@"");
 }
 - (void)viewDidLoad
@@ -48,7 +76,7 @@
     label.font = [UIFont fontWithName:@"DIN Alternate" size:15.0f];
     self.myTableview.tableHeaderView =label;
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+  /*  __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"loading friends...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
@@ -60,10 +88,10 @@
         [self.myTableview reloadData];
         [HUD removeFromSuperview];
         HUD = nil;
-    }];
+    }];*/
     
-    /*SearchDB * searchDB = [[SearchDB alloc]init];
-    self.userData = [searchDB readDB:[handler getUserID]];*/
+    SearchDB * searchDB = [[SearchDB alloc]init];
+    self.userData = [searchDB readSearchDB:[handler getUserID]];
 
 }
 -(NSInteger )tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -77,8 +105,8 @@
         [cell setBackgroundColor:[UIColor clearColor]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    STreamObject * so = [self.userData objectAtIndex:indexPath.row];
-    cell.textLabel.text = [so objectId];
+    
+    cell.textLabel.text = [self.userData objectAtIndex:indexPath.row];
     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
     return cell;
 }

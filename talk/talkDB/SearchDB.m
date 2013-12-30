@@ -35,7 +35,7 @@
     }
     
 }
--(void) insertDB:(NSString *)userID ewithFriendID:(NSString *)friendID{
+-(void) insertDB:(NSString *)userID withFriendID:(NSString *)friendID{
     sqlite3 *database;
     if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
         sqlite3_close(database);
@@ -57,27 +57,45 @@
     sqlite3_close(database);
 
 }
-
--(NSMutableArray *) readDB:(NSString *)userID {
-    
-    NSMutableArray * searchArray = [[NSMutableArray alloc]init];
+-(void) deleteDB {
     sqlite3 *database;
     if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
         sqlite3_close(database);
         NSAssert(0, @"Failed to open database");
     }
-    NSString *sqlQuery = [NSString stringWithFormat:@"SELECT FRIENDID,USERID FROM ADDFRIENDS WHERE USERID = %@",userID];
-    sqlite3_stmt * statement;
-    if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
-        while (sqlite3_step(statement) == SQLITE_ROW) {
+    NSString * sql =@"DELETE FROM SEARCHFRIENDS";
+    sqlite3_stmt *statement;
+    if (sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, nil) == SQLITE_OK) {
+        
+        NSLog(@"delete");
+    }
+    sqlite3_step(statement);
+    sqlite3_finalize(statement);
+    sqlite3_close(database);
+}
+
+-(NSMutableArray *) readSearchDB:(NSString *)userID {
+    
+    sqlite3 *database;
+    if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
+        sqlite3_close(database);
+        NSLog(@"Failed to open database");
+    }
+    
+    NSMutableArray * searchArray = [[NSMutableArray alloc]init];
+    
+    NSString *sqlQuery = [NSString stringWithFormat:@"SELECT FRIENDID,USERID FROM SEARCHFRIENDS WHERE USERID='%@'",userID];
+    sqlite3_stmt *stmt;
+    if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1,&stmt, nil) == SQLITE_OK) {
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
             
-            char * id  = (char*)sqlite3_column_text(statement,0);
+            char * id  = (char*)sqlite3_column_text(stmt,0);
             NSString * _friendID =[[NSString alloc]initWithUTF8String:id];
             
             [searchArray addObject:_friendID];
         }
     }
-    sqlite3_finalize(statement);
+    sqlite3_finalize(stmt);
     sqlite3_close(database);
     
     return searchArray;

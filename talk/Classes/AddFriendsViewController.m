@@ -25,7 +25,9 @@
 #define RIGHT_BUTTON_TAG 2000
 
 @interface AddFriendsViewController ()
-
+{
+    NSMutableDictionary * addDict;
+}
 @end
 
 @implementation AddFriendsViewController
@@ -47,9 +49,15 @@
     [sq whereEqualsTo:@"status" forValue:@"friend"];
     
     [sq whereEqualsTo:@"status" forValue:@"request"];
-    
-    userData = [sq find];
-
+    NSMutableArray * array = [sq find];
+    AddDB * db = [[AddDB alloc]init];
+    [db deleteDB];
+    for (STreamObject *so in array) {
+        [db insertDB:[handler getUserID] withFriendID:[so objectId] withStatus:[so getValue:@"status"]];
+    }
+    addDict = [db readDB:[handler getUserID]];
+    userData  = [addDict allKeys];
+    [myTableview reloadData];
 }
 -(void) refresh {
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -104,7 +112,7 @@
     [_segmentedControl setDelegate:self];
     [self setupSegmentedControl];
     
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    /*__block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"loading friends...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
@@ -113,10 +121,12 @@
         [myTableview reloadData];
         [HUD removeFromSuperview];
         HUD = nil;
-    }];
-   /* HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    }];*/
+   HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * addDB = [[AddDB alloc]init];
-     NSMutableDictionary * dict = [addDB readDB:[handle getUserID]];*/
+    addDict = [addDB readDB:[handle getUserID]];
+    userData  = [addDict allKeys];
+    
 }
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [userData count];
@@ -137,46 +147,55 @@
         [[button layer] setBorderWidth:1];
         [[button layer] setCornerRadius:4];
         [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [cell addSubview:button];
+        
     }
-    STreamObject * so = [userData objectAtIndex:indexPath.row];
-    NSString *status = [so getValue:@"status"];
-    if ([status isEqualToString:@"friend"]) {
-        [button setTitle:@"friend" forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
-        [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
-        [self loadAvatar:[so objectId] withCell:cell];
-        cell.textLabel.text = [so objectId];
-        cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
-    }else if ([status isEqualToString:@"request"]){
-        [button setTitle:@"add" forState:UIControlStateNormal];
-        [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
-        [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
-        [self loadAvatar:[so objectId] withCell:cell];
-        [button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
-        cell.textLabel.text = [so objectId];
-        cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
+    if (userData && [userData count]!=0) {
+        NSString *status = [addDict objectForKey:[userData objectAtIndex:indexPath.row]];
+        if ([status isEqualToString:@"friend"]) {
+            [button setTitle:@"friend" forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
+            [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
+            [self loadAvatar:[userData objectAtIndex:indexPath.row] withCell:cell];
+            cell.textLabel.text = [userData objectAtIndex:indexPath.row];
+            cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
+            [cell addSubview:button];
+        }else if ([status isEqualToString:@"request"]){
+            [button setTitle:@"add" forState:UIControlStateNormal];
+            [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
+            [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
+            [self loadAvatar:[userData objectAtIndex:indexPath.row] withCell:cell];
+            [button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
+            cell.textLabel.text = [userData objectAtIndex:indexPath.row];
+            cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
+            [cell addSubview:button];
+            
+        }
 
     }
-    return cell;
+        return cell;
 
 }
 -(void)deleteFriends:(UIButton *)sender {
     
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    AddDB * db = [[AddDB alloc]init];
+    [db updateDB:[handle getUserID] withFriendID:[userData objectAtIndex:sender.tag] withStatus:@"request"];
     HUD.labelText = @"loading friends...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
-        STreamObject * so = [userData objectAtIndex:sender.tag];
-        [so setObjectId:[so objectId]];
+        STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handle getUserID]];
+        STreamObject * so = [[STreamObject alloc]init];
+        [so setObjectId:[userData objectAtIndex:sender.tag]];
         [so addStaff:@"status" withObject:@"request"];
-        [so updateInBackground];
+        NSMutableArray *update= [[NSMutableArray alloc] init] ;
         
-        NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-        NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-        NSString * loginName= [array objectAtIndex:0];
-        STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[so objectId]];
+        [update addObject:so];
+        [sto updateStreamCategoryObjects:update];
+        
+        NSString * loginName= [handle getUserID];
+        STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[userData objectAtIndex:sender.tag]];
         STreamObject *my = [[STreamObject alloc]init];
         
         [my setObjectId:loginName];
@@ -191,26 +210,32 @@
         [HUD removeFromSuperview];
         HUD = nil;
     }];
-        [sender setTitle:@"add" forState:UIControlStateNormal];
+    [sender setTitle:@"add" forState:UIControlStateNormal];
     [sender addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
 
 }
 -(void)addFriends:(UIButton *)sender {
+    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    AddDB * db = [[AddDB alloc]init];
+    [db updateDB:[handle getUserID] withFriendID:[userData objectAtIndex:sender.tag] withStatus:@"friend"];
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"add friends...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
-        STreamObject * so = [userData objectAtIndex:sender.tag];
-        [so setObjectId:[so objectId]];
+         STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[userData objectAtIndex:sender.tag]];
+        STreamObject * so = [[STreamObject alloc]init];
+        [so setObjectId:[userData objectAtIndex:sender.tag]];
         [so addStaff:@"status" withObject:@"friend"];
         [so updateInBackground];
+        NSMutableArray *update = [[NSMutableArray alloc] init] ;
         
-        STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[so objectId]];
+        [update addObject:so];
+        [sto updateStreamCategoryObjects:update];
+
+        
+        STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[userData objectAtIndex:sender.tag]];
         STreamObject *my = [[STreamObject alloc]init];
-        NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-        NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-        NSString * loginName= [array objectAtIndex:0];
-        [my setObjectId:loginName];
+        [my setObjectId:[handle getUserID]];
         [my addStaff:@"status" withObject:@"friend"];
         NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
         

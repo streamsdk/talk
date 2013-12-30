@@ -35,7 +35,7 @@
     }
 
 }
--(void)insertDB:(NSString *)userID ewithFriendID:(NSString *)friendID withStatus:(NSString *)status {
+-(void)insertDB:(NSString *)userID withFriendID:(NSString *)friendID withStatus:(NSString *)status {
     sqlite3 *database;
     if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
         sqlite3_close(database);
@@ -67,7 +67,7 @@
     }
     
     NSMutableDictionary *addDict = [[NSMutableDictionary alloc]init];
-    NSString *sqlQuery = [NSString stringWithFormat:@"SELECT FRIENDID,STATUS,USERID FROM ADDFRIENDS WHERE USERID = %@",userID];
+    NSString *sqlQuery = [NSString stringWithFormat:@"SELECT FRIENDID,STATUS,USERID FROM ADDFRIENDS WHERE USERID='%@'",userID];
     sqlite3_stmt * statement;
     if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
         while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -81,6 +81,47 @@
     sqlite3_finalize(statement);
     sqlite3_close(database);
     return addDict;
+
+}
+-(void) deleteDB {
+    sqlite3 *database;
+    if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
+        sqlite3_close(database);
+        NSAssert(0, @"Failed to open database");
+    }
+//    select distinct * from ADDFRIENDS
+    NSString * sql =@"DELETE FROM ADDFRIENDS";
+    sqlite3_stmt *statement;
+    if (sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, nil) == SQLITE_OK) {
+       
+        NSLog(@"delete");
+    }
+    sqlite3_step(statement);
+    sqlite3_finalize(statement);
+    sqlite3_close(database);
+}
+
+//
+-(void) updateDB:(NSString *)userID withFriendID:(NSString *)friendID withStatus:(NSString *)status {
+    sqlite3 *database;
+    if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
+        sqlite3_close(database);
+        NSAssert(0, @"Failed to open database");
+    }
+    NSString * update = [NSString stringWithFormat:@"UPDATE ADDFRIENDS SET STATUS='%@' WHERE USERID='%@' AND FRIENDID='%@'",status,userID,friendID];
+    
+    char *errorMsg = NULL;
+    sqlite3_stmt *stmt;
+    if (sqlite3_prepare_v2(database, [update UTF8String], -1, &stmt, nil) == SQLITE_OK) {
+    
+        sqlite3_bind_text(stmt, 1, [status UTF8String], -1, NULL);
+        
+    }
+    if (sqlite3_step(stmt) != SQLITE_DONE)
+        NSLog( @"Error updating table: %s", errorMsg);
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+    sqlite3_close(database);
 
 }
 @end

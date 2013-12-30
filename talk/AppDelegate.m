@@ -17,6 +17,8 @@
 #import <arcstreamsdk/STreamFile.h>
 #import "TalkDB.h"
 #import "AddDB.h"
+#import "SearchDB.h"
+
 #import "ImageCache.h"
 #import "STreamXMPP.h"
 @implementation AppDelegate
@@ -36,7 +38,8 @@
     [talkDB initDB];
     AddDB * addDb = [[AddDB alloc]init];
     [addDb initDB];
-    
+    SearchDB * searchDB=  [[SearchDB alloc]init];
+    [searchDB initDB];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
 
            //    [[UIApplication sharedApplication] setStatusBarHidden:YES];

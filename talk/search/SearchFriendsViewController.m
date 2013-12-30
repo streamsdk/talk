@@ -15,6 +15,7 @@
 #import <arcstreamsdk/STreamCategoryObject.h>
 #import "AddFriendsViewController.h"
 #import "HandlerUserIdAndDateFormater.h"
+#import "SearchDB.h"
 
 #define SEARCH_TAG 10000
 #define LEFT_BUTTON_TAG 1000
@@ -190,8 +191,10 @@
         STreamObject * so = [[STreamObject alloc]init];
         [so setObjectId:string];
         [so addStaff:@"status" withObject:@"friend"];
-        [so updateInBackground];
-        
+        STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handler getUserID]];
+        NSMutableArray *update = [[NSMutableArray alloc] init] ;
+        [update addObject:so];
+        [sto updateStreamCategoryObjects:update];
         
         STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:string];
         STreamObject *my = [[STreamObject alloc]init];
@@ -214,13 +217,16 @@
     HUD.labelText = @"send request friends...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
-        
+        STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handler getUserID]];
         STreamObject * so = [[STreamObject alloc]init];
         [so setObjectId:string];
         [so addStaff:@"status" withObject:@"sendRequest"];
         [so setCategory:loginName];
         [so updateInBackground];
-        
+        NSMutableArray *update = [[NSMutableArray alloc] init] ;
+        [update addObject:so];
+        [sto updateStreamCategoryObjects:update];
+
         
         STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:string];
         STreamObject *my = [[STreamObject alloc]init];
@@ -233,6 +239,8 @@
         [HUD removeFromSuperview];
         HUD = nil;
     }];
+    SearchDB * db = [[SearchDB alloc]init];
+    [db insertDB:[handler getUserID] withFriendID:string];
     [button setFrame:CGRectMake(220, 7, 100, 30)];
     [button setTitle:@"sendRequest" forState:UIControlStateNormal];
   
