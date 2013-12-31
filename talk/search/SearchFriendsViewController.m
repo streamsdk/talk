@@ -102,18 +102,18 @@
         [[button layer] setCornerRadius:4];
         [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         button.titleLabel.font = [UIFont systemFontOfSize:16.0f];
-        [cell addSubview:button];
+        
     }
    
     if (userData && [userData count]!=0) {
         NSString * str = [userData objectAtIndex:indexPath.row];
         NSArray * array = [allFriend allKeys];
         if ([array containsObject:str]) {
-            NSString * status = [allFriend objectForKey:[array objectAtIndex:indexPath.row]];
+            NSString * status = [allFriend objectForKey:str];
 
             if ([status isEqualToString:@"request"]) {
                 [button setFrame:CGRectMake(cell.frame.size.width-100, 7,60, 30)];
-                [button setTitle:@"add" forState:UIControlStateNormal];
+//                [button setTitle:@"add" forState:UIControlStateNormal];
                 // [button addTarget:self action:@selector(addFriend:) forControlEvents:UIControlEventTouchUpInside];
                 UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You need to add addFriends page！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Cancel", nil];
                 [alert show];
@@ -121,6 +121,8 @@
             }else {
                 [button setFrame:CGRectMake(cell.frame.size.width-100, 7, 60, 30)];
                 [button setTitle:@"friend" forState:UIControlStateNormal];
+               
+                [cell addSubview:button];
                 UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You are already friends！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Cancel", nil];
                 [alert show];
             }
@@ -129,8 +131,9 @@
             [button setFrame:CGRectMake(cell.frame.size.width-100, 7, 60, 30)];
             [button setTitle:@"add" forState:UIControlStateNormal];
             [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
+            [cell addSubview:button];
+            
         }
-        
         cell.textLabel.text = str;
         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20.0f];
     }
