@@ -122,16 +122,7 @@
     [_segmentedControl setDelegate:self];
     [self setupSegmentedControl];
     
-    /*__block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"loading friends...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        [self loadFriends];
-    }completionBlock:^{
-        [myTableview reloadData];
-        [HUD removeFromSuperview];
-        HUD = nil;
-    }];*/
+    
    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * addDB = [[AddDB alloc]init];
     addDict = [addDB readDB:[handle getUserID]];
@@ -194,77 +185,58 @@
 }
 -(void)deleteFriends:(UIButton *)sender {
     
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * db = [[AddDB alloc]init];
     [db updateDB:[handle getUserID] withFriendID:[userData objectAtIndex:sender.tag] withStatus:@"request"];
-    HUD.labelText = @"loading friends...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handle getUserID]];
-        STreamObject * so = [[STreamObject alloc]init];
-        [so setObjectId:[userData objectAtIndex:sender.tag]];
-        [so addStaff:@"status" withObject:@"request"];
-        NSMutableArray *update= [[NSMutableArray alloc] init] ;
-        
-        [update addObject:so];
-        [sto updateStreamCategoryObjects:update];
-        
-        NSString * loginName= [handle getUserID];
-        STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[userData objectAtIndex:sender.tag]];
-        STreamObject *my = [[STreamObject alloc]init];
-        
-        [my setObjectId:loginName];
-        [my addStaff:@"status" withObject:@"sendRequest"];
-        NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
-        
-        [updateArray addObject:my];
-        [sco updateStreamCategoryObjects:updateArray];
-
-    }completionBlock:^{
-        [myTableview reloadData];
-        [HUD removeFromSuperview];
-        HUD = nil;
-    }];
+    STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handle getUserID]];
+    STreamObject * so = [[STreamObject alloc]init];
+    [so setObjectId:[userData objectAtIndex:sender.tag]];
+    [so addStaff:@"status" withObject:@"request"];
+    NSMutableArray *update= [[NSMutableArray alloc] init] ;
+    
+    [update addObject:so];
+    [sto updateStreamCategoryObjectsInBackground:update];
+    
+    NSString * loginName= [handle getUserID];
+    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[userData objectAtIndex:sender.tag]];
+    STreamObject *my = [[STreamObject alloc]init];
+    
+    [my setObjectId:loginName];
+    [my addStaff:@"status" withObject:@"sendRequest"];
+    NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
+    
+    [updateArray addObject:my];
+    [sco updateStreamCategoryObjectsInBackground:updateArray];
+    
     [sender setTitle:@"add" forState:UIControlStateNormal];
     [sender addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
-
+    [self.myTableview reloadData];
 }
 -(void)addFriends:(UIButton *)sender {
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * db = [[AddDB alloc]init];
 
     [db updateDB:[handle getUserID] withFriendID:[userData objectAtIndex:sender.tag] withStatus:@"friend"];
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"add friends...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-         STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handle getUserID]];
-        STreamObject * so = [[STreamObject alloc]init];
-        [so setObjectId:[userData objectAtIndex:sender.tag]];
-        [so addStaff:@"status" withObject:@"friend"];
-        NSMutableArray *update = [[NSMutableArray alloc] init] ;
-        
-        [update addObject:so];
-        [sto updateStreamCategoryObjects:update];
-
-        
-        STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[userData objectAtIndex:sender.tag]];
-        STreamObject *my = [[STreamObject alloc]init];
-        [my setObjectId:[handle getUserID]];
-        [my addStaff:@"status" withObject:@"friend"];
-        NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
-        
-        [updateArray addObject:my];
-        [sco updateStreamCategoryObjects:updateArray];
-        
-    }completionBlock:^{
-        [myTableview reloadData];
-        [HUD removeFromSuperview];
-        HUD = nil;
-    }];
-
-   
+    STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handle getUserID]];
+    STreamObject * so = [[STreamObject alloc]init];
+    [so setObjectId:[userData objectAtIndex:sender.tag]];
+    [so addStaff:@"status" withObject:@"friend"];
+    NSMutableArray *update = [[NSMutableArray alloc] init] ;
+    
+    [update addObject:so];
+    [sto updateStreamCategoryObjects:update];
+    
+    
+    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[userData objectAtIndex:sender.tag]];
+    STreamObject *my = [[STreamObject alloc]init];
+    [my setObjectId:[handle getUserID]];
+    [my addStaff:@"status" withObject:@"friend"];
+    NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
+    
+    [updateArray addObject:my];
+    [sco updateStreamCategoryObjects:updateArray];
+    
+    [myTableview reloadData];
     [sender setTitle:@"friend" forState:UIControlStateNormal];
     [sender addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -353,7 +325,9 @@
                 }];
             }
         }else{
-            if (pImageId)
+            if ([pImageId isEqualToString:@""])
+                [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
+            else
                 [cell.imageView setImage:[UIImage imageWithData:[imageCache getImage:pImageId]]];
         }
     }

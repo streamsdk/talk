@@ -40,14 +40,15 @@
 
 @synthesize userData,sortedArrForArrays,sectionHeadsKeys,messagesProtocol;
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithStyle:style];
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
     }
     return self;
 }
+
 -(void) addFriends {
     AddFriendsViewController * addVC = [[AddFriendsViewController alloc]init];
     [self.navigationController pushViewController:addVC animated:YES];
@@ -78,14 +79,34 @@
     
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     _reloading= NO;
-    if (_refreshTableView == nil) {
-        
-        EGORefreshTableHeaderView *refreshView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
-        refreshView.delegate = self;
-        [self.tableView addSubview:refreshView];
-        _refreshTableView = refreshView;
+    
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    [self.view addSubview:_tableView];
+    
+    //background
+    UIView *backgrdView = [[UIView alloc] initWithFrame:self.tableView.frame];
+    backgrdView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]];
+    self.tableView.backgroundView = backgrdView;
+    
+    if (_refreshHeaderView == nil) {
+		
+		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
+		view.delegate = self;
+		[self.tableView addSubview:view];
+		_refreshHeaderView = view;
+		
+	}
+    NSComparisonResult order = [[UIDevice currentDevice].systemVersion compare: @"7.0" options: NSNumericSearch];
+
+    if (order == NSOrderedSame || order == NSOrderedDescending)
+    {
+        // OS version >= 7.0
+        self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44)];
+
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     label.text =[handle getUserID];
     label.textColor = [UIColor grayColor];
     label.font = [UIFont fontWithName:@"Arial" size:22.0f];
@@ -120,11 +141,14 @@
         }
     }
     sortedArrForArrays = [self getChineseStringArr:userData];
+    
+    [_refreshHeaderView refreshLastUpdatedDate];
+
     [self.tableView reloadData];
 }
 
 -(void) loadFriends {
-    
+
     ImageCache * imageCache = [ImageCache sharedObject];
     countArray = [imageCache getMessagesCount];
     sectionHeadsKeys=[[NSMutableArray alloc]init];
@@ -139,23 +163,12 @@
     for (STreamObject *so in friends) {
         if (![userData containsObject:[so objectId]]){
             [userData addObject:[so objectId]];
-            [addDB insertDB:[handle getUserID] withFriendID:[so objectId] withStatus:@"sendRequest"];
+            [addDB insertDB:[handle getUserID] withFriendID:[so objectId] withStatus:@""];
         }
     }
     
     sortedArrForArrays = [self getChineseStringArr:userData];
-   /* STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:loginName];
-    [sq setQueryLogicAnd:true];
-    [sq whereEqualsTo:@"status" forValue:@"friend"];
-    [sq find:^(NSMutableArray *friends){
-        for (STreamObject *so in friends) {
-            if (![userData containsObject:[so objectId]])
-                [userData addObject:[so objectId]];
-            }
-        sortedArrForArrays = [self getChineseStringArr:userData];
-        [self.tableView reloadData];
-    }];*/
-    [self.tableView reloadData];
+
 }
 -(void) connect {
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
@@ -361,7 +374,7 @@
         ChineseString *chineseStr = (ChineseString *)[chineseStringsArray objectAtIndex:index];
         NSMutableString *strchar= [NSMutableString stringWithString:chineseStr.pinYin];
         NSString *sr= [strchar substringToIndex:1];
-        NSLog(@"%@",sr);        //sr containing here the first character of each string
+//        NSLog(@"%@",sr);        //sr containing here the first character of each string
         if(![sectionHeadsKeys containsObject:[sr uppercaseString]])//here I'm checking whether the character already in the selection header keys or not
         {
             [sectionHeadsKeys addObject:[sr uppercaseString]];
@@ -421,7 +434,9 @@
                 }];
             }
         }else{
-            if (pImageId)
+            if ([pImageId isEqualToString:@""])
+                [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
+            else
                 [cell.imageView setImage:[UIImage imageWithData:[imageCache getImage:pImageId]]];
         }
     }else{
@@ -440,9 +455,10 @@
     return 60;
 }
 
+#pragma mark egoRefreshScrollViewDidScroll delegate
+
 - (void)reloadTableViewDataSource{
     _reloading = YES;
-    [self loadFriends];
     [NSThread detachNewThreadSelector:@selector(doInBackground) toTarget:self withObject:nil];
 }
 
@@ -450,8 +466,8 @@
     NSLog(@"doneLoadingTableViewData");
     
     _reloading = NO;
-    [_refreshTableView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-    
+    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+    //刷新表格内容
     [self.tableView reloadData];
 }
 
@@ -461,6 +477,7 @@
 {
     NSLog(@"doInBackground");
     
+    [self loadFriends];
     [NSThread sleepForTimeInterval:3];
     
     [self performSelectorOnMainThread:@selector(doneLoadingTableViewData) withObject:nil waitUntilDone:YES];
@@ -468,33 +485,42 @@
 
 
 #pragma mark -
-#pragma mark EGORefreshTableHeaderDelegate Methods
+#pragma mark UIScrollViewDelegate Methods
 
--(void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view
-{
-    [self reloadTableViewDataSource];
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+	
+	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    
 }
 
--(BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view
-{
-    return _reloading;
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+	
+	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+	
 }
 
--(NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view
-{
-    return [NSDate date];
-}
 
 #pragma mark -
-#pragma mark UIScrollViewDelegate Methods
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [_refreshTableView egoRefreshScrollViewDidScroll:scrollView];
+#pragma mark EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+	
+	[self reloadTableViewDataSource];
+	[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
+	
 }
 
--(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    [_refreshTableView egoRefreshScrollViewDidEndDragging:scrollView];
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+	
+    _reloading = NO;
+	return _reloading; // should return if data source model is reloading
+	
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+	
+	return [NSDate date]; // should return date data source was last changed
+	
 }
 
 @end

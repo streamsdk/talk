@@ -31,8 +31,6 @@
     [imageview setImage:image];
     imageview.userInteractionEnabled = YES;
     imageview.tag = IMAGE_TAG;
-//    UITapGestureRecognizer *TapGesutre=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleTapGesture:)];
-//    [imageview addGestureRecognizer:TapGesutre];
     [self.view addSubview:imageview];
   
     UIButton * backButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 10, 60, 60)];

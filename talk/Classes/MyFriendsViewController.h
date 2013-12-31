@@ -10,18 +10,18 @@
 #import "STreamXMPPProtocol.h"
 #import "GetAllMessagesProtocol.h"
 #import "EGORefreshTableHeaderView.h"
-@interface MyFriendsViewController : UITableViewController<STreamXMPPProtocol,EGORefreshTableHeaderDelegate>
+@interface MyFriendsViewController : UIViewController<STreamXMPPProtocol,EGORefreshTableHeaderDelegate,UITableViewDelegate,UITableViewDataSource>
 {
-    EGORefreshTableHeaderView *_refreshTableView;
+    EGORefreshTableHeaderView *_refreshHeaderView;
     BOOL _reloading;
 }
 @property (nonatomic,retain) NSMutableArray *userData;
 @property (nonatomic, retain) NSMutableArray *sortedArrForArrays;
 @property (nonatomic, retain) NSMutableArray *sectionHeadsKeys;
 @property (assign,nonatomic) id<GetAllMessagesProtocol> messagesProtocol;
+@property(nonatomic,strong) UITableView * tableView;
 
-//start
-- (void)reloadTableViewDataSource;
-//done
-- (void)doneLoadingTableViewData;
+-(void)reloadTableViewDataSource;
+-(void)doneLoadingTableViewData;
+
 @end

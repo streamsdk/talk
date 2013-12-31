@@ -16,6 +16,7 @@
 #import "AddFriendsViewController.h"
 #import "HandlerUserIdAndDateFormater.h"
 #import "SearchDB.h"
+#import "AddDB.h"
 
 #define SEARCH_TAG 10000
 #define LEFT_BUTTON_TAG 1000
@@ -23,7 +24,7 @@
 @interface SearchFriendsViewController ()
 {
     UIButton *button;
-    NSMutableArray *allFriend;
+    NSMutableDictionary *allFriend;
 }
 @end
 
@@ -57,7 +58,7 @@
     myTableview.delegate = self;
     myTableview.dataSource = self;
     [self.view addSubview:myTableview];
-    allFriend = [[NSMutableArray alloc]init];
+    allFriend = [[NSMutableDictionary alloc]init];
     
     _segmentedControl = [[SegmentedControl alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width,49)];
     [_segmentedControl setDelegate:self];
@@ -72,8 +73,9 @@
     [self.view addSubview:_searchBar];
     
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-    STreamQuery *sq = [[STreamQuery alloc]initWithCategory:[handler getUserID]];
-    allFriend = [sq find];
+    AddDB * addDB = [[AddDB alloc]init];
+    allFriend = [addDB readDB:[handler getUserID]];
+
     
 }
 
@@ -105,38 +107,31 @@
     }
    
     if (userData && [userData count]!=0) {
-        NSString * status= nil;
         NSString * str = [userData objectAtIndex:indexPath.row];
-        NSMutableArray * array = [[NSMutableArray alloc]init];
-        for (STreamObject *so in allFriend) {
-            [array addObject:[so objectId]];
-            if (array &&[array containsObject:str]) {
-                status = [so getValue:@"status"];
-            }
-            
-        }
-        if (status) {
-            if ([status isEqualToString:@"friend"]){
-                [button setFrame:CGRectMake(cell.frame.size.width-100, 7, 60, 30)];
-                [button setTitle:@"friend" forState:UIControlStateNormal];
-                //                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You are already friends！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Cancel", nil];
-                //                [alert show];
-            }else  if ([status isEqualToString:@"request"]) {
+        NSArray * array = [allFriend allKeys];
+        if ([array containsObject:str]) {
+            NSString * status = [allFriend objectForKey:[array objectAtIndex:indexPath.row]];
+
+            if ([status isEqualToString:@"request"]) {
                 [button setFrame:CGRectMake(cell.frame.size.width-100, 7,60, 30)];
                 [button setTitle:@"add" forState:UIControlStateNormal];
-                [button addTarget:self action:@selector(addFriend:) forControlEvents:UIControlEventTouchUpInside];
+                //                [button addTarget:self action:@selector(addFriend:) forControlEvents:UIControlEventTouchUpInside];
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You need to add addFriends page！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Cancel", nil];
+                [alert show];
                 
-            }else  if ([status isEqualToString:@"sendRequest"]) {
-                
-               [button setFrame:CGRectMake(cell.frame.size.width-100, 7, 100, 30)];
-                [button setTitle:@"sendRequest" forState:UIControlStateNormal];
+            }else {
+                [button setFrame:CGRectMake(cell.frame.size.width-100, 7, 60, 30)];
+                [button setTitle:@"friend" forState:UIControlStateNormal];
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You are already friends！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Cancel", nil];
+                [alert show];
             }
+
         }else{
             [button setFrame:CGRectMake(cell.frame.size.width-100, 7, 60, 30)];
             [button setTitle:@"add" forState:UIControlStateNormal];
             [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
-            
-         }
+        }
+        
         cell.textLabel.text = str;
         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20.0f];
     }
@@ -181,38 +176,11 @@
     [searchBar resignFirstResponder];
 }
 
--(void)addFriend:(UIButton *)sender {
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"add friends...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-        NSString *string= [userData objectAtIndex:sender.tag];
-        STreamObject * so = [[STreamObject alloc]init];
-        [so setObjectId:string];
-        [so addStaff:@"status" withObject:@"friend"];
-        STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handler getUserID]];
-        NSMutableArray *update = [[NSMutableArray alloc] init] ;
-        [update addObject:so];
-        [sto updateStreamCategoryObjects:update];
-        
-        STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:string];
-        STreamObject *my = [[STreamObject alloc]init];
-        [my setObjectId:[handler getUserID]];
-        [my addStaff:@"status" withObject:@"friend"];
-        NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
-        [updateArray addObject:my];
-        [sco updateStreamCategoryObjects:updateArray];
-    }completionBlock:^{
-        [HUD removeFromSuperview];
-        HUD = nil;
-    }];
-     [button setTitle:@"friend" forState:UIControlStateNormal];
-}
 -(void) addFriendSendRequest:(UIButton *) sender {
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * loginName= [handler getUserID];
     NSString *string= [userData objectAtIndex:sender.tag];
+    
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"send request friends...";
     [self.view addSubview:HUD];
