@@ -17,9 +17,6 @@
     [button setFrame:frame];
     button.autoresizingMask =  UIViewAutoresizingFlexibleBottomMargin |UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
     if (![title isEqualToString:@"nil"]) {
-//        [[button layer] setBorderColor:[[UIColor blueColor] CGColor]];
-//        [[button layer] setBorderWidth:1];
-//        [[button layer] setCornerRadius:4];
         [button setTitle:title forState:UIControlStateNormal];
         [button setTitleColor:[UIColor purpleColor] forState:UIControlStateNormal];
         [button setBackgroundColor:[UIColor colorWithRed:247.0/255.0 green:229.0/255.0 blue:227.0/255.0 alpha:1.0]];

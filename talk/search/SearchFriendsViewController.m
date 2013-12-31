@@ -103,7 +103,6 @@
         [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         button.titleLabel.font = [UIFont systemFontOfSize:16.0f];
         [cell addSubview:button];
-        
     }
    
     if (userData && [userData count]!=0) {
@@ -115,7 +114,7 @@
             if ([status isEqualToString:@"request"]) {
                 [button setFrame:CGRectMake(cell.frame.size.width-100, 7,60, 30)];
                 [button setTitle:@"add" forState:UIControlStateNormal];
-                //                [button addTarget:self action:@selector(addFriend:) forControlEvents:UIControlEventTouchUpInside];
+                // [button addTarget:self action:@selector(addFriend:) forControlEvents:UIControlEventTouchUpInside];
                 UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You need to add addFriends page！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Cancel", nil];
                 [alert show];
                 
@@ -143,31 +142,31 @@
     
     [searchBar resignFirstResponder];
      NSString *string = searchBar.text;
-    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-    STreamUser * user = [[STreamUser alloc]init];
-    NSString * loginName = [handler getUserID];
-    BOOL isUserExist = [user searchUser:string];
-    
-    if (isUserExist) {
-        if (![loginName isEqualToString:string]) {
-            __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-            HUD.labelText = @"loading friends...";
-            [self.view addSubview:HUD];
-            [HUD showAnimated:YES whileExecutingBlock:^{
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"loading friends...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+        STreamUser * user = [[STreamUser alloc]init];
+        NSString * loginName = [handler getUserID];
+        BOOL isUserExist = [user searchUser:string];
+        
+        if (isUserExist) {
+            if (![loginName isEqualToString:string]) {
                 [userData removeAllObjects];
                 [userData addObject:string];
-            }completionBlock:^{
-                [myTableview reloadData];
-                [HUD removeFromSuperview];
-                HUD = nil;
-            }];
-
+            }
+        }else{
+            UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"No results found" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+            [alertview show];
         }
-    }else{
-        UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"No results found" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
-        [alertview show];
-    }
-    }
+        
+    }completionBlock:^{
+        [myTableview reloadData];
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
+}
 
 -(void) cancelSelected {
     UISearchBar *searchBar =(UISearchBar *)[self.view viewWithTag:SEARCH_TAG];
@@ -181,32 +180,26 @@
     NSString * loginName= [handler getUserID];
     NSString *string= [userData objectAtIndex:sender.tag];
     
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"send request friends...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handler getUserID]];
-        STreamObject * so = [[STreamObject alloc]init];
-        [so setObjectId:string];
-        [so addStaff:@"status" withObject:@"sendRequest"];
-        [so setCategory:loginName];
-        [so updateInBackground];
-        NSMutableArray *update = [[NSMutableArray alloc] init] ;
-        [update addObject:so];
-        [sto updateStreamCategoryObjects:update];
 
-        
-        STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:string];
-        STreamObject *my = [[STreamObject alloc]init];
-        [my setObjectId:loginName];
-        [my addStaff:@"status" withObject:@"request"];
-        NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
-        [updateArray addObject:my];
-        [sco updateStreamCategoryObjects:updateArray];
-    }completionBlock:^{
-        [HUD removeFromSuperview];
-        HUD = nil;
-    }];
+    STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handler getUserID]];
+    STreamObject * so = [[STreamObject alloc]init];
+    [so setObjectId:string];
+    [so addStaff:@"status" withObject:@"sendRequest"];
+    [so setCategory:loginName];
+    [so updateInBackground];
+    NSMutableArray *update = [[NSMutableArray alloc] init] ;
+    [update addObject:so];
+    [sto updateStreamCategoryObjectsInBackground:update];
+    
+    
+    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:string];
+    STreamObject *my = [[STreamObject alloc]init];
+    [my setObjectId:loginName];
+    [my addStaff:@"status" withObject:@"request"];
+    NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
+    [updateArray addObject:my];
+    [sco updateStreamCategoryObjectsInBackground:updateArray];
+
     SearchDB * db = [[SearchDB alloc]init];
     [db insertDB:[handler getUserID] withFriendID:string];
     [button setFrame:CGRectMake(220, 7, 100, 30)];

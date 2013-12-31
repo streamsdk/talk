@@ -108,14 +108,16 @@
                     NSLog(@"succeed");
                 else
                     NSLog(@"failed");
-              }];
+            }];
+            
+            LoginViewController * loginVC = [[LoginViewController alloc]init];
+            [self.navigationController pushViewController:loginVC animated:YES];
         }else{
             
-            UIAlertView * view  = [[UIAlertView alloc]initWithTitle:@"" message:@"用户名或密码错误" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            UIAlertView * view  = [[UIAlertView alloc]initWithTitle:@"" message:@"User name or password error" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
             [view show];
         }
-        LoginViewController * loginVC = [[LoginViewController alloc]init];
-        [self.navigationController pushViewController:loginVC animated:YES];
+       
     }
     
         NSLog(@"");

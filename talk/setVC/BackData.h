@@ -15,7 +15,4 @@
 
 -(UIImage *) getImage;
 
--(void) setFriendId:(NSString *)id;
-
--(NSString *) getFriendId;
 @end

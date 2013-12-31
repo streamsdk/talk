@@ -9,7 +9,6 @@
 #import "BackData.h"
 
 static UIImage *image;
-static NSString *_id;
 @implementation BackData
 
 + (BackData *)sharedObject{
@@ -30,13 +29,6 @@ static NSString *_id;
 }
 -(UIImage *)getImage {
     return image;
-}
--(void) setFriendId:(NSString *)id{
-    _id = id;
-}
-
--(NSString *) getFriendId{
-    return _id;
 }
 
 @end

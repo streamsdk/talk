@@ -37,16 +37,6 @@
         bubble.delegate = self;
         [bubbleData addObject:bubble];
     }
-   /* HandlerUserIdAndDateFormater * handler = [[HandlerUserIdAndDateFormater alloc]init];
-   
-    NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];
-    [data writeToFile:photoPath atomically:YES];
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
-    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-    [friendDict setObject:photoPath forKey:@"photo"];
-    [jsonDic setObject:friendDict forKey:fromID];
-
-    return jsonDic;*/
     
 }
 

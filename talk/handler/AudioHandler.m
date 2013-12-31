@@ -42,7 +42,6 @@
     [friendsDict setObject:[url path] forKey:@"audiodata"];
     [jsonDic setObject:friendsDict forKey:sendID];
     NSString * str = [jsonDic JSONString];
-    NSLog(@"json===:%@",str);
     TalkDB * db = [[TalkDB alloc]init];
     HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
     

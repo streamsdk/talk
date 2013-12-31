@@ -27,7 +27,8 @@
 #import "STreamXMPP.h"
 #import <arcstreamsdk/JSONKit.h>
 #define TABLECELL_TAG 10000
-
+#define BUTTON_TAG 20000
+#define BUTTON_IMAGE_TAG 30000
 @interface MyFriendsViewController ()
 {
     NSMutableDictionary *countDict;
@@ -39,6 +40,7 @@
 @implementation MyFriendsViewController
 
 @synthesize userData,sortedArrForArrays,sectionHeadsKeys,messagesProtocol;
+@synthesize button;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -102,7 +104,6 @@
 
     if (order == NSOrderedSame || order == NSOrderedDescending)
     {
-        // OS version >= 7.0
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
 
@@ -142,15 +143,15 @@
     }
     sortedArrForArrays = [self getChineseStringArr:userData];
     
+    ImageCache * imageCache = [ImageCache sharedObject];
+    countArray = [imageCache getMessagesCount];
+    
     [_refreshHeaderView refreshLastUpdatedDate];
 
     [self.tableView reloadData];
 }
 
 -(void) loadFriends {
-
-    ImageCache * imageCache = [ImageCache sharedObject];
-    countArray = [imageCache getMessagesCount];
     sectionHeadsKeys=[[NSMutableArray alloc]init];
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     NSString * loginName= [handle getUserID];
@@ -205,20 +206,23 @@
 - (void)didReceiveMessage:(XMPPMessage *)message withFrom:(NSString *)fromID{
     ImageCache *imageCache = [ImageCache sharedObject];
     [imageCache setMessagesCount:fromID];
+    
     NSString *receiveMessage = [message body];
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
+    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
 
     HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
-    TalkDB * db = [[TalkDB alloc]init];
     NSString * userID = [handler getUserID];
-    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
     [friendDict setObject:receiveMessage forKey:@"messages"];
     [jsonDic setObject:friendDict forKey:fromID];
     NSString  *str = [jsonDic JSONString];
+    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSDate * date =[NSDate dateWithTimeIntervalSinceNow:0];
     NSString * str2 = [dateFormatter stringFromDate:date];
+    
+     TalkDB * db = [[TalkDB alloc]init];
     [db insertDBUserID:userID fromID:fromID withContent:str withTime:str2 withIsMine:1];
     
     [messagesProtocol getMessages:receiveMessage withFromID:fromID];
@@ -277,12 +281,12 @@
 }
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSLog(@"11：%d",[sortedArrForArrays count]);
+
     return  [[sortedArrForArrays objectAtIndex:section] count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    NSLog(@"22：%d",[sortedArrForArrays count]);
+
     return [sortedArrForArrays count];
 }
 
@@ -294,21 +298,28 @@
    
     NSString *cellId = @"CellId";
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    
+  
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
         [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.tag = TABLECELL_TAG;
+        
+         button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.tag = BUTTON_TAG;
+        [button setFrame:CGRectMake(55, 0, 28, 28)];
+        cell.textLabel.font = [UIFont fontWithName:@"Arial" size:10.0f];
+        [cell addSubview:button];
+        
     }
+    
     if ([self.sortedArrForArrays count] > indexPath.section) {
         NSArray *arr = [sortedArrForArrays objectAtIndex:indexPath.section];
         if ([arr count] > indexPath.row) {
             ChineseString *str = (ChineseString *) [arr objectAtIndex:indexPath.row];
-
-            [cell.imageView setFrame:CGRectMake(0, 10, 50, 40)];
             [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
             [self loadAvatar:str.string withCell:cell];
+            
             cell.textLabel.text = str.string;
             NSMutableArray * array = [[NSMutableArray alloc]init];
             if (countArray && [countArray count]!= 0) {
@@ -320,8 +331,9 @@
             }
             int num = [array count];
             if (num!= 0) {
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%d",num];
-                cell.detailTextLabel.textColor = [UIColor redColor];
+                NSString * count =[NSString stringWithFormat:@"%d",num];
+                [button setBackgroundImage:[UIImage imageNamed:@"message_count.png"] forState:UIControlStateNormal];
+                [button setTitle:count forState:UIControlStateNormal];
               }
             
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];

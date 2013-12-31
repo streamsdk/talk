@@ -46,17 +46,7 @@
     }];
     self.userData = [searchDB readSearchDB:[handler getUserID]];
     [self.myTableview reloadData];
-    /*__block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"loading friends...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-    
-    }completionBlock:^{
-        [self.myTableview reloadData];
-        [HUD removeFromSuperview];
-        HUD = nil;
-    }];*/
-    NSLog(@"");
+
 }
 - (void)viewDidLoad
 {
@@ -76,19 +66,6 @@
     label.font = [UIFont fontWithName:@"DIN Alternate" size:15.0f];
     self.myTableview.tableHeaderView =label;
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-  /*  __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"loading friends...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:[handler getUserID]];
-        [sq setQueryLogicAnd:true];
-        [sq whereEqualsTo:@"status" forValue:@"sendRequest"];
-        self.userData = [sq find];
-    }completionBlock:^{
-        [self.myTableview reloadData];
-        [HUD removeFromSuperview];
-        HUD = nil;
-    }];*/
     
     SearchDB * searchDB = [[SearchDB alloc]init];
     self.userData = [searchDB readSearchDB:[handler getUserID]];

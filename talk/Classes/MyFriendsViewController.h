@@ -20,7 +20,7 @@
 @property (nonatomic, retain) NSMutableArray *sectionHeadsKeys;
 @property (assign,nonatomic) id<GetAllMessagesProtocol> messagesProtocol;
 @property(nonatomic,strong) UITableView * tableView;
-
+@property(nonatomic,strong) UIButton * button;
 -(void)reloadTableViewDataSource;
 -(void)doneLoadingTableViewData;
 

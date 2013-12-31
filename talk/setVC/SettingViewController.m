@@ -218,7 +218,7 @@
     
     STreamUser * user = [[STreamUser alloc]init];
     STreamFile *file = [[STreamFile alloc] init];
-    UIImage *sImage = [self imageWithImageSimple:avatarImg scaledToSize:CGSizeMake(avatarImg.size.width*0.3, avatarImg.size.height*0.3)];
+    UIImage *sImage = [self imageWithImageSimple:avatarImg scaledToSize:CGSizeMake(avatarImg.size.width*0.2, avatarImg.size.height*0.2)];
     NSData * data = UIImageJPEGRepresentation(sImage, 1.0);
     [file postData:data];
     

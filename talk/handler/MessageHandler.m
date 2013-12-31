@@ -21,20 +21,6 @@
             sendBubble.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:sendBubble];
     }
-    /*NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
-
-    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
-    TalkDB * db = [[TalkDB alloc]init];
-    NSString * userID = [handler getUserID];
-    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-    [friendDict setObject:receiveMessage forKey:@"messages"];
-    [jsonDic setObject:friendDict forKey:fromID];
-    NSString  *str = [jsonDic JSONString];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSDate * date =[NSDate dateWithTimeIntervalSinceNow:0];
-    NSString * str2 = [dateFormatter stringFromDate:date];
-    [db insertDBUserID:userID fromID:fromID withContent:str withTime:str2 withIsMine:1];*/
 
 }
 
