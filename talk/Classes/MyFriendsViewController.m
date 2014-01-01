@@ -27,6 +27,9 @@
 #import "STreamXMPP.h"
 #import <arcstreamsdk/JSONKit.h>
 #import <QuartzCore/QuartzCore.h>
+#import "HandlerFirendsViewController.h"
+
+
 #define TABLECELL_TAG 10000
 #define BUTTON_TAG 20000
 #define BUTTON_IMAGE_TAG 30000
@@ -53,8 +56,8 @@
 }
 
 -(void) addFriends {
-    AddFriendsViewController * addVC = [[AddFriendsViewController alloc]init];
-    [self.navigationController pushViewController:addVC animated:YES];
+    HandlerFirendsViewController * handlerVC = [[HandlerFirendsViewController alloc]init];
+    [self.navigationController pushViewController:handlerVC animated:YES];
 }
 -(void) settingClicked {
     SettingViewController *setVC = [[SettingViewController alloc]init];
@@ -133,15 +136,7 @@
         HUD = nil;
     }];
     
-    AddDB * addDB = [[AddDB alloc]init];
-    NSMutableDictionary * dict = [addDB readDB:[handle getUserID]];
-    NSArray * array = [dict allKeys];
-    for (int i = 0;i< [array count];i++) {
-        NSString *status = [dict objectForKey:[array objectAtIndex:i]];
-        if ([status isEqualToString:@"friend"]) {
-            [userData addObject:[array objectAtIndex:i]];
-        }
-    }
+    [self readAddDb];
     sortedArrForArrays = [self getChineseStringArr:userData];
     
     ImageCache * imageCache = [ImageCache sharedObject];
@@ -151,22 +146,38 @@
 
     [self.tableView reloadData];
 }
+-(void) readAddDb {
+    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
 
+    AddDB * addDB = [[AddDB alloc]init];
+    NSMutableDictionary * dict = [addDB readDB:[handle getUserID]];
+    NSArray * array = [dict allKeys];
+    for (int i = 0;i< [array count];i++) {
+        NSString *status = [dict objectForKey:[array objectAtIndex:i]];
+        if ([status isEqualToString:@"friend"]) {
+            [userData addObject:[array objectAtIndex:i]];
+        }
+    }
+
+}
 -(void) loadFriends {
     
     [countArray removeAllObjects];
- 
     ImageCache * imageCache = [ImageCache sharedObject];
     countArray = [imageCache getMessagesCount];
     sectionHeadsKeys=[[NSMutableArray alloc]init];
-    sortedArrForArrays = [[NSMutableArray alloc]init];
+//    sortedArrForArrays = [[NSMutableArray alloc]init];
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     NSString * loginName= [handle getUserID];
+    
+    AddDB * addDB = [[AddDB alloc]init];
+    userData = [[NSMutableArray alloc]init];
+    [self readAddDb];
     
     STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:loginName];
     [sq setQueryLogicAnd:true];
     [sq whereEqualsTo:@"status" forValue:@"friend"];
-    AddDB * addDB = [[AddDB alloc]init];
+    
     NSMutableArray * friends = [sq find];
     for (STreamObject *so in friends) {
         if (![userData containsObject:[so objectId]]){

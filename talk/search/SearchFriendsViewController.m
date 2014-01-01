@@ -45,7 +45,7 @@
 {
     [super viewDidLoad];
 
-    self.title = @"Add Friends";
+    self.title = @"Search Friends";
     userData = [[NSMutableArray alloc]init];
     self.navigationItem.hidesBackButton = YES;
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];

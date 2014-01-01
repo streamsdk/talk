@@ -187,6 +187,12 @@
 		0E2E5EB718726D230044DC4C /* message_count@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E2E5EB518726D230044DC4C /* message_count@2x.png */; };
 		0E2FC7F618692DE10069CB03 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2FC7F518692DE10069CB03 /* TabBarViewController.m */; };
 		0E2FC7FC186931940069CB03 /* HandleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2FC7FB186931940069CB03 /* HandleViewController.m */; };
+		0E3A74F218740C9D00A9020D /* HandlerFirendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3A74F118740C9D00A9020D /* HandlerFirendsViewController.m */; };
+		0E3A74F518740CBA00A9020D /* SliderSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3A74F418740CBA00A9020D /* SliderSwitch.m */; };
+		0E3A74FA18740FFB00A9020D /* top_tab_background3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E3A74F618740FFB00A9020D /* top_tab_background3@2x.png */; };
+		0E3A74FB18740FFB00A9020D /* top_tab_background3.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E3A74F718740FFB00A9020D /* top_tab_background3.png */; };
+		0E3A74FC18740FFB00A9020D /* top_tab_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E3A74F818740FFB00A9020D /* top_tab_active.png */; };
+		0E3A74FD18740FFB00A9020D /* top_tab_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E3A74F918740FFB00A9020D /* top_tab_active@2x.png */; };
 		0E8A4F33182B7F8000705C1F /* CreateUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F32182B7F8000705C1F /* CreateUI.m */; };
 		0E8A4F36182B7FE300705C1F /* TalkDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F35182B7FE300705C1F /* TalkDB.m */; };
 		0E8A4F38182B802600705C1F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8A4F37182B802600705C1F /* libsqlite3.dylib */; };
@@ -629,6 +635,14 @@
 		0E2FC7F518692DE10069CB03 /* TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarViewController.m; sourceTree = "<group>"; };
 		0E2FC7FA186931940069CB03 /* HandleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HandleViewController.h; sourceTree = "<group>"; };
 		0E2FC7FB186931940069CB03 /* HandleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HandleViewController.m; sourceTree = "<group>"; };
+		0E3A74F018740C9D00A9020D /* HandlerFirendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HandlerFirendsViewController.h; path = "add&search/HandlerFirendsViewController.h"; sourceTree = "<group>"; };
+		0E3A74F118740C9D00A9020D /* HandlerFirendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HandlerFirendsViewController.m; path = "add&search/HandlerFirendsViewController.m"; sourceTree = "<group>"; };
+		0E3A74F318740CBA00A9020D /* SliderSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SliderSwitch.h; path = "add&search/SliderSwitch.h"; sourceTree = "<group>"; };
+		0E3A74F418740CBA00A9020D /* SliderSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SliderSwitch.m; path = "add&search/SliderSwitch.m"; sourceTree = "<group>"; };
+		0E3A74F618740FFB00A9020D /* top_tab_background3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "top_tab_background3@2x.png"; sourceTree = "<group>"; };
+		0E3A74F718740FFB00A9020D /* top_tab_background3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_tab_background3.png; sourceTree = "<group>"; };
+		0E3A74F818740FFB00A9020D /* top_tab_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_tab_active.png; sourceTree = "<group>"; };
+		0E3A74F918740FFB00A9020D /* top_tab_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "top_tab_active@2x.png"; sourceTree = "<group>"; };
 		0E8A4F31182B7F7100705C1F /* CreateUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreateUI.h; path = createUI/CreateUI.h; sourceTree = "<group>"; };
 		0E8A4F32182B7F8000705C1F /* CreateUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CreateUI.m; path = createUI/CreateUI.m; sourceTree = "<group>"; };
 		0E8A4F34182B7FE300705C1F /* TalkDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TalkDB.h; path = talkDB/TalkDB.h; sourceTree = "<group>"; };
@@ -865,6 +879,7 @@
 				0EF79DFC18583A9E00EB8A64 /* setVC */,
 				0EF79DF018580D0E00EB8A64 /* IconSort */,
 				0E2918D11859579000AA21B2 /* friendsSort */,
+				0E3A74EF18740C2300A9020D /* add&searchFriends */,
 				0EA16C01185176A7009F2D3A /* AddFriendsViewController.h */,
 				0EA16C02185176A7009F2D3A /* AddFriendsViewController.m */,
 				03D9BF0A18145C080039118F /* AppDelegate.h */,
@@ -1727,6 +1742,21 @@
 			name = cache;
 			sourceTree = "<group>";
 		};
+		0E3A74EF18740C2300A9020D /* add&searchFriends */ = {
+			isa = PBXGroup;
+			children = (
+				0E3A74F618740FFB00A9020D /* top_tab_background3@2x.png */,
+				0E3A74F718740FFB00A9020D /* top_tab_background3.png */,
+				0E3A74F818740FFB00A9020D /* top_tab_active.png */,
+				0E3A74F918740FFB00A9020D /* top_tab_active@2x.png */,
+				0E3A74F018740C9D00A9020D /* HandlerFirendsViewController.h */,
+				0E3A74F118740C9D00A9020D /* HandlerFirendsViewController.m */,
+				0E3A74F318740CBA00A9020D /* SliderSwitch.h */,
+				0E3A74F418740CBA00A9020D /* SliderSwitch.m */,
+			);
+			name = "add&searchFriends";
+			sourceTree = "<group>";
+		};
 		0E8A4F30182B7EE300705C1F /* talkDB */ = {
 			isa = PBXGroup;
 			children = (
@@ -2099,11 +2129,14 @@
 				03D9BF0E18145C080039118F /* Images.xcassets in Resources */,
 				0EE951E3185EA4B9003F4638 /* faceDelete.png in Resources */,
 				0EE951F9185EA4B9003F4638 /* talk4s.png in Resources */,
+				0E3A74FC18740FFB00A9020D /* top_tab_active.png in Resources */,
 				0E19E83818716AA100523232 /* grayArrow.png in Resources */,
 				0E19E83B18716AA100523232 /* whiteArrow@2x.png in Resources */,
 				0EE951E2185EA4B9003F4638 /* face@2x.png in Resources */,
 				0EE951D5185EA4B9003F4638 /* b4.png in Resources */,
 				0EE951EA185EA4B9003F4638 /* Speak.png in Resources */,
+				0E3A74FB18740FFB00A9020D /* top_tab_background3.png in Resources */,
+				0E3A74FA18740FFB00A9020D /* top_tab_background3@2x.png in Resources */,
 				0EE951DC185EA4B9003F4638 /* bubbleMine@2x.png in Resources */,
 				0EE951F6185EA4B9003F4638 /* photoMark.png in Resources */,
 				0EEFFF6C18659B2000018A57 /* segmented-bg-Right@2x.png in Resources */,
@@ -2116,6 +2149,7 @@
 				0EE951F4185EA4B9003F4638 /* Voice.png in Resources */,
 				0EE951D0185EA4B9003F4638 /* add.png in Resources */,
 				0E19E83718716AA100523232 /* blueArrow@2x.png in Resources */,
+				0E3A74FD18740FFB00A9020D /* top_tab_active@2x.png in Resources */,
 				0EE951DF185EA4B9003F4638 /* camera_button_take.png in Resources */,
 				0EE951F5185EA4B9003F4638 /* Voice@2x.png in Resources */,
 				0ED8ECA018288DC400C84741 /* black_bg_ip5@2x.png in Resources */,
@@ -2162,6 +2196,7 @@
 				03D9C0E918145E510039118F /* DispatchQueueLogFormatter.m in Sources */,
 				03D9C08B18145E410039118F /* XMPPDateTimeProfiles.m in Sources */,
 				03D9C07618145E410039118F /* XMPPvCard.xcdatamodeld in Sources */,
+				0E3A74F218740C9D00A9020D /* HandlerFirendsViewController.m in Sources */,
 				03D9BF5E18145E2F0039118F /* NSNumber+XMPP.m in Sources */,
 				0E19E83318716AA100523232 /* EGORefreshTableHeaderView.m in Sources */,
 				03D9C0B418145E480039118F /* DDList.m in Sources */,
@@ -2300,6 +2335,7 @@
 				0EE9519D185EA47D003F4638 /* ChineseString.m in Sources */,
 				03D9C0E418145E510039118F /* DDASLLogger.m in Sources */,
 				0EE951FE185EE9EC003F4638 /* UIImageViewController.m in Sources */,
+				0E3A74F518740CBA00A9020D /* SliderSwitch.m in Sources */,
 				03D9C06B18145E410039118F /* XMPPRoomOccupantCoreDataStorageObject.m in Sources */,
 				03D9BF5118145E270039118F /* XMPPDeprecatedDigestAuthentication.m in Sources */,
 				03D9C09F18145E410039118F /* XMPPAutoTime.m in Sources */,
