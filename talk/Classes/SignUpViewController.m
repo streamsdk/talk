@@ -13,8 +13,12 @@
 #import <arcstreamsdk/STreamUser.h>
 #import "LoginViewController.h"
 #import "CreateUI.h"
+#import "ImageCache.h"
+#import "MBProgressHUD.h"
+#import "FileCache.h"
+#import "MyFriendsViewController.h"
 
-@interface SignUpViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,UIActionSheetDelegate>
+@interface SignUpViewController ()<UIActionSheetDelegate>
 {
     UIActionSheet* actionSheet;
 }
@@ -109,9 +113,32 @@
                 else
                     NSLog(@"failed");
             }];
-            
-            LoginViewController * loginVC = [[LoginViewController alloc]init];
-            [self.navigationController pushViewController:loginVC animated:YES];
+            NSString *nameFilePath = [self getCacheDirectory];
+            NSArray * nameArray = [[NSArray alloc]initWithObjects:username,pword, nil];
+            [nameArray writeToFile:nameFilePath atomically:YES];
+            [user logIn:username withPassword:pword];
+
+            if ([[user errorMessage] length] == 0) {
+                STreamUser *user = [[STreamUser alloc] init];
+                [user loadUserMetadata:username response:^(BOOL succeed, NSString *error){
+                    if ([error isEqualToString:username]){
+                        NSMutableDictionary *dic = [user userMetadata];
+                        ImageCache *imageCache = [ImageCache sharedObject];
+                        [imageCache saveUserMetadata:username withMetadata:dic];
+                    }
+                }];
+                __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+                HUD.labelText = @"loading friends...";
+                [self.view addSubview:HUD];
+                [HUD showAnimated:YES whileExecutingBlock:^{
+                    [self loadAvatar:username];
+                }completionBlock:^{
+                    [HUD removeFromSuperview];
+                    HUD = nil;
+                }];
+            }
+            MyFriendsViewController *myFriendVC = [[MyFriendsViewController alloc]init];
+            [self.navigationController pushViewController:myFriendVC animated:YES];
         }else{
             
             UIAlertView * view  = [[UIAlertView alloc]initWithTitle:@"" message:@"User name or password error" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
@@ -122,9 +149,34 @@
     
         NSLog(@"");
 }
+-(void) loadAvatar:(NSString *)userID {
+    ImageCache *imageCache = [ImageCache sharedObject];
+    if ([imageCache getUserMetadata:userID]!=nil) {
+        NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
+        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+        if ([imageCache getImage:pImageId] == nil && pImageId){
+            FileCache *fileCache = [FileCache sharedObject];
+            STreamFile *file = [[STreamFile alloc] init];
+            if (![imageCache getImage:pImageId]){
+                [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
+                    if ([pImageId isEqualToString:oId]){
+                        [imageCache selfImageDownload:imageData withFileId:pImageId];
+                        [fileCache writeFileDoc:pImageId withData:imageData];
+                    }
+                }];
+            }
+        }
+    }
+}
+
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
     return YES;
+}
+
+-(NSString*)getCacheDirectory
+{
+    return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
 }
 - (void)didReceiveMemoryWarning
 {

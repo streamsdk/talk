@@ -33,12 +33,41 @@
     imageview.tag = IMAGE_TAG;
     [self.view addSubview:imageview];
   
-    UIButton * backButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 10, 60, 60)];
-    [backButton setTitle:@"back" forState:UIControlStateNormal];
-    [backButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backButton setFrame:CGRectMake(20, 10, 50, 30)];
+    [backButton setBackgroundColor:[UIColor blueColor]];
+    [[backButton layer] setBorderColor:[[UIColor blueColor] CGColor]];
+    [[backButton layer] setBorderWidth:1];
+    [[backButton layer] setCornerRadius:4];
+    [backButton setTitle:@"Back" forState:UIControlStateNormal];
+    backButton.titleLabel.font = [UIFont fontWithName:@"DIN Alternate" size:20.0f];
+    [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(handleTapGesture) forControlEvents:UIControlEventTouchUpInside];
     [imageview addSubview:backButton];
+    
+    UIButton * saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [saveButton setFrame:CGRectMake(self.view.frame.size.width-80, 10, 50, 30)];
+    [saveButton setBackgroundColor:[UIColor blueColor]];
+    [[saveButton layer] setBorderColor:[[UIColor blueColor] CGColor]];
+    [[saveButton layer] setBorderWidth:1];
+    [[saveButton layer] setCornerRadius:4];
+    [saveButton setTitle:@"Save" forState:UIControlStateNormal];
+    backButton.titleLabel.font = [UIFont fontWithName:@"DIN Alternate" size:20.0f];
+    [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [saveButton addTarget:self action:@selector(saveClicked) forControlEvents:UIControlEventTouchUpInside];
+    [imageview addSubview:saveButton];
 
+}
+
+-(void) saveClicked {
+    UIImageView *imageView = (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
+    UIImageWriteToSavedPhotosAlbum([imageView image], nil, nil,nil);
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                    message:@"You have successfully stored in the photo album"
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 -(void) handleTapGesture
 {

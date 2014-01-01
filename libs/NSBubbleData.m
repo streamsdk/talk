@@ -104,11 +104,9 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     imageView.layer.cornerRadius = 5.0;
     imageView.layer.masksToBounds = YES;
     imageView.userInteractionEnabled = YES;
-    UILongPressGestureRecognizer *longpressGesutre=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(bigToImage)];
-    longpressGesutre.minimumPressDuration=1;
-    longpressGesutre.allowableMovement=15;
-    longpressGesutre.numberOfTouchesRequired=1;
-    [imageView addGestureRecognizer:longpressGesutre];
+    UITapGestureRecognizer *tappressGesutre=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(bigToImage)];
+    tappressGesutre.numberOfTouchesRequired=1;
+    [imageView addGestureRecognizer:tappressGesutre];
 #if !__has_feature(objc_arc)
     [imageView autorelease];
 #endif
@@ -175,6 +173,9 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(playerVideo)];
     [imageView addGestureRecognizer:tap];
     
+    UIImageView * imagevideo = [[UIImageView alloc]initWithFrame:CGRectMake(size.width - 30, size.height-30,30, 30)];
+    [imagevideo setImage:[UIImage imageNamed:@"video1.png"]];
+    [imageView addSubview:imagevideo];
 #if !__has_feature(objc_arc)
     [imageView autorelease];
 #endif

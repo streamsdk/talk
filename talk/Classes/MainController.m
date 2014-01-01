@@ -757,7 +757,7 @@
         imagePickerController.delegate = self;
         imagePickerController.modalTransitionStyle=UIModalTransitionStyleFlipHorizontal;
          imagePickerController.mediaTypes = [NSArray arrayWithObjects:(NSString*)kUTTypeImage,(NSString*)kUTTypeMovie,nil];
-        imagePickerController.videoMaximumDuration = 15;
+        imagePickerController.videoMaximumDuration = 10;
         
         [self presentViewController:imagePickerController animated:YES completion:NULL];
         

@@ -97,6 +97,9 @@
     
     UIImageView * imageview = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - 100)/2, 70, 100, 100)];
     [imageview setImage:[UIImage imageNamed:@"headImage.jpg"]];
+    CALayer *l = [imageview layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:8.0];
     imageview.userInteractionEnabled = YES;
     imageview.tag = IMAGE_TAG;
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headImageClicked:)];
@@ -218,7 +221,7 @@
     
     STreamUser * user = [[STreamUser alloc]init];
     STreamFile *file = [[STreamFile alloc] init];
-    UIImage *sImage = [self imageWithImageSimple:avatarImg scaledToSize:CGSizeMake(avatarImg.size.width*0.2, avatarImg.size.height*0.2)];
+    UIImage *sImage = [self imageWithImageSimple:avatarImg scaledToSize:CGSizeMake(60, 60)];
     NSData * data = UIImageJPEGRepresentation(sImage, 1.0);
     [file postData:data];
     

@@ -51,23 +51,26 @@
     [sq whereEqualsTo:@"status" forValue:@"request"];
     NSMutableArray * array = [sq find];
     AddDB * db = [[AddDB alloc]init];
-    [db deleteDB];
-    for (STreamObject *so in array) {
-        [db insertDB:[handler getUserID] withFriendID:[so objectId] withStatus:[so getValue:@"status"]];
-    }
-    userData = [[NSMutableArray alloc]init];
-    AddDB * addDB = [[AddDB alloc]init];
-    addDict = [addDB readDB:[handler getUserID]];
-    NSArray * array2 = [addDict allKeys];
-    for (int i = 0; i<[array2 count]; i++) {
-        NSString *status = [addDict objectForKey:[array2 objectAtIndex:i]];
-        if (![status isEqualToString:@"sendRequest"]) {
-            [userData addObject:[array2 objectAtIndex:i]];
-        }
-    }
 
-    
-    [myTableview reloadData];
+    for (STreamObject *so in array) {
+        if (![userData containsObject:[so objectId]]) {
+            [db insertDB:[handler getUserID] withFriendID:[so objectId] withStatus:[so getValue:@"status"]];
+            [userData addObject:[so objectId]];
+            [addDict setObject:[so getValue:@"status"] forKey:[so objectId]];
+        }
+
+    }
+//    userData = [[NSMutableArray alloc]init];
+//    AddDB * addDB = [[AddDB alloc]init];
+//    addDict = [addDB readDB:[handler getUserID]];
+//    NSArray * array2 = [addDict allKeys];
+//    for (int i = 0; i<[array2 count]; i++) {
+//        NSString *status = [addDict objectForKey:[array2 objectAtIndex:i]];
+//        if (![status isEqualToString:@"sendRequest"]) {
+//            [userData addObject:[array2 objectAtIndex:i]];
+//        }
+//    }
+
 }
 -(void) refresh {
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -146,6 +149,10 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell setBackgroundColor:[UIColor clearColor]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        CALayer *l = [cell.imageView layer];
+        [l setMasksToBounds:YES];
+        [l setCornerRadius:8.0];
         
         button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setFrame:CGRectMake(cell.frame.size.width-100, 15,60, 30)];
@@ -325,10 +332,27 @@
                 }];
             }
         }else{
-            if ([pImageId isEqualToString:@""])
-                [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
-            else
-                [cell.imageView setImage:[UIImage imageWithData:[imageCache getImage:pImageId]]];
+            if ([pImageId isEqualToString:@""]){
+                UIImage *icon =[UIImage imageNamed:@"headImage.jpg"];
+                CGSize itemSize = CGSizeMake(50, 50);
+                UIGraphicsBeginImageContextWithOptions(itemSize, NO,0.0);
+                CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+                [icon drawInRect:imageRect];
+                
+                cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+            }
+            else{
+                UIImage *icon =[UIImage imageWithData:[imageCache getImage:pImageId]];
+                CGSize itemSize = CGSizeMake(50, 50);
+                UIGraphicsBeginImageContextWithOptions(itemSize, NO,0.0);
+                CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+                [icon drawInRect:imageRect];
+                
+                cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+            }
+
         }
     }
 }

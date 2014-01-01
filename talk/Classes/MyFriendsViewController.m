@@ -26,6 +26,7 @@
 #import "HandlerUserIdAndDateFormater.h"
 #import "STreamXMPP.h"
 #import <arcstreamsdk/JSONKit.h>
+#import <QuartzCore/QuartzCore.h>
 #define TABLECELL_TAG 10000
 #define BUTTON_TAG 20000
 #define BUTTON_IMAGE_TAG 30000
@@ -82,7 +83,7 @@
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     _reloading= NO;
     
-    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-64)];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self.view addSubview:_tableView];
@@ -152,7 +153,13 @@
 }
 
 -(void) loadFriends {
+    
+    [countArray removeAllObjects];
+ 
+    ImageCache * imageCache = [ImageCache sharedObject];
+    countArray = [imageCache getMessagesCount];
     sectionHeadsKeys=[[NSMutableArray alloc]init];
+    sortedArrForArrays = [[NSMutableArray alloc]init];
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     NSString * loginName= [handle getUserID];
     
@@ -164,7 +171,7 @@
     for (STreamObject *so in friends) {
         if (![userData containsObject:[so objectId]]){
             [userData addObject:[so objectId]];
-            [addDB insertDB:[handle getUserID] withFriendID:[so objectId] withStatus:@""];
+            [addDB insertDB:[handle getUserID] withFriendID:[so objectId] withStatus:@"friend"];
         }
     }
     
@@ -304,10 +311,9 @@
         [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.tag = TABLECELL_TAG;
-        
-         button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.tag = BUTTON_TAG;
-        [button setFrame:CGRectMake(55, 0, 28, 28)];
+        [button setFrame:CGRectMake(50, 0, 28, 28)];
         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:10.0f];
         [cell addSubview:button];
         
@@ -317,9 +323,12 @@
         NSArray *arr = [sortedArrForArrays objectAtIndex:indexPath.section];
         if ([arr count] > indexPath.row) {
             ChineseString *str = (ChineseString *) [arr objectAtIndex:indexPath.row];
-            [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
+            UIImage * icon=[UIImage imageNamed:@"headImage.jpg"];
+            cell.imageView.image = icon;
             [self loadAvatar:str.string withCell:cell];
-            
+            CALayer *l = [cell.imageView layer];
+            [l setMasksToBounds:YES];
+            [l setCornerRadius:8.0];
             cell.textLabel.text = str.string;
             NSMutableArray * array = [[NSMutableArray alloc]init];
             if (countArray && [countArray count]!= 0) {
@@ -446,10 +455,15 @@
                 }];
             }
         }else{
-            if ([pImageId isEqualToString:@""])
-                [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
-            else
-                [cell.imageView setImage:[UIImage imageWithData:[imageCache getImage:pImageId]]];
+            if ([pImageId isEqualToString:@""]){
+                UIImage *icon =[UIImage imageNamed:@"headImage.jpg"];
+                [self setImage:icon withCell:cell];
+            }
+            else{
+                UIImage *icon =[UIImage imageWithData:[imageCache getImage:pImageId]];
+                [self setImage:icon withCell:cell];
+            }
+            
         }
     }else{
         STreamUser *user = [[STreamUser alloc] init];
@@ -462,6 +476,16 @@
         }];
 
     }
+}
+
+-(void)setImage:(UIImage *)icon withCell:(UITableViewCell *)cell{
+    CGSize itemSize = CGSizeMake(50, 50);
+    UIGraphicsBeginImageContextWithOptions(itemSize, NO,0.0);
+    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+    [icon drawInRect:imageRect];
+    
+    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
 }
 -(float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 60;
