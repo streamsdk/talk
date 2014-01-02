@@ -44,6 +44,8 @@
 
            //    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
+    
+    
     [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3"
                       clientKey:@"01D901D6EFBA42145E54F52E465F407B" response:^(BOOL succeed, NSString *response){
                           
@@ -52,6 +54,17 @@
                           }
                           
                       }];
+    
+    
+    /*[STreamSession authenticate:@"7E95CF60694890DCD4CEFBF79BC3BAE4" secretKey:@"73B7C757A511B1574FDF63B3FEB638B7"
+                      clientKey:@"4768674EDC06477EC63AEEF8FEAB0CF8" response:^(BOOL succeed, NSString *response){
+                          
+                          if (succeed){
+                              
+                          }
+                          
+                      }];*/
+
     [NSThread sleepForTimeInterval:5];
     
     NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];

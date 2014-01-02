@@ -69,8 +69,9 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
     
+    
     STreamXMPP *con = [STreamXMPP sharedObject];
-    [con sendFileInBackground:data toUser:sendID finished:^(NSString *res){
+    [con sendFileInBackground:data toUser:sendID fromUser:[handler getUserID] finished:^(NSString *res){
         NSLog(@"res:%@",res);
     }byteSent:^(float b){
         NSLog(@"byteSent:%f",b);

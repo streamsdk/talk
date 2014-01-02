@@ -18,7 +18,7 @@
 - (void)receiveAudioFile:(NSData *)data withBody:(NSString *)body forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
     
     if ([fromID isEqualToString:sendID]) {
-        NSBubbleData *bubble = [NSBubbleData dataWithtimes:[body stringByAppendingString:@"\""] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withData:data];
+        NSBubbleData *bubble = [NSBubbleData dataWithtimes:body date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withData:data];
         if (otherData)
             bubble.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:bubble];
@@ -51,7 +51,7 @@
     
     STreamXMPP *con = [STreamXMPP sharedObject];
     
-    [con sendFileInBackground:audioData toUser:sendID finished:^(NSString *res) {
+    [con sendFileInBackground:audioData toUser:sendID fromUser:[handler getUserID] finished:^(NSString *res) {
         
         NSLog(@"%@", res);
         

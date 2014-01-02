@@ -35,6 +35,6 @@
 
 -(void)acceptRosterRequest:(XMPPPresence *)presence;
 
--(void)sendFileInBackground:(NSData *)data toUser:(NSString *)userName finished:(FinishCall)doStaff byteSent:(DelegateCall)call withBodyData:(NSString *)bodyData;
+-(void)sendFileInBackground:(NSData *)data toUser:(NSString *)userName fromUser:(NSString *)fromUser finished:(FinishCall)doStaff byteSent:(DelegateCall)call withBodyData:(NSString *)bodyData;
 
 @end

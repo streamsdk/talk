@@ -172,7 +172,7 @@
     
     
     STreamXMPP *con = [STreamXMPP sharedObject];
-    [con sendFileInBackground:videoData toUser:_sendID finished:^(NSString *res){
+    [con sendFileInBackground:videoData toUser:_sendID fromUser:[handler getUserID] finished:^(NSString *res){
         NSLog(@"res:%@",res);
     }byteSent:^(float b){
         NSLog(@"byteSent:%f",b);

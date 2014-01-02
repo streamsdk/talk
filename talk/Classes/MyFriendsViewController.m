@@ -16,6 +16,7 @@
 #import <arcstreamsdk/STreamObject.h>
 #import <arcstreamsdk/STreamUser.h>
 #import <arcstreamsdk/STreamFile.h>
+#import <arcstreamsdk/JSONKit.h>
 #import "ImageCache.h"
 #import "ChineseString.h"
 #import "SettingViewController.h"
@@ -225,7 +226,11 @@
     ImageCache *imageCache = [ImageCache sharedObject];
     [imageCache setMessagesCount:fromID];
     
-    NSString *receiveMessage = [message body];
+    //parse new message format
+    NSData *jsonData = [[message body] dataUsingEncoding:NSUTF8StringEncoding];
+    JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+    NSDictionary *json = [decoder objectWithData:jsonData];
+    NSString *receiveMessage = [json objectForKey:@"message"];
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
 
@@ -250,19 +255,26 @@
 - (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID{
     ImageCache *imageCache = [ImageCache sharedObject];
     [imageCache setMessagesCount:fromID];
+    
+    //parse new message format
+    NSData *jsonData = [body dataUsingEncoding:NSUTF8StringEncoding];
+    JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+    NSDictionary *json = [decoder objectWithData:jsonData];
+    NSString *type = [json objectForKey:@"type"];
+    
     STreamFile *sf = [[STreamFile alloc] init];
     NSData *data = [sf downloadAsData:fileId];
     
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
    
     HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
-    if ([body isEqualToString:@"photo"]) {
+    if ([type isEqualToString:@"photo"]) {
         NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];
         [data writeToFile:photoPath atomically:YES];
         NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
         [friendDict setObject:photoPath forKey:@"photo"];
         [jsonDic setObject:friendDict forKey:fromID];
-    }else if ([body isEqualToString:@"video"]){
+    }else if ([type isEqualToString:@"video"]){
          NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
         
         HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
@@ -273,14 +285,14 @@
         [friendDict setObject:mp4Path forKey:@"video"];
         [jsonDic setObject:friendDict forKey:fromID];
     }else{
+        
+        NSString *duration = [json objectForKey:@"duration"];
         NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
-        
         HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
-        
         NSString * recordFilePath = [[handler getPath] stringByAppendingString:@".aac"];
         [data writeToFile:recordFilePath atomically:YES];
         
-        [friendsDict setObject:[body stringByAppendingString:@"\""] forKey:@"time"];
+        [friendsDict setObject:duration forKey:@"time"];
         [friendsDict setObject:recordFilePath forKey:@"audiodata"];
         [jsonDic setObject:friendsDict forKey:fromID];
        
@@ -294,7 +306,7 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     [db insertDBUserID:userID fromID:fromID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
     
-    [messagesProtocol getFiles:data withFromID:fromID withBody:body];
+    [messagesProtocol getFiles:data withFromID:fromID withBody:type];
      [self.tableView reloadData];
 }
 #pragma mark - Table view data source

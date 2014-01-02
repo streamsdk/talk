@@ -30,14 +30,24 @@
     if (myData)
         sendBubble.avatar = [UIImage imageWithData:myData];
     [bubbleData addObject:sendBubble];
+  
+    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
     
     STreamXMPP *con = [STreamXMPP sharedObject];
-    [con sendMessage:sendID withMessage:messages];
+    
+    //new message format
+    NSMutableDictionary *messagesDic = [[NSMutableDictionary alloc] init];
+    [messagesDic setObject:messages forKey:@"message"];
+    [messagesDic setObject:@"text" forKey:@"type"];
+    [messagesDic setObject:[handler getUserID] forKey:@"from"];
+    NSString *messageSent = [messagesDic JSONString];
+    [con sendMessage:sendID withMessage:messageSent];
+    
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
     [friendDict setObject:messages forKey:@"messages"];
     [jsonDic setObject:friendDict forKey:sendID];
     NSString  *str = [jsonDic JSONString];
-    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
+    
     TalkDB * db = [[TalkDB alloc]init];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];

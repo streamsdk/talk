@@ -4,7 +4,7 @@
 #import "DDLog.h"
 #import "DDTTYLogger.h"
 #import "NSXMLElement+XMPP.h"
-
+#import <arcstreamsdk/JSONKit.h>
 
 #import "GCDAsyncSocket.h"
 #import "XMPP.h"
@@ -59,7 +59,7 @@ static XMPPReconnect *xmppReconnect;
     [xmppReconnect activate:xmppStream];
     [xmppStream addDelegate:self delegateQueue:dispatch_get_main_queue()];
     [xmppStream setHostName:@"streamsdk.cn"];
- //   [xmppStream setHostName:@"192.168.1.111"];
+    //[xmppStream setHostName:@"192.168.1.15"];
     
     [xmppStream setHostPort:5222];
     
@@ -147,7 +147,7 @@ static XMPPReconnect *xmppReconnect;
     
 }
 
--(void)sendFileInBackground:(NSData *)data toUser:(NSString *)userName finished:(FinishCall)doStaff byteSent:(DelegateCall)call withBodyData:(NSString *)bodyData{
+-(void)sendFileInBackground:(NSData *)data toUser:(NSString *)userName fromUser:(NSString *)fromUserName finished:(FinishCall)doStaff byteSent:(DelegateCall)call withBodyData:(NSString *)bodyData{
     
     STreamFile *sf = [[STreamFile alloc] init];
    
@@ -159,8 +159,22 @@ static XMPPReconnect *xmppReconnect;
         [userJID appendString:@"@streamsdk.cn"];
         
         NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
-        if (bodyData)
-           [body setStringValue:bodyData];
+        
+        //new media message format
+        if (bodyData){
+            
+            NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
+            if ([bodyData isEqualToString:@"photo"] || [bodyData isEqualToString:@"video"]){
+                [bodyDic setObject:bodyData forKey:@"type"];
+            }else{
+                [bodyDic setObject:bodyData forKey:@"duration"];
+                [bodyDic setObject:@"voice" forKey:@"type"];
+            }
+            [bodyDic setObject:fromUserName forKey:@"from"];
+            [bodyDic setObject:[sf fileId] forKey:@"fileId"];
+            NSString *bodyJsonData = [bodyDic JSONString];            
+            [body setStringValue:bodyJsonData];
+        }
         else
            [body setStringValue:@"test"];
         
