@@ -211,7 +211,6 @@
 		0EE9518A185EA3EF003F4638 /* FileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE95189185EA3EF003F4638 /* FileCache.m */; };
 		0EE9518D185EA40D003F4638 /* BackgroundImgViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE9518C185EA40D003F4638 /* BackgroundImgViewController.m */; };
 		0EE95192185EA43C003F4638 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE9518F185EA43C003F4638 /* MainController.m */; };
-		0EE95193185EA43C003F4638 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE95191185EA43C003F4638 /* ViewController.m */; };
 		0EE9519D185EA47D003F4638 /* ChineseString.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE95196185EA47D003F4638 /* ChineseString.m */; };
 		0EE9519E185EA47D003F4638 /* pinyin.c in Sources */ = {isa = PBXBuildFile; fileRef = 0EE95197185EA47D003F4638 /* pinyin.c */; };
 		0EE951A0185EA47D003F4638 /* SearchFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE9519C185EA47D003F4638 /* SearchFriendsViewController.m */; };
@@ -671,8 +670,6 @@
 		0EE9518C185EA40D003F4638 /* BackgroundImgViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BackgroundImgViewController.m; path = Classes/BackgroundImgViewController.m; sourceTree = "<group>"; };
 		0EE9518E185EA43C003F4638 /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainController.h; path = Classes/MainController.h; sourceTree = "<group>"; };
 		0EE9518F185EA43C003F4638 /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainController.m; path = Classes/MainController.m; sourceTree = "<group>"; };
-		0EE95190185EA43C003F4638 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = Classes/ViewController.h; sourceTree = "<group>"; };
-		0EE95191185EA43C003F4638 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = Classes/ViewController.m; sourceTree = "<group>"; };
 		0EE95195185EA47D003F4638 /* ChineseString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChineseString.h; sourceTree = "<group>"; };
 		0EE95196185EA47D003F4638 /* ChineseString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChineseString.m; sourceTree = "<group>"; };
 		0EE95197185EA47D003F4638 /* pinyin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pinyin.c; sourceTree = "<group>"; };
@@ -1722,8 +1719,6 @@
 				0EE9518F185EA43C003F4638 /* MainController.m */,
 				0EE951FC185EE9EC003F4638 /* UIImageViewController.h */,
 				0EE951FD185EE9EC003F4638 /* UIImageViewController.m */,
-				0EE95190185EA43C003F4638 /* ViewController.h */,
-				0EE95191185EA43C003F4638 /* ViewController.m */,
 				0EA16BFE18516FC9009F2D3A /* MyFriendsViewController.h */,
 				0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */,
 				0E178C4C186C1F8000E16F71 /* GetAllMessagesProtocol.h */,
@@ -2229,7 +2224,6 @@
 				0EF79E1218584CAF00EB8A64 /* BackData.m in Sources */,
 				0ED8BC0C185065D7007BD8CA /* RootViewController.m in Sources */,
 				0E2FC7F618692DE10069CB03 /* TabBarViewController.m in Sources */,
-				0EE95193185EA43C003F4638 /* ViewController.m in Sources */,
 				03D9C07C18145E410039118F /* XMPPvCardTempAdr.m in Sources */,
 				0EA16C0018516FC9009F2D3A /* MyFriendsViewController.m in Sources */,
 				03D9C09E18145E410039118F /* XMPPPing.m in Sources */,

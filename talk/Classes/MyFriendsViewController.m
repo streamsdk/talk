@@ -38,7 +38,7 @@
 {
     NSMutableDictionary *countDict;
     MainController *mainVC;
-    NSMutableArray * countArray;
+    NSInteger * countArray;
 }
 @end
 
@@ -141,7 +141,7 @@
     sortedArrForArrays = [self getChineseStringArr:userData];
     
     ImageCache * imageCache = [ImageCache sharedObject];
-    countArray = [imageCache getMessagesCount];
+//    countArray = [imageCache getMessagesCount];
     
     [_refreshHeaderView refreshLastUpdatedDate];
 
@@ -163,9 +163,9 @@
 }
 -(void) loadFriends {
     
-    [countArray removeAllObjects];
+//    [countArray removeAllObjects];
     ImageCache * imageCache = [ImageCache sharedObject];
-    countArray = [imageCache getMessagesCount];
+//    countArray = [imageCache getMessagesCount];
     sectionHeadsKeys=[[NSMutableArray alloc]init];
 //    sortedArrForArrays = [[NSMutableArray alloc]init];
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
@@ -255,7 +255,6 @@
 - (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID{
     ImageCache *imageCache = [ImageCache sharedObject];
     [imageCache setMessagesCount:fromID];
-    
     //parse new message format
     NSData *jsonData = [body dataUsingEncoding:NSUTF8StringEncoding];
     JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
@@ -353,19 +352,21 @@
             [l setMasksToBounds:YES];
             [l setCornerRadius:8.0];
             cell.textLabel.text = str.string;
-            NSMutableArray * array = [[NSMutableArray alloc]init];
-            if (countArray && [countArray count]!= 0) {
-                for (NSString * id in countArray) {
-                    if ([id isEqualToString:str.string]) {
-                        [array addObject:id];
-                    }
-                }
-            }
-            int num = [array count];
-            if (num!= 0) {
-                NSString * count =[NSString stringWithFormat:@"%d",num];
+//            NSMutableArray * array = [[NSMutableArray alloc]init];
+//            if (countArray && [countArray count]!= 0) {
+//                for (NSString * id in countArray) {
+//                    if ([id isEqualToString:str.string]) {
+//                        [array addObject:id];
+//                    }
+//                }
+//            }
+            ImageCache * imageCache = [ImageCache sharedObject];
+            NSInteger count = [imageCache getMessagesCount:str.string];
+//            int num = [array count];
+            if (count!= 0) {
+                NSString * title =[NSString stringWithFormat:@"%d",count];
                 [button setBackgroundImage:[UIImage imageNamed:@"message_count.png"] forState:UIControlStateNormal];
-                [button setTitle:count forState:UIControlStateNormal];
+                [button setTitle:title forState:UIControlStateNormal];
               }
             
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
@@ -453,8 +454,8 @@
     ChineseString * userStr = [keys objectAtIndex:indexPath.row];
     NSString *userName = [userStr string];
     [imageCache setFriendID:userName];
-    
-    [countArray removeObject:userName];
+    [imageCache removeFriendID:userName];
+//    [countArray removeObject:userName];
     
     [self.tableView reloadData];
     [self.navigationController pushViewController:mainVC animated:YES];

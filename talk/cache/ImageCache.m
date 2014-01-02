@@ -18,6 +18,8 @@ static NSString * _friendID;
 
 static NSMutableArray *_messagesCount;
 
+static NSMutableDictionary *_messagesDict;
+
 @implementation ImageCache
 
 
@@ -33,6 +35,7 @@ static NSMutableArray *_messagesCount;
         _imageDictionary = [[NSMutableDictionary alloc] init];
         _selfImageDictionary = [[NSMutableDictionary alloc] init];
         _messagesCount = [[NSMutableArray alloc]init];
+        _messagesDict = [[NSMutableDictionary alloc]init];
     });
     
     return sharedInstance;
@@ -83,11 +86,21 @@ static NSMutableArray *_messagesCount;
 -(NSString *) getFriendID{
     return _friendID;
 }
--(void)setMessagesCount:(NSString *)fromId {
-    [_messagesCount addObject:fromId];
+-(void)setMessagesCount:(NSString *)friendId {
+    if ([[_messagesDict allKeys] containsObject:friendId]) {
+         NSInteger count =[[_messagesDict objectForKey:friendId] integerValue];
+        NSString * str = [NSString stringWithFormat:@"%d",count+1];
+        [_messagesDict setObject:str forKey:friendId];
+    }else{
+        [_messagesDict setObject:@"1" forKey:friendId];
+    }
 }
--(NSMutableArray *)getMessagesCount {
-    return _messagesCount;
+-(NSInteger) getMessagesCount:(NSString *)friendId {
+    
+    NSInteger count =[[_messagesDict objectForKey:friendId] integerValue];
+    return  count;
 }
-
+-(void) removeFriendID:(NSString *)friendId{
+    [_messagesDict removeObjectForKey:friendId];
+}
 @end

@@ -196,7 +196,7 @@
     _searchBar.placeholder=@"search";
     _searchBar.keyboardType=UIKeyboardTypeNamePhonePad;
     
-    myTableview  = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, self.view.bounds.size.width, self.view.bounds.size.height-64)];
+    myTableview  = [[UITableView alloc]initWithFrame:CGRectMake(0, 54, self.view.bounds.size.width, self.view.bounds.size.height-54)];
     myTableview.backgroundColor = [UIColor clearColor];
     myTableview.delegate = self;
     myTableview.dataSource = self;
@@ -418,7 +418,7 @@
     if (index == 0) {
 
         _friendsType = FriendsAdd;
-        [myTableview setFrame:CGRectMake(0, 100, self.view.bounds.size.width, self.view.bounds.size.height-100)];
+        [myTableview setFrame:CGRectMake(0,100, self.view.bounds.size.width, self.view.bounds.size.height-100)];
         [self addFriends];
         [myTableview reloadData];
         

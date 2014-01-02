@@ -24,7 +24,9 @@
 
 -(NSString *) getFriendID;
 
--(void) setMessagesCount:(NSString *)fromId;
+-(void) setMessagesCount:(NSString *)friendId;
 
--(NSMutableArray *)getMessagesCount;
+-(NSInteger)getMessagesCount:(NSString *)friendId;
+
+-(void) removeFriendID:(NSString *)friendId;
 @end
