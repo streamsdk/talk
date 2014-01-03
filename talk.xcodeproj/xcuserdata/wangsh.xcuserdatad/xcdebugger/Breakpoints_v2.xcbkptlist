@@ -138,12 +138,72 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/add&amp;search/HandlerFirendsViewController.m"
-            timestampString = "410267976.347755"
+            timestampString = "410406898.91319"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "300"
-            endingLineNumber = "300"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "-refresh"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[HandlerFirendsViewController refresh]"
+                  moduleName = "talk"
+                  urlString = "file://localhost/Users/wangsh/Desktop/github/talk/talk/add&amp;search/HandlerFirendsViewController.m"
+                  timestampString = "410408832.504938"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "32">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[HandlerFirendsViewController refresh]"
+                  moduleName = "talk"
+                  urlString = "file://localhost/Users/wangsh/Desktop/github/talk/talk/add&amp;search/HandlerFirendsViewController.m"
+                  timestampString = "410408832.505177"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "1706">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[HandlerFirendsViewController refresh]"
+                  moduleName = "talk"
+                  urlString = "file://localhost/Users/wangsh/Desktop/github/talk/talk/add&amp;search/HandlerFirendsViewController.m"
+                  timestampString = "410408832.505385"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "1746">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "talk/search/SearchFriendsViewController.m"
+            timestampString = "410405332.546736"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
+            landmarkName = "-addFriendSendRequest:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
