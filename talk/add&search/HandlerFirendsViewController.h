@@ -7,18 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SliderSwitch.h"
-
 
 typedef enum {
-    FriendsAdd   = 1000,
-    FriendsSearch   = 1001,
-    FriendsHistory   = 1002,
+    FriendsAdd   = 0,
+    FriendsSearch   = 1,
+    FriendsHistory   = 2,
 }FriendsType;
 
-@interface HandlerFirendsViewController : UIViewController <UISearchBarDelegate, UISearchDisplayDelegate,UITableViewDelegate,UITableViewDataSource,SliderSwitchDelegate>
+@interface HandlerFirendsViewController : UIViewController <UISearchBarDelegate, UISearchDisplayDelegate,UITableViewDelegate,UITableViewDataSource>
 {
-    SliderSwitch *_sliderSwitch;
     FriendsType _friendsType;
     UITableView *myTableview;
     
@@ -29,6 +26,8 @@ typedef enum {
     CGPoint friendsAddPoint;
     CGPoint friendsSearchPoint;
     CGPoint friendsHistoryPoint;
+    
+    UISegmentedControl *segmentedControl;
 }
 
 @property (nonatomic,strong) UISearchBar * searchBar;

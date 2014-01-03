@@ -110,7 +110,7 @@
 
 }
 
-- (void)initSliderSwitch
+/*- (void)initSliderSwitch
 {
     _sliderSwitch = [[SliderSwitch alloc] initWithFrame:CGRectMake(0, 64, 320, 36)];
     _sliderSwitch.labelCount = 3;
@@ -121,9 +121,16 @@
     [_sliderSwitch setLabelTwoText:@"Search"];
     [_sliderSwitch setLabelThreeText:@"History"];
     [self.view addSubview:_sliderSwitch];
-}
+}*/
 -(void) addFriends {
 
+    [myTableview removeFromSuperview];
+    myTableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 100, self.view.frame.size.width, self.view.frame.size.height-100)];
+    myTableview.dataSource = self;
+    myTableview.delegate = self;
+    [myTableview setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:myTableview];
+    
     [_searchBar removeFromSuperview];
     _friendsType = FriendsAdd;
     self.title = @"Add Friends";
@@ -136,19 +143,27 @@
     for (int i = 0; i<[array count]; i++) {
         NSString *status = [addDict objectForKey:[array objectAtIndex:i]];
         if (![status isEqualToString:@"sendRequest"]) {
-            [friendsAddArray addObject:[array objectAtIndex:i]];
+            if (![friendsAddArray containsObject:[array objectAtIndex:i]]) {
+                [friendsAddArray addObject:[array objectAtIndex:i]];
+            }
         }
     }
     refreshitem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
     self.navigationItem.rightBarButtonItem = refreshitem;
 }
 -(void) searchFriends{
+    
+    [myTableview removeFromSuperview];
+    myTableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 140, self.view.frame.size.width, self.view.frame.size.height-140)];
+    myTableview.dataSource = self;
+    myTableview.delegate = self;
+    [myTableview setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:myTableview];
+    
     [friendsSearchArray removeAllObjects];
     _friendsType = FriendsSearch;
     self.title = @"Search Friends";
     myTableview.tableHeaderView = nil;
-     [myTableview setFrame:CGRectMake(0, 100, self.view.bounds.size.width, self.view.bounds.size.height-100)];
-   
     [self.view addSubview:_searchBar];
 
     refreshitem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelSelected)];
@@ -161,9 +176,13 @@
     _friendsType = FriendsHistory;
     self.title = @"Hostory Friends";
     
-    [myTableview setFrame:CGRectMake(0, 100, self.view.bounds.size.width, self.view.bounds.size.height-100)];
-    myTableview.tableHeaderView = nil;
-
+    [myTableview removeFromSuperview];
+    myTableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 100, self.view.frame.size.width, self.view.frame.size.height-100)];
+    myTableview.dataSource = self;
+    myTableview.delegate = self;
+    [myTableview setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:myTableview];
+    
     label.text =@"I added chatters";
     label.textAlignment = NSTextAlignmentCenter;
     myTableview.tableHeaderView =label;
@@ -189,25 +208,34 @@
     friendsSearchArray = [[NSMutableArray alloc]init];
     friendsHistoryArray = [[NSMutableArray alloc]init];
     
-    _searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64+36, self.view.bounds.size.width, 50)];
+    _searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64+36, self.view.bounds.size.width, 40)];
     _searchBar.delegate = self;
     _searchBar.tag =SEARCH_TAG;
     _searchBar.barStyle=UIBarStyleDefault;
     _searchBar.placeholder=@"search";
     _searchBar.keyboardType=UIKeyboardTypeNamePhonePad;
     
-    myTableview  = [[UITableView alloc]initWithFrame:CGRectMake(0, 54, self.view.bounds.size.width, self.view.bounds.size.height-54)];
-    myTableview.backgroundColor = [UIColor clearColor];
-    myTableview.delegate = self;
-    myTableview.dataSource = self;
-    [self.view addSubview:myTableview];
+//    myTableview  = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, self.view.bounds.size.width, self.view.bounds.size.height-44)];
+//    myTableview.backgroundColor = [UIColor clearColor];
+//    myTableview.delegate = self;
+//    myTableview.dataSource = self;
+//    [self.view addSubview:myTableview];
     
     label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0,myTableview.frame.size.width, 36)];
     label.backgroundColor = [UIColor blueColor];
     label.textColor = [UIColor whiteColor];
     label.font = [UIFont fontWithName:@"DIN Alternate" size:15.0f];
     
-    [self initSliderSwitch];
+    NSArray *segmentedArray = [[NSArray alloc]initWithObjects:@"Add",@"Search",@"History",nil];
+    
+    segmentedControl = [[UISegmentedControl alloc]initWithItems:segmentedArray];
+    
+    segmentedControl.frame = CGRectMake(0, 64.0, self.view.bounds.size.width, 36.0);
+    segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
+    segmentedControl.selectedSegmentIndex = 0;//
+    [self.view addSubview:segmentedControl];
+    [segmentedControl addTarget:self action:@selector(segmentAction:)forControlEvents:UIControlEventValueChanged];
+    
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * addDB = [[AddDB alloc]init];
     addDict = [addDB readDB:[handle getUserID]];
@@ -252,18 +280,10 @@
         [[button layer] setCornerRadius:4];
         [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         button.titleLabel.font = [UIFont systemFontOfSize:16.0f];
-        switch (_friendsType) {
-            case FriendsAdd:{
-                CALayer *l = [cell.imageView layer];
-                [l setMasksToBounds:YES];
-                [l setCornerRadius:8.0];
-            }
-                break;
-            default:
-                break;
-        }
         
-        
+        CALayer *l = [cell.imageView layer];
+        [l setMasksToBounds:YES];
+        [l setCornerRadius:8.0];
     }
     
     switch (_friendsType) {
@@ -298,18 +318,20 @@
             break;
         case FriendsSearch:{
             if (friendsSearchArray && [friendsSearchArray count]!=0) {
+                
                 NSString * str = [friendsSearchArray objectAtIndex:indexPath.row];
+                [self loadAvatar:[friendsSearchArray objectAtIndex:indexPath.row] withCell:cell];
                 NSArray * array = [addDict allKeys];
                 if ([array containsObject:str]) {
                     NSString * status = [addDict objectForKey:str];
-                    
+
                     if ([status isEqualToString:@"request"]) {
-                        [button setFrame:CGRectMake(cell.frame.size.width-100, 7,60, 30)];
+                        [button setFrame:CGRectMake(cell.frame.size.width-100, 15,60, 30)];
                         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You need to add addFriends page！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Cancel", nil];
                         [alert show];
                         
                     }else {
-                        [button setFrame:CGRectMake(cell.frame.size.width-100, 7, 60, 30)];
+                        [button setFrame:CGRectMake(cell.frame.size.width-100, 15, 60, 30)];
                         [button setTitle:@"friend" forState:UIControlStateNormal];
                         cell.textLabel.text = str;
                         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20.0f];
@@ -319,7 +341,7 @@
                     }
                     
                 }else{
-                    [button setFrame:CGRectMake(cell.frame.size.width-100, 7, 60, 30)];
+                    [button setFrame:CGRectMake(cell.frame.size.width-100, 15, 60, 30)];
                     [button setTitle:@"add" forState:UIControlStateNormal];
                     [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
                     cell.textLabel.text = str;
@@ -333,6 +355,8 @@
             
             break;
         case FriendsHistory:{
+            [self loadAvatar:[friendsHistoryArray objectAtIndex:indexPath.row] withCell:cell];
+
             cell.textLabel.text = [friendsHistoryArray objectAtIndex:indexPath.row];
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
         }
@@ -353,30 +377,34 @@
     
     [searchBar resignFirstResponder];
     NSString *string = searchBar.text;
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"loading friends...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-        STreamUser * user = [[STreamUser alloc]init];
-        NSString * loginName = [handler getUserID];
-        BOOL isUserExist = [user searchUser:string];
-        
-        if (isUserExist) {
+    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+    STreamUser * user = [[STreamUser alloc]init];
+
+    NSString * loginName = [handler getUserID];
+    BOOL isUserExist = [user searchUser:string];
+    if (isUserExist) {
+        __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        HUD.labelText = @"loading friends...";
+        [self.view addSubview:HUD];
+        [HUD showAnimated:YES whileExecutingBlock:^{
             if (![loginName isEqualToString:string]) {
                 [friendsSearchArray removeAllObjects];
                 [friendsSearchArray addObject:string];
             }
-        }else{
-            UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"No results found" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
-            [alertview show];
-        }
-        
-    }completionBlock:^{
-        [myTableview reloadData];
-        [HUD removeFromSuperview];
-        HUD = nil;
-    }];
+        }completionBlock:^{
+            [myTableview reloadData];
+            [HUD removeFromSuperview];
+            HUD = nil;
+        }];
+
+    }else{
+        [friendsSearchArray removeAllObjects];
+
+        UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"No results found" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+        [alertview show];
+    }
+    
+    
 }
 -(void) addFriendSendRequest:(UIButton *) sender {
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
@@ -410,15 +438,14 @@
     
 }
 
-
-#pragma mark - XWSliderSwitchDelegate method
-
-- (void)slideView:(SliderSwitch *)slideSwitch switchChangedAtIndex:(NSInteger)index
-{
+#pragma mark --segmentAction
+-(void)segmentAction:(UISegmentedControl *)Seg{
+    
+    NSInteger index = Seg.selectedSegmentIndex;
+    
     if (index == 0) {
-
+        
         _friendsType = FriendsAdd;
-        [myTableview setFrame:CGRectMake(0,100, self.view.bounds.size.width, self.view.bounds.size.height-100)];
         [self addFriends];
         [myTableview reloadData];
         
@@ -440,7 +467,6 @@
         [myTableview setContentOffset:friendsHistoryPoint];
     }
 }
-
 #pragma mark add friends
 
 -(void)deleteFriends:(UIButton *)sender {
@@ -541,6 +567,16 @@
             }
             
         }
+    }else {
+        STreamUser *user = [[STreamUser alloc] init];
+        [user loadUserMetadata:userID response:^(BOOL succeed, NSString *error){
+            if ([error isEqualToString:userID]){
+                NSMutableDictionary *dic = [user userMetadata];
+                ImageCache *imageCache = [ImageCache sharedObject];
+                [imageCache saveUserMetadata:userID withMetadata:dic];
+            }
+        }];
+           [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
     }
 }
 -(void) cancelSelected {

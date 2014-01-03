@@ -9,8 +9,6 @@
 #import "MyFriendsViewController.h"
 #import "MBProgressHUD.h"
 #import "MainController.h"
-#import "AddFriendsViewController.h"
-#import "SearchFriendsViewController.h"
 #import "pinyin.h"
 #import <arcstreamsdk/STreamQuery.h>
 #import <arcstreamsdk/STreamObject.h>
@@ -324,7 +322,7 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     [db insertDBUserID:userID fromID:fromID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
     
-    [messagesProtocol getFiles:data withFromID:fromID withBody:type];
+    [messagesProtocol getFiles:data withFromID:fromID withBody:body];
      [self.tableView reloadData];
 }
 #pragma mark - Table view data source
