@@ -32,6 +32,7 @@
 #import "MessageHandler.h"
 #import "AudioHandler.h"
 #import "HandlerUserIdAndDateFormater.h"
+#import "ImageViewController.h"
 
 #define BUTTON_TAG 20000
 #define TOOLBARTAG		200
@@ -758,7 +759,6 @@
     }else {
         
         UIImagePickerController *imagePickerController=[[UIImagePickerController alloc] init];
-//        imagePickerController.mediaTypes =  [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
         imagePickerController.sourceType=UIImagePickerControllerSourceTypeCamera;
         imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
         imagePickerController.delegate = self;
@@ -768,14 +768,6 @@
         
         [self presentViewController:imagePickerController animated:YES completion:NULL];
         
-        
-       /* UIImagePickerController* pickerView = [[UIImagePickerController alloc] init];
-        pickerView.sourceType = UIImagePickerControllerSourceTypeCamera;
-        NSArray* availableMedia = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
-        pickerView.mediaTypes = [NSArray arrayWithObject:availableMedia[1]];
-        [self presentViewController:pickerView animated:YES completion:NULL];
-        pickerView.videoMaximumDuration = 15;
-        pickerView.delegate = self;*/
     }
    
 }
@@ -791,13 +783,16 @@
         if (isTakeImage) {
             UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"Do you want to set a time for the picture?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
             view.delegate = self;
-            
             [view show];
         
         }else{
             [self sendPhoto:image];
         }
+       /* ImageViewController * imageview = [[ImageViewController alloc]init];
+        imageview.image = image;
+        [picker  presentViewController:imageview animated:YES completion:NULL];
         [picker dismissViewControllerAnimated:YES completion:NULL];
+        [picker dismissViewControllerAnimated:YES completion:NULL];*/
 
     }else{
         videoPath = [info objectForKey:UIImagePickerControllerMediaURL];

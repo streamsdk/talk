@@ -265,6 +265,8 @@
 		0EEFFF7118659B2000018A57 /* segmented-pressed-Right.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EEFFF6718659B2000018A57 /* segmented-pressed-Right.png */; };
 		0EEFFF7218659B2000018A57 /* segmented-pressed-Right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EEFFF6818659B2000018A57 /* segmented-pressed-Right@2x.png */; };
 		0EEFFF7418659DE900018A57 /* segmented-bg-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EEFFF7318659DE900018A57 /* segmented-bg-left.png */; };
+		0EF14D2E1876B8CD008F4AF5 /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF14D2D1876B8CD008F4AF5 /* ImageViewController.m */; };
+		0EF14D301876B8D6008F4AF5 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF14D2F1876B8D6008F4AF5 /* clock.png */; };
 		0EF5A0201855B71400B4EDE7 /* SegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5A01F1855B71400B4EDE7 /* SegmentedControl.m */; };
 		0EF79DF318580D9100EB8A64 /* IconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF79DF218580D9100EB8A64 /* IconView.m */; };
 		0EF79DFF18583ACF00EB8A64 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF79DFE18583ACF00EB8A64 /* SettingViewController.m */; };
@@ -720,6 +722,9 @@
 		0EEFFF6718659B2000018A57 /* segmented-pressed-Right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-pressed-Right.png"; sourceTree = "<group>"; };
 		0EEFFF6818659B2000018A57 /* segmented-pressed-Right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-pressed-Right@2x.png"; sourceTree = "<group>"; };
 		0EEFFF7318659DE900018A57 /* segmented-bg-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmented-bg-left.png"; sourceTree = "<group>"; };
+		0EF14D2C1876B8CD008F4AF5 /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
+		0EF14D2D1876B8CD008F4AF5 /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
+		0EF14D2F1876B8D6008F4AF5 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
 		0EF5A01E1855B71400B4EDE7 /* SegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SegmentedControl.h; path = Classes/SegmentedControl.h; sourceTree = "<group>"; };
 		0EF5A01F1855B71400B4EDE7 /* SegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SegmentedControl.m; path = Classes/SegmentedControl.m; sourceTree = "<group>"; };
 		0EF79DF118580D9100EB8A64 /* IconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IconView.h; path = IconSort/IconView.h; sourceTree = "<group>"; };
@@ -1701,6 +1706,8 @@
 		0E2918D11859579000AA21B2 /* friendsSort */ = {
 			isa = PBXGroup;
 			children = (
+				0EF14D2C1876B8CD008F4AF5 /* ImageViewController.h */,
+				0EF14D2D1876B8CD008F4AF5 /* ImageViewController.m */,
 				0EE9518E185EA43C003F4638 /* MainController.h */,
 				0EE9518F185EA43C003F4638 /* MainController.m */,
 				0EE951FC185EE9EC003F4638 /* UIImageViewController.h */,
@@ -1807,6 +1814,7 @@
 		0EE951A1185EA4B9003F4638 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0EF14D2F1876B8D6008F4AF5 /* clock.png */,
 				0E2E5EB418726D230044DC4C /* message_count.png */,
 				0E2E5EB518726D230044DC4C /* message_count@2x.png */,
 				0E19E80B18711C5A00523232 /* Target.png */,
@@ -2071,6 +2079,7 @@
 				0EE951F3185EA4B9003F4638 /* video@2x.png in Resources */,
 				0EEFFF6D18659B2000018A57 /* segmented-bg.png in Resources */,
 				0EE951D3185EA4B9003F4638 /* b2.png in Resources */,
+				0EF14D301876B8D6008F4AF5 /* clock.png in Resources */,
 				0EE951DE185EA4B9003F4638 /* bubbleSomeone@2x.png in Resources */,
 				0EEFFF6E18659B2000018A57 /* segmented-bg@2x.png in Resources */,
 				0EE951E6185EA4B9003F4638 /* facesBack@2x.png in Resources */,
@@ -2292,6 +2301,7 @@
 				03D9C0E218145E510039118F /* GCDAsyncSocket.m in Sources */,
 				03D9C05418145E410039118F /* XMPPCoreDataStorage.m in Sources */,
 				0E084791182736BC00350741 /* UIBubbleHeaderTableViewCell.m in Sources */,
+				0EF14D2E1876B8CD008F4AF5 /* ImageViewController.m in Sources */,
 				03D9BF7418145E370039118F /* XMPPElement.m in Sources */,
 				03D9BF7A18145E370039118F /* XMPPPresence.m in Sources */,
 				0EE9518D185EA40D003F4638 /* BackgroundImgViewController.m in Sources */,
