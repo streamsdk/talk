@@ -24,6 +24,8 @@
         [bubbleData addObject:bubble];
     }
 }
+
+
 -(void) sendAudio :(Voice *)voice forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID
 {
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
@@ -49,9 +51,16 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
     
+    
+    NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
+    [bodyDic setObject:bodyData forKey:@"duration"];
+    [bodyDic setObject:@"voice" forKey:@"type"];
+    [bodyDic setObject:[handler getUserID] forKey:@"from"];
+    
+    
     STreamXMPP *con = [STreamXMPP sharedObject];
     
-    [con sendFileInBackground:audioData toUser:sendID fromUser:[handler getUserID] finished:^(NSString *res) {
+    [con sendFileInBackground:audioData toUser:sendID finished:^(NSString *res) {
         
         NSLog(@"%@", res);
         
@@ -59,7 +68,7 @@
         
         NSLog(@"%@", [NSString stringWithFormat:@"%1.6f", b]);
         
-    }withBodyData:bodyData];
+    }withBodyData:bodyDic];
 }
 
 @end

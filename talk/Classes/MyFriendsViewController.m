@@ -204,6 +204,28 @@
 #pragma mark - STreamXMPPProtocol
 - (void)didAuthenticate{
     NSLog(@"");
+    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    STreamObject *so = [[STreamObject alloc] init];
+    NSMutableString *history = [[NSMutableString alloc] init];
+    [history appendString:[handle getUserID]];
+    [history appendString:@"messaginghistory"];
+    [so loadAll:history];
+    NSArray *keys = [so getAllKeys];
+    for (NSString *key in keys){
+        NSString *value = [so getValue:key];
+        NSData *jsonData = [value dataUsingEncoding:NSUTF8StringEncoding];
+        JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+        NSDictionary *json = [decoder objectWithData:jsonData];
+        NSString *type = [json objectForKey:@"type"];
+        NSString *from = [json objectForKey:@"from"];
+        if ([type isEqualToString:@"text"]){
+            NSString *message = [json objectForKey:@"message"];
+            [self didReceiveMessage:message withFrom:from];
+        }else{
+            NSString *fileId = [json objectForKey:@"fileId"];
+            [self didReceiveFile:fileId withBody:value withFrom:from];
+        }
+    }
 }
 
 - (void)didNotAuthenticate:(NSXMLElement *)error{
@@ -222,12 +244,12 @@
     }
 
 }
-- (void)didReceiveMessage:(XMPPMessage *)message withFrom:(NSString *)fromID{
+- (void)didReceiveMessage:(NSString *)message withFrom:(NSString *)fromID{
     ImageCache *imageCache = [ImageCache sharedObject];
     [imageCache setMessagesCount:fromID];
     
     //parse new message format
-    NSData *jsonData = [[message body] dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *jsonData = [message dataUsingEncoding:NSUTF8StringEncoding];
     JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
     NSDictionary *json = [decoder objectWithData:jsonData];
     NSString *receiveMessage = [json objectForKey:@"message"];

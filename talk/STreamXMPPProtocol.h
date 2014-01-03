@@ -21,7 +21,7 @@ typedef void (^FinishCall)(NSString *);
 
 - (void)didNotAuthenticate:(NSXMLElement *)error;
 
-- (void)didReceiveMessage:(XMPPMessage *)message withFrom:(NSString *)fromID;
+- (void)didReceiveMessage:(NSString *)message withFrom:(NSString *)fromID;
 
 - (void)didReceivePresence:(XMPPPresence *)presence;
 

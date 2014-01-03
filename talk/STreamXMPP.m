@@ -58,7 +58,7 @@ static XMPPReconnect *xmppReconnect;
     xmppReconnect = [[XMPPReconnect alloc] init];
     [xmppReconnect activate:xmppStream];
     [xmppStream addDelegate:self delegateQueue:dispatch_get_main_queue()];
-    [xmppStream setHostName:@"streamsdk.cn"];
+    [xmppStream setHostName:@"streamsdk.com"];
     //[xmppStream setHostName:@"192.168.1.15"];
     
     [xmppStream setHostPort:5222];
@@ -74,7 +74,7 @@ static XMPPReconnect *xmppReconnect;
     
     [myJID appendString:[STreamSession getClientAuthKey]];
     [myJID appendString:userName];
-    [myJID appendString:@"@streamsdk.cn"];
+    [myJID appendString:@"@streamsdk.com"];
     
 	myPassword = password;
     uName = userName;
@@ -147,7 +147,7 @@ static XMPPReconnect *xmppReconnect;
     
 }
 
--(void)sendFileInBackground:(NSData *)data toUser:(NSString *)userName fromUser:(NSString *)fromUserName finished:(FinishCall)doStaff byteSent:(DelegateCall)call withBodyData:(NSString *)bodyData{
+-(void)sendFileInBackground:(NSData *)data toUser:(NSString *)userName finished:(FinishCall)doStaff byteSent:(DelegateCall)call withBodyData:(NSMutableDictionary *)bodyData{
     
     STreamFile *sf = [[STreamFile alloc] init];
    
@@ -156,27 +156,14 @@ static XMPPReconnect *xmppReconnect;
         NSMutableString *userJID = [[NSMutableString alloc] init];
         [userJID appendString:[STreamSession getClientAuthKey]];
         [userJID appendString:userName];
-        [userJID appendString:@"@streamsdk.cn"];
+        [userJID appendString:@"@streamsdk.com"];
         
         NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
         
         //new media message format
-        if (bodyData){
-            
-            NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
-            if ([bodyData isEqualToString:@"photo"] || [bodyData isEqualToString:@"video"]){
-                [bodyDic setObject:bodyData forKey:@"type"];
-            }else{
-                [bodyDic setObject:bodyData forKey:@"duration"];
-                [bodyDic setObject:@"voice" forKey:@"type"];
-            }
-            [bodyDic setObject:fromUserName forKey:@"from"];
-            [bodyDic setObject:[sf fileId] forKey:@"fileId"];
-            NSString *bodyJsonData = [bodyDic JSONString];            
-            [body setStringValue:bodyJsonData];
-        }
-        else
-           [body setStringValue:@"test"];
+        [bodyData setObject:[sf fileId] forKey:@"fileId"];
+        NSString *bodyJsonData = [bodyData JSONString];
+        [body setStringValue:bodyJsonData];
         
         NSXMLElement *properties = [NSXMLElement elementWithName:@"properties"];
         NSXMLElement *property = [NSXMLElement elementWithName:@"property"];
@@ -231,7 +218,7 @@ static XMPPReconnect *xmppReconnect;
 	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
     
     NSString *from = [message fromStr];
-    NSArray *array = [from componentsSeparatedByString:@"@streamsdk.cn"];
+    NSArray *array = [from componentsSeparatedByString:@"@streamsdk.com"];
     
     NSString * str = [[STreamSession getClientAuthKey] lowercaseString];
     NSString *fromID = nil;
@@ -258,7 +245,7 @@ static XMPPReconnect *xmppReconnect;
         if (filetransferId && ![filetransferId isEqualToString:@""]){
             [xmppDelegate didReceiveFile:filetransferId withBody:[message body] withFrom:fromID];
         }else{
-            [xmppDelegate didReceiveMessage:message withFrom:fromID];
+            [xmppDelegate didReceiveMessage:[message body] withFrom:fromID];
         }
     }
 }
@@ -341,7 +328,7 @@ static XMPPReconnect *xmppReconnect;
     NSMutableString *userJID = [[NSMutableString alloc] init];
     [userJID appendString:[STreamSession getClientAuthKey]];
     [userJID appendString:toUser];
-    [userJID appendString:@"@streamsdk.cn"];
+    [userJID appendString:@"@streamsdk.com"];
     
     NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
     [body setStringValue:message];

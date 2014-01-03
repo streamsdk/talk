@@ -170,13 +170,17 @@
 
     [db insertDBUserID:[handler getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
     
+    NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
+    [bodyDic setObject:@"video" forKey:@"type"];
+    [bodyDic setObject:[handler getUserID] forKey:@"from"];
+
     
     STreamXMPP *con = [STreamXMPP sharedObject];
-    [con sendFileInBackground:videoData toUser:_sendID fromUser:[handler getUserID] finished:^(NSString *res){
+    [con sendFileInBackground:videoData toUser:_sendID finished:^(NSString *res){
         NSLog(@"res:%@",res);
     }byteSent:^(float b){
         NSLog(@"byteSent:%f",b);
-    }withBodyData:@"video"];
+    }withBodyData:bodyDic];
     
     [delegate reloadTable];
 
