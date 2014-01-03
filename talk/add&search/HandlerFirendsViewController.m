@@ -320,6 +320,7 @@
             if (friendsSearchArray && [friendsSearchArray count]!=0) {
                 
                 NSString * str = [friendsSearchArray objectAtIndex:indexPath.row];
+                [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
                 [self loadAvatar:[friendsSearchArray objectAtIndex:indexPath.row] withCell:cell];
                 NSArray * array = [addDict allKeys];
                 if ([array containsObject:str]) {
@@ -355,6 +356,7 @@
             
             break;
         case FriendsHistory:{
+            [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
             [self loadAvatar:[friendsHistoryArray objectAtIndex:indexPath.row] withCell:cell];
 
             cell.textLabel.text = [friendsHistoryArray objectAtIndex:indexPath.row];
@@ -433,7 +435,7 @@
     
     SearchDB * db = [[SearchDB alloc]init];
     [db insertDB:[handler getUserID] withFriendID:string];
-    [sender setFrame:CGRectMake(220, 7, 100, 30)];
+    [sender setFrame:CGRectMake(220, 15, 100, 30)];
     [sender setTitle:@"sendRequest" forState:UIControlStateNormal];
     
 }
