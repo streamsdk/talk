@@ -217,7 +217,7 @@
     return [bubbleData objectAtIndex:row];
 }
 
--(void)getFiles:(NSData *)data withFromID:(NSString *)fromID withBody:(NSString *)body{
+-(void)getFiles:(NSData *)data withFromID:(NSString *)fromID withBody:(NSString *)type{
     
     ImageCache *imageCache = [ImageCache sharedObject];
     HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
@@ -230,15 +230,19 @@
     NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
     otherData = [imageCache getImage:pImageId2];
     
-    if ([body isEqualToString:@"photo"]) {
+    if ([type isEqualToString:@"photo"]) {
         [photoHandler receiveFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
         
-    }else if ([body isEqualToString:@"video"]){
+    }else if ([type isEqualToString:@"video"]){
         [videoHandler setController:self];
         [videoHandler receiveVideoFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
         
-    }else{
-        [audioHandler receiveAudioFile:data withBody:body forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+    }else if ([type isEqualToString:@"voice"]){
+        NSData *jsonData = [type dataUsingEncoding:NSUTF8StringEncoding];
+        JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+        NSDictionary *json = [decoder objectWithData:jsonData];
+        NSString * time = [json objectForKey:@"duration"];
+        [audioHandler receiveAudioFile:data withBody:time forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
     }
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];

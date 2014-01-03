@@ -38,7 +38,6 @@
 {
     NSMutableDictionary *countDict;
     MainController *mainVC;
-    NSInteger * countArray;
 }
 @end
 
@@ -66,7 +65,9 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
 
-   //    [self loadFriends];
+    ImageCache *imageCache = [ImageCache sharedObject];
+    [imageCache setFriendID:nil];
+    [self.tableView reloadData];
     
 }
 - (void)viewDidLoad
@@ -140,9 +141,6 @@
     [self readAddDb];
     sortedArrForArrays = [self getChineseStringArr:userData];
     
-    ImageCache * imageCache = [ImageCache sharedObject];
-//    countArray = [imageCache getMessagesCount];
-    
     [_refreshHeaderView refreshLastUpdatedDate];
 
     [self.tableView reloadData];
@@ -162,12 +160,8 @@
 
 }
 -(void) loadFriends {
-    
-//    [countArray removeAllObjects];
-    ImageCache * imageCache = [ImageCache sharedObject];
-//    countArray = [imageCache getMessagesCount];
+
     sectionHeadsKeys=[[NSMutableArray alloc]init];
-//    sortedArrForArrays = [[NSMutableArray alloc]init];
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     NSString * loginName= [handle getUserID];
     
@@ -246,7 +240,10 @@
 }
 - (void)didReceiveMessage:(NSString *)message withFrom:(NSString *)fromID{
     ImageCache *imageCache = [ImageCache sharedObject];
-    [imageCache setMessagesCount:fromID];
+    NSString *friendId = [imageCache getFriendID];
+    if (![friendId isEqualToString:fromID]) {
+        [imageCache setMessagesCount:fromID];
+    }
     
     //parse new message format
     NSData *jsonData = [message dataUsingEncoding:NSUTF8StringEncoding];
@@ -276,7 +273,10 @@
 
 - (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID{
     ImageCache *imageCache = [ImageCache sharedObject];
-    [imageCache setMessagesCount:fromID];
+    NSString *friendId = [imageCache getFriendID];
+    if (![friendId isEqualToString:fromID]) {
+        [imageCache setMessagesCount:fromID];
+    }
     //parse new message format
     NSData *jsonData = [body dataUsingEncoding:NSUTF8StringEncoding];
     JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
@@ -305,7 +305,7 @@
         [handler videoPath:mp4Path];
         [friendDict setObject:mp4Path forKey:@"video"];
         [jsonDic setObject:friendDict forKey:fromID];
-    }else{
+    }else if ([type isEqualToString:@"voice"]){
         
         NSString *duration = [json objectForKey:@"duration"];
         NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
@@ -316,10 +316,7 @@
         [friendsDict setObject:duration forKey:@"time"];
         [friendsDict setObject:recordFilePath forKey:@"audiodata"];
         [jsonDic setObject:friendsDict forKey:fromID];
-       
     }
-    
-    
     TalkDB * db = [[TalkDB alloc]init];
     NSString * userID = [handler getUserID];
     NSString  *str = [jsonDic JSONString];
@@ -477,7 +474,6 @@
     NSString *userName = [userStr string];
     [imageCache setFriendID:userName];
     [imageCache removeFriendID:userName];
-//    [countArray removeObject:userName];
     
     [self.tableView reloadData];
     [self.navigationController pushViewController:mainVC animated:YES];

@@ -34,26 +34,24 @@
     [self.view addSubview:imageview];
   
     UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backButton setFrame:CGRectMake(20, 10, 50, 30)];
-    [backButton setBackgroundColor:[UIColor blueColor]];
+    [backButton setFrame:CGRectMake(10, 26, 50, 26)];
     [[backButton layer] setBorderColor:[[UIColor blueColor] CGColor]];
     [[backButton layer] setBorderWidth:1];
     [[backButton layer] setCornerRadius:4];
     [backButton setTitle:@"Back" forState:UIControlStateNormal];
-    backButton.titleLabel.font = [UIFont fontWithName:@"DIN Alternate" size:20.0f];
-    [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    backButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
+    [backButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(handleTapGesture) forControlEvents:UIControlEventTouchUpInside];
     [imageview addSubview:backButton];
     
     UIButton * saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [saveButton setFrame:CGRectMake(self.view.frame.size.width-80, 10, 50, 30)];
-    [saveButton setBackgroundColor:[UIColor blueColor]];
+    [saveButton setFrame:CGRectMake(self.view.frame.size.width-60, 26, 50, 26)];
     [[saveButton layer] setBorderColor:[[UIColor blueColor] CGColor]];
     [[saveButton layer] setBorderWidth:1];
     [[saveButton layer] setCornerRadius:4];
     [saveButton setTitle:@"Save" forState:UIControlStateNormal];
-    backButton.titleLabel.font = [UIFont fontWithName:@"DIN Alternate" size:20.0f];
-    [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    saveButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
+    [saveButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [saveButton addTarget:self action:@selector(saveClicked) forControlEvents:UIControlEventTouchUpInside];
     [imageview addSubview:saveButton];
 
