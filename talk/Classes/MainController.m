@@ -788,11 +788,12 @@
         }else{
             [self sendPhoto:image];
         }
+        [picker dismissViewControllerAnimated:YES completion:NULL];
        /* ImageViewController * imageview = [[ImageViewController alloc]init];
         imageview.image = image;
         [picker  presentViewController:imageview animated:YES completion:NULL];
         [picker dismissViewControllerAnimated:YES completion:NULL];
-        [picker dismissViewControllerAnimated:YES completion:NULL];*/
+        */
 
     }else{
         videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
