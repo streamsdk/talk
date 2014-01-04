@@ -7,12 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ImageSendProtocol.h"
+#import "MainController.h"
 
 @interface ImageViewController : UIViewController<UIPickerViewDataSource,UIPickerViewDelegate,UIActionSheetDelegate>
 {
     NSArray *timeArray;
     UIActionSheet* actionSheet;
+    
 }
 @property (nonatomic,strong) UIImage * image;
-
+@property (nonatomic,assign) id <ImageSendProtocol> imageSendProtocol;
+@property (nonatomic,strong)MainController *mainVC;
+@property (nonatomic ,strong)UIImagePickerController * pickerController;
 @end

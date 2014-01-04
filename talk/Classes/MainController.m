@@ -40,7 +40,7 @@
 #define BIG_IMG_WIDTH  300.0
 #define BIG_IMG_HEIGHT 340.0
 
-@interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate,reloadTableDeleage, GetAllMessagesProtocol>
+@interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate,reloadTableDeleage, ImageSendProtocol,GetAllMessagesProtocol>
 {
     NSMutableArray *bubbleData;
     CreateUI * createUI;
@@ -69,7 +69,7 @@
 
 @implementation MainController
 
-@synthesize bubbleTableView,toolBar,messageText,iconButton ,recordButton,recordOrKeyboardButton,keyBoardButton;
+@synthesize bubbleTableView,toolBar,messageText,iconButton ,recordButton,recordOrKeyboardButton,keyBoardButton,faceButton;
 @synthesize voice;
 @synthesize actionSheet;
 @synthesize timeArray;
@@ -98,13 +98,18 @@
     [iconButton setImage:[UIImage imageNamed:@"plus24.png"] forState:UIControlStateNormal];
     [iconButton addTarget:self action:@selector(photoClicked) forControlEvents:UIControlEventTouchUpInside];
     
-    messageText = [createUI setTextFrame:CGRectMake(60, 3, toolBar.frame.size.width-65, 34)];
+    messageText = [createUI setTextFrame:CGRectMake(60, 3, toolBar.frame.size.width-95, 34)];
     messageText.delegate = self;
     messageText.returnKeyType = UIReturnKeySend;
     
+    faceButton = [createUI setButtonFrame:CGRectMake(toolBar.frame.size.width-33, 3,30, 34) withTitle:@"nil"];
+    [faceButton setImage:[UIImage imageNamed:@"face.png"] forState:UIControlStateNormal];
+    [faceButton addTarget:self action:@selector(faceClicked) forControlEvents:UIControlEventTouchUpInside];
+
     [toolBar addSubview:recordOrKeyboardButton];
     [toolBar addSubview:iconButton];
     [toolBar addSubview:messageText];
+    [toolBar addSubview:faceButton];
     
 }
 
@@ -117,7 +122,6 @@
 
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * userID = [handler getUserID];
-    
     
     bubbleData = [[NSMutableArray alloc]init];
     TalkDB * talk =[[TalkDB alloc]init];
@@ -379,14 +383,22 @@
     [recordOrKeyboardButton removeFromSuperview];
     [messageText removeFromSuperview];
     [iconButton removeFromSuperview];
-    CGRect frame = CGRectMake(0, 2, 30, 36);
+    [faceButton removeFromSuperview];
+    CGRect frame = CGRectMake(5, 2, 30, 36);
      keyBoardButton = [createUI setButtonFrame:frame withTitle:@"nil"];
     [keyBoardButton setImage:[UIImage imageNamed:@"keyboard34.png"] forState:UIControlStateNormal];
+    
+    [[recordButton layer] setBorderColor:[[UIColor blackColor] CGColor]];
+    [[recordButton layer] setBorderWidth:1];
+    [[recordButton layer] setCornerRadius:4];
     [keyBoardButton addTarget:self action:@selector(recordToKeyboardClicked) forControlEvents:UIControlEventTouchUpInside];
     
     NSString *title =@"按住说话";
-    CGRect frame2 = CGRectMake(40, 2, toolBar.frame.size.width-60, 36);
+    CGRect frame2 = CGRectMake(46, 2, toolBar.frame.size.width-60, 36);
     recordButton = [createUI setButtonFrame:frame2 withTitle:title];
+    [[recordButton layer] setBorderColor:[[UIColor blackColor] CGColor]];
+    [[recordButton layer] setBorderWidth:1];
+    [[recordButton layer] setCornerRadius:4];
     [recordButton addTarget:self action:@selector(recordStart) forControlEvents:UIControlEventTouchDown];
     [recordButton addTarget:self action:@selector(recordEnd) forControlEvents:UIControlEventTouchUpInside];
     [recordButton addTarget:self action:@selector(recordCancel) forControlEvents:UIControlEventTouchUpOutside];
@@ -450,15 +462,16 @@
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-keyboardHeight,self.view.frame.size.width, keyboardHeight)];
         }];
         [pageControl setHidden:NO];
+        [faceButton setBackgroundImage:[UIImage imageNamed:@"Text.png"] forState:UIControlStateNormal];
         return;
     }
     //如果键盘没有显示，点击表情了，隐藏表情，显示键盘
-    if (keyboardIsShow) {
+    if (!keyboardIsShow) {
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, keyboardHeight)];
         }];
-        [pageControl setHidden:YES];
         [messageText becomeFirstResponder];
+        [pageControl setHidden:YES];
         
     }else{
         
@@ -473,6 +486,7 @@
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-keyboardHeight,self.view.frame.size.width, keyboardHeight)];
         }];
+        [faceButton setBackgroundImage:[UIImage imageNamed:@"Text.png"] forState:UIControlStateNormal];
         [pageControl setHidden:NO];
         [messageText resignFirstResponder];
     }
@@ -481,24 +495,38 @@
 
 -(void)dismissKeyBoard{
     //键盘显示的时候，toolbar需要还原到正常位置，并显示表情
-    [UIView animateWithDuration:Time animations:^{
-        toolBar.frame = CGRectMake(0, self.view.frame.size.height-toolBar.frame.size.height,  self.view.bounds.size.width,toolBar.frame.size.height);
-        bubbleTableView.frame = CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64-toolBarHeight);
-    }];
-    if (isFace) {
-        [UIView animateWithDuration:Time animations:^{
-            [scrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, keyboardHeight)];
-        }];
-    }else{
-        [UIView animateWithDuration:Time animations:^{
-            [scrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, ICONHEIGHT)];
-        }];
-    }
+//    [UIView animateWithDuration:Time animations:^{
+//        toolBar.frame = CGRectMake(0, self.view.frame.size.height-toolBar.frame.size.height,  self.view.bounds.size.width,toolBar.frame.size.height);
+//        bubbleTableView.frame = CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64-toolBarHeight);
+//    }];
+//    if (isFace) {
+//        [UIView animateWithDuration:Time animations:^{
+//            toolBar.frame = CGRectMake(0, self.view.frame.size.height-toolBar.frame.size.height,  self.view.bounds.size.width,toolBar.frame.size.height);
+//            bubbleTableView.frame = CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64-toolBarHeight);
+//    }];
+//    }else{
+//        [UIView animateWithDuration:Time animations:^{
+//            [scrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, ICONHEIGHT)];
+//        }];
+//    }
     UIButton *button = (UIButton *)[self.view viewWithTag:BUTTON_TAG];
     [button removeFromSuperview];
     [pageControl setHidden:YES];
     [messageText resignFirstResponder];
+    //键盘显示的时候，toolbar需要还原到正常位置，并显示表情
+    [UIView animateWithDuration:Time animations:^{
+        toolBar.frame = CGRectMake(0, self.view.frame.size.height-toolBar.frame.size.height,  self.view.bounds.size.width,toolBar.frame.size.height);
+        bubbleTableView.frame = CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64-toolBarHeight);
+    }];
     
+    [UIView animateWithDuration:Time animations:^{
+        [scrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, keyboardHeight)];
+    }];
+    [faceButton setBackgroundImage:[UIImage imageNamed:@"face.png"] forState:UIControlStateNormal];
+    [pageControl setHidden:YES];
+    [messageText resignFirstResponder];
+    UIButton *sendButton = (UIButton *)[self.view viewWithTag:BUTTON_TAG];
+    [sendButton removeFromSuperview];
 }
 
 
@@ -530,7 +558,8 @@
             [self autoMovekeyBoard:keyBoardFrame.size.height];
         }
     }];
-    
+    [faceButton setImage:[UIImage imageNamed:@"face.png"] forState:UIControlStateNormal];
+    [pageControl setHidden:YES];
     keyboardIsShow=YES;
     
 }
@@ -539,7 +568,8 @@
     NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSTimeInterval animationDuration;
     [animationDurationValue getValue:&animationDuration];
-    
+    [faceButton setImage:[UIImage imageNamed:@"face.png"] forState:UIControlStateNormal];
+    [pageControl setHidden:YES];
     keyboardIsShow=NO;
 }
 
@@ -613,12 +643,15 @@
     pageControl.currentPageIndicatorTintColor=RGBACOLOR(132, 104, 77, 1);
     pageControl.numberOfPages = 9;//指定页面个数
     [pageControl setBackgroundColor:[UIColor clearColor]];
-    pageControl.hidden=NO;
+    pageControl.hidden=YES;
     [pageControl addTarget:self action:@selector(changePage:)forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:pageControl];
     
     UIButton *sendButton = [createUI setButtonFrame:CGRectMake(260, self.view.frame.size.height-35, 50, 30) withTitle:@"send"];
     [sendButton.titleLabel setFont:[UIFont systemFontOfSize:15.0f]];
+    [[sendButton layer] setBorderColor:[[UIColor blackColor] CGColor]];
+    [[sendButton layer] setBorderWidth:1];
+    [[sendButton layer] setCornerRadius:4];
     sendButton.tag = BUTTON_TAG;
     [sendButton addTarget:self action:@selector(sendClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:sendButton];
@@ -780,6 +813,7 @@
        
         UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
         sendImage = image;
+        
         if (isTakeImage) {
             UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"Do you want to set a time for the picture?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
             view.delegate = self;
@@ -789,11 +823,12 @@
             [self sendPhoto:image];
         }
         [picker dismissViewControllerAnimated:YES completion:NULL];
-       /* ImageViewController * imageview = [[ImageViewController alloc]init];
+       /*ImageViewController * imageview = [[ImageViewController alloc]init];
         imageview.image = image;
+        [imageview setPickerController:picker];
         [picker  presentViewController:imageview animated:YES completion:NULL];
-        [picker dismissViewControllerAnimated:YES completion:NULL];
-        */
+        [picker dismissViewControllerAnimated:YES completion:NULL];*/
+        
 
     }else{
         videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
@@ -844,17 +879,14 @@
 -(void)  selectedIconView:(NSInteger) buttonTag{
     
     if(buttonTag == 0){
-        [self faceClicked];
-    }
-    if(buttonTag == 1){
         [self addPhoto];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
-    if (buttonTag == 2) {
+    if (buttonTag == 1) {
         [self takePhoto];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
-    if (buttonTag == 3) {
+    if (buttonTag == 2) {
 //        [self takeVideo];
         UIActionSheet *actionsheet = [[UIActionSheet alloc]
                                       initWithTitle:nil
@@ -899,7 +931,10 @@
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
 }
-
+-(void)sendImages:(UIImage *)image{
+    NSLog(@"eeee");
+    [self sendPhoto:image];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

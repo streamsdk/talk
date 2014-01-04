@@ -13,7 +13,7 @@
 #import "IconView.h"
 #import "FacialView.h"
 #import "GetAllMessagesProtocol.h"
-
+#import "ImageSendProtocol.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MobileCoreServices/UTCoreTypes.h>
 
@@ -46,9 +46,12 @@
 
 @property (nonatomic,strong) UIButton * iconButton;
 
+@property (nonatomic,strong) UIButton * faceButton;
+
 @property (nonatomic,strong) UITextField *messageText;
 
 @property(nonatomic,retain)UIActionSheet* actionSheet;
 
 @property(nonatomic,retain)NSMutableArray *timeArray;
+
 @end

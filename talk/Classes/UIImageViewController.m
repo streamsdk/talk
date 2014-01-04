@@ -32,7 +32,7 @@
     imageview.userInteractionEnabled = YES;
     imageview.tag = IMAGE_TAG;
     [self.view addSubview:imageview];
-  
+
     UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [backButton setFrame:CGRectMake(10, 26, 50, 26)];
     [[backButton layer] setBorderColor:[[UIColor blueColor] CGColor]];

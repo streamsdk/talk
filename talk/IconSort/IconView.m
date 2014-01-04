@@ -14,7 +14,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        icon = [[NSArray alloc]initWithObjects:@"face.png", @"photog150.png",@"camera_icon150.png",@"video150.png",nil];
+        icon = [[NSArray alloc]initWithObjects: @"photog150.png",@"camera_icon150.png",@"video150.png",nil];
     }
     return self;
 }
@@ -24,14 +24,14 @@
 	//row number
 	for (int i=0; i<1; i++) {
 		//column numer
-		for (int y=0; y<4; y++) {
+		for (int y=0; y<3; y++) {
 			UIButton *button=[UIButton buttonWithType:UIButtonTypeCustom];
             [button setBackgroundColor:[UIColor clearColor]];
-            [button setFrame:CGRectMake(y*(size.width+40), i*size.height, size.width, size.height)];
+            [button setFrame:CGRectMake(y*(size.width+50)+50, i*size.height, size.width, size.height)];
             NSString * str = [icon objectAtIndex:i*3+y];
             UIImage *image = [UIImage imageNamed:str];
             [button setImage:image forState:UIControlStateNormal];
-            button.tag=i*4+y;
+            button.tag=i*3+y;
             [button addTarget:self action:@selector(selected:) forControlEvents:UIControlEventTouchUpInside];
 			[self addSubview:button];
         }

@@ -16,6 +16,10 @@
 
 @implementation ImageViewController
 @synthesize image;
+@synthesize imageSendProtocol;
+@synthesize pickerController;
+@synthesize mainVC;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -43,6 +47,10 @@
     [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
+    UIButton * brushButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [brushButton setFrame:CGRectMake(self.view.frame.size.width-50, 26, 30, 26)];
+    [brushButton setImage:[UIImage imageNamed:@"brush.png"]forState:UIControlStateNormal];
+    [brushButton addTarget:self action:@selector(paintbrushClicked) forControlEvents:UIControlEventTouchUpInside];
     
     UIImageView * imageview = [[UIImageView alloc]initWithFrame:CGRectMake(20, 100, self.view.frame.size.width -40, 300)];
     [imageview setImage:image];
@@ -54,8 +62,9 @@
     [[useButton layer] setBorderWidth:1];
     [[useButton layer] setCornerRadius:4];
     [useButton setTitle:@"usePhoto" forState:UIControlStateNormal];
-    useButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
+     useButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
     [useButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [useButton addTarget:self action:@selector(sendImageClicked) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton * clockButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [clockButton setFrame:CGRectMake(10, self.view.frame.size.height-49, 42, 25)];
@@ -69,15 +78,29 @@
     [self.view addSubview:imageview];
     [self.view addSubview:useButton];
     [self.view addSubview:clockButton];
+    [self.view addSubview:brushButton];
 }
 -(void) back {
+    
     [self dismissViewControllerAnimated:YES completion:^{
         
         NSLog(@"back");
         
     }];
 }
-
+-(void) sendImageClicked {
+//    [self setImageSendProtocol:mainVC];
+//    [self dismissViewControllerAnimated:YES completion:^{
+//     [pickerController dismissViewControllerAnimated:YES completion:NULL];
+//        NSLog(@"back");
+//    }];
+//    
+//    [imageSendProtocol sendImages:image];
+   
+}
+-(void) paintbrushClicked {
+    NSLog(@"<#string#>");
+}
 -(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
     return 1;

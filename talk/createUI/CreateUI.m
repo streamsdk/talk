@@ -29,6 +29,9 @@
     textFiled.borderStyle = UITextBorderStyleRoundedRect;
     textFiled.backgroundColor = [UIColor clearColor];
     textFiled.delegate = self;
+    [[textFiled layer] setBorderColor:[[UIColor blackColor] CGColor]];
+    [[textFiled layer] setBorderWidth:1];
+    [[textFiled layer] setCornerRadius:4];
     textFiled.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin |UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
     return textFiled;
 }
