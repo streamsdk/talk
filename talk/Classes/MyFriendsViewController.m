@@ -203,21 +203,36 @@
     [history appendString:@"messaginghistory"];
     [so loadAll:history];
     NSArray *keys = [so getAllKeys];
+    NSMutableString *removedKeys = [[NSMutableString alloc] init];
+    int index = 0;
     for (NSString *key in keys){
         NSString *value = [so getValue:key];
-        NSData *jsonData = [value dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *jsonValue = [value substringFromIndex:13];
+        NSData *jsonData = [jsonValue dataUsingEncoding:NSUTF8StringEncoding];
         JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
         NSDictionary *json = [decoder objectWithData:jsonData];
         NSString *type = [json objectForKey:@"type"];
         NSString *from = [json objectForKey:@"from"];
         if ([type isEqualToString:@"text"]){
-            NSString *message = [json objectForKey:@"message"];
-            [self didReceiveMessage:message withFrom:from];
+            [self didReceiveMessage:jsonValue withFrom:from];
         }else{
             NSString *fileId = [json objectForKey:@"fileId"];
-            [self didReceiveFile:fileId withBody:value withFrom:from];
+            [self didReceiveFile:fileId withBody:jsonValue withFrom:from];
         }
+        
+        [removedKeys appendString:key];
+        if (index != [keys count] - 1){
+            [removedKeys appendString:@"&&"];
+        }
+        
+        index++;
     }
+    
+    if ([keys count] > 0){
+        STreamObject *sob = [[STreamObject alloc] init];
+        [sob removeKeyInBackground:removedKeys forObjectId:history];
+    }
+    
 }
 
 - (void)didNotAuthenticate:(NSXMLElement *)error{
