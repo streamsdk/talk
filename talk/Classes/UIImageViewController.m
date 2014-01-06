@@ -11,6 +11,7 @@
 
 @end
 #define IMAGE_TAG 2000
+#define ZOOMSCALE 3.0
 @implementation UIImageViewController
 @synthesize image;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -27,39 +28,69 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationController.navigationBarHidden = YES;
-    UIImageView *imageview  = [[UIImageView alloc]initWithFrame:self.view.frame];
-    [imageview setImage:image];
-    imageview.userInteractionEnabled = YES;
-    imageview.tag = IMAGE_TAG;
-    [self.view addSubview:imageview];
-
+    self.view.backgroundColor = [UIColor blackColor];
+    
+    UIImageView*imageView=[[UIImageView alloc] initWithFrame:CGRectMake(5, 100, self.view.frame.size.width-10,260)];
+    [imageView setImage:image];
+    imageView.tag = IMAGE_TAG;
+    imageView.userInteractionEnabled=YES;
+    UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(handlePinch:)];
+    [imageView addGestureRecognizer:pinchGestureRecognizer];
+    
+    [self.view addSubview:imageView];
+    
+    UIView * view = [[UIView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width,44)];
+    [view setBackgroundColor:[UIColor colorWithWhite:0.1 alpha:0.1]];
     UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backButton setFrame:CGRectMake(10, 26, 50, 26)];
-    [[backButton layer] setBorderColor:[[UIColor blueColor] CGColor]];
+    [backButton setFrame:CGRectMake(10, 9, 50, 26)];
+    [[backButton layer] setBorderColor:[[UIColor grayColor] CGColor]];
     [[backButton layer] setBorderWidth:1];
     [[backButton layer] setCornerRadius:4];
     [backButton setTitle:@"Back" forState:UIControlStateNormal];
     backButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
-    [backButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(handleTapGesture) forControlEvents:UIControlEventTouchUpInside];
-    [imageview addSubview:backButton];
+    [view addSubview:backButton];
     
     UIButton * saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [saveButton setFrame:CGRectMake(self.view.frame.size.width-60, 26, 50, 26)];
-    [[saveButton layer] setBorderColor:[[UIColor blueColor] CGColor]];
+    [saveButton setFrame:CGRectMake(self.view.frame.size.width-60, 9, 50, 26)];
+    [[saveButton layer] setBorderColor:[[UIColor grayColor] CGColor]];
     [[saveButton layer] setBorderWidth:1];
     [[saveButton layer] setCornerRadius:4];
     [saveButton setTitle:@"Save" forState:UIControlStateNormal];
     saveButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
-    [saveButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [saveButton addTarget:self action:@selector(saveClicked) forControlEvents:UIControlEventTouchUpInside];
-    [imageview addSubview:saveButton];
+    [view addSubview:saveButton];
+    [self.view addSubview:view];
 
 }
+-(void)handlePinch:(UIPinchGestureRecognizer *)recognizer
+{
+    recognizer.view.transform = CGAffineTransformScale(recognizer.view.transform, recognizer.scale, recognizer.scale);
+    recognizer.scale = 1;
+    UIImageView *imageview = (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
 
+    UIPanGestureRecognizer*pan=[[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(pan:)];
+    
+    [imageview addGestureRecognizer:pan];
+}
+-(void)pan:(UIPanGestureRecognizer*)pan
+
+{
+    
+    CGPoint point=[pan translationInView:self.view];
+    
+    UIImageView *imageview = (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
+    
+    imageview.frame=CGRectMake(imageview.frame.origin.x+point.x, imageview.frame.origin.y+point.y, imageview.frame.size.width, imageview.frame.size.height);
+    
+    [pan setTranslation:CGPointMake(0, 0) inView:self.view];
+    
+}
 -(void) saveClicked {
-    UIImageView *imageView = (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
-    UIImageWriteToSavedPhotosAlbum([imageView image], nil, nil,nil);
+    UIImageView *imageview = (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
+    UIImageWriteToSavedPhotosAlbum([imageview image], nil, nil,nil);
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
                                                     message:@"You have successfully stored in the photo album"
                                                    delegate:self

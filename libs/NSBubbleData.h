@@ -33,14 +33,28 @@ typedef enum _NSBubbleType
 @property (nonatomic,retain) UIImage *_image;
 @property (assign,nonatomic) id <PlayerDelegate> delegate;
 
+//message
 - (id)initWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type;
 + (id)dataWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type;
+
+//no time image
 - (id)initWithImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type;
 + (id)dataWithImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type;
-- (id)initWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type insets:(UIEdgeInsets)insets;
-+ (id)dataWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type insets:(UIEdgeInsets)insets;
+
+//have time image
+- (id)initWithImage:(UIImage *)image withTimes:(NSString *)times date:(NSDate *)date type:(NSBubbleType)type;
++ (id)dataWithImage:(UIImage *)image withTimes:(NSString *)times date:(NSDate *)date type:(NSBubbleType)type;
+
+//audio
 - (id)initWithTimes:(NSString *)times date:(NSDate *)date type:(NSBubbleType)type withData:(NSData *)data;
 + (id)dataWithtimes:(NSString *)times date:(NSDate *)date type:(NSBubbleType)type withData:(NSData *)data;
+
+//video
 - (id)initWithImage:(UIImage *)image withData:(NSData *)data withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath;
 + (id)dataWithImage:(UIImage *)image withData:(NSData *)data withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath;
+
+
+- (id)initWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type insets:(UIEdgeInsets)insets;
++ (id)dataWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type insets:(UIEdgeInsets)insets;
+
 @end

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface UIImageViewController : UIViewController
-
+{
+}
 @property (nonatomic,strong)UIImage *image;
 @end

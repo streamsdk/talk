@@ -423,7 +423,7 @@
         }];
          return;
     }
-    //如果键盘没有显示，点击表情了，隐藏表情，显示键盘
+    //如果键盘没有显示
     if (isFace) {
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, TABLEVIEWTAG)];
@@ -432,7 +432,7 @@
         
     }else{
         
-        //键盘显示的时候，toolbar需要还原到正常位置，并显示表情
+        //键盘显示的时候，toolbar需要还原到正常位置
         [UIView animateWithDuration:Time animations:^{
             toolBar.frame = CGRectMake(0, self.view.frame.size.height-ICONHEIGHT-toolBar.frame.size.height,  self.view.bounds.size.width,toolBar.frame.size.height);
             UIBubbleTableView *tableView = (UIBubbleTableView *)[self.view viewWithTag:TABLEVIEWTAG];
@@ -461,8 +461,8 @@
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-keyboardHeight,self.view.frame.size.width, keyboardHeight)];
         }];
-        [pageControl setHidden:NO];
         [faceButton setBackgroundImage:[UIImage imageNamed:@"Text.png"] forState:UIControlStateNormal];
+        [pageControl setHidden:NO];
         return;
     }
     //如果键盘没有显示，点击表情了，隐藏表情，显示键盘
@@ -472,7 +472,7 @@
         }];
         [messageText becomeFirstResponder];
         [pageControl setHidden:YES];
-        
+
     }else{
         
         //键盘显示的时候，toolbar需要还原到正常位置，并显示表情
@@ -486,7 +486,6 @@
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-keyboardHeight,self.view.frame.size.width, keyboardHeight)];
         }];
-        [faceButton setBackgroundImage:[UIImage imageNamed:@"Text.png"] forState:UIControlStateNormal];
         [pageControl setHidden:NO];
         [messageText resignFirstResponder];
     }
@@ -494,21 +493,6 @@
 #pragma mark 隐藏键盘
 
 -(void)dismissKeyBoard{
-    //键盘显示的时候，toolbar需要还原到正常位置，并显示表情
-//    [UIView animateWithDuration:Time animations:^{
-//        toolBar.frame = CGRectMake(0, self.view.frame.size.height-toolBar.frame.size.height,  self.view.bounds.size.width,toolBar.frame.size.height);
-//        bubbleTableView.frame = CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64-toolBarHeight);
-//    }];
-//    if (isFace) {
-//        [UIView animateWithDuration:Time animations:^{
-//            toolBar.frame = CGRectMake(0, self.view.frame.size.height-toolBar.frame.size.height,  self.view.bounds.size.width,toolBar.frame.size.height);
-//            bubbleTableView.frame = CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64-toolBarHeight);
-//    }];
-//    }else{
-//        [UIView animateWithDuration:Time animations:^{
-//            [scrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, ICONHEIGHT)];
-//        }];
-//    }
     UIButton *button = (UIButton *)[self.view viewWithTag:BUTTON_TAG];
     [button removeFromSuperview];
     [pageControl setHidden:YES];
@@ -523,10 +507,7 @@
         [scrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, keyboardHeight)];
     }];
     [faceButton setBackgroundImage:[UIImage imageNamed:@"face.png"] forState:UIControlStateNormal];
-    [pageControl setHidden:YES];
-    [messageText resignFirstResponder];
-    UIButton *sendButton = (UIButton *)[self.view viewWithTag:BUTTON_TAG];
-    [sendButton removeFromSuperview];
+   
 }
 
 
@@ -568,8 +549,7 @@
     NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSTimeInterval animationDuration;
     [animationDurationValue getValue:&animationDuration];
-    [faceButton setImage:[UIImage imageNamed:@"face.png"] forState:UIControlStateNormal];
-    [pageControl setHidden:YES];
+    [faceButton setImage:[UIImage imageNamed:@"Text.png"] forState:UIControlStateNormal];
     keyboardIsShow=NO;
 }
 
@@ -602,7 +582,7 @@
     scrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, ICONHEIGHT)];
     [scrollView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"facesBack.png"]]];
     for (int i=0; i<5; i++) {
-        IconView *fview=[[IconView alloc] initWithFrame:CGRectMake(12+320*i, 15, facialViewWidth, facialViewHeight)];
+        IconView *fview=[[IconView alloc] initWithFrame:CGRectMake(320*i, 15, self.view.frame.size.width, facialViewHeight)];
         [fview setBackgroundColor:[UIColor clearColor]];
         [fview loadIconView:i size:CGSizeMake(40, 40)];
         fview.delegate=self;
@@ -742,7 +722,7 @@
     isTakeImage = NO;
     UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
     imagePickerController.navigationBar.tintColor = [UIColor colorWithRed:72.0/255.0 green:106.0/255.0 blue:154.0/255.0 alpha:1.0];
-	imagePickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+	imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 	imagePickerController.delegate = self;
 	imagePickerController.allowsEditing = NO;
     imagePickerController.mediaTypes =  [[NSArray alloc] initWithObjects: (NSString *) kUTTypeImage, nil];
@@ -883,20 +863,20 @@
         [self scrollBubbleViewToBottomAnimated:YES];
     }
     if (buttonTag == 1) {
-        [self takePhoto];
+        [self takeVideo];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
     if (buttonTag == 2) {
-//        [self takeVideo];
-        UIActionSheet *actionsheet = [[UIActionSheet alloc]
-                                      initWithTitle:nil
-                                      delegate:self
-                                      cancelButtonTitle:@"取消"
-                                      destructiveButtonTitle:nil
-                                      otherButtonTitles:@"Video", @"Local Video",nil];
-        actionsheet.delegate = self;
-        actionsheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-        [actionsheet showInView:self.view];
+        [self addVideo];
+//        UIActionSheet *actionsheet = [[UIActionSheet alloc]
+//                                      initWithTitle:nil
+//                                      delegate:self
+//                                      cancelButtonTitle:@"取消"
+//                                      destructiveButtonTitle:nil
+//                                      otherButtonTitles:@"Video", @"Local Video",nil];
+//        actionsheet.delegate = self;
+//        actionsheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+//        [actionsheet showInView:self.view];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
         

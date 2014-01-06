@@ -73,7 +73,7 @@ const UIEdgeInsets textInsetsSomeone = {5, 15, 11, 10};
     return [self initWithView:label date:date type:type insets:insets];
 }
 
-#pragma mark - Image bubble
+#pragma mark - Image bubble no time
 
 const UIEdgeInsets imageInsetsMine = {11, 13, 16, 22};
 const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
@@ -114,7 +114,45 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
     return [self initWithView:imageView date:date type:type insets:insets];
 }
+#pragma mark -Custom image view  have time 
 
+- (id)initWithImage:(UIImage *)image withTimes:(NSString *)times date:(NSDate *)date type:(NSBubbleType)type{
+    /*_image = image;
+    bigImageSize = image.size;
+    CGSize size = image.size;
+    if (size.width > 200)
+    {
+        image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(100, 100)];
+        size = image.size;
+    }
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+    imageView.image = image;
+    imageView.layer.cornerRadius = 5.0;
+    imageView.layer.masksToBounds = YES;
+    imageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tappressGesutre=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showImage)];
+    tappressGesutre.numberOfTouchesRequired=1;
+    [imageView addGestureRecognizer:tappressGesutre];
+#if !__has_feature(objc_arc)
+    [imageView autorelease];
+#endif*/
+    
+    UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIFont *font = [UIFont systemFontOfSize:16.0f];
+    CGSize size = [(button.titleLabel.text ? button.titleLabel.text : @"") sizeWithFont:font constrainedToSize:CGSizeMake(220, 9999) lineBreakMode:NSLineBreakByWordWrapping];
+    [button setFrame:CGRectMake(0, 0, size.width, size.height)];
+    [button setTitle:@"我抛了一张会消失的图片点击查看" forState:UIControlStateNormal];
+    
+    UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
+    return [self initWithView:button date:date type:type insets:insets];
+}
++ (id)dataWithImage:(UIImage *)image withTimes:(NSString *)times date:(NSDate *)date type:(NSBubbleType)type{
+#if !__has_feature(objc_arc)
+    return [[[NSBubbleData alloc] initWithImage:image withTimes:times date: date type: type] autorelease];
+#else
+    return [[NSBubbleData alloc] initWithImage:image withTimes:times date: date type: type];
+#endif
+}
 #pragma mark - Custom view audio
 - (id)initWithTimes:(NSString *)times date:(NSDate *)date type:(NSBubbleType)type withData:(NSData *)data {
     audioData = data;

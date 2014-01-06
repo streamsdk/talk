@@ -110,22 +110,10 @@
 
 }
 
-/*- (void)initSliderSwitch
-{
-    _sliderSwitch = [[SliderSwitch alloc] initWithFrame:CGRectMake(0, 64, 320, 36)];
-    _sliderSwitch.labelCount = 3;
-    _sliderSwitch.delegate = self;
-    [_sliderSwitch initSliderSwitch];
-    [_sliderSwitch setSliderSwitchBackground:[UIImage imageNamed:@"top_tab_background3.png"]];
-    [_sliderSwitch setLabelOneText:@"Add"];
-    [_sliderSwitch setLabelTwoText:@"Search"];
-    [_sliderSwitch setLabelThreeText:@"History"];
-    [self.view addSubview:_sliderSwitch];
-}*/
 -(void) addFriends {
 
     [myTableview removeFromSuperview];
-    myTableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 100, self.view.frame.size.width, self.view.frame.size.height-100)];
+    myTableview = [[UITableView alloc]initWithFrame:CGRectMake(-2, 100, self.view.frame.size.width+4, self.view.frame.size.height-100)];
     myTableview.dataSource = self;
     myTableview.delegate = self;
     [myTableview setBackgroundColor:[UIColor clearColor]];
@@ -134,11 +122,6 @@
     [_searchBar removeFromSuperview];
     _friendsType = FriendsAdd;
     self.title = @"Add Friends";
-    
-    myTableview.tableHeaderView = nil;
-    label.text =@"Chatters Who Added Me";
-    myTableview.tableHeaderView =label;
-    
     NSArray * array = [addDict allKeys];
     for (int i = 0; i<[array count]; i++) {
         NSString *status = [addDict objectForKey:[array objectAtIndex:i]];
@@ -183,9 +166,6 @@
     [myTableview setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:myTableview];
     
-    label.text =@"I added chatters";
-    label.textAlignment = NSTextAlignmentCenter;
-    myTableview.tableHeaderView =label;
     
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     SearchDB * searchDB = [[SearchDB alloc]init];
@@ -221,21 +201,28 @@
 //    myTableview.dataSource = self;
 //    [self.view addSubview:myTableview];
     
-    label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0,myTableview.frame.size.width, 36)];
-    label.backgroundColor = [UIColor blueColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = [UIFont fontWithName:@"DIN Alternate" size:15.0f];
+//    label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0,myTableview.frame.size.width, 36)];
+//    label.backgroundColor = [UIColor blueColor];
+//    label.textColor = [UIColor whiteColor];
+//    label.font = [UIFont fontWithName:@"DIN Alternate" size:15.0f];
     
     NSArray *segmentedArray = [[NSArray alloc]initWithObjects:@"Add",@"Search",@"History",nil];
     
     segmentedControl = [[UISegmentedControl alloc]initWithItems:segmentedArray];
-    
+
     segmentedControl.frame = CGRectMake(0, 64.0, self.view.bounds.size.width, 36.0);
-    segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
-    segmentedControl.selectedSegmentIndex = 0;//
-    [self.view addSubview:segmentedControl];
-    [segmentedControl addTarget:self action:@selector(segmentAction:)forControlEvents:UIControlEventValueChanged];
+    segmentedControl.selectedSegmentIndex = 0;
     
+    segmentedControl.segmentedControlStyle=UISegmentedControlStyleBordered;
+    [segmentedControl addTarget:self action:@selector(segmentAction:)forControlEvents:UIControlEventValueChanged];
+   /* [segmentedControl setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [segmentedControl setBackgroundColor:[UIColor brownColor]];
+    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor blueColor],UITextAttributeTextColor,[UIFont fontWithName:@"DIN Alternate" size:17],UITextAttributeFont ,nil];
+    [segmentedControl setTitleTextAttributes:dic forState:UIControlStateNormal];*/
+
+    [self.view addSubview:segmentedControl];
+    
+                                                        
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * addDB = [[AddDB alloc]init];
     addDict = [addDB readDB:[handle getUserID]];
