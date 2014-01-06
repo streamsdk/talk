@@ -20,6 +20,9 @@
 @property long long creationTime;
 @property long long loginTime;
 
+
+- (BOOL)searchUser: (NSString *)userId;
+
 /*!
  A map of user's metadata with signUp details are saved on stream server. The method returns immediately once it is called
  @param userName The userName used for logging in. It should be unique.
@@ -44,8 +47,6 @@
  @param response The block to execute when checking in completed. First parameter returns TRUE if the user exists.
 */
 - (void)isUserExists: (NSString *)userId response:(void (^)(BOOL exists, NSString *resposne))doStaff;
-
-- (BOOL)searchUser: (NSString *)userId;
 
 /*!
  Username and password are required for authenticating the current user for logging in.

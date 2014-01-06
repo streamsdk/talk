@@ -86,8 +86,7 @@ static XMPPReconnect *xmppReconnect;
 	[xmppStream setMyJID:[XMPPJID jidWithString:myJID]];
 	
 	NSError *error = nil;
-    sleep(4);
-	if (![xmppStream connectWithTimeout:XMPPStreamTimeoutNone error:&error])
+  	if (![xmppStream connectWithTimeout:XMPPStreamTimeoutNone error:&error])
 	{
         DDLogError(@"Error connecting: %@", error);
         return NO;
