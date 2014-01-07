@@ -7,18 +7,22 @@
 //
 
 #import "ImageViewController.h"
+#import "MainController.h"
 
 #define CLOCKBUTTON_TAG 10000
 
 @interface ImageViewController ()
-
+{
+    NSString * time;
+    MainController * mainVC;
+}
 @end
 
 @implementation ImageViewController
 @synthesize image;
 @synthesize imageSendProtocol;
 @synthesize pickerController;
-@synthesize mainVC;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -35,7 +39,10 @@
     self.navigationController.navigationBarHidden = YES;
     [self.view setBackgroundColor:[UIColor blackColor]];
     
+    time = @"0s";
     timeArray = [[NSMutableArray alloc]initWithObjects:@"1s",@"2s",@"3s",@"4s",@"5s",@"6s",@"7s",@"8s",@"9s",@"10s", nil];
+    
+    mainVC = [[MainController alloc]init];
     
     UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [backButton setFrame:CGRectMake(10, 26, 50, 26)];
@@ -57,7 +64,7 @@
     [self.view addSubview:imageview];
     
     UIButton * useButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [useButton setFrame:CGRectMake(self.view.frame.size.width-80, self.view.frame.size.height-60, 70, 26)];
+    [useButton setFrame:CGRectMake(self.view.frame.size.width-80, self.view.frame.size.height-55, 70, 26)];
     [[useButton layer] setBorderColor:[[UIColor blueColor] CGColor]];
     [[useButton layer] setBorderWidth:1];
     [[useButton layer] setCornerRadius:4];
@@ -89,13 +96,16 @@
     }];
 }
 -(void) sendImageClicked {
-//    [self setImageSendProtocol:mainVC];
-//    [self dismissViewControllerAnimated:YES completion:^{
-//     [pickerController dismissViewControllerAnimated:YES completion:NULL];
-//        NSLog(@"back");
-//    }];
-//    
-//    [imageSendProtocol sendImages:image];
+    [self setImageSendProtocol:mainVC];
+    [imageSendProtocol sendImages:image withTime:time];
+    [self dismissViewControllerAnimated:YES completion:^{
+        [pickerController dismissViewControllerAnimated:YES completion:NULL];
+        NSLog(@"back");
+    }];
+    [self dismissViewControllerAnimated:YES completion:^{
+     [pickerController dismissViewControllerAnimated:YES completion:NULL];
+        NSLog(@"back");
+    }];
    
 }
 -(void) paintbrushClicked {
@@ -116,8 +126,9 @@
 }
 -(void) pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
+    time = [timeArray objectAtIndex:row];
     UIButton * button = (UIButton *)[self.view viewWithTag:CLOCKBUTTON_TAG];
-    [button setTitle:[timeArray objectAtIndex:row] forState:UIControlStateNormal] ;
+    [button setTitle:time forState:UIControlStateNormal] ;
 }
 -(void) clockClicled {
     actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];

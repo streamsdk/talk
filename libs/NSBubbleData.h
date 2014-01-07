@@ -42,8 +42,10 @@ typedef enum _NSBubbleType
 + (id)dataWithImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type;
 
 //have time image
-- (id)initWithImage:(UIImage *)image withTimes:(NSString *)times date:(NSDate *)date type:(NSBubbleType)type;
-+ (id)dataWithImage:(UIImage *)image withTimes:(NSString *)times date:(NSDate *)date type:(NSBubbleType)type;
+-(id) initWithImage:(UIImage *)image withImageTime:(NSString *)time date:(NSDate *)date withType:(NSBubbleType) type;
++(id) dataWithImage:(UIImage *)image withImageTime:(NSString *)time date:(NSDate *)date withType:(NSBubbleType) type;
+
+
 
 //audio
 - (id)initWithTimes:(NSString *)times date:(NSDate *)date type:(NSBubbleType)type withData:(NSData *)data;

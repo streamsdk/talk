@@ -27,7 +27,7 @@
 #define facialViewHeight 170
 #define  buttonWh 34
 #define  ICONHEIGHT 80
-@interface MainController : UIViewController<UIBubbleTableViewDataSource,facialViewDelegate,UIVideoEditorControllerDelegate,UITextFieldDelegate,IconViewDelegate,UIAlertViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,GetAllMessagesProtocol>
+@interface MainController : UIViewController<UIBubbleTableViewDataSource,facialViewDelegate,UIVideoEditorControllerDelegate,UITextFieldDelegate,IconViewDelegate,UIAlertViewDelegate,GetAllMessagesProtocol>
 {
     NSURL  *videoPath;
     
@@ -49,9 +49,5 @@
 @property (nonatomic,strong) UIButton * faceButton;
 
 @property (nonatomic,strong) UITextField *messageText;
-
-@property(nonatomic,retain)UIActionSheet* actionSheet;
-
-@property(nonatomic,retain)NSMutableArray *timeArray;
 
 @end

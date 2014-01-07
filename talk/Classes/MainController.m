@@ -53,7 +53,6 @@
     
     NSData *myData;
     NSData * otherData;
-    BOOL isTakeImage;
 
     PhotoHandler *photoHandler;
     VideoHandler *videoHandler;
@@ -71,8 +70,6 @@
 
 @synthesize bubbleTableView,toolBar,messageText,iconButton ,recordButton,recordOrKeyboardButton,keyBoardButton,faceButton;
 @synthesize voice;
-@synthesize actionSheet;
-@synthesize timeArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -88,7 +85,6 @@
     //初始化为NO added
     keyboardIsShow=NO;
     isFace = NO;
-    isTakeImage = NO;
     
     recordOrKeyboardButton = [createUI setButtonFrame:CGRectMake(0, 2, 30, 36) withTitle:(@"nil")];
     [recordOrKeyboardButton setImage:[UIImage imageNamed:@"microphone24.png"] forState:UIControlStateNormal];
@@ -187,11 +183,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
-    timeArray = [[NSMutableArray alloc]initWithObjects:@"1s",@"2s",@"3s",@"4s",@"5s",@"6s",@"7s",@"8s",@"9s",@"10s", nil];
-
     //handler
     photoHandler = [[PhotoHandler alloc] init];
-    [photoHandler setController:self];
     
     videoHandler = [[VideoHandler alloc]init];
     
@@ -239,17 +232,16 @@
     JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
     NSDictionary *json = [decoder objectWithData:jsonData];
     NSString *type = [json objectForKey:@"type"];
-    
+     NSString * time = [json objectForKey:@"duration"];
     if ([type isEqualToString:@"photo"]) {
-        [photoHandler receiveFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+        [photoHandler setController:self];
+        [photoHandler receiveFile:data forBubbleDataArray:bubbleData withTime:time forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
         
     }else if ([type isEqualToString:@"video"]){
         [videoHandler setController:self];
         [videoHandler receiveVideoFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
         
     }else if ([type isEqualToString:@"voice"]){
-
-        NSString * time = [json objectForKey:@"duration"];
         [audioHandler receiveAudioFile:data withBody:time forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
     }
     [bubbleTableView reloadData];
@@ -304,15 +296,30 @@
     UIGraphicsEndImageContext();
     return newImage;
 }
--(void) sendPhoto :(UIImage *)image {
+-(void) sendPhoto :(UIImage *)image withTime:(NSString *)time{
+    [self dismissKeyBoard];
+    /*ImageCache *imageCache = [ImageCache sharedObject];
+    
+    HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
+    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[handler getUserID]];
+    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+    myData = [imageCache getImage:pImageId];
+    NSString *sendToID =[imageCache getFriendID];
+    NSMutableArray * data = [[NSMutableArray alloc]init];
+    TalkDB * talk =[[TalkDB alloc]init];
+    data = [talk readInitDB:[handler getUserID] withOtherID:sendToID];
+    bubbleData = data;
+    for (NSBubbleData * data in bubbleData) {
+        data.delegate = self;
+    }*/
     ImageCache *imageCache = [ImageCache sharedObject];
     NSString *sendToID =[imageCache getFriendID];
     if (sendToID) {
-        [photoHandler sendPhoto:image forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
+        [photoHandler setController:self];
+        [photoHandler sendPhoto:image forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID withTime:time];
     }
     
     [bubbleTableView reloadData];
-    [self dismissKeyBoard];
     [self scrollBubbleViewToBottomAnimated:YES];
 }
 
@@ -550,6 +557,7 @@
     NSTimeInterval animationDuration;
     [animationDurationValue getValue:&animationDuration];
     [faceButton setImage:[UIImage imageNamed:@"Text.png"] forState:UIControlStateNormal];
+    [pageControl setHidden:YES];
     keyboardIsShow=NO;
 }
 
@@ -648,78 +656,10 @@
     int page = pageControl.currentPage;//获取当前pagecontroll的值
     [scrollView setContentOffset:CGPointMake(320 * page, 0)];//根据pagecontroll的值来改变scrollview的滚动位置，以此切换到指定的页面
 }
-//* UIPickerView
--(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 1;
-}
--(NSInteger) pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    return [timeArray count];
-    
-}
--(NSString *) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    return [timeArray objectAtIndex:row];
-}
--(void) pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    
-}
 
-
--(void)segmentAction:(UISegmentedControl*)seg{
-    NSInteger index = seg.selectedSegmentIndex;
-    NSLog(@"%d",index);
-    [self.actionSheet dismissWithClickedButtonIndex:index animated:YES];
-}
-
-#pragma mark UIAlertViewDelegate
-
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (isTakeImage) {
-        if (buttonIndex == 0) {
-            __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-            HUD.labelText = @"uploading file...";
-            [self.view addSubview:HUD];
-            [HUD showAnimated:YES whileExecutingBlock:^{
-                [self sendPhoto:sendImage];
-            }completionBlock:^{
-                [HUD removeFromSuperview];
-                HUD = nil;
-            }];
-            
-            
-        }else if (buttonIndex == 1) {
-            self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-            [self.actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
-            UIPickerView * pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 10, self.view.frame.size.width, 60)] ;
-            pickerView.tag = 101;
-            pickerView.delegate = self;
-            pickerView.dataSource = self;
-            pickerView.showsSelectionIndicator = YES;
-            
-            [self.actionSheet addSubview:pickerView];
-            
-            UISegmentedControl* button = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Done",nil]];
-            button.tintColor = [UIColor grayColor];
-            [button setSegmentedControlStyle:UISegmentedControlStyleBar];
-            [button setFrame:CGRectMake(250, 10, 50,30 )];
-            [button addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
-            [self.actionSheet addSubview:button];
-            [self.actionSheet showInView:self.view];
-            [self.actionSheet setBounds:CGRectMake(0, 0, 320,300)];
-            [self.actionSheet setBackgroundColor:[UIColor whiteColor]];
-            
-        }
-    }
-    isTakeImage = NO;
-}
 #pragma mark - Tool Methods
 - (void)addPhoto
 {
-    isTakeImage = NO;
     UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
     imagePickerController.navigationBar.tintColor = [UIColor colorWithRed:72.0/255.0 green:106.0/255.0 blue:154.0/255.0 alpha:1.0];
 	imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -739,7 +679,6 @@
                                               otherButtonTitles:@"好", nil];
         [alert show];
     }else{
-        isTakeImage = YES;
         UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
         imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
         imagePickerController.delegate = self;
@@ -793,21 +732,13 @@
        
         UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
         sendImage = image;
-        
-        if (isTakeImage) {
-            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"Do you want to set a time for the picture?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
-            view.delegate = self;
-            [view show];
-        
-        }else{
-            [self sendPhoto:image];
-        }
+        [self sendPhoto:image withTime:@"0s"];
         [picker dismissViewControllerAnimated:YES completion:NULL];
-       /*ImageViewController * imageview = [[ImageViewController alloc]init];
-        imageview.image = image;
-        [imageview setPickerController:picker];
-        [picker  presentViewController:imageview animated:YES completion:NULL];
-        [picker dismissViewControllerAnimated:YES completion:NULL];*/
+//       ImageViewController * imageview = [[ImageViewController alloc]init];
+//        imageview.image = image;
+//        [imageview setPickerController:picker];
+//        [picker  presentViewController:imageview animated:YES completion:NULL];
+//        [picker dismissViewControllerAnimated:YES completion:NULL];
         
 
     }else{
@@ -911,9 +842,8 @@
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
 }
--(void)sendImages:(UIImage *)image{
-    NSLog(@"eeee");
-    [self sendPhoto:image];
+-(void)sendImages:(UIImage *)image withTime:(NSString *)time{
+    [self sendPhoto:image withTime:time];
 }
 - (void)didReceiveMemoryWarning
 {

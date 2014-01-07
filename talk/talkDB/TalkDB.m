@@ -131,13 +131,18 @@
                                 bdata.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:bdata];
                         }else if ([key isEqualToString:@"photo"]) {
-                    
-                            NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];;
+                            NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];
+                            /*NSString * time = [chatDic objectForKey:@"time"];
+                            NSBubbleData * bubbledata;
+                            if ([time isEqualToString:@"0s"])
+                                bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+                            else
+                                bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time date:[NSDate dateWithTimeIntervalSinceNow:0] withType:BubbleTypeMine];*/
                             NSBubbleData *bdata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeMine];
                             if(myData)
                                 bdata.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:bdata];
-                        }else  {
+                        }else if ([key isEqualToString:@"voice"]){
                             NSError * err = nil;
                             NSString * time = [chatDic objectForKey:@"time"];
                             NSString * dataPath = [chatDic objectForKey:@"audiodata"];
@@ -170,14 +175,20 @@
                                 bdata.avatar = [UIImage imageWithData:otherData];
                             [dataArray addObject:bdata];
                         }else if ([key isEqualToString:@"photo"]) {
-                            
-                            NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];;
+                            NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];
+                            /*NSString * time = [chatDic objectForKey:@"time"];
+                            NSBubbleData * bubbledata;
+                            if ([time isEqualToString:@"0s"])
+                                bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+                            else
+                                bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time date:[NSDate dateWithTimeIntervalSinceNow:0] withType:BubbleTypeSomeoneElse];*/
                             NSBubbleData *bdata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeSomeoneElse];
-
+                            
                             if(otherData)
                                 bdata.avatar = [UIImage imageWithData:otherData];
                             [dataArray addObject:bdata];
-                        }else  {
+
+                        }else if ([key isEqualToString:@"voice"]) {
                             NSError * err = nil;
                             NSString * time = [chatDic objectForKey:@"time"];
                             NSString * dataPath = [chatDic objectForKey:@"audiodata"];
@@ -188,6 +199,7 @@
                             [dataArray addObject:bubble];
                             break;
                         }
+                        
                 
                     }
                 }

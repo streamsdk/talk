@@ -50,7 +50,7 @@
     
     AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:videoPath options:nil];
     NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
-    NSString*  _mp4Quality = AVAssetExportPresetHighestQuality;
+    NSString*  _mp4Quality = AVAssetExportPresetLowQuality;
     if ([compatiblePresets containsObject:_mp4Quality])
         
     {
@@ -142,6 +142,8 @@
 
 - (void) convertFinish
 {
+//    NSInteger size = [self getFileSize:_mp4Path];
+//    CGFloat f = [self getVideoDuration:videoPath];
     MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:videoPath];
     player.shouldAutoplay = NO;
     NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
