@@ -33,6 +33,7 @@
 #import "AudioHandler.h"
 #import "HandlerUserIdAndDateFormater.h"
 #import "ImageViewController.h"
+#import "DisappearImageController.h"
 
 #define BUTTON_TAG 20000
 #define TOOLBARTAG		200
@@ -144,7 +145,6 @@
     
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
-    NSLog(@"");
 }
 
 - (void)viewDidLoad
@@ -215,7 +215,7 @@
     return [bubbleData objectAtIndex:row];
 }
 
--(void)getFiles:(NSData *)data withFromID:(NSString *)fromID withBody:(NSString *)body{
+-(void)getFiles:(NSData *)data withFromID:(NSString *)fromID withBody:(NSString *)body withPath:(NSString *)path{
     
     ImageCache *imageCache = [ImageCache sharedObject];
     HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
@@ -228,6 +228,7 @@
     NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
     otherData = [imageCache getImage:pImageId2];
     
+    
     NSData *jsonData = [body dataUsingEncoding:NSUTF8StringEncoding];
     JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
     NSDictionary *json = [decoder objectWithData:jsonData];
@@ -235,7 +236,7 @@
      NSString * time = [json objectForKey:@"duration"];
     if ([type isEqualToString:@"photo"]) {
         [photoHandler setController:self];
-        [photoHandler receiveFile:data forBubbleDataArray:bubbleData withTime:time forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+        [photoHandler receiveFile:data withPath:path forBubbleDataArray:bubbleData withTime:time forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
         
     }else if ([type isEqualToString:@"video"]){
         [videoHandler setController:self];
@@ -298,22 +299,22 @@
 }
 -(void) sendPhoto :(UIImage *)image withTime:(NSString *)time{
     [self dismissKeyBoard];
-    /*ImageCache *imageCache = [ImageCache sharedObject];
+    ImageCache *imageCache = [ImageCache sharedObject];
     
     HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
     NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[handler getUserID]];
     NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
     myData = [imageCache getImage:pImageId];
     NSString *sendToID =[imageCache getFriendID];
-    NSMutableArray * data = [[NSMutableArray alloc]init];
+    NSMutableArray * dataArray = [[NSMutableArray alloc]init];
     TalkDB * talk =[[TalkDB alloc]init];
-    data = [talk readInitDB:[handler getUserID] withOtherID:sendToID];
-    bubbleData = data;
+    dataArray = [talk readInitDB:[handler getUserID] withOtherID:sendToID];
+    bubbleData = dataArray;
     for (NSBubbleData * data in bubbleData) {
         data.delegate = self;
-    }*/
-    ImageCache *imageCache = [ImageCache sharedObject];
-    NSString *sendToID =[imageCache getFriendID];
+    }
+    /*ImageCache *imageCache = [ImageCache sharedObject];
+    NSString *sendToID =[imageCache getFriendID];*/
     if (sendToID) {
         [photoHandler setController:self];
         [photoHandler sendPhoto:image forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID withTime:time];
@@ -728,20 +729,21 @@
 #pragma mark - UIImagePickerControllerDelegate
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    
     if ([[info objectForKey:UIImagePickerControllerMediaType] isEqualToString:(NSString*)kUTTypeImage]) {
        
         UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
-        sendImage = image;
+        /*sendImage = image;
         [self sendPhoto:image withTime:@"0s"];
+        [picker dismissViewControllerAnimated:YES completion:NULL];*/
+       
+        ImageViewController * imageview = [[ImageViewController alloc]init];
+        imageview.image = image;
+        [imageview setPickerController:picker];
+        [picker  presentViewController:imageview animated:YES completion:NULL];
         [picker dismissViewControllerAnimated:YES completion:NULL];
-//       ImageViewController * imageview = [[ImageViewController alloc]init];
-//        imageview.image = image;
-//        [imageview setPickerController:picker];
-//        [picker  presentViewController:imageview animated:YES completion:NULL];
-//        [picker dismissViewControllerAnimated:YES completion:NULL];
         
-
-    }else{
+        }else{
         videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
         NSString *tempFilePath = [videoPath path];
         [picker dismissViewControllerAnimated:YES completion:NULL];
@@ -799,15 +801,6 @@
     }
     if (buttonTag == 2) {
         [self addVideo];
-//        UIActionSheet *actionsheet = [[UIActionSheet alloc]
-//                                      initWithTitle:nil
-//                                      delegate:self
-//                                      cancelButtonTitle:@"取消"
-//                                      destructiveButtonTitle:nil
-//                                      otherButtonTitles:@"Video", @"Local Video",nil];
-//        actionsheet.delegate = self;
-//        actionsheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-//        [actionsheet showInView:self.view];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
         
@@ -836,6 +829,16 @@
     MPMoviePlayerViewController* pView = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
     [self presentViewController:pView animated:YES completion:NULL];
  
+}
+-(void)disappearImage:(UIImage *)image withDissapearTime:(NSString *)time withDissapearPath:(NSString *)path withSendOrReceiveTime:(NSDate *)date{
+    DisappearImageController * disappear = [[DisappearImageController alloc]init];
+    disappear.disappearImage = image;
+    disappear.disappearTime = time;
+    disappear.disappearPath = path;
+    disappear.date = date;
+    disappear.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:disappear animated:YES completion:nil];
+
 }
 -(void)reloadTable{
     

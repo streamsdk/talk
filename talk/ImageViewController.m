@@ -97,7 +97,7 @@
 }
 -(void) sendImageClicked {
     [self setImageSendProtocol:mainVC];
-    [imageSendProtocol sendImages:image withTime:time];
+    [imageSendProtocol sendImages:image withTime:time ];
     [self dismissViewControllerAnimated:YES completion:^{
         [pickerController dismissViewControllerAnimated:YES completion:NULL];
         NSLog(@"back");

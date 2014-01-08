@@ -132,17 +132,17 @@
                             [dataArray addObject:bdata];
                         }else if ([key isEqualToString:@"photo"]) {
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];
-                            /*NSString * time = [chatDic objectForKey:@"time"];
+                            NSString * time = [chatDic objectForKey:@"time"];
                             NSBubbleData * bubbledata;
                             if ([time isEqualToString:@"0s"])
-                                bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+                                bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeMine];
                             else
-                                bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time date:[NSDate dateWithTimeIntervalSinceNow:0] withType:BubbleTypeMine];*/
-                            NSBubbleData *bdata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeMine];
+                                bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time withPath:[chatDic objectForKey:@"photo"]date:date withType:BubbleTypeMine];;
+//                                NSBubbleData *bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeMine]
                             if(myData)
-                                bdata.avatar = [UIImage imageWithData:myData];
-                            [dataArray addObject:bdata];
-                        }else if ([key isEqualToString:@"voice"]){
+                                bubbledata.avatar = [UIImage imageWithData:myData];
+                            [dataArray addObject:bubbledata];
+                        }else if ([key isEqualToString:@"audiodata"]){
                             NSError * err = nil;
                             NSString * time = [chatDic objectForKey:@"time"];
                             NSString * dataPath = [chatDic objectForKey:@"audiodata"];
@@ -151,7 +151,6 @@
                             if (myData)
                                 bubble.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:bubble];
-                            break;
                         }
 
                     }
@@ -176,19 +175,19 @@
                             [dataArray addObject:bdata];
                         }else if ([key isEqualToString:@"photo"]) {
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];
-                            /*NSString * time = [chatDic objectForKey:@"time"];
+                            NSString * time = [chatDic objectForKey:@"time"];
                             NSBubbleData * bubbledata;
                             if ([time isEqualToString:@"0s"])
-                                bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+                                bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeSomeoneElse];
                             else
-                                bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time date:[NSDate dateWithTimeIntervalSinceNow:0] withType:BubbleTypeSomeoneElse];*/
-                            NSBubbleData *bdata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeSomeoneElse];
+                                bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time withPath:[chatDic objectForKey:@"photo"] date:date withType:BubbleTypeSomeoneElse];
+                            /*NSBubbleData *bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeSomeoneElse];*/
                             
                             if(otherData)
-                                bdata.avatar = [UIImage imageWithData:otherData];
-                            [dataArray addObject:bdata];
+                                bubbledata.avatar = [UIImage imageWithData:otherData];
+                            [dataArray addObject:bubbledata];
 
-                        }else if ([key isEqualToString:@"voice"]) {
+                        }else if ([key isEqualToString:@"audiodata"]) {
                             NSError * err = nil;
                             NSString * time = [chatDic objectForKey:@"time"];
                             NSString * dataPath = [chatDic objectForKey:@"audiodata"];
@@ -209,11 +208,33 @@
     }
     sqlite3_finalize(statement);
     sqlite3_close(database);
-
     
     return dataArray;
 }
-
+-(void) updateDB:(NSDate*)date withContent:(NSString *)content{
+    sqlite3 *database;
+    if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
+        sqlite3_close(database);
+        NSAssert(0, @"Failed to open database");
+    }
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString * time = [dateFormatter stringFromDate:date];
+    NSString * update = [NSString stringWithFormat:@"UPDATE FILEID SET CONTENT='%@' WHERE TIME='%@'",content,time];
+    
+    char *errorMsg = NULL;
+    sqlite3_stmt *stmt;
+    if (sqlite3_prepare_v2(database, [update UTF8String], -1, &stmt, nil) == SQLITE_OK) {
+        
+        sqlite3_bind_text(stmt, 1, [content UTF8String], -1, NULL);
+        
+    }
+    if (sqlite3_step(stmt) != SQLITE_DONE)
+        NSLog( @"Error updating table: %s", errorMsg);
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+    sqlite3_close(database);
+}
 -(NSString*)getCacheDirectory
 {
     return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];

@@ -19,4 +19,6 @@
 
 -(NSMutableArray *) readInitDB :(NSString *) _userID withOtherID:(NSString *)_friendID;
 
+-(void) updateDB:(NSDate*)date withContent:(NSString *)content;
+
 @end

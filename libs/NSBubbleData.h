@@ -30,7 +30,11 @@ typedef enum _NSBubbleType
 @property (nonatomic,strong) NSData * audioData;
 @property (nonatomic,strong) NSData * videoData;
 @property (nonatomic,retain) NSString * _videoPath;
-@property (nonatomic,retain) UIImage *_image;
+@property (nonatomic,strong) UIImage *_image;
+@property (nonatomic,strong) UIImage *disappearImage;
+@property (nonatomic,retain) NSString *disappearTime;
+@property (nonatomic,retain) NSString *disappearPath;
+@property (nonatomic,retain) NSDate *senddate;
 @property (assign,nonatomic) id <PlayerDelegate> delegate;
 
 //message
@@ -42,8 +46,8 @@ typedef enum _NSBubbleType
 + (id)dataWithImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type;
 
 //have time image
--(id) initWithImage:(UIImage *)image withImageTime:(NSString *)time date:(NSDate *)date withType:(NSBubbleType) type;
-+(id) dataWithImage:(UIImage *)image withImageTime:(NSString *)time date:(NSDate *)date withType:(NSBubbleType) type;
+-(id) initWithImage:(UIImage *)image withImageTime:(NSString *)time withPath:(NSString *)path date:(NSDate *)date withType:(NSBubbleType) type;
++(id) dataWithImage:(UIImage *)image withImageTime:(NSString *)time withPath:(NSString *)path date:(NSDate *)date withType:(NSBubbleType) type;
 
 
 

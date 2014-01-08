@@ -12,6 +12,6 @@
 
 -(void) getMessages:(NSString *)messages withFromID:(NSString *)fromID ;
 
--(void) getFiles:(NSData *)data withFromID:(NSString *)fromID withBody:(NSString *)body;
+-(void) getFiles:(NSData *)data withFromID:(NSString *)fromID withBody:(NSString *)body withPath:(NSString *)path;
 
 @end

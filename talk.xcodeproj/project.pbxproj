@@ -194,6 +194,7 @@
 		0E2E5EB718726D230044DC4C /* message_count@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E2E5EB518726D230044DC4C /* message_count@2x.png */; };
 		0E3A74F218740C9D00A9020D /* HandlerFirendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3A74F118740C9D00A9020D /* HandlerFirendsViewController.m */; };
 		0E3A74F518740CBA00A9020D /* SliderSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3A74F418740CBA00A9020D /* SliderSwitch.m */; };
+		0E4B13D8187CF15F0070752B /* DisappearImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4B13D7187CF15F0070752B /* DisappearImageController.m */; };
 		0E8A4F33182B7F8000705C1F /* CreateUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F32182B7F8000705C1F /* CreateUI.m */; };
 		0E8A4F36182B7FE300705C1F /* TalkDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F35182B7FE300705C1F /* TalkDB.m */; };
 		0E8A4F38182B802600705C1F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8A4F37182B802600705C1F /* libsqlite3.dylib */; };
@@ -643,6 +644,8 @@
 		0E3A74F118740C9D00A9020D /* HandlerFirendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HandlerFirendsViewController.m; path = "add&search/HandlerFirendsViewController.m"; sourceTree = "<group>"; };
 		0E3A74F318740CBA00A9020D /* SliderSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SliderSwitch.h; path = "add&search/SliderSwitch.h"; sourceTree = "<group>"; };
 		0E3A74F418740CBA00A9020D /* SliderSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SliderSwitch.m; path = "add&search/SliderSwitch.m"; sourceTree = "<group>"; };
+		0E4B13D6187CF15F0070752B /* DisappearImageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DisappearImageController.h; path = Classes/DisappearImageController.h; sourceTree = "<group>"; };
+		0E4B13D7187CF15F0070752B /* DisappearImageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DisappearImageController.m; path = Classes/DisappearImageController.m; sourceTree = "<group>"; };
 		0E8A4F31182B7F7100705C1F /* CreateUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreateUI.h; path = createUI/CreateUI.h; sourceTree = "<group>"; };
 		0E8A4F32182B7F8000705C1F /* CreateUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CreateUI.m; path = createUI/CreateUI.m; sourceTree = "<group>"; };
 		0E8A4F34182B7FE300705C1F /* TalkDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TalkDB.h; path = talkDB/TalkDB.h; sourceTree = "<group>"; };
@@ -874,6 +877,7 @@
 				0EF5A015185585C900B4EDE7 /* login&signUp */,
 				0EF79DFC18583A9E00EB8A64 /* setVC */,
 				0EF79DF018580D0E00EB8A64 /* IconSort */,
+				0E4B13D9187CF1650070752B /* imageContoller */,
 				0E2918D11859579000AA21B2 /* friendsSort */,
 				0EE95194185EA47D003F4638 /* search */,
 				0E3A74EF18740C2300A9020D /* add&searchFriends */,
@@ -1713,9 +1717,6 @@
 		0E2918D11859579000AA21B2 /* friendsSort */ = {
 			isa = PBXGroup;
 			children = (
-				0EF14D2C1876B8CD008F4AF5 /* ImageViewController.h */,
-				0EF14D2D1876B8CD008F4AF5 /* ImageViewController.m */,
-				0E0EDF4C1877AFAD00477C42 /* ImageSendProtocol.h */,
 				0EE9518E185EA43C003F4638 /* MainController.h */,
 				0EE9518F185EA43C003F4638 /* MainController.m */,
 				0EE951FC185EE9EC003F4638 /* UIImageViewController.h */,
@@ -1747,6 +1748,18 @@
 				0E3A74F418740CBA00A9020D /* SliderSwitch.m */,
 			);
 			name = "add&searchFriends";
+			sourceTree = "<group>";
+		};
+		0E4B13D9187CF1650070752B /* imageContoller */ = {
+			isa = PBXGroup;
+			children = (
+				0EF14D2C1876B8CD008F4AF5 /* ImageViewController.h */,
+				0EF14D2D1876B8CD008F4AF5 /* ImageViewController.m */,
+				0E0EDF4C1877AFAD00477C42 /* ImageSendProtocol.h */,
+				0E4B13D6187CF15F0070752B /* DisappearImageController.h */,
+				0E4B13D7187CF15F0070752B /* DisappearImageController.m */,
+			);
+			name = imageContoller;
 			sourceTree = "<group>";
 		};
 		0E8A4F30182B7EE300705C1F /* talkDB */ = {
@@ -2304,6 +2317,7 @@
 				03D9C07A18145E410039118F /* XMPPvCardTempCoreDataStorageObject.m in Sources */,
 				03D9C05E18145E410039118F /* XMPPRosterMemoryStorage.m in Sources */,
 				03D9BF7B18145E370039118F /* XMPPStream.m in Sources */,
+				0E4B13D8187CF15F0070752B /* DisappearImageController.m in Sources */,
 				0E8A4F33182B7F8000705C1F /* CreateUI.m in Sources */,
 				03D9C0A618145E410039118F /* XMPPMessage+XEP_0308.m in Sources */,
 				03D9C0EB18145E510039118F /* NSString+DDXML.m in Sources */,

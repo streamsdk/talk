@@ -24,6 +24,11 @@
 @synthesize _videoPath;
 @synthesize delegate;
 @synthesize _image;
+@synthesize disappearImage;
+@synthesize disappearTime;
+@synthesize disappearPath;
+@synthesize senddate;
+
 #pragma mark - Lifecycle
 
 #if !__has_feature(objc_arc)
@@ -116,7 +121,11 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 }
 #pragma mark -Custom image view  have time 
 
--(id) initWithImage:(UIImage *)image withImageTime:(NSString *)time date:(NSDate *)date withType:(NSBubbleType) type{
+-(id) initWithImage:(UIImage *)image withImageTime:(NSString *)time withPath:(NSString *)path date:(NSDate *)date withType:(NSBubbleType) type{
+    disappearImage= image;
+    disappearTime = time;
+    disappearPath = path;
+    senddate = date;
     
     NSString * text =@"我抛了一张会消失的图片";
     UIFont *font = [UIFont systemFontOfSize:16.0f];
@@ -129,17 +138,31 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     label.backgroundColor = [UIColor clearColor];
     UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setFrame:CGRectMake(0, size.height, size.width, size.height)];
-    [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     
     button.titleLabel.frame =CGRectMake(0, 0, size.width, size.height*2);
     button.titleLabel.font = [UIFont systemFontOfSize:16.0f];
-    [button setTitle:@"点击查看" forState:UIControlStateNormal];
-    button.contentVerticalAlignment = UIControlContentHorizontalAlignmentLeft;
+    button.contentVerticalAlignment = UIControlContentHorizontalAlignmentRight;
     button.contentEdgeInsets = UIEdgeInsetsMake(0,10, 0, 0);
     
-    UIView * view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, size.width, size.height*2)];
+    UIImageView * view = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, size.width, size.height*2)];
+    view.backgroundColor = [UIColor clearColor];
     [view addSubview:label];
     [view addSubview:button];
+    
+    if ([time isEqualToString:@"-1"]) {
+        [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [button setTitle:@"已取消" forState:UIControlStateNormal];
+        view.userInteractionEnabled = NO;
+
+    }else{
+        view.userInteractionEnabled = YES;
+        [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [button setTitle:@"点击查看" forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(lookImageClicked) forControlEvents:UIControlEventTouchUpInside];
+    }
+
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(lookImageClicked)];
+    [view addGestureRecognizer:tap];
 #if !__has_feature(objc_arc)
     [button autorelease];
     [label autorelease];
@@ -149,11 +172,11 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
     return [self initWithView:view date:date type:type insets:insets];
 }
-+ (id) dataWithImage:(UIImage *)image withImageTime:(NSString *)time date:(NSDate *)date withType:(NSBubbleType) type{
++ (id) dataWithImage:(UIImage *)image withImageTime:(NSString *)time withPath:(NSString *)path date:(NSDate *)date withType:(NSBubbleType) type{
 #if !__has_feature(objc_arc)
-    return [[[NSBubbleData alloc] initWithImage:image withImageTime:time date:date withType:type] autorelease];
+    return [[[NSBubbleData alloc] initWithImage:image withImageTime:time withPath:path date:date withType:type] autorelease];
 #else
-    return [[NSBubbleData alloc] initWithImage:image withImageTime:time date:date withType:type];
+    return [[NSBubbleData alloc] initWithImage:image withImageTime:time withPath:path date:date withType:type];
 #endif
 }
 
@@ -284,6 +307,9 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 -(void) bigToImage {
 
     [delegate bigImage:_image];
+}
+-(void)  lookImageClicked{
+    [delegate  disappearImage:disappearImage withDissapearTime:disappearTime withDissapearPath:disappearPath withSendOrReceiveTime:senddate];
 }
 #pragma mark scaled image
 -(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{

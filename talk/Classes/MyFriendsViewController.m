@@ -302,22 +302,26 @@
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
    
     HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
+    NSString * path;
     if ([type isEqualToString:@"photo"]) {
+        NSString *duration = [json objectForKey:@"duration"];
         NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];
         [data writeToFile:photoPath atomically:YES];
         NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        [friendDict setObject:duration forKey:@"time"];
         [friendDict setObject:photoPath forKey:@"photo"];
         [jsonDic setObject:friendDict forKey:fromID];
+        path = photoPath;
     }else if ([type isEqualToString:@"video"]){
          NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
         
         HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
         NSString * mp4Path = [[handler getPath] stringByAppendingString:@".mp4"];
-        
         [data writeToFile : mp4Path atomically: YES ];
         [handler videoPath:mp4Path];
         [friendDict setObject:mp4Path forKey:@"video"];
         [jsonDic setObject:friendDict forKey:fromID];
+        path = mp4Path;
     }else if ([type isEqualToString:@"voice"]){
         
         NSString *duration = [json objectForKey:@"duration"];
@@ -325,7 +329,7 @@
         HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
         NSString * recordFilePath = [[handler getPath] stringByAppendingString:@".aac"];
         [data writeToFile:recordFilePath atomically:YES];
-        
+        path = recordFilePath;
         [friendsDict setObject:duration forKey:@"time"];
         [friendsDict setObject:recordFilePath forKey:@"audiodata"];
         [jsonDic setObject:friendsDict forKey:fromID];
@@ -337,7 +341,7 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     [db insertDBUserID:userID fromID:fromID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
     
-    [messagesProtocol getFiles:data withFromID:fromID withBody:body];
+    [messagesProtocol getFiles:data withFromID:fromID withBody:body withPath:path];
      [self.tableView reloadData];
 }
 #pragma mark - Table view data source

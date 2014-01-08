@@ -198,5 +198,8 @@
 
     
 }
+-(void)disappearImage:(UIImage *)image withDissapearTime:(NSString *)time withDissapearPath:(NSString *)path withSendOrReceiveTime:(NSDate *)date{
+    NSLog(@"");
+}
 
 @end
