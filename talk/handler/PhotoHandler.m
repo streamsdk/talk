@@ -8,7 +8,7 @@
 
 #import "PhotoHandler.h"
 #import "NSBubbleData.h"
-#import "PlayerDelegate.h"
+//#import "PlayerDelegate.h"
 #import "UIImageViewController.h"
 #import "TalkDB.h"
 #import "STreamXMPP.h"
@@ -16,8 +16,7 @@
 #import "HandlerUserIdAndDateFormater.h"
 #import "DisappearImageController.h"
 
-@interface PhotoHandler() <PlayerDelegate>{}
-
+@interface PhotoHandler()
 
 @end
 
@@ -40,7 +39,7 @@
         if (otherData) {
             bubble.avatar = [UIImage imageWithData:otherData];
         }
-        bubble.delegate = self;
+//        bubble.delegate = self;
         [bubbleData addObject:bubble];
         /*NSBubbleData * bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
         if (otherData)
@@ -76,7 +75,7 @@
     if (myData) {
         bubble.avatar = [UIImage imageWithData:myData];
     }
-     bubble.delegate = self;
+//     bubble.delegate = self;
      [bubbleData addObject:bubble];
     
     [data writeToFile:photoPath atomically:YES];
@@ -115,27 +114,27 @@
     return newImage;
 }
 
--(void)bigImage:(UIImage *)image{
-    UIImageViewController * iView = [[UIImageViewController alloc]init];
-    iView.image = image;
-    iView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [controller presentViewController:iView animated:YES completion:nil];
-}
-
--(void) playerVideo:(NSString *)path{
-    
-    
-}
-
--(void) disappearImage:(UIImage *)image withDissapearTime:(NSString *)time withDissapearPath:(NSString *)path withSendOrReceiveTime:(NSDate *)date{
-    DisappearImageController *disappear = [[DisappearImageController alloc]init];
-    disappear.disappearImage = image;
-    disappear.disappearTime = time;
-    disappear.disappearPath = path;
-    disappear.date = date;
-    disappear.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [controller presentViewController:disappear animated:YES completion:nil];
-}
+//-(void)bigImage:(UIImage *)image{
+//    UIImageViewController * iView = [[UIImageViewController alloc]init];
+//    iView.image = image;
+//    iView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+//    [controller presentViewController:iView animated:YES completion:nil];
+//}
+//
+//-(void) playerVideo:(NSString *)path{
+//    
+//    
+//}
+//
+//-(void) disappearImage:(UIImage *)image withDissapearTime:(NSString *)time withDissapearPath:(NSString *)path withSendOrReceiveTime:(NSDate *)date{
+//    DisappearImageController *disappear = [[DisappearImageController alloc]init];
+//    disappear.disappearImage = image;
+//    disappear.disappearTime = time;
+//    disappear.disappearPath = path;
+//    disappear.date = date;
+//    disappear.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+//    [controller presentViewController:disappear animated:YES completion:nil];
+//}
 
 
 @end

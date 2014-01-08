@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "PlayerDelegate.h"
+//#import "PlayerDelegate.h"
 
-@interface PhotoHandler : NSObject<PlayerDelegate>
+@interface PhotoHandler : NSObject
 
 @property(nonatomic, strong)UIViewController *controller;
 

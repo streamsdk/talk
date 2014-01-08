@@ -41,7 +41,7 @@
 #define BIG_IMG_WIDTH  300.0
 #define BIG_IMG_HEIGHT 340.0
 
-@interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate,reloadTableDeleage, ImageSendProtocol,GetAllMessagesProtocol>
+@interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate,reloadTableDeleage>
 {
     NSMutableArray *bubbleData;
     CreateUI * createUI;
@@ -245,6 +245,8 @@
     }else if ([type isEqualToString:@"voice"]){
         [audioHandler receiveAudioFile:data withBody:time forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
     }
+    NSBubbleData * bubble = [bubbleData lastObject];
+    bubble.delegate = self;
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
     
@@ -331,10 +333,10 @@
         [videoHandler setController:self];
         [videoHandler setVideoPath:videoPath];
         [videoHandler sendVideoforBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
-        videoHandler.delegate = self;
-        
+         videoHandler.delegate = self;
     }
-    
+    NSBubbleData * bubble = [bubbleData lastObject];
+    bubble.delegate = self;
     [self dismissKeyBoard];
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
@@ -345,6 +347,8 @@
     NSString *sendToID =[imageCache getFriendID];
     if (self.voice.recordTime >= 0.5f) {
         [audioHandler sendAudio:voice forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
+        NSBubbleData * bubble = [bubbleData lastObject];
+        bubble.delegate = self;
         [bubbleTableView reloadData];
         [self scrollBubbleViewToBottomAnimated:YES];
         

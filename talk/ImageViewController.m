@@ -39,11 +39,10 @@
     self.navigationController.navigationBarHidden = YES;
     [self.view setBackgroundColor:[UIColor blackColor]];
     
-    time = @"0s";
-    timeArray = [[NSMutableArray alloc]initWithObjects:@"1s",@"2s",@"3s",@"4s",@"5s",@"6s",@"7s",@"8s",@"9s",@"10s", nil];
+    timeArray = [[NSMutableArray alloc]initWithObjects:@"3s",@"4s",@"5s",@"6s",@"7s",@"8s",@"9s",@"10s", @"11s",@"12s",@"13s",@"14s",@"15s",nil];
     
     mainVC = [[MainController alloc]init];
-    
+    time = @"0s";
     UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [backButton setFrame:CGRectMake(10, 26, 50, 26)];
     [[backButton layer] setBorderColor:[[UIColor blueColor] CGColor]];
@@ -98,6 +97,7 @@
 -(void) sendImageClicked {
     [self setImageSendProtocol:mainVC];
     [imageSendProtocol sendImages:image withTime:time ];
+    
     [self dismissViewControllerAnimated:YES completion:^{
         [pickerController dismissViewControllerAnimated:YES completion:NULL];
         NSLog(@"back");

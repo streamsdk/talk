@@ -7,14 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "PlayerDelegate.h"
+//#import "PlayerDelegate.h"
 
 @protocol reloadTableDeleage <NSObject>
 
 -(void)reloadTable;
 
 @end
-@interface VideoHandler : NSObject <PlayerDelegate>
+@interface VideoHandler : NSObject
 {
    
     NSString* _mp4Path;

@@ -15,7 +15,9 @@
 #define IMAGE_TAG 1000
 #define BUTTON_TAG 2000
 @interface DisappearImageController ()
-
+{
+    NSTimer *timer;
+}
 @end
 
 @implementation DisappearImageController
@@ -47,36 +49,37 @@
     [button setBackgroundImage:[UIImage imageNamed:@"message_count.png"] forState:UIControlStateNormal];
     [button setTitle:disappearTime forState:UIControlStateNormal];
     [imageView addSubview:button];
-    NSTimeInterval time=[disappearTime doubleValue];
-    NSTimer *timer;
-    timer = [NSTimer scheduledTimerWithTimeInterval:time target:self selector:@selector(doTimer) userInfo:nil repeats:NO];
+    
+    [timer setFireDate:[NSDate distantPast]];
+    timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(doTimer) userInfo:nil repeats:YES];
 }
 -(void)doTimer
 {
-    ImageCache * cache = [ImageCache  sharedObject];
-    TalkDB * talkDB = [[TalkDB alloc]init];
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
-    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-    [friendDict setObject:@"-1" forKey:@"time"];
-    [friendDict setObject:disappearPath forKey:@"photo"];
-    [jsonDic setObject:friendDict forKey:[cache getFriendID]];
-    NSString  *str = [jsonDic JSONString];
-    [talkDB updateDB:date withContent:str];
-    
+   
     UIButton *button = (UIButton *)[self.view viewWithTag:BUTTON_TAG];
-    NSTimeInterval time=[disappearTime doubleValue];
-    while (time) {
-        disappearTime = [NSString stringWithFormat:@"%f",time];
-        [button setTitle:disappearTime forState:UIControlStateNormal];
-        time--;
-    }
-    [self dismissViewControllerAnimated:YES completion:^{
+    int  time=[disappearTime intValue];
+    time--;
+    disappearTime = [NSString stringWithFormat:@"%d",time];
+    [button setTitle:disappearTime forState:UIControlStateNormal];
+    if (time==0) {
+        ImageCache * cache = [ImageCache  sharedObject];
+        TalkDB * talkDB = [[TalkDB alloc]init];
+        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        [friendDict setObject:@"-1" forKey:@"time"];
+        [friendDict setObject:disappearPath forKey:@"photo"];
+        [jsonDic setObject:friendDict forKey:[cache getFriendID]];
+        NSString  *str = [jsonDic JSONString];
+        [talkDB updateDB:date withContent:str];
+        [timer setFireDate:[NSDate distantFuture]];
+        [self dismissViewControllerAnimated:YES completion:^{
         
         NSLog(@"back");
         
-    }];
+        }];
     
-    
+    }
+   
 }
 
 - (void)didReceiveMemoryWarning

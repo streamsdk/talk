@@ -110,7 +110,8 @@
         textViewBackgroundImage.contentMode    = UIViewContentModeScaleToFill;
 //        UIEdgeInsets insets = UIEdgeInsetsMake(0.5, 0.5, 0, 0);
 //        [textViewBackgroundImage setImage:[[UIImage imageNamed:@"keyBoardBack"] resizableImageWithCapInsets:insets]];
-        textViewBackgroundImage.contentStretch = CGRectMake(0.5, 0.5, 0, 0);
+//        textViewBackgroundImage.contentStretch = CGRectMake(0.5, 0.5, 0, 0);
+        
         [self addSubview:textViewBackgroundImage];
         [self addSubview:internalTextView];
 
