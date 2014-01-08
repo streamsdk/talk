@@ -50,12 +50,19 @@
     NSTimeInterval time=[disappearTime doubleValue];
     NSTimer *timer;
     timer = [NSTimer scheduledTimerWithTimeInterval:time target:self selector:@selector(doTimer) userInfo:nil repeats:NO];
-
-    //实现时候将label移除
-    
 }
 -(void)doTimer
 {
+    ImageCache * cache = [ImageCache  sharedObject];
+    TalkDB * talkDB = [[TalkDB alloc]init];
+    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+    [friendDict setObject:@"-1" forKey:@"time"];
+    [friendDict setObject:disappearPath forKey:@"photo"];
+    [jsonDic setObject:friendDict forKey:[cache getFriendID]];
+    NSString  *str = [jsonDic JSONString];
+    [talkDB updateDB:date withContent:str];
+    
     UIButton *button = (UIButton *)[self.view viewWithTag:BUTTON_TAG];
     NSTimeInterval time=[disappearTime doubleValue];
     while (time) {
@@ -69,15 +76,7 @@
         
     }];
     
-    ImageCache * cache = [ImageCache  sharedObject];
-    TalkDB * talkDB = [[TalkDB alloc]init];
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
-    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-    [friendDict setObject:@"-1" forKey:@"time"];
-    [friendDict setObject:disappearPath forKey:@"photo"];
-    [jsonDic setObject:friendDict forKey:[cache getFriendID]];
-    NSString  *str = [jsonDic JSONString];
-    [talkDB updateDB:date withContent:str];
+    
 }
 
 - (void)didReceiveMemoryWarning
