@@ -39,10 +39,9 @@
     self.navigationController.navigationBarHidden = YES;
     [self.view setBackgroundColor:[UIColor blackColor]];
     
-    timeArray = [[NSMutableArray alloc]initWithObjects:@"3s",@"4s",@"5s",@"6s",@"7s",@"8s",@"9s",@"10s", @"11s",@"12s",@"13s",@"14s",@"15s",nil];
+    timeArray = [[NSMutableArray alloc]initWithObjects:@"",@"永久保存",@"3s",@"4s",@"5s",@"6s",@"7s",@"8s",@"9s",@"10s", @"11s",@"12s",@"13s",@"14s",@"15s",nil];
     
     mainVC = [[MainController alloc]init];
-    time = @"0s";
     UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [backButton setFrame:CGRectMake(10, 26, 50, 26)];
     [[backButton layer] setBorderColor:[[UIColor blueColor] CGColor]];
@@ -75,7 +74,7 @@
     UIButton * clockButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [clockButton setFrame:CGRectMake(10, self.view.frame.size.height-49, 42, 25)];
     [clockButton setBackgroundImage:[UIImage imageNamed:@"clock.png"] forState:UIControlStateNormal];
-    [clockButton setTitle:@"0s" forState:UIControlStateNormal];
+//    [clockButton setTitle:@"0s" forState:UIControlStateNormal];
     clockButton .tag = CLOCKBUTTON_TAG;
     clockButton.titleLabel.font = [UIFont systemFontOfSize:12.0f];
     [clockButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -126,9 +125,14 @@
 }
 -(void) pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    time = [timeArray objectAtIndex:row];
     UIButton * button = (UIButton *)[self.view viewWithTag:CLOCKBUTTON_TAG];
-    [button setTitle:time forState:UIControlStateNormal] ;
+    if (row<2) {
+        [button setTitle:@"" forState:UIControlStateNormal] ;
+    }else{
+        time = [timeArray objectAtIndex:row];
+        
+        [button setTitle:time forState:UIControlStateNormal] ;
+    }
 }
 -(void) clockClicled {
     actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];

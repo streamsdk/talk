@@ -134,7 +134,7 @@
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];
                             NSString * time = [chatDic objectForKey:@"time"];
                             NSBubbleData * bubbledata;
-                            if ([time isEqualToString:@"0s"])
+                            if (!time)
                                 bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeMine];
                             else
                                 bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time withPath:[chatDic objectForKey:@"photo"]date:date withType:BubbleTypeMine];;
@@ -177,7 +177,7 @@
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];
                             NSString * time = [chatDic objectForKey:@"time"];
                             NSBubbleData * bubbledata;
-                            if ([time isEqualToString:@"0s"])
+                            if (!time)
                                 bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeSomeoneElse];
                             else
                                 bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time withPath:[chatDic objectForKey:@"photo"] date:date withType:BubbleTypeSomeoneElse];

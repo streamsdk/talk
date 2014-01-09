@@ -31,10 +31,11 @@
     if ([fromID isEqualToString:sendID]) {
         UIImage * image = [UIImage imageWithData:data];
         NSBubbleData * bubble;
-       if ([time isEqualToString:@"0s"])
+        if (time) {
+             bubble = [NSBubbleData dataWithImage:image withImageTime:time withPath:path date:[NSDate dateWithTimeIntervalSinceNow:0] withType:BubbleTypeSomeoneElse];
+        }else{
             bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
-        else
-            bubble = [NSBubbleData dataWithImage:image withImageTime:time withPath:path date:[NSDate dateWithTimeIntervalSinceNow:0] withType:BubbleTypeSomeoneElse];
+        }
         if (otherData) {
             bubble.avatar = [UIImage imageWithData:otherData];
         }
@@ -45,29 +46,27 @@
 
 -(void) sendPhoto :(UIImage *)image forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID withTime:(NSString *)time{
     
-    
-    NSData * data = UIImageJPEGRepresentation(image, 0.7);
     UIImage * _image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(image.size.width*0.7, image.size.height*0.7)];
-    
+     NSData * data = UIImageJPEGRepresentation(_image, 0.7);
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     
     NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];
     
     NSBubbleData * bubble;
-    if ([time isEqualToString:@"0s"])
-        bubble = [NSBubbleData dataWithImage:_image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
-    else
+    if (time)
         bubble = [NSBubbleData dataWithImage:image withImageTime:time withPath:photoPath date:[NSDate dateWithTimeIntervalSinceNow:0] withType:BubbleTypeMine];
+    else
+        bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
     if (myData) {
         bubble.avatar = [UIImage imageWithData:myData];
     }
-//     bubble.delegate = self;
      [bubbleData addObject:bubble];
     
     [data writeToFile:photoPath atomically:YES];
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-    [friendDict setObject:time forKey:@"time"];
+    if (time)
+        [friendDict setObject:time forKey:@"time"];
     [friendDict setObject:photoPath forKey:@"photo"];
     [jsonDic setObject:friendDict forKey:sendID];
     NSString  *str = [jsonDic JSONString];
@@ -79,7 +78,8 @@
     
     
     NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
-    [bodyDic setObject:time forKey:@"duration"];
+    if (time)
+        [bodyDic setObject:time forKey:@"duration"];
     [bodyDic setObject:@"photo" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
     

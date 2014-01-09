@@ -308,7 +308,9 @@
         NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];
         [data writeToFile:photoPath atomically:YES];
         NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-        [friendDict setObject:duration forKey:@"time"];
+        if (duration) {
+            [friendDict setObject:duration forKey:@"time"];
+        }
         [friendDict setObject:photoPath forKey:@"photo"];
         [jsonDic setObject:friendDict forKey:fromID];
         path = photoPath;
