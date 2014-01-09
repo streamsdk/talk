@@ -8,13 +8,19 @@
 
 #import "ImageViewController.h"
 #import "MainController.h"
+#import "CreateUI.h"
 
 #define CLOCKBUTTON_TAG 10000
-
+#define UNDO_TAG 1000
+#define REDO_TAG 2000
+#define DONE_TAG 3000
+#define BRUSH_TAG 4000
+#define USERPHOTO_TAG 5000
 @interface ImageViewController ()
 {
     NSString * time;
     MainController * mainVC;
+    CreateUI * creat;
 }
 @end
 
@@ -22,7 +28,7 @@
 @synthesize image;
 @synthesize imageSendProtocol;
 @synthesize pickerController;
-
+@synthesize drawView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -38,53 +44,107 @@
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
     [self.view setBackgroundColor:[UIColor blackColor]];
-    
     timeArray = [[NSMutableArray alloc]initWithObjects:@"",@"永久保存",@"3s",@"4s",@"5s",@"6s",@"7s",@"8s",@"9s",@"10s", @"11s",@"12s",@"13s",@"14s",@"15s",nil];
     
     mainVC = [[MainController alloc]init];
-    UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backButton setFrame:CGRectMake(10, 26, 50, 26)];
-    [[backButton layer] setBorderColor:[[UIColor blueColor] CGColor]];
-    [[backButton layer] setBorderWidth:1];
-    [[backButton layer] setCornerRadius:4];
-    [backButton setTitle:@"Back" forState:UIControlStateNormal];
-    backButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
-    [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
+    creat = [[CreateUI alloc]init];
+    
+    UIButton * backButton = [creat setButtonFrame:CGRectMake(10, 26, 50, 26) withTitle:@"Back" withImage:nil];
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton * brushButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [brushButton setFrame:CGRectMake(self.view.frame.size.width-50, 26, 30, 26)];
-    [brushButton setImage:[UIImage imageNamed:@"brush.png"]forState:UIControlStateNormal];
+    UIButton * brushButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-50, 26, 30, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"brush.png"]];
     [brushButton addTarget:self action:@selector(paintbrushClicked) forControlEvents:UIControlEventTouchUpInside];
+    brushButton.tag = BRUSH_TAG;
     
-    UIImageView * imageview = [[UIImageView alloc]initWithFrame:CGRectMake(20, 100, self.view.frame.size.width -40, 300)];
-    [imageview setImage:image];
-    [self.view addSubview:imageview];
+    UIButton * undoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-100, 26, 30, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"undo.png"]];
+    undoButton.hidden =YES;
+    undoButton.tag=UNDO_TAG;
+    [undoButton addTarget:self action:@selector(undoClicked) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton * useButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [useButton setFrame:CGRectMake(self.view.frame.size.width-80, self.view.frame.size.height-55, 70, 26)];
-    [[useButton layer] setBorderColor:[[UIColor blueColor] CGColor]];
-    [[useButton layer] setBorderWidth:1];
-    [[useButton layer] setCornerRadius:4];
-    [useButton setTitle:@"usePhoto" forState:UIControlStateNormal];
-     useButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
-    [useButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    UIButton * redoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-50, 26, 30, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"redo.png"]];
+    redoButton.hidden = YES;
+    redoButton.tag=REDO_TAG;
+    [redoButton addTarget:self action:@selector(redoClicked) forControlEvents:UIControlEventTouchUpInside];
+    
+    drawView = [[MyView alloc]initWithFrame:CGRectMake(20, 100, self.view.frame.size.width -40, 300)];
+    drawView.userInteractionEnabled = NO;
+    UIImage * newImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(self.view.frame.size.width -40, 300)];
+    [drawView setBackgroundColor:[UIColor colorWithPatternImage:newImage]];
+    [self.view addSubview:drawView];
+    [self.view sendSubviewToBack:drawView];
+    
+    UIButton * useButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-80, self.view.frame.size.height-55, 70, 26) withTitle:@"usePhoto" withImage:nil];
     [useButton addTarget:self action:@selector(sendImageClicked) forControlEvents:UIControlEventTouchUpInside];
+    useButton.tag = USERPHOTO_TAG;
+    
+    UIButton * doneButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-80, self.view.frame.size.height-55, 70, 26) withTitle:@"Done" withImage:nil];
+    [doneButton addTarget:self action:@selector(doneClicked) forControlEvents:UIControlEventTouchUpInside];
+    doneButton.tag = DONE_TAG;
+    doneButton.hidden = YES;
     
     UIButton * clockButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [clockButton setFrame:CGRectMake(10, self.view.frame.size.height-49, 42, 25)];
     [clockButton setBackgroundImage:[UIImage imageNamed:@"clock.png"] forState:UIControlStateNormal];
-//    [clockButton setTitle:@"0s" forState:UIControlStateNormal];
     clockButton .tag = CLOCKBUTTON_TAG;
     clockButton.titleLabel.font = [UIFont systemFontOfSize:12.0f];
     [clockButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [clockButton addTarget:self action:@selector(clockClicled) forControlEvents:UIControlEventTouchUpInside];
+    
     [self.view addSubview:backButton];
-    [self.view addSubview:imageview];
+    [self.view addSubview:drawView];
     [self.view addSubview:useButton];
     [self.view addSubview:clockButton];
+    [self.view addSubview:undoButton];
+    [self.view addSubview:redoButton];
     [self.view addSubview:brushButton];
+    [self.view addSubview:doneButton];
 }
+-(void)undoClicked{
+    [ self.drawView revocation];
+}
+-(void) redoClicked{
+    [ self.drawView refrom];
+}
+-(void)doneClicked {
+    
+    UIGraphicsBeginImageContext(drawView.bounds.size);
+    [drawView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *newImage=UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    UIImageWriteToSavedPhotosAlbum(newImage, self, nil, nil);
+    drawView.userInteractionEnabled = NO;
+    image = newImage;
+
+    drawView.userInteractionEnabled = NO;
+    UIButton * undo =(UIButton * )[self.view viewWithTag:UNDO_TAG];
+    UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
+    UIButton * brush =(UIButton * )[self.view viewWithTag:BRUSH_TAG];
+    UIButton * use =(UIButton * )[self.view viewWithTag:USERPHOTO_TAG];
+    UIButton * done =(UIButton * )[self.view viewWithTag:DONE_TAG];
+    brush.hidden=NO;
+    undo.hidden = YES;
+    redo.hidden = YES;
+    use.hidden = NO;
+    done.hidden = YES;
+}
+
+-(void) paintbrushClicked {
+    drawView.userInteractionEnabled = YES;
+    UIButton * undo =(UIButton * )[self.view viewWithTag:UNDO_TAG];
+    UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
+    UIButton * brush =(UIButton * )[self.view viewWithTag:BRUSH_TAG];
+    UIButton * use =(UIButton * )[self.view viewWithTag:USERPHOTO_TAG];
+    UIButton * done =(UIButton * )[self.view viewWithTag:DONE_TAG];
+    brush.hidden=YES;
+    undo.hidden = NO;
+    redo.hidden = NO;
+    use.hidden = YES;
+    done.hidden = NO;
+    
+    NSLog(@"<#string#>");
+}
+
 -(void) back {
     
     [self dismissViewControllerAnimated:YES completion:^{
@@ -106,9 +166,6 @@
         NSLog(@"back");
     }];
    
-}
--(void) paintbrushClicked {
-    NSLog(@"<#string#>");
 }
 -(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
@@ -163,6 +220,14 @@
     NSInteger index = seg.selectedSegmentIndex;
     NSLog(@"%d",index);
     [actionSheet dismissWithClickedButtonIndex:index animated:YES];
+}
+
+-(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
+    UIGraphicsBeginImageContext(newSize);
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
 }
 
 - (void)didReceiveMemoryWarning

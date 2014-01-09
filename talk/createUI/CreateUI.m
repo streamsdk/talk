@@ -35,7 +35,24 @@
     textFiled.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin |UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
     return textFiled;
 }
+-(UIButton *)setButtonFrame:(CGRect)frame withTitle:(NSString *)title withImage:(UIImage *)image{
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setFrame:frame];
+    button.autoresizingMask =  UIViewAutoresizingFlexibleBottomMargin |UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
+    if (![title isEqualToString:@"nil"]) {
+        [button setTitleColor:[UIColor purpleColor] forState:UIControlStateNormal];
+        [[button layer] setBorderColor:[[UIColor blueColor] CGColor]];
+        [[button layer] setBorderWidth:1];
+        [[button layer] setCornerRadius:4];
+        [button setTitle:title forState:UIControlStateNormal];
+        button.titleLabel.font = [UIFont systemFontOfSize:14.0f];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }else{
+        [button setImage:image forState:UIControlStateNormal];
+    }
+    return button;
 
+}
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textFiled resignFirstResponder];
     return YES;

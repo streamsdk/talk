@@ -332,8 +332,6 @@
         [videoHandler setController:self];
         [videoHandler setVideoPath:videoPath];
         [videoHandler sendVideoforBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
-        NSBubbleData * bubble = [bubbleData lastObject];
-        bubble.delegate = self;
          videoHandler.delegate = self;
     }
    
@@ -843,14 +841,16 @@
 
 }
 -(void)reloadTable{
-    
+    NSBubbleData * bubble = [bubbleData lastObject];
+    bubble.delegate = self;
+
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
 }
 -(void)sendImages:(UIImage *)image withTime:(NSString *)time{
     [self sendPhoto:image withTime:time];
 }
-- (void)didReceiveMemoryWarning
+- (void)didReceiveMemoryWarning 
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

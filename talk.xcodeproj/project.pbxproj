@@ -212,6 +212,9 @@
 		0E49F053187E333700749A6D /* moviePlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E49F03E187E333700749A6D /* moviePlay.png */; };
 		0E49F054187E333700749A6D /* moviePlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E49F03F187E333700749A6D /* moviePlay@2x.png */; };
 		0E49F057187E337C00749A6D /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E49F056187E337C00749A6D /* PlayerViewController.m */; };
+		0E49F068187E7B8F00749A6D /* redo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E49F066187E7B8F00749A6D /* redo.png */; };
+		0E49F069187E7B8F00749A6D /* undo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E49F067187E7B8F00749A6D /* undo.png */; };
+		0E49F06C187E7BA200749A6D /* MyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E49F06B187E7BA200749A6D /* MyView.m */; };
 		0E4B13D8187CF15F0070752B /* DisappearImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4B13D7187CF15F0070752B /* DisappearImageController.m */; };
 		0E8A4F33182B7F8000705C1F /* CreateUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F32182B7F8000705C1F /* CreateUI.m */; };
 		0E8A4F36182B7FE300705C1F /* TalkDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F35182B7FE300705C1F /* TalkDB.m */; };
@@ -684,6 +687,10 @@
 		0E49F03F187E333700749A6D /* moviePlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "moviePlay@2x.png"; sourceTree = "<group>"; };
 		0E49F055187E337C00749A6D /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
 		0E49F056187E337C00749A6D /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
+		0E49F066187E7B8F00749A6D /* redo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redo.png; sourceTree = "<group>"; };
+		0E49F067187E7B8F00749A6D /* undo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = undo.png; sourceTree = "<group>"; };
+		0E49F06A187E7BA200749A6D /* MyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyView.h; sourceTree = "<group>"; };
+		0E49F06B187E7BA200749A6D /* MyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyView.m; sourceTree = "<group>"; };
 		0E4B13D6187CF15F0070752B /* DisappearImageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DisappearImageController.h; path = Classes/DisappearImageController.h; sourceTree = "<group>"; };
 		0E4B13D7187CF15F0070752B /* DisappearImageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DisappearImageController.m; path = Classes/DisappearImageController.m; sourceTree = "<group>"; };
 		0E8A4F31182B7F7100705C1F /* CreateUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreateUI.h; path = createUI/CreateUI.h; sourceTree = "<group>"; };
@@ -1833,6 +1840,8 @@
 		0E4B13D9187CF1650070752B /* imageContoller */ = {
 			isa = PBXGroup;
 			children = (
+				0E49F06A187E7BA200749A6D /* MyView.h */,
+				0E49F06B187E7BA200749A6D /* MyView.m */,
 				0EF14D2C1876B8CD008F4AF5 /* ImageViewController.h */,
 				0EF14D2D1876B8CD008F4AF5 /* ImageViewController.m */,
 				0E0EDF4C1877AFAD00477C42 /* ImageSendProtocol.h */,
@@ -1911,6 +1920,8 @@
 		0EE951A1185EA4B9003F4638 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0E49F066187E7B8F00749A6D /* redo.png */,
+				0E49F067187E7B8F00749A6D /* undo.png */,
 				0E0434D0187A735700A16705 /* separator.png */,
 				0E0434D1187A735700A16705 /* separator@2x.png */,
 				0E0EDF511877F57E00477C42 /* brush.png */,
@@ -2218,6 +2229,7 @@
 				0EEFFF6B18659B2000018A57 /* segmented-bg-Right.png in Resources */,
 				0EE951F2185EA4B9003F4638 /* video.png in Resources */,
 				0EE951F0185EA4B9003F4638 /* typingSomeone.png in Resources */,
+				0E49F069187E7B8F00749A6D /* undo.png in Resources */,
 				0EE951E0185EA4B9003F4638 /* camera_button_take@2x.png in Resources */,
 				0E0434D2187A735700A16705 /* separator.png in Resources */,
 				03D9C0EA18145E510039118F /* README.txt in Resources */,
@@ -2234,6 +2246,7 @@
 				0E49F051187E333700749A6D /* moviePause.png in Resources */,
 				0E0434D3187A735700A16705 /* separator@2x.png in Resources */,
 				0EE951DC185EA4B9003F4638 /* bubbleMine@2x.png in Resources */,
+				0E49F068187E7B8F00749A6D /* redo.png in Resources */,
 				0EE951F6185EA4B9003F4638 /* photoMark.png in Resources */,
 				0E49F054187E333700749A6D /* moviePlay@2x.png in Resources */,
 				0E49F045187E333700749A6D /* movieBackward.png in Resources */,
@@ -2300,6 +2313,7 @@
 				03D9C08B18145E410039118F /* XMPPDateTimeProfiles.m in Sources */,
 				03D9C07618145E410039118F /* XMPPvCard.xcdatamodeld in Sources */,
 				0E3A74F218740C9D00A9020D /* HandlerFirendsViewController.m in Sources */,
+				0E49F06C187E7BA200749A6D /* MyView.m in Sources */,
 				03D9BF5E18145E2F0039118F /* NSNumber+XMPP.m in Sources */,
 				0E19E83318716AA100523232 /* EGORefreshTableHeaderView.m in Sources */,
 				03D9C0B418145E480039118F /* DDList.m in Sources */,

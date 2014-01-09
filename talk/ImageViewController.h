@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "ImageSendProtocol.h"
-
+#import "MyView.h"
+#import <QuartzCore/QuartzCore.h>
 @interface ImageViewController : UIViewController<UIPickerViewDataSource,UIPickerViewDelegate,UIActionSheetDelegate>
 {
     NSArray *timeArray;
@@ -18,4 +19,5 @@
 @property (nonatomic,strong) UIImage * image;
 @property (nonatomic,assign) id <ImageSendProtocol> imageSendProtocol;
 @property (nonatomic ,strong)UIImagePickerController * pickerController;
+@property (strong,nonatomic)  MyView *drawView;
 @end

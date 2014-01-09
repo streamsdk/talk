@@ -15,5 +15,5 @@
 }
 -(UIButton *)setButtonFrame:(CGRect)frame withTitle:(NSString *)title;
 -(UITextField *)setTextFrame:(CGRect)frame;
-
+-(UIButton *)setButtonFrame:(CGRect)frame withTitle:(NSString *)title withImage:(UIImage *)image;
 @end
