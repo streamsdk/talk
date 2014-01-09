@@ -8,7 +8,6 @@
 
 #import "PhotoHandler.h"
 #import "NSBubbleData.h"
-//#import "PlayerDelegate.h"
 #import "UIImageViewController.h"
 #import "TalkDB.h"
 #import "STreamXMPP.h"
@@ -39,13 +38,7 @@
         if (otherData) {
             bubble.avatar = [UIImage imageWithData:otherData];
         }
-//        bubble.delegate = self;
         [bubbleData addObject:bubble];
-        /*NSBubbleData * bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
-        if (otherData)
-            bubble.avatar = [UIImage imageWithData:otherData];
-        bubble.delegate = self;
-        [bubbleData addObject:bubble];*/
     }
     
 }
@@ -55,13 +48,6 @@
     
     NSData * data = UIImageJPEGRepresentation(image, 0.7);
     UIImage * _image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(image.size.width*0.7, image.size.height*0.7)];
-   /* NSBubbleData * bubbledata = [NSBubbleData dataWithImage:_image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
-    if (myData) {
-        bubbledata.avatar = [UIImage imageWithData:myData];
-    }
-    [bubbleData addObject:bubbledata];
-    
-    bubbledata.delegate = self;*/
     
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     
@@ -113,28 +99,6 @@
     UIGraphicsEndImageContext();
     return newImage;
 }
-
-//-(void)bigImage:(UIImage *)image{
-//    UIImageViewController * iView = [[UIImageViewController alloc]init];
-//    iView.image = image;
-//    iView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-//    [controller presentViewController:iView animated:YES completion:nil];
-//}
-//
-//-(void) playerVideo:(NSString *)path{
-//    
-//    
-//}
-//
-//-(void) disappearImage:(UIImage *)image withDissapearTime:(NSString *)time withDissapearPath:(NSString *)path withSendOrReceiveTime:(NSDate *)date{
-//    DisappearImageController *disappear = [[DisappearImageController alloc]init];
-//    disappear.disappearImage = image;
-//    disappear.disappearTime = time;
-//    disappear.disappearPath = path;
-//    disappear.date = date;
-//    disappear.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-//    [controller presentViewController:disappear animated:YES completion:nil];
-//}
 
 
 @end

@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-//#import "PlayerDelegate.h"
 
 @interface PhotoHandler : NSObject
 

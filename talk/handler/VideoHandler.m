@@ -30,7 +30,6 @@
         player.shouldAutoplay = NO;
         UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
         NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
-//        bdata.delegate = self;
         if (otherData)
             bdata.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:bdata];
@@ -155,7 +154,6 @@
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
     
     NSBubbleData * bdata = [NSBubbleData dataWithImage:image withData:videoData withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withVidePath:_mp4Path];
-//    bdata .delegate = self;
     if (_myData)
         bdata.avatar = [UIImage imageWithData:_myData];
     [_bubbleData addObject:bdata];
@@ -187,19 +185,4 @@
     [delegate reloadTable];
 
 }
-//-(void)bigImage:(UIImage *)image{
-//    NSLog(@"");
-//}
-//
-//-(void) playerVideo:(NSString *)path{
-//    NSURL * url = [NSURL fileURLWithPath:path];
-//    MPMoviePlayerViewController* pView = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
-//    [controller presentViewController:pView animated:YES completion:NULL];
-//
-//    
-//}
-//-(void)disappearImage:(UIImage *)image withDissapearTime:(NSString *)time withDissapearPath:(NSString *)path withSendOrReceiveTime:(NSDate *)date{
-//    NSLog(@"");
-//}
-
 @end

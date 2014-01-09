@@ -332,10 +332,11 @@
         [videoHandler setController:self];
         [videoHandler setVideoPath:videoPath];
         [videoHandler sendVideoforBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
+        NSBubbleData * bubble = [bubbleData lastObject];
+        bubble.delegate = self;
          videoHandler.delegate = self;
     }
-    NSBubbleData * bubble = [bubbleData lastObject];
-    bubble.delegate = self;
+   
     [self dismissKeyBoard];
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
@@ -346,8 +347,6 @@
     NSString *sendToID =[imageCache getFriendID];
     if (self.voice.recordTime >= 0.5f) {
         [audioHandler sendAudio:voice forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
-        NSBubbleData * bubble = [bubbleData lastObject];
-        bubble.delegate = self;
         [bubbleTableView reloadData];
         [self scrollBubbleViewToBottomAnimated:YES];
         
@@ -561,7 +560,7 @@
     NSTimeInterval animationDuration;
     [animationDurationValue getValue:&animationDuration];
     [faceButton setImage:[UIImage imageNamed:@"Text.png"] forState:UIControlStateNormal];
-    [pageControl setHidden:YES];
+    [pageControl setHidden:NO];
     keyboardIsShow=NO;
 }
 
