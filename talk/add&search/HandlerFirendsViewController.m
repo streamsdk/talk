@@ -195,17 +195,6 @@
     _searchBar.placeholder=@"search";
     _searchBar.keyboardType=UIKeyboardTypeNamePhonePad;
     
-//    myTableview  = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, self.view.bounds.size.width, self.view.bounds.size.height-44)];
-//    myTableview.backgroundColor = [UIColor clearColor];
-//    myTableview.delegate = self;
-//    myTableview.dataSource = self;
-//    [self.view addSubview:myTableview];
-    
-//    label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0,myTableview.frame.size.width, 36)];
-//    label.backgroundColor = [UIColor blueColor];
-//    label.textColor = [UIColor whiteColor];
-//    label.font = [UIFont fontWithName:@"DIN Alternate" size:15.0f];
-    
     NSArray *segmentedArray = [[NSArray alloc]initWithObjects:@"Add",@"Search",@"History",nil];
     
     segmentedControl = [[UISegmentedControl alloc]initWithItems:segmentedArray];
@@ -215,10 +204,10 @@
     
     segmentedControl.segmentedControlStyle=UISegmentedControlStyleBordered;
     [segmentedControl addTarget:self action:@selector(segmentAction:)forControlEvents:UIControlEventValueChanged];
-   /* [segmentedControl setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+   [segmentedControl setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [segmentedControl setBackgroundColor:[UIColor brownColor]];
     NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor blueColor],UITextAttributeTextColor,[UIFont fontWithName:@"DIN Alternate" size:17],UITextAttributeFont ,nil];
-    [segmentedControl setTitleTextAttributes:dic forState:UIControlStateNormal];*/
+    [segmentedControl setTitleTextAttributes:dic forState:UIControlStateNormal];
 
     [self.view addSubview:segmentedControl];
     

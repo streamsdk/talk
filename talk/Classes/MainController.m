@@ -7,7 +7,6 @@
 //
 
 #import "MainController.h"
-#import <MediaPlayer/MediaPlayer.h>
 #import <arcstreamsdk/STreamSession.h>
 #import <arcstreamsdk/STreamFile.h>
 #import <arcstreamsdk/STreamUser.h>
@@ -34,7 +33,7 @@
 #import "HandlerUserIdAndDateFormater.h"
 #import "ImageViewController.h"
 #import "DisappearImageController.h"
-
+#import "PlayerViewController.h"
 #define BUTTON_TAG 20000
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
@@ -829,9 +828,9 @@
 
 -(void) playerVideo:(NSString *)path{
     
-    NSURL * url = [NSURL fileURLWithPath:path];
-    MPMoviePlayerViewController* pView = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
-    [self presentViewController:pView animated:YES completion:NULL];
+    PlayerViewController * playerVC = [[PlayerViewController alloc]init];
+    playerVC.videopath = path;
+    [self.navigationController pushViewController:playerVC animated:YES];
  
 }
 -(void)disappearImage:(UIImage *)image withDissapearTime:(NSString *)time withDissapearPath:(NSString *)path withSendOrReceiveTime:(NSDate *)date{
