@@ -159,13 +159,8 @@
     
     [self dismissViewControllerAnimated:YES completion:^{
         [pickerController dismissViewControllerAnimated:YES completion:NULL];
-        NSLog(@"back");
+       
     }];
-    [self dismissViewControllerAnimated:YES completion:^{
-     [pickerController dismissViewControllerAnimated:YES completion:NULL];
-        NSLog(@"back");
-    }];
-   
 }
 -(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
@@ -222,9 +217,9 @@
     [actionSheet dismissWithClickedButtonIndex:index animated:YES];
 }
 
--(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
+-(UIImage*)imageWithImageSimple:(UIImage*)_image scaledToSize:(CGSize)newSize{
     UIGraphicsBeginImageContext(newSize);
-    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    [_image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
     UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return newImage;
