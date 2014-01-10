@@ -745,12 +745,33 @@
         
         }else{
         videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
-        NSString *tempFilePath = [videoPath path];
-        [picker dismissViewControllerAnimated:YES completion:NULL];
-        UISaveVideoAtPathToSavedPhotosAlbum(tempFilePath,self, @selector(errorVideoCheck:didFinishSavingWithError:contextInfo:),NULL);
-        [self sendVideo];
+        CGFloat time = [self getVideoDuration:videoPath];
+        if (time<=10) {
+            NSString *tempFilePath = [videoPath path];
+            [picker dismissViewControllerAnimated:YES completion:NULL];
+            UISaveVideoAtPathToSavedPhotosAlbum(tempFilePath,self, @selector(errorVideoCheck:didFinishSavingWithError:contextInfo:),NULL);
+            [self sendVideo];
+        }else{
+
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Video time is too long" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+            [alert show];
+            [picker dismissViewControllerAnimated:YES completion:NULL];
+            [self dismissKeyBoard];
+            [self scrollBubbleViewToBottomAnimated:YES];
+
+        }
+        
     }
 
+}
+- (CGFloat) getVideoDuration:(NSURL*) URL
+{
+    NSDictionary *opts = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO]
+                                                     forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
+    AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:URL options:opts];
+    float second = 0;
+    second = urlAsset.duration.value/urlAsset.duration.timescale;
+    return second;
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
@@ -845,6 +866,7 @@
     bubble.delegate = self;
 
     [bubbleTableView reloadData];
+    [self dismissKeyBoard];
     [self scrollBubbleViewToBottomAnimated:YES];
 }
 -(void)sendImages:(UIImage *)image withTime:(NSString *)time{

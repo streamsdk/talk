@@ -122,6 +122,7 @@
                     [imageCache saveUserMetadata:userName withMetadata:dic];
                 }
             }];
+            sleep(1);
             __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
             HUD.labelText = @"loading friends...";
             [self.view addSubview:HUD];
