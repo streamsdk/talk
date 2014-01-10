@@ -51,8 +51,6 @@
         }
     }
 }
-
-
 -(void)selected:(UIButton*)bt
 {
     

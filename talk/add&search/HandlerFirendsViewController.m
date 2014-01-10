@@ -87,7 +87,7 @@
             STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:[handler getUserID]];
             [sq setQueryLogicAnd:true];
             [sq whereEqualsTo:@"status" forValue:@"sendRequest"];
-            [sq find:^(NSMutableArray *friends){
+            /*[sq find:^(NSMutableArray *friends){
                 for (STreamObject *so in friends) {
                     if (![friendsHistoryArray containsObject:[so objectId]]) {
                         [searchDB insertDB:[handler getUserID] withFriendID:[so objectId]];
@@ -96,15 +96,15 @@
                 }
                 
                 [myTableview reloadData];
-            }];
-           /* NSMutableArray * friends = [sq find];
+            }];*/
+            NSMutableArray * friends = [sq find];
             for (STreamObject *so in friends) {
                 if (![friendsHistoryArray containsObject:[so objectId]]) {
                     [searchDB insertDB:[handler getUserID] withFriendID:[so objectId]];
                 }
                     }
             friendsHistoryArray = [searchDB readSearchDB:[handler getUserID]];
-            [myTableview reloadData];*/
+            [myTableview reloadData];
 
         }
             

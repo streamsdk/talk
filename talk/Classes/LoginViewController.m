@@ -38,8 +38,13 @@
     return self;
 }
 -(void) back {
+
+    RootViewController *rvc = [[RootViewController alloc]init];
     self.navigationController.navigationBarHidden = YES;
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.navigationController pushViewController:rvc animated:YES];
+
+//    self.navigationController.navigationBarHidden = YES;
+//    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)viewDidLoad

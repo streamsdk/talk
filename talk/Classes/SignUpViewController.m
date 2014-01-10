@@ -105,6 +105,15 @@
         
         NSString *error = [user errorMessage];
         if ([error isEqualToString:@""]){
+            STreamObject * history = [[STreamObject alloc]init];
+            [history setObjectId:[username stringByAppendingString:@"messaginghistory"]];
+            [history createNewObject:^(BOOL succeed, NSString *objectId) {
+                if (succeed)
+                    NSLog(@"succeed");
+                else
+                    NSLog(@"failed");
+            }];
+            
             STreamCategoryObject * sto = [[STreamCategoryObject alloc]initWithCategory:username];
             [sto createNewCategoryObject:^(BOOL succeed, NSString *response){
                 
