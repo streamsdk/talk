@@ -198,7 +198,7 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
         [_fullscreenButton setImage:[UIImage imageNamed:@"movieFullscreen.png"] forState:UIControlStateNormal];
         [_fullscreenButton addTarget:self action:@selector(fullscreenPressed:) forControlEvents:UIControlEventTouchUpInside];
         _fullscreenButton.delegate = self;
-        [_bottomBar addSubview:_fullscreenButton];
+//        [_bottomBar addSubview:_fullscreenButton];
     }
     
     //static stuff

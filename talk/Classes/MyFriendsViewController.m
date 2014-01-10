@@ -390,17 +390,10 @@
             [l setMasksToBounds:YES];
             [l setCornerRadius:8.0];
             cell.textLabel.text = str.string;
-//            NSMutableArray * array = [[NSMutableArray alloc]init];
-//            if (countArray && [countArray count]!= 0) {
-//                for (NSString * id in countArray) {
-//                    if ([id isEqualToString:str.string]) {
-//                        [array addObject:id];
-//                    }
-//                }
-//            }
+
             ImageCache * imageCache = [ImageCache sharedObject];
             NSInteger count = [imageCache getMessagesCount:str.string];
-//            int num = [array count];
+
             if (count!= 0) {
                 NSString * title =[NSString stringWithFormat:@"%d",count];
                 [button setBackgroundImage:[UIImage imageNamed:@"message_count.png"] forState:UIControlStateNormal];

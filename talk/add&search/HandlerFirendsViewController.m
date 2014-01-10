@@ -97,8 +97,14 @@
                 
                 [myTableview reloadData];
             }];
+           /* NSMutableArray * friends = [sq find];
+            for (STreamObject *so in friends) {
+                if (![friendsHistoryArray containsObject:[so objectId]]) {
+                    [searchDB insertDB:[handler getUserID] withFriendID:[so objectId]];
+                }
+                    }
             friendsHistoryArray = [searchDB readSearchDB:[handler getUserID]];
-            [myTableview reloadData];
+            [myTableview reloadData];*/
 
         }
             
