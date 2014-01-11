@@ -63,12 +63,12 @@ static NSMutableArray *colors;
     brushButton.tag = BRUSH_TAG;
     [brushButton setBackgroundColor:[UIColor greenColor]];
     
-    UIButton * undoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-150, 26, 30, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"undo.png"]];
+    UIButton * undoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-130, 26, 30, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"undo.png"]];
     undoButton.hidden =YES;
     undoButton.tag=UNDO_TAG;
     [undoButton addTarget:self action:@selector(undoClicked) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton * redoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-100, 26, 30, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"redo.png"]];
+    UIButton * redoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-90, 26, 30, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"redo.png"]];
     redoButton.hidden = YES;
     redoButton.tag=REDO_TAG;
     [redoButton addTarget:self action:@selector(redoClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -151,7 +151,8 @@ static NSMutableArray *colors;
 //    UIButton * brush =(UIButton * )[self.view viewWithTag:BRUSH_TAG];
     UIButton * use =(UIButton * )[self.view viewWithTag:USERPHOTO_TAG];
     UIButton * done =(UIButton * )[self.view viewWithTag:DONE_TAG];
-    
+    UIView *v =(UIView *)[self.view viewWithTag:VIEW_TAG];
+    v.hidden = YES;
     undo.hidden = YES;
     redo.hidden = YES;
     use.hidden = NO;
