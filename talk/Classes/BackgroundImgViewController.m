@@ -8,12 +8,16 @@
 
 #import "BackgroundImgViewController.h"
 #import "MyFriendsViewController.h"
-
-#define SPACE_WIDTH 10
-#define IMAGE_HEIGHT_WIDTH 52
-#define COLUMN 5
+#import "ImageCache.h"
+#import "HandlerUserIdAndDateFormater.h"
+#import "ChatBackGround.h"
 #import "MainController.h"
 #import "BackData.h"
+
+#define SPACE_WIDTH 20
+#define IMAGE_HEIGHT_WIDTH 130
+#define COLUMN 2
+
 @interface BackgroundImgViewController ()
 
 @end
@@ -47,7 +51,7 @@
             column = COLUMN;
         }
         for (int j = 0; j < column; j++) {
-            UIImageView * imageview = [[UIImageView alloc]initWithFrame:CGRectMake(SPACE_WIDTH+(IMAGE_HEIGHT_WIDTH+10)*j, SPACE_WIDTH+(IMAGE_HEIGHT_WIDTH+10)*i, IMAGE_HEIGHT_WIDTH, IMAGE_HEIGHT_WIDTH)];
+            UIImageView * imageview = [[UIImageView alloc]initWithFrame:CGRectMake(SPACE_WIDTH+(IMAGE_HEIGHT_WIDTH+20)*j, SPACE_WIDTH+(IMAGE_HEIGHT_WIDTH+20)*i, IMAGE_HEIGHT_WIDTH, IMAGE_HEIGHT_WIDTH)];
             [imageview setImage:[UIImage imageNamed:[self.img objectAtIndex:COLUMN*i+j]]];
             imageview.userInteractionEnabled = YES;
             UITapGestureRecognizer *sigleTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(imageSeleted:)];
@@ -67,9 +71,9 @@
     
     UIImageView * img = (UIImageView *)[gestureRecognizer view];
     UIImage *image = img.image;
-   
     BackData * data = [BackData sharedObject];
     [data setImage:image];
+    
      MyFriendsViewController * friendVC = [[MyFriendsViewController alloc]init];
     [self.navigationController pushViewController:friendVC animated:NO];
 }

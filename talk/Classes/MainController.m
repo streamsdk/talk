@@ -34,6 +34,7 @@
 #import "ImageViewController.h"
 #import "DisPlayerViewController.h"
 #import "DisappearImageController.h"
+#import "ChatSettingViewController.h"
 #define BUTTON_TAG 20000
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
@@ -147,7 +148,10 @@
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
 }
-
+-(void)SetBackground{
+    ChatSettingViewController * chat = [[ChatSettingViewController alloc]init];
+    [self.navigationController pushViewController:chat animated:YES];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -157,7 +161,8 @@
     createUI = [[CreateUI alloc]init];
     
     self.voice = [[Voice alloc] init];
-   
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(SetBackground)];
+    
     UIImageView * backView = [[UIImageView alloc]initWithFrame:self.view.frame];
     backView.userInteractionEnabled = YES;
     UITapGestureRecognizer *singleTouch = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];

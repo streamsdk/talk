@@ -21,4 +21,5 @@
 
 -(void) updateDB:(NSDate*)date withContent:(NSString *)content;
 
+-(void) deleteDB :(NSString *) _userID withOtherID:(NSString *)_friendID;
 @end

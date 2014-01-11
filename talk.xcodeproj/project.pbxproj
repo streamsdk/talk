@@ -166,6 +166,8 @@
 		03F5B05018339C1500A847A0 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03F5B04F18339C1500A847A0 /* MediaPlayer.framework */; };
 		0E03AAF71880E7B300F7BDC7 /* DisPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E03AAF61880E7B300F7BDC7 /* DisPlayerViewController.m */; };
 		0E03AAFC1880FDB800F7BDC7 /* colors.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0E03AAFB1880FDB800F7BDC7 /* colors.jpg */; };
+		0E03AB0918811D6A00F7BDC7 /* ChatBackGround.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E03AB0818811D6A00F7BDC7 /* ChatBackGround.m */; };
+		0E03AB0C1881242400F7BDC7 /* ChatSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E03AB0B1881242400F7BDC7 /* ChatSettingViewController.m */; };
 		0E0434D2187A735700A16705 /* separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0434D0187A735700A16705 /* separator.png */; };
 		0E0434D3187A735700A16705 /* separator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0434D1187A735700A16705 /* separator@2x.png */; };
 		0E0847361827304400350741 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0847351827304400350741 /* AVFoundation.framework */; };
@@ -613,6 +615,10 @@
 		0E03AAF51880E7B300F7BDC7 /* DisPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisPlayerViewController.h; sourceTree = "<group>"; };
 		0E03AAF61880E7B300F7BDC7 /* DisPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisPlayerViewController.m; sourceTree = "<group>"; };
 		0E03AAFB1880FDB800F7BDC7 /* colors.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = colors.jpg; sourceTree = "<group>"; };
+		0E03AB0718811D6A00F7BDC7 /* ChatBackGround.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChatBackGround.h; path = talkDB/ChatBackGround.h; sourceTree = "<group>"; };
+		0E03AB0818811D6A00F7BDC7 /* ChatBackGround.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChatBackGround.m; path = talkDB/ChatBackGround.m; sourceTree = "<group>"; };
+		0E03AB0A1881242400F7BDC7 /* ChatSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChatSettingViewController.h; path = Classes/ChatSettingViewController.h; sourceTree = "<group>"; };
+		0E03AB0B1881242400F7BDC7 /* ChatSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChatSettingViewController.m; path = Classes/ChatSettingViewController.m; sourceTree = "<group>"; };
 		0E0434D0187A735700A16705 /* separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = separator.png; sourceTree = "<group>"; };
 		0E0434D1187A735700A16705 /* separator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "separator@2x.png"; sourceTree = "<group>"; };
 		0E0847351827304400350741 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -1745,6 +1751,8 @@
 			children = (
 				0EE9518E185EA43C003F4638 /* MainController.h */,
 				0EE9518F185EA43C003F4638 /* MainController.m */,
+				0E03AB0A1881242400F7BDC7 /* ChatSettingViewController.h */,
+				0E03AB0B1881242400F7BDC7 /* ChatSettingViewController.m */,
 				0EE951FC185EE9EC003F4638 /* UIImageViewController.h */,
 				0EE951FD185EE9EC003F4638 /* UIImageViewController.m */,
 				0EA16BFE18516FC9009F2D3A /* MyFriendsViewController.h */,
@@ -1834,6 +1842,8 @@
 			children = (
 				0E8A4F34182B7FE300705C1F /* TalkDB.h */,
 				0E8A4F35182B7FE300705C1F /* TalkDB.m */,
+				0E03AB0718811D6A00F7BDC7 /* ChatBackGround.h */,
+				0E03AB0818811D6A00F7BDC7 /* ChatBackGround.m */,
 				0E1F974E186D8D7400C709CE /* AddDB.h */,
 				0E1F974F186D8D7400C709CE /* AddDB.m */,
 				0E1F9751186D964A00C709CE /* SearchDB.h */,
@@ -2251,6 +2261,7 @@
 				03D9C0A218145E410039118F /* XEP_0223.m in Sources */,
 				03D9C07D18145E410039118F /* XMPPvCardTempAdrTypes.m in Sources */,
 				44A80EAC183129E2006069DE /* Emoji.m in Sources */,
+				0E03AB0918811D6A00F7BDC7 /* ChatBackGround.m in Sources */,
 				03D9C0EC18145E510039118F /* DDXMLDocument.m in Sources */,
 				03D9C0E918145E510039118F /* DispatchQueueLogFormatter.m in Sources */,
 				03D9C08B18145E410039118F /* XMPPDateTimeProfiles.m in Sources */,
@@ -2287,6 +2298,7 @@
 				03D9C0A018145E410039118F /* XMPPTime.m in Sources */,
 				0EF79E1218584CAF00EB8A64 /* BackData.m in Sources */,
 				0ED8BC0C185065D7007BD8CA /* RootViewController.m in Sources */,
+				0E03AB0C1881242400F7BDC7 /* ChatSettingViewController.m in Sources */,
 				03D9C07C18145E410039118F /* XMPPvCardTempAdr.m in Sources */,
 				0EA16C0018516FC9009F2D3A /* MyFriendsViewController.m in Sources */,
 				03D9C09E18145E410039118F /* XMPPPing.m in Sources */,

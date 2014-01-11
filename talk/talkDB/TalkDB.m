@@ -237,6 +237,26 @@
     sqlite3_finalize(stmt);
     sqlite3_close(database);
 }
+
+-(void) deleteDB :(NSString *) _userID withOtherID:(NSString *)_friendID{
+    sqlite3 *database;
+    if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
+        sqlite3_close(database);
+        NSAssert(0, @"Failed to open database");
+    }
+    NSString * delete = [NSString stringWithFormat:@"DELETE FROM FILEID  WHERE USERID='%@' and FROMID='%@'",_userID,_friendID];
+    sqlite3_stmt * statement;
+    
+    if (sqlite3_prepare_v2(database, [delete UTF8String], -1, &statement, nil) == SQLITE_OK) {
+        while (sqlite3_step(statement) == SQLITE_ROW) {
+            NSLog(@"");
+        }
+    }
+
+    sqlite3_step(statement);
+    sqlite3_finalize(statement);
+    sqlite3_close(database);
+}
 -(NSString*)getCacheDirectory
 {
     return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
