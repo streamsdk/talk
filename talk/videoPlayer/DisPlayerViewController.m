@@ -1,35 +1,39 @@
 //
-//  PlayerViewController.m
+//  DisPalayerViewController.m
 //  talk
 //
-//  Created by wangsh on 14-1-9.
+//  Created by wangsh on 14-1-11.
 //  Copyright (c) 2014年 wangshuai. All rights reserved.
 //
 
-#import "PlayerViewController.h"
-
-@interface PlayerViewController ()
+#import "DisPlayerViewController.h"
+#import <arcstreamsdk/JSONKit.h>
+#import "ImageCache.h"
+#import "TalkDB.h"
+@interface DisPlayerViewController ()
 
 @end
 
-@implementation PlayerViewController
-@synthesize videopath;
+@implementation DisPlayerViewController
 @synthesize moviePlayer,defaultFrame;
-- (id)init {
-    self = [super init];
+@synthesize videopath,time,date;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        
+        // Custom initialization
     }
     return self;
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.title =@"VideoPlayer";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveFile)];
-
+    if (!time) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveFile)];
+    }
     //create a player
     self.moviePlayer = [[ALMoviePlayerController alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
     self.moviePlayer.view.alpha = 0.f;
@@ -43,7 +47,6 @@
     [self.moviePlayer setControls:movieControls];
     [self.view addSubview:self.moviePlayer.view];
     
-    
     [self.moviePlayer setContentURL:[NSURL fileURLWithPath:videopath]];
     
     //delay initial load so statusBarOrientation returns correct value
@@ -54,11 +57,34 @@
         [UIView animateWithDuration:0.2 delay:0.0 options:0 animations:^{
             self.moviePlayer.view.alpha = 1.f;
         } completion:^(BOOL finished) {
-            self.navigationItem.rightBarButtonItem.enabled = YES;
+            if (time) {
+                ImageCache * cache = [ImageCache  sharedObject];
+                TalkDB * talkDB = [[TalkDB alloc]init];
+                NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+                NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+                [friendDict setObject:@"-1" forKey:@"time"];
+                [friendDict setObject:videopath forKey:@"video"];
+                [jsonDic setObject:friendDict forKey:[cache getFriendID]];
+                NSString  *str = [jsonDic JSONString];
+                [talkDB updateDB:date withContent:str];
+               
+            }
+            
         }];
     });
 }
-
+-(void) saveFile {
+    UISaveVideoAtPathToSavedPhotosAlbum(self.videopath,self, @selector(errorVideoCheck:didFinishSavingWithError:contextInfo:),NULL);
+    
+}
+- (void)errorVideoCheck:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                    message:@"You have successfully stored in the photo album"
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
 - (void)configureViewForOrientation:(UIInterfaceOrientation)orientation {
     CGFloat videoWidth = 0;
     CGFloat videoHeight = 0;
@@ -78,19 +104,6 @@
     [self.moviePlayer setFrame:self.defaultFrame];
 }
 
-- (void)saveFile {
-    UISaveVideoAtPathToSavedPhotosAlbum(videopath,self, @selector(errorVideoCheck:didFinishSavingWithError:contextInfo:),NULL);
-    
-}
-- (void)errorVideoCheck:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
-                                                    message:@"You have successfully stored in the photo album"
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
-
-}
 - (void)moviePlayerWillMoveFromWindow {
     if (![self.view.subviews containsObject:self.moviePlayer.view])
         [self.view addSubview:self.moviePlayer.view];
@@ -119,5 +132,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 @end

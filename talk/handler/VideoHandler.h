@@ -20,14 +20,15 @@
     NSMutableArray *_bubbleData;
     NSData * _myData;
     NSString *_sendID;
+    NSString *_time;
 
 }
 @property(nonatomic, strong)UIViewController *controller;
 @property (nonatomic,strong) NSURL  *videoPath;
 @property (assign)id<reloadTableDeleage>delegate;
 
-- (void)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID;
+- (void)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withVideoTime:(NSString *)time withSendId:(NSString *)sendID withFromId:(NSString *)fromID;
 
--(void)sendVideoforBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID;
+-(void)sendVideoforBubbleDataArray:(NSMutableArray *)bubbleData withVideoTime:(NSString *)time forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID;
 
 @end

@@ -22,6 +22,8 @@
 @synthesize audioData;
 @synthesize videoData;
 @synthesize _videoPath;
+@synthesize _videotime;
+@synthesize _videodate;
 @synthesize delegate;
 @synthesize _image;
 @synthesize disappearImage;
@@ -99,11 +101,13 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     _image = image;
     bigImageSize = image.size;
     CGSize size = image.size;
-    if (size.width > 200)
+    /*if (size.width > 200)
     {
         image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(100, 100)];
         size = image.size;
-    }
+    }*/
+    image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(100, 100)];
+    size = image.size;
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
     imageView.image = image;
     imageView.layer.cornerRadius = 5.0;
@@ -221,38 +225,81 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 
 }
 #pragma mark - Custom view video
-- (id)initWithImage:(UIImage *)image withData:(NSData *)data withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath{
+- (id)initWithImage:(UIImage *)image withData:(NSData *)data withTime:(NSString *)time withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath{
     videoData = data;
+    _videotime = time;
     _videoPath = videoPath;
+    _videodate = date;
     CGSize size = image.size;
-    if (size.width > 200)
+    /*if (size.width > 200)
     {
         image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(100, 100)];
         size = image.size;
+    }*/
+    if (!time) {
+        image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(100, 100)];
+        size = image.size;
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+        imageView.image = image;
+        imageView.layer.cornerRadius = 5.0;
+        imageView.layer.masksToBounds = YES;
+        imageView.userInteractionEnabled = YES;
+        UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(playerVideo)];
+        [imageView addGestureRecognizer:tap];
+        
+        UIImageView * imagevideo = [[UIImageView alloc]initWithFrame:CGRectMake(size.width - 30, size.height-30,30, 30)];
+        [imagevideo setImage:[UIImage imageNamed:@"video1.png"]];
+        [imageView addSubview:imagevideo];
+        UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
+        return [self initWithView:imageView date:date type:type insets:insets];
+
+    }else{
+        NSString * text =@"我抛了一段会消失的视频";
+        UIFont *font = [UIFont systemFontOfSize:16.0f];
+        CGSize size = [(text ? text : @"") sizeWithFont:font constrainedToSize:CGSizeMake(220, 9999) lineBreakMode:NSLineBreakByWordWrapping];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+        label.numberOfLines = 0;
+        label.lineBreakMode = NSLineBreakByWordWrapping;
+        label.text = (text ? text : @"");
+        label.font = font;
+        label.backgroundColor = [UIColor clearColor];
+        UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [button setFrame:CGRectMake(0, size.height, size.width, size.height)];
+        
+        button.titleLabel.frame =CGRectMake(0, 0, size.width, size.height*2);
+        button.titleLabel.font = [UIFont systemFontOfSize:16.0f];
+        button.contentVerticalAlignment = UIControlContentHorizontalAlignmentRight;
+        button.contentEdgeInsets = UIEdgeInsetsMake(0,10, 0, 0);
+        
+        UIImageView * view = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, size.width, size.height*2)];
+        view.backgroundColor = [UIColor clearColor];
+        [view addSubview:label];
+        [view addSubview:button];
+        
+        if ([time isEqualToString:@"-1"]) {
+            [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            [button setTitle:@"已取消" forState:UIControlStateNormal];
+            view.userInteractionEnabled = NO;
+            
+        }else{
+            view.userInteractionEnabled = YES;
+            [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+            [button setTitle:@"点击查看" forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(playerVideo) forControlEvents:UIControlEventTouchUpInside];
+        }
+        
+        UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(playerVideo)];
+        [view addGestureRecognizer:tap];
+        
+        UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
+        return [self initWithView:view date:date type:type insets:insets];
     }
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
-    imageView.image = image;
-    imageView.layer.cornerRadius = 5.0;
-    imageView.layer.masksToBounds = YES;
-    imageView.userInteractionEnabled = YES;
-    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(playerVideo)];
-    [imageView addGestureRecognizer:tap];
-    
-    UIImageView * imagevideo = [[UIImageView alloc]initWithFrame:CGRectMake(size.width - 30, size.height-30,30, 30)];
-    [imagevideo setImage:[UIImage imageNamed:@"video1.png"]];
-    [imageView addSubview:imagevideo];
-#if !__has_feature(objc_arc)
-    [imageView autorelease];
-#endif
-    
-    UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
-    return [self initWithView:imageView date:date type:type insets:insets];
 }
-+ (id)dataWithImage:(UIImage *)image withData:(NSData *)data withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath{
++ (id)dataWithImage:(UIImage *)image withData:(NSData *)data withTime:(NSString *)time withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath{
 #if !__has_feature(objc_arc)
-    return [[[NSBubbleData alloc] initWithImage:image withData:data withType:video date:date type:type withVidePath:videoPath] autorelease];
+    return [[[NSBubbleData alloc] initWithImage:image withData:data withTime:time withType:video date:date type:type withVidePath:videoPath] autorelease];
 #else
-    return [[NSBubbleData alloc] initWithImage:image withData:data withType:video date:date type:type withVidePath:videoPath];
+    return [[NSBubbleData alloc] initWithImage:image withData:data withTime:time withType:video date:date type:type withVidePath:videoPath];
 #endif
 }
 #pragma mark - Custom view bubble
@@ -301,7 +348,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 
 -(void)playerVideo {
 
-    [delegate playerVideo:_videoPath];
+    [delegate playerVideo:_videoPath withTime:_videotime withDate:_videodate];
    
 }
 -(void) bigToImage {

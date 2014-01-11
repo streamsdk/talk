@@ -18,7 +18,7 @@
 @synthesize controller,videoPath;
 @synthesize delegate;
 
-- (void)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
+- (void)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withVideoTime:(NSString *)time withSendId:(NSString *)sendID withFromId:(NSString *)fromID {
     
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     
@@ -29,18 +29,19 @@
         MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
         player.shouldAutoplay = NO;
         UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-        NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
+        NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withTime:time withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
         if (otherData)
             bdata.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:bdata];
     }
 
 }
--(void)sendVideoforBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID
+-(void)sendVideoforBubbleDataArray:(NSMutableArray *)bubbleData withVideoTime:(NSString *)time forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID
 {
     _bubbleData = bubbleData;
     _myData = myData;
     _sendID = sendID;
+    _time = time;
     [self encodeToMp4];
   
 }
@@ -147,18 +148,20 @@
     player.shouldAutoplay = NO;
     NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
     UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-    [self sendVideo:fileImage withData:videoData];
+    [self sendVideo:fileImage withData:videoData withVideoTime:_time];
 }
 
--(void) sendVideo:(UIImage *)image withData:(NSData *)videoData{
+-(void) sendVideo:(UIImage *)image withData:(NSData *)videoData withVideoTime:(NSString *)time{
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
     
-    NSBubbleData * bdata = [NSBubbleData dataWithImage:image withData:videoData withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withVidePath:_mp4Path];
+    NSBubbleData * bdata = [NSBubbleData dataWithImage:image withData:videoData withTime:time withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withVidePath:_mp4Path];
     if (_myData)
         bdata.avatar = [UIImage imageWithData:_myData];
     [_bubbleData addObject:bdata];
     
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+    if (time)
+        [friendDict setObject:time forKey:@"time"];
     [friendDict setObject:_mp4Path forKey:@"video"];
     [jsonDic setObject:friendDict forKey:_sendID];
     NSString  *str = [jsonDic JSONString];
@@ -171,6 +174,8 @@
     [db insertDBUserID:[handler getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
     
     NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
+    if (time)
+        [bodyDic setObject:time forKey:@"duration"];
     [bodyDic setObject:@"video" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
 

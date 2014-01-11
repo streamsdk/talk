@@ -32,8 +32,8 @@
 #import "AudioHandler.h"
 #import "HandlerUserIdAndDateFormater.h"
 #import "ImageViewController.h"
+#import "DisPlayerViewController.h"
 #import "DisappearImageController.h"
-#import "PlayerViewController.h"
 #define BUTTON_TAG 20000
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
@@ -60,6 +60,8 @@
     AudioHandler *audioHandler;
     
     UIImage * sendImage;
+    
+    BOOL isVideo;
 }
 
 @property(nonatomic,retain) Voice * voice;
@@ -151,6 +153,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view
     
+    isVideo=NO;
     createUI = [[CreateUI alloc]init];
     
     self.voice = [[Voice alloc] init];
@@ -239,7 +242,7 @@
         
     }else if ([type isEqualToString:@"video"]){
         [videoHandler setController:self];
-        [videoHandler receiveVideoFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+        [videoHandler receiveVideoFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withVideoTime:time withSendId:sendToID withFromId:fromID];
         
     }else if ([type isEqualToString:@"voice"]){
         [audioHandler receiveAudioFile:data withBody:time forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
@@ -325,13 +328,13 @@
     [self scrollBubbleViewToBottomAnimated:YES];
 }
 
--(void) sendVideo {
+-(void) sendVideo:(NSString *)time {
     ImageCache *imageCache = [ImageCache sharedObject];
     NSString *sendToID =[imageCache getFriendID];
     if (sendToID) {
         [videoHandler setController:self];
         [videoHandler setVideoPath:videoPath];
-        [videoHandler sendVideoforBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
+        [videoHandler sendVideoforBubbleDataArray:bubbleData withVideoTime:time forBubbleMyData:myData withSendId:sendToID];
          videoHandler.delegate = self;
     }
    
@@ -744,25 +747,40 @@
         [picker dismissViewControllerAnimated:YES completion:NULL];
         
         }else{
-        videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
-        CGFloat time = [self getVideoDuration:videoPath];
-        if (time<=10) {
-            NSString *tempFilePath = [videoPath path];
-            [picker dismissViewControllerAnimated:YES completion:NULL];
-            UISaveVideoAtPathToSavedPhotosAlbum(tempFilePath,self, @selector(errorVideoCheck:didFinishSavingWithError:contextInfo:),NULL);
-            [self sendVideo];
-        }else{
+            isVideo = YES;
+            videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
+            CGFloat time = [self getVideoDuration:videoPath];
+            if (time<=10) {
+            
+                NSString *tempFilePath = [videoPath path];
+                [picker dismissViewControllerAnimated:YES completion:NULL];
+                UISaveVideoAtPathToSavedPhotosAlbum(tempFilePath,self, @selector(errorVideoCheck:didFinishSavingWithError:contextInfo:),NULL);
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"the video is permanent？" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
+                alert.delegate = self;
+                [alert show];
+            }else{
 
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Video time is too long" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
-            [alert show];
-            [picker dismissViewControllerAnimated:YES completion:NULL];
-            [self dismissKeyBoard];
-            [self scrollBubbleViewToBottomAnimated:YES];
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Video time is too long" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+                [alert show];
+                [picker dismissViewControllerAnimated:YES completion:NULL];
+                [self dismissKeyBoard];
+                [self scrollBubbleViewToBottomAnimated:YES];
 
-        }
+            }
         
     }
 
+}
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (isVideo) {
+        CGFloat _time = [self getVideoDuration:videoPath];
+        NSString * time = [NSString stringWithFormat:@"%f",_time];
+        if (buttonIndex == 0) {
+            [self sendVideo:time];
+        }else{
+            [self sendVideo:nil];
+        }
+    }
 }
 - (CGFloat) getVideoDuration:(NSURL*) URL
 {
@@ -844,12 +862,16 @@
     [self presentViewController:iView animated:YES completion:nil];
 }
 
--(void) playerVideo:(NSString *)path{
+-(void) playerVideo:(NSString *)path  withTime:(NSString *)time withDate:(NSDate *)date{
     
-    PlayerViewController * playerVC = [[PlayerViewController alloc]init];
+    DisPlayerViewController * playerVC = [[DisPlayerViewController alloc]init];
     playerVC.videopath = path;
+    playerVC.time = time;
+    playerVC.date = date;
+//    playerVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+//    [self presentViewController:playerVC animated:YES completion:nil];
     [self.navigationController pushViewController:playerVC animated:YES];
- 
+    
 }
 -(void)disappearImage:(UIImage *)image withDissapearTime:(NSString *)time withDissapearPath:(NSString *)path withSendOrReceiveTime:(NSDate *)date{
     DisappearImageController * disappear = [[DisappearImageController alloc]init];

@@ -122,11 +122,12 @@
                             [dataArray addObject:data];
                         }else if ([key isEqualToString:@"video"]) {
                             NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"video"]];
+                             NSString * time = [chatDic objectForKey:@"time"];
                             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
                             player.shouldAutoplay = NO;
                             UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"video"]];;
-                            NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:date type:BubbleTypeMine withVidePath:[chatDic objectForKey:@"video"]];
+                            NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withTime:time withType:@"video" date:date type:BubbleTypeMine withVidePath:[chatDic objectForKey:@"video"]];
                             if(myData)
                                 bdata.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:bdata];
@@ -169,7 +170,8 @@
                             player.shouldAutoplay = NO;
                             UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"video"]];;
-                            NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withType:@"video" date:date type:BubbleTypeSomeoneElse withVidePath:[chatDic objectForKey:@"video"]];
+                            NSString * time = [chatDic objectForKey:@"time"];
+                            NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withTime:time  withType:@"video" date:date type:BubbleTypeSomeoneElse withVidePath:[chatDic objectForKey:@"video"]];
                             if(otherData)
                                 bdata.avatar = [UIImage imageWithData:otherData];
                             [dataArray addObject:bdata];

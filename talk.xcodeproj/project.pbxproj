@@ -164,6 +164,7 @@
 		03F50C701867B54300E08C22 /* AudioHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F50C6F1867B54300E08C22 /* AudioHandler.m */; };
 		03F5A18F1867376400CD60FD /* PhotoHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F5A18E1867376400CD60FD /* PhotoHandler.m */; };
 		03F5B05018339C1500A847A0 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03F5B04F18339C1500A847A0 /* MediaPlayer.framework */; };
+		0E03AAF71880E7B300F7BDC7 /* DisPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E03AAF61880E7B300F7BDC7 /* DisPlayerViewController.m */; };
 		0E0434D2187A735700A16705 /* separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0434D0187A735700A16705 /* separator.png */; };
 		0E0434D3187A735700A16705 /* separator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0434D1187A735700A16705 /* separator@2x.png */; };
 		0E0847361827304400350741 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0847351827304400350741 /* AVFoundation.framework */; };
@@ -211,7 +212,6 @@
 		0E49F052187E333700749A6D /* moviePause@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E49F03D187E333700749A6D /* moviePause@2x.png */; };
 		0E49F053187E333700749A6D /* moviePlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E49F03E187E333700749A6D /* moviePlay.png */; };
 		0E49F054187E333700749A6D /* moviePlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E49F03F187E333700749A6D /* moviePlay@2x.png */; };
-		0E49F057187E337C00749A6D /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E49F056187E337C00749A6D /* PlayerViewController.m */; };
 		0E49F068187E7B8F00749A6D /* redo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E49F066187E7B8F00749A6D /* redo.png */; };
 		0E49F069187E7B8F00749A6D /* undo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E49F067187E7B8F00749A6D /* undo.png */; };
 		0E49F06C187E7BA200749A6D /* MyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E49F06B187E7BA200749A6D /* MyView.m */; };
@@ -609,6 +609,8 @@
 		03F5A18D1867376400CD60FD /* PhotoHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoHandler.h; path = handler/PhotoHandler.h; sourceTree = "<group>"; };
 		03F5A18E1867376400CD60FD /* PhotoHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoHandler.m; path = handler/PhotoHandler.m; sourceTree = "<group>"; };
 		03F5B04F18339C1500A847A0 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		0E03AAF51880E7B300F7BDC7 /* DisPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisPlayerViewController.h; sourceTree = "<group>"; };
+		0E03AAF61880E7B300F7BDC7 /* DisPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisPlayerViewController.m; sourceTree = "<group>"; };
 		0E0434D0187A735700A16705 /* separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = separator.png; sourceTree = "<group>"; };
 		0E0434D1187A735700A16705 /* separator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "separator@2x.png"; sourceTree = "<group>"; };
 		0E0847351827304400350741 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -674,8 +676,6 @@
 		0E49F03D187E333700749A6D /* moviePause@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "moviePause@2x.png"; sourceTree = "<group>"; };
 		0E49F03E187E333700749A6D /* moviePlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moviePlay.png; sourceTree = "<group>"; };
 		0E49F03F187E333700749A6D /* moviePlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "moviePlay@2x.png"; sourceTree = "<group>"; };
-		0E49F055187E337C00749A6D /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
-		0E49F056187E337C00749A6D /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
 		0E49F066187E7B8F00749A6D /* redo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redo.png; sourceTree = "<group>"; };
 		0E49F067187E7B8F00749A6D /* undo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = undo.png; sourceTree = "<group>"; };
 		0E49F06A187E7BA200749A6D /* MyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyView.h; sourceTree = "<group>"; };
@@ -1783,8 +1783,8 @@
 				0E49F02A187E333700749A6D /* ALMoviePlayerController.m */,
 				0E49F02B187E333700749A6D /* ALMoviePlayerControls.h */,
 				0E49F02C187E333700749A6D /* ALMoviePlayerControls.m */,
-				0E49F055187E337C00749A6D /* PlayerViewController.h */,
-				0E49F056187E337C00749A6D /* PlayerViewController.m */,
+				0E03AAF51880E7B300F7BDC7 /* DisPlayerViewController.h */,
+				0E03AAF61880E7B300F7BDC7 /* DisPlayerViewController.m */,
 				0E49F02F187E333700749A6D /* Images */,
 			);
 			path = videoPlayer;
@@ -2321,6 +2321,7 @@
 				4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */,
 				03D9C08018145E410039118F /* XMPPvCardTempLabel.m in Sources */,
 				0EF79DF318580D9100EB8A64 /* IconView.m in Sources */,
+				0E03AAF71880E7B300F7BDC7 /* DisPlayerViewController.m in Sources */,
 				03D9C0B718145E480039118F /* RFImageToDataTransformer.m in Sources */,
 				03D9C09518145E410039118F /* XMPPMessageArchiving_Message_CoreDataObject.m in Sources */,
 				03D9C09318145E410039118F /* XMPPMessageArchiving.xcdatamodeld in Sources */,
@@ -2375,7 +2376,6 @@
 				03D9C0E318145E510039118F /* DDAbstractDatabaseLogger.m in Sources */,
 				03D9C0E218145E510039118F /* GCDAsyncSocket.m in Sources */,
 				03D9C05418145E410039118F /* XMPPCoreDataStorage.m in Sources */,
-				0E49F057187E337C00749A6D /* PlayerViewController.m in Sources */,
 				0E084791182736BC00350741 /* UIBubbleHeaderTableViewCell.m in Sources */,
 				0EF14D2E1876B8CD008F4AF5 /* ImageViewController.m in Sources */,
 				03D9BF7418145E370039118F /* XMPPElement.m in Sources */,

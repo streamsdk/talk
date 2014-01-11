@@ -10,7 +10,7 @@
 
 @protocol PlayerDelegate <NSObject>
 
--(void) playerVideo:(NSString *)path;
+-(void) playerVideo:(NSString *)path withTime:(NSString *)time withDate:(NSDate *)date;
 
 -(void)bigImage:(UIImage *)image;
 
