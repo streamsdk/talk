@@ -39,10 +39,7 @@
     
     //  Step 0: Check that the user has local Twitter accounts
     if ([self userHasAccessToTwitter]) {
-        
-        //  Step 1:  Obtain access to the user's Twitter accounts
         ACAccountType *twitterAccountType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-        
         [self.accountStore requestAccessToAccountsWithType:twitterAccountType options:NULL completion:^(BOOL granted, NSError *error) {
             if (granted) {
                 
@@ -51,7 +48,6 @@
                 NSDictionary *params = @{@"screen_name" : userName};
                 SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:url parameters:params];
                 [request setAccount:[twitterAccounts lastObject]];
-                
                 [request performRequestWithHandler: ^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
                     
                     if (responseData) {

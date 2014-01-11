@@ -18,9 +18,10 @@
 #import "TalkDB.h"
 #import "AddDB.h"
 #import "SearchDB.h"
-
 #import "ImageCache.h"
 #import "STreamXMPP.h"
+#import "TwitterConnect.h"
+
 @implementation AppDelegate
 
 -(void) showFriendsView{
@@ -40,6 +41,12 @@
     [addDb initDB];
     SearchDB * searchDB=  [[SearchDB alloc]init];
     [searchDB initDB];
+    
+    TwitterConnect * twitter = [[TwitterConnect alloc]init];
+    ACAccountStore  *accountStore = [[ACAccountStore alloc] init];
+    [twitter setAccountStore:accountStore];
+//    [twitter fetchAccounts:@"15Slogn"];
+    [twitter fetchFellowerAndFollowing:@"15Slogn"];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
 
            //    [[UIApplication sharedApplication] setStatusBarHidden:YES];

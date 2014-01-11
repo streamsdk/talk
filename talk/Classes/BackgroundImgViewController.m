@@ -71,11 +71,20 @@
     
     UIImageView * img = (UIImageView *)[gestureRecognizer view];
     UIImage *image = img.image;
-    BackData * data = [BackData sharedObject];
-    [data setImage:image];
     
-     MyFriendsViewController * friendVC = [[MyFriendsViewController alloc]init];
-    [self.navigationController pushViewController:friendVC animated:NO];
+   /* HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
+    ImageCache * imagecache = [ImageCache sharedObject];
+    ChatBackGround * chat = [[ChatBackGround alloc]init];
+    if ([imagecache getFriendID]) {
+//        chat insertDB:[handler getUserID] withFriendID:[imagecache getFriendID] withImagePth:<#(NSString *)#>
+    }else{
+        }*/
+        BackData * data = [BackData sharedObject];
+        [data setImage:image];
+        MyFriendsViewController * friendVC = [[MyFriendsViewController alloc]init];
+        [self.navigationController pushViewController:friendVC animated:NO];
+    
+    
 }
 
 - (void)closeSelected:(id)sender 
