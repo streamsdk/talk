@@ -14,6 +14,7 @@
 		030D10D1186D344700910292 /* video150.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10CD186D344700910292 /* video150.png */; };
 		030D10D3186D34F400910292 /* microphone24.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10D2186D34F400910292 /* microphone24.png */; };
 		03451B8518326C5600030E79 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03451B8418326C5600030E79 /* SignUpViewController.m */; };
+		0355801F18812D940036CC3C /* TwitterConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 0355801E18812D940036CC3C /* TwitterConnect.m */; };
 		037E0431186605A8005ADCEC /* libidn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9C0E018145E510039118F /* libidn.a */; };
 		03C01B1D185ACFB600137E85 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C01B1C185ACFB600137E85 /* arcstreamsdk.framework */; };
 		03D9BEFC18145C080039118F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9BEFB18145C080039118F /* Foundation.framework */; };
@@ -320,6 +321,8 @@
 		030D10D2186D34F400910292 /* microphone24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = microphone24.png; sourceTree = "<group>"; };
 		03451B8318326C5600030E79 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SignUpViewController.h; path = Classes/SignUpViewController.h; sourceTree = "<group>"; };
 		03451B8418326C5600030E79 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SignUpViewController.m; path = Classes/SignUpViewController.m; sourceTree = "<group>"; };
+		0355801D18812D940036CC3C /* TwitterConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterConnect.h; sourceTree = "<group>"; };
+		0355801E18812D940036CC3C /* TwitterConnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterConnect.m; sourceTree = "<group>"; };
 		03C01B1C185ACFB600137E85 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
 		03D9BEF818145C080039118F /* talk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = talk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03D9BEFB18145C080039118F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -839,6 +842,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0355801C18812D670036CC3C /* twitter */ = {
+			isa = PBXGroup;
+			children = (
+				0355801D18812D940036CC3C /* TwitterConnect.h */,
+				0355801E18812D940036CC3C /* TwitterConnect.m */,
+			);
+			name = twitter;
+			sourceTree = "<group>";
+		};
 		03D9BEEF18145C080039118F = {
 			isa = PBXGroup;
 			children = (
@@ -896,6 +908,7 @@
 		03D9BF0118145C080039118F /* talk */ = {
 			isa = PBXGroup;
 			children = (
+				0355801C18812D670036CC3C /* twitter */,
 				0E19E82518716AA100523232 /* EGOTableViewPullRefresh */,
 				03F5A1891867367500CD60FD /* handler */,
 				0E8A4F30182B7EE300705C1F /* talkDB */,
@@ -2294,6 +2307,7 @@
 				03D9C08D18145E410039118F /* XMPPTransports.m in Sources */,
 				03D9C07218145E410039118F /* XMPPRoomOccupantMemoryStorageObject.m in Sources */,
 				03D9C08618145E410039118F /* XMPPPubSub.m in Sources */,
+				0355801F18812D940036CC3C /* TwitterConnect.m in Sources */,
 				03D9C08A18145E410039118F /* NSDate+XMPPDateTimeProfiles.m in Sources */,
 				03D9C0A018145E410039118F /* XMPPTime.m in Sources */,
 				0EF79E1218584CAF00EB8A64 /* BackData.m in Sources */,
