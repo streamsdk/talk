@@ -165,6 +165,7 @@
 		03F5A18F1867376400CD60FD /* PhotoHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F5A18E1867376400CD60FD /* PhotoHandler.m */; };
 		03F5B05018339C1500A847A0 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03F5B04F18339C1500A847A0 /* MediaPlayer.framework */; };
 		0E03AAF71880E7B300F7BDC7 /* DisPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E03AAF61880E7B300F7BDC7 /* DisPlayerViewController.m */; };
+		0E03AAFC1880FDB800F7BDC7 /* colors.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0E03AAFB1880FDB800F7BDC7 /* colors.jpg */; };
 		0E0434D2187A735700A16705 /* separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0434D0187A735700A16705 /* separator.png */; };
 		0E0434D3187A735700A16705 /* separator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0434D1187A735700A16705 /* separator@2x.png */; };
 		0E0847361827304400350741 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0847351827304400350741 /* AVFoundation.framework */; };
@@ -611,6 +612,7 @@
 		03F5B04F18339C1500A847A0 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		0E03AAF51880E7B300F7BDC7 /* DisPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisPlayerViewController.h; sourceTree = "<group>"; };
 		0E03AAF61880E7B300F7BDC7 /* DisPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisPlayerViewController.m; sourceTree = "<group>"; };
+		0E03AAFB1880FDB800F7BDC7 /* colors.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = colors.jpg; sourceTree = "<group>"; };
 		0E0434D0187A735700A16705 /* separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = separator.png; sourceTree = "<group>"; };
 		0E0434D1187A735700A16705 /* separator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "separator@2x.png"; sourceTree = "<group>"; };
 		0E0847351827304400350741 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -1896,6 +1898,7 @@
 		0EE951A1185EA4B9003F4638 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0E03AAFB1880FDB800F7BDC7 /* colors.jpg */,
 				0E49F066187E7B8F00749A6D /* redo.png */,
 				0E49F067187E7B8F00749A6D /* undo.png */,
 				0E0434D0187A735700A16705 /* separator.png */,
@@ -2220,6 +2223,7 @@
 				0EE951D9185EA4B9003F4638 /* bg.png in Resources */,
 				0ED8ECA118288DC400C84741 /* mic_normal_358x358@2x.png in Resources */,
 				0EE951D1185EA4B9003F4638 /* addIcon.png in Resources */,
+				0E03AAFC1880FDB800F7BDC7 /* colors.jpg in Resources */,
 				0EE951E5185EA4B9003F4638 /* facesBack.png in Resources */,
 				0E49F047187E333700749A6D /* movieBackwardSelected.png in Resources */,
 			);

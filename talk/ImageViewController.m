@@ -16,6 +16,9 @@
 #define DONE_TAG 3000
 #define BRUSH_TAG 4000
 #define USERPHOTO_TAG 5000
+#define VIEW_TAG 6000
+//保存线条颜色
+static NSMutableArray *colors;
 @interface ImageViewController ()
 {
     NSString * time;
@@ -50,23 +53,43 @@
 
     creat = [[CreateUI alloc]init];
     
+    colors=[[NSMutableArray alloc]initWithObjects:[UIColor greenColor],[UIColor blueColor],[UIColor redColor],[UIColor orangeColor],[UIColor purpleColor],[UIColor yellowColor],[UIColor brownColor],[UIColor whiteColor],[UIColor magentaColor],[UIColor darkGrayColor], nil];
     UIButton * backButton = [creat setButtonFrame:CGRectMake(10, 26, 50, 26) withTitle:@"Back" withImage:nil];
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton * brushButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-50, 26, 30, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"brush.png"]];
+    
     [brushButton addTarget:self action:@selector(paintbrushClicked) forControlEvents:UIControlEventTouchUpInside];
     brushButton.tag = BRUSH_TAG;
+    [brushButton setBackgroundColor:[UIColor greenColor]];
     
-    UIButton * undoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-100, 26, 30, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"undo.png"]];
+    UIButton * undoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-150, 26, 30, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"undo.png"]];
     undoButton.hidden =YES;
     undoButton.tag=UNDO_TAG;
     [undoButton addTarget:self action:@selector(undoClicked) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton * redoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-50, 26, 30, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"redo.png"]];
+    UIButton * redoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-100, 26, 30, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"redo.png"]];
     redoButton.hidden = YES;
     redoButton.tag=REDO_TAG;
     [redoButton addTarget:self action:@selector(redoClicked) forControlEvents:UIControlEventTouchUpInside];
-    
+    UIView* v = [[UIView alloc]initWithFrame:CGRectMake(self.view.frame.size.width-120, 58, 100, 8)];
+    v.tag = VIEW_TAG;
+    v.hidden = YES;
+    CALayer *l = [v layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:2.0];
+    v.backgroundColor = [UIColor clearColor];
+     [self.view addSubview:v];
+    for (int i=0; i<10; i++) {
+        
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [btn setFrame:CGRectMake(10*i, 0, 10, 8)];
+         btn.tag = i;
+        [btn setBackgroundColor:[colors objectAtIndex:i]];
+        [btn addTarget:self action:@selector(setColor:) forControlEvents:UIControlEventTouchUpInside];
+        [v addSubview:btn];
+    }
+   
     drawView = [[MyView alloc]initWithFrame:CGRectMake(20, 100, self.view.frame.size.width -40, 300)];
     drawView.userInteractionEnabled = NO;
     UIImage * newImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(self.view.frame.size.width -40, 300)];
@@ -100,6 +123,12 @@
     [self.view addSubview:brushButton];
     [self.view addSubview:doneButton];
 }
+-(void)setColor:(id)sender {
+    UIButton * brush =(UIButton * )[self.view viewWithTag:BRUSH_TAG];
+    UIButton *button=(UIButton *)sender;
+    [self.drawView setLineColor:button.tag];
+    brush.backgroundColor=[colors objectAtIndex:button.tag];
+}
 -(void)undoClicked{
     [ self.drawView revocation];
 }
@@ -119,10 +148,10 @@
     drawView.userInteractionEnabled = NO;
     UIButton * undo =(UIButton * )[self.view viewWithTag:UNDO_TAG];
     UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
-    UIButton * brush =(UIButton * )[self.view viewWithTag:BRUSH_TAG];
+//    UIButton * brush =(UIButton * )[self.view viewWithTag:BRUSH_TAG];
     UIButton * use =(UIButton * )[self.view viewWithTag:USERPHOTO_TAG];
     UIButton * done =(UIButton * )[self.view viewWithTag:DONE_TAG];
-    brush.hidden=NO;
+    
     undo.hidden = YES;
     redo.hidden = YES;
     use.hidden = NO;
@@ -133,10 +162,10 @@
     drawView.userInteractionEnabled = YES;
     UIButton * undo =(UIButton * )[self.view viewWithTag:UNDO_TAG];
     UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
-    UIButton * brush =(UIButton * )[self.view viewWithTag:BRUSH_TAG];
     UIButton * use =(UIButton * )[self.view viewWithTag:USERPHOTO_TAG];
     UIButton * done =(UIButton * )[self.view viewWithTag:DONE_TAG];
-    brush.hidden=YES;
+    UIView *v =(UIView *)[self.view viewWithTag:VIEW_TAG];
+    v.hidden = NO;
     undo.hidden = NO;
     redo.hidden = NO;
     use.hidden = YES;
@@ -224,7 +253,12 @@
     UIGraphicsEndImageContext();
     return newImage;
 }
-
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+//    UIButton * undo =(UIButton * )[self.view viewWithTag:UNDO_TAG];
+//    UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
+//    undo.hidden = NO;
+//    redo.hidden=NO;
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
