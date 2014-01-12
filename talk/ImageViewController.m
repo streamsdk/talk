@@ -54,7 +54,14 @@ static NSMutableArray *colors;
     creat = [[CreateUI alloc]init];
     
     colors=[[NSMutableArray alloc]initWithObjects:[UIColor greenColor],[UIColor blueColor],[UIColor redColor],[UIColor orangeColor],[UIColor purpleColor],[UIColor yellowColor],[UIColor brownColor],[UIColor whiteColor],[UIColor magentaColor],[UIColor darkGrayColor], nil];
-    UIButton * backButton = [creat setButtonFrame:CGRectMake(10, 26, 50, 26) withTitle:@"Back" withImage:nil];
+    
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    CGRect frameBack = CGRectMake(10, 26, 32, 32);
+    [backButton setFrame:frameBack];
+    [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+
+    
+    
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton * brushButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-50, 26, 30, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"brush.png"]];
@@ -97,18 +104,24 @@ static NSMutableArray *colors;
     [self.view addSubview:drawView];
     [self.view sendSubviewToBack:drawView];
     
-    UIButton * useButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-80, self.view.frame.size.height-55, 70, 26) withTitle:@"usePhoto" withImage:nil];
+    UIButton *useButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    CGRect frame = CGRectMake(self.view.frame.size.width-53, self.view.frame.size.height-47, 32, 32);
+    [useButton setFrame:frame];
+    [useButton setImage:[UIImage imageNamed:@"forward.png"] forState:UIControlStateNormal];
     [useButton addTarget:self action:@selector(sendImageClicked) forControlEvents:UIControlEventTouchUpInside];
     useButton.tag = USERPHOTO_TAG;
     
-    UIButton * doneButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-80, self.view.frame.size.height-55, 70, 26) withTitle:@"Done" withImage:nil];
+    UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    CGRect frameDone = CGRectMake(self.view.frame.size.width-53, self.view.frame.size.height-56, 45, 45);
+    [doneButton setFrame:frameDone];
+    [doneButton setImage:[UIImage imageNamed:@"tick512.png"] forState:UIControlStateNormal];
     [doneButton addTarget:self action:@selector(doneClicked) forControlEvents:UIControlEventTouchUpInside];
     doneButton.tag = DONE_TAG;
     doneButton.hidden = YES;
     
     UIButton * clockButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [clockButton setFrame:CGRectMake(10, self.view.frame.size.height-49, 42, 25)];
-    [clockButton setBackgroundImage:[UIImage imageNamed:@"clock.png"] forState:UIControlStateNormal];
+    [clockButton setFrame:CGRectMake(10, self.view.frame.size.height-49, 32, 32)];
+    [clockButton setBackgroundImage:[UIImage imageNamed:@"clocknew.png"] forState:UIControlStateNormal];
     clockButton .tag = CLOCKBUTTON_TAG;
     clockButton.titleLabel.font = [UIFont systemFontOfSize:12.0f];
     [clockButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

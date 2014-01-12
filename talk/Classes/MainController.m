@@ -89,12 +89,12 @@
     keyboardIsShow=NO;
     isFace = NO;
     
-    recordOrKeyboardButton = [createUI setButtonFrame:CGRectMake(0, 2, 30, 36) withTitle:(@"nil")];
-    [recordOrKeyboardButton setImage:[UIImage imageNamed:@"microphone24.png"] forState:UIControlStateNormal];
+    recordOrKeyboardButton = [createUI setButtonFrame:CGRectMake(0, 5, 30, 30) withTitle:(@"nil")];
+    [recordOrKeyboardButton setImage:[UIImage imageNamed:@"microphonefat.png"] forState:UIControlStateNormal];
     [recordOrKeyboardButton addTarget:self action:@selector(KeyboardTorecordClicked) forControlEvents:UIControlEventTouchUpInside];
    
-    iconButton = [createUI setButtonFrame:CGRectMake(30, 2, 30, 36) withTitle:@"nil"];
-    [iconButton setImage:[UIImage imageNamed:@"plus24.png"] forState:UIControlStateNormal];
+    iconButton = [createUI setButtonFrame:CGRectMake(30, 8, 24, 24) withTitle:@"nil"];
+    [iconButton setImage:[UIImage imageNamed:@"plus256.png"] forState:UIControlStateNormal];
     [iconButton addTarget:self action:@selector(photoClicked) forControlEvents:UIControlEventTouchUpInside];
     
     messageText = [createUI setTextFrame:CGRectMake(60, 3, toolBar.frame.size.width-95, 34)];
@@ -102,7 +102,7 @@
     messageText.returnKeyType = UIReturnKeySend;
     
     faceButton = [createUI setButtonFrame:CGRectMake(toolBar.frame.size.width-33, 3,30, 34) withTitle:@"nil"];
-    [faceButton setImage:[UIImage imageNamed:@"face.png"] forState:UIControlStateNormal];
+    [faceButton setImage:[UIImage imageNamed:@"face512.png"] forState:UIControlStateNormal];
     [faceButton addTarget:self action:@selector(faceClicked) forControlEvents:UIControlEventTouchUpInside];
 
     [toolBar addSubview:recordOrKeyboardButton];
@@ -402,7 +402,7 @@
     [faceButton removeFromSuperview];
     CGRect frame = CGRectMake(5, 2, 30, 36);
      keyBoardButton = [createUI setButtonFrame:frame withTitle:@"nil"];
-    [keyBoardButton setImage:[UIImage imageNamed:@"keyboard34.png"] forState:UIControlStateNormal];
+    [keyBoardButton setImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
     
     [[recordButton layer] setBorderColor:[[UIColor blackColor] CGColor]];
     [[recordButton layer] setBorderWidth:1];
@@ -477,7 +477,7 @@
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-keyboardHeight,self.view.frame.size.width, keyboardHeight)];
         }];
-        [faceButton setBackgroundImage:[UIImage imageNamed:@"Text.png"] forState:UIControlStateNormal];
+        [faceButton setBackgroundImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
         [pageControl setHidden:NO];
         return;
     }
@@ -522,7 +522,7 @@
     [UIView animateWithDuration:Time animations:^{
         [scrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, keyboardHeight)];
     }];
-    [faceButton setBackgroundImage:[UIImage imageNamed:@"face.png"] forState:UIControlStateNormal];
+    [faceButton setBackgroundImage:[UIImage imageNamed:@"face512.png"] forState:UIControlStateNormal];
    
 }
 
@@ -555,7 +555,7 @@
             [self autoMovekeyBoard:keyBoardFrame.size.height];
         }
     }];
-    [faceButton setImage:[UIImage imageNamed:@"face.png"] forState:UIControlStateNormal];
+    [faceButton setImage:[UIImage imageNamed:@"face512.png"] forState:UIControlStateNormal];
     [pageControl setHidden:YES];
     keyboardIsShow=YES;
     
@@ -565,7 +565,7 @@
     NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSTimeInterval animationDuration;
     [animationDurationValue getValue:&animationDuration];
-    [faceButton setImage:[UIImage imageNamed:@"Text.png"] forState:UIControlStateNormal];
+    [faceButton setImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
     [pageControl setHidden:NO];
     keyboardIsShow=NO;
 }

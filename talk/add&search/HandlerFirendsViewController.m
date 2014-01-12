@@ -257,11 +257,11 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.tag = indexPath.row;
-        [[button layer] setBorderColor:[[UIColor blueColor] CGColor]];
-        [[button layer] setBorderWidth:1];
-        [[button layer] setCornerRadius:4];
-        [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        button.titleLabel.font = [UIFont systemFontOfSize:16.0f];
+        //[[button layer] setBorderColor:[[UIColor blueColor] CGColor]];
+        //[[button layer] setBorderWidth:1];
+        //[[button layer] setCornerRadius:4];
+        //[button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        //button.titleLabel.font = [UIFont systemFontOfSize:16.0f];
         
         CALayer *l = [cell.imageView layer];
         [l setMasksToBounds:YES];
@@ -270,11 +270,12 @@
     
     switch (_friendsType) {
         case FriendsAdd:{
-            [button setFrame:CGRectMake(cell.frame.size.width-100, 15,60, 30)];
+            [button setFrame:CGRectMake(cell.frame.size.width-100, 15, 32, 32)];
             if (friendsAddArray && [friendsAddArray count]!=0) {
                 NSString *status = [addDict objectForKey:[friendsAddArray objectAtIndex:indexPath.row]];
                 if ([status isEqualToString:@"friend"]) {
-                    [button setTitle:@"friend" forState:UIControlStateNormal];
+                    //[button setTitle:@"friend" forState:UIControlStateNormal];
+                    [button setBackgroundImage:[UIImage imageNamed:@"friends.png"] forState:UIControlStateNormal];
                     [button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
                     [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
                     [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
@@ -283,7 +284,8 @@
                     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
                     [cell addSubview:button];
                 }else if ([status isEqualToString:@"request"]){
-                    [button setTitle:@"add" forState:UIControlStateNormal];
+                   // [button setTitle:@"add" forState:UIControlStateNormal];
+                    [button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
                     [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
                     [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
                     [self loadAvatar:[friendsAddArray objectAtIndex:indexPath.row] withCell:cell];
@@ -324,8 +326,9 @@
                     }
                     
                 }else{
-                    [button setFrame:CGRectMake(cell.frame.size.width-100, 15, 60, 30)];
-                    [button setTitle:@"add" forState:UIControlStateNormal];
+                    [button setFrame:CGRectMake(cell.frame.size.width-100, 15, 32, 32)];
+                   // [button setTitle:@"add" forState:UIControlStateNormal];
+                    [button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
                     [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
                     cell.textLabel.text = str;
                     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20.0f];
@@ -417,8 +420,10 @@
     
     SearchDB * db = [[SearchDB alloc]init];
     [db insertDB:[handler getUserID] withFriendID:string];
-    [sender setFrame:CGRectMake(220, 15, 100, 30)];
-    [sender setTitle:@"sendRequest" forState:UIControlStateNormal];
+    [sender setFrame:CGRectMake(220, 15, 32, 32)];
+   // [sender setTitle:@"sendRequest" forState:UIControlStateNormal];
+    [sender setBackgroundImage:[UIImage imageNamed:@"invitation.png"] forState:UIControlStateNormal];
+    
     
 }
 
@@ -478,7 +483,7 @@
     [updateArray addObject:my];
     [sco updateStreamCategoryObjectsInBackground:updateArray];
     
-    [sender setTitle:@"add" forState:UIControlStateNormal];
+    //[sender setTitle:@"add" forState:UIControlStateNormal];
     [sender addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
     [myTableview reloadData];
 }
