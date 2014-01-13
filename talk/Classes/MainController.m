@@ -485,7 +485,7 @@
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-keyboardHeight,self.view.frame.size.width, keyboardHeight)];
         }];
-        [faceButton setBackgroundImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
+        [faceButton setImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
         [pageControl setHidden:NO];
         return;
     }
@@ -517,10 +517,7 @@
 #pragma mark 隐藏键盘
 
 -(void)dismissKeyBoard{
-    UIButton *button = (UIButton *)[self.view viewWithTag:BUTTON_TAG];
-    [button removeFromSuperview];
-    [pageControl setHidden:YES];
-    [messageText resignFirstResponder];
+    
     //键盘显示的时候，toolbar需要还原到正常位置，并显示表情
     [UIView animateWithDuration:Time animations:^{
         toolBar.frame = CGRectMake(0, self.view.frame.size.height-toolBar.frame.size.height,  self.view.bounds.size.width,toolBar.frame.size.height);
@@ -530,8 +527,11 @@
     [UIView animateWithDuration:Time animations:^{
         [scrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, keyboardHeight)];
     }];
-    [faceButton setBackgroundImage:[UIImage imageNamed:@"face512.png"] forState:UIControlStateNormal];
-   
+    [faceButton setImage:[UIImage imageNamed:@"face512.png"] forState:UIControlStateNormal];
+    [pageControl setHidden:YES];
+    [messageText resignFirstResponder];
+    UIButton *button = (UIButton *)[self.view viewWithTag:BUTTON_TAG];
+    [button removeFromSuperview];
 }
 
 
@@ -576,6 +576,9 @@
     [faceButton setImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
     [pageControl setHidden:NO];
     keyboardIsShow=NO;
+    UIButton *button = (UIButton *)[self.view viewWithTag:BUTTON_TAG];
+    [button removeFromSuperview];
+    [messageText resignFirstResponder];
 }
 
 #pragma mark -
@@ -603,7 +606,7 @@
 -(void) photoClicked {
     isFace = NO;
     [scrollView removeFromSuperview];
-
+    [pageControl removeFromSuperview];
     scrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, ICONHEIGHT)];
     [scrollView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"facesBack.png"]]];
     for (int i=0; i<5; i++) {
@@ -624,6 +627,7 @@
 #pragma mark Face button 
 -(void) faceClicked {
     [scrollView removeFromSuperview];
+    [pageControl removeFromSuperview];
     //创建表情键盘
     scrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, keyboardHeight)];
     [scrollView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"facesBack"]]];

@@ -348,7 +348,11 @@
         case FriendsHistory:{
             [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
             [self loadAvatar:[friendsHistoryArray objectAtIndex:indexPath.row] withCell:cell];
-
+            [button setFrame:CGRectMake(cell.frame.size.width-100, 15, 32, 32)];
+//            friendsSearchArray = friendsHistoryArray;
+            [button setBackgroundImage:[UIImage imageNamed:@"invitation.png"] forState:UIControlStateNormal];
+//            [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
+            [cell addSubview:button];
             cell.textLabel.text = [friendsHistoryArray objectAtIndex:indexPath.row];
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
         }
@@ -509,7 +513,6 @@
 }
 -(void) addFriendSendRequest:(UIButton *) sender {
     _button = (UIButton *)sender;
-    
     isSendRequest = YES;
     NSString * str = [NSString stringWithFormat:@"Are you sure the invitation sent to %@?",[friendsSearchArray objectAtIndex:_button.tag]];
     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
