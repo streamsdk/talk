@@ -107,7 +107,7 @@
     [self.view addSubview:imageview];
    
     userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"SetChatBackground",@"Exit", nil];
-    myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(0,170, self.view.bounds.size.width, self.view.bounds.size.height)];
+    myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(0,170, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStyleGrouped];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
     myTableView.dataSource = self;
@@ -123,7 +123,27 @@
     }];
 
 }
+//-(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
+//    return 4;
+//}
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+
+    /*switch (section) {
+        case 0:
+            return 1;
+            break;
+        case 1:
+            return 2;
+            break;
+        case 2:
+            return 3;
+            break;
+        case 3:
+            return 1;
+            break;
+        default:
+            break;
+    }*/
     return [userData count]-1;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

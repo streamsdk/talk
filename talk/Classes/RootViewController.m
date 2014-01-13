@@ -11,6 +11,7 @@
 #import "LoginViewController.h"
 #import "SignUpViewController.h"
 #import "MyFriendsViewController.h"
+#import "TwitterConnect.h"
 
 @interface RootViewController ()
 
@@ -40,7 +41,7 @@
     [self.view addSubview:imageview];
     
     UIButton * loginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [loginBtn setFrame:CGRectMake(0, self.view.frame.size.height -200, self.view.frame.size.width, 70)];
+    [loginBtn setFrame:CGRectMake(0, self.view.frame.size.height -220, self.view.frame.size.width, 50)];
     [loginBtn setTitle:@"LOG IN" forState:UIControlStateNormal];
     loginBtn.titleLabel.font = [UIFont systemFontOfSize:20.0f];
     [loginBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -49,16 +50,39 @@
     [imageview addSubview:loginBtn];
     
     UIButton * signupBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [signupBtn setFrame:CGRectMake(0, self.view.frame.size.height -120, self.view.frame.size.width, 70)];
+    [signupBtn setFrame:CGRectMake(0, self.view.frame.size.height -150, self.view.frame.size.width, 50)];
     [signupBtn setTitle:@"SIGN UP" forState:UIControlStateNormal];
     signupBtn.titleLabel.font = [UIFont systemFontOfSize:20.0f];
     [signupBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [signupBtn setBackgroundColor:[UIColor greenColor]];
     [signupBtn addTarget:self action:@selector(singUp) forControlEvents:UIControlEventTouchUpInside];
     [imageview addSubview:signupBtn];
+    UIImageView * view =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"line.png"]];
+    [view setFrame:CGRectMake(0, self.view.frame.size.height -80, self.view.frame.size.width, 20)];
+    [imageview addSubview:view];
+    UILabel * label =[[UILabel alloc]initWithFrame:CGRectMake(105, self.view.frame.size.height -85, 130, 30)];
+    label.text = @"Or Login with";
+    label.font =[UIFont fontWithName:@"Chalkduster" size:14.0f];
+    label.backgroundColor = [UIColor clearColor];
+    [imageview addSubview:label];
+    
+    UIButton * twitterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [twitterBtn setFrame:CGRectMake(0, self.view.frame.size.height -50, self.view.frame.size.width, 38)];
+    [twitterBtn setTitle:@"Twitter" forState:UIControlStateNormal];
+    twitterBtn.titleLabel.font = [UIFont fontWithName:@"Chalkduster" size:18.0f];
+    [twitterBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [twitterBtn setBackgroundColor:[UIColor colorWithWhite:0.2 alpha:0.2]];
+    [twitterBtn addTarget:self action:@selector(twitterBtn) forControlEvents:UIControlEventTouchUpInside];
+    [imageview addSubview:twitterBtn];
     
 }
-
+-(void)twitterBtn{
+    NSLog(@"");
+   /* TwitterConnect * twitter = [[TwitterConnect alloc]init];
+    ACAccountStore  *accountStore = [[ACAccountStore alloc] init];
+    [twitter setAccountStore:accountStore];
+    [twitter fetchFellowerAndFollowing:@"15Slogn"];*/
+}
 -(void) login {
   
     LoginViewController *loginVC = [[LoginViewController alloc]init];

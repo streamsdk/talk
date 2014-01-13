@@ -45,16 +45,13 @@
     ChatBackGround * chat = [[ChatBackGround alloc]init];
     [chat initDB];
     
-    TwitterConnect * twitter = [[TwitterConnect alloc]init];
+    /*TwitterConnect * twitter = [[TwitterConnect alloc]init];
     ACAccountStore  *accountStore = [[ACAccountStore alloc] init];
     [twitter setAccountStore:accountStore];
-//    [twitter fetchAccounts:@"15Slogn"];
-    [twitter fetchFellowerAndFollowing:@"15Slogn"];
+    [twitter fetchFellowerAndFollowing:@"15Slogn"];*/
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
 
            //    [[UIApplication sharedApplication] setStatusBarHidden:YES];
-    
-    
     
      [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3"
                       clientKey:@"01D901D6EFBA42145E54F52E465F407B" response:^(BOOL succeed, NSString *response){
