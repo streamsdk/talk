@@ -35,6 +35,7 @@
 #import "DisPlayerViewController.h"
 #import "DisappearImageController.h"
 #import "ChatSettingViewController.h"
+#import "ChatBackGround.h"
 #define BUTTON_TAG 20000
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
@@ -139,12 +140,19 @@
     
     BackData *data = [BackData sharedObject];
     UIImage *bgImage =[data getImage];
+    
+    ChatBackGround * chat = [[ChatBackGround alloc]init];
+    NSString *path = [chat readChatBackGround:[handler getUserID] withFriendID:[imageCache getFriendID]];
     if (bgImage) {
         [self.view setBackgroundColor:[UIColor colorWithPatternImage:bgImage]];
+
     }else{
         [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     }
-    
+    if (path) {
+        NSData * data = [NSData dataWithContentsOfFile:path];
+        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageWithData:data]]];
+    }
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
 }

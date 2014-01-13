@@ -181,13 +181,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "talk/TwitterConnect.m"
-            timestampString = "411121151.171971"
+            filePath = "talk/Classes/BackgroundImgViewController.m"
+            timestampString = "411271136.827439"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
-            landmarkName = "-fetchFellowerAndFollowing:"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
+            landmarkName = "-imageSeleted:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -197,13 +197,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "talk/TwitterConnect.m"
-            timestampString = "411127486.716924"
+            filePath = "talk/talkDB/ChatBackGround.m"
+            timestampString = "411271333.689759"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
-            landmarkName = "-fetchFellowerAndFollowing:"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
+            landmarkName = "-insertDB:withFriendID:withImagePth:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

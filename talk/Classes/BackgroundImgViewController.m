@@ -64,7 +64,7 @@
     self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, (IMAGE_HEIGHT_WIDTH+SPACE_WIDTH)*line);
     [self.view addSubview:self.scrollView];
     
-    self.contentSizeForViewInPopover = CGSizeMake(250, 400);
+//    self.contentSizeForViewInPopover = CGSizeMake(250, 400);
     
 }
 -(void) imageSeleted:(UIGestureRecognizer *) gestureRecognizer {
@@ -72,18 +72,23 @@
     UIImageView * img = (UIImageView *)[gestureRecognizer view];
     UIImage *image = img.image;
     
-   /* HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
+   HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
     ImageCache * imagecache = [ImageCache sharedObject];
     ChatBackGround * chat = [[ChatBackGround alloc]init];
     if ([imagecache getFriendID]) {
-//        chat insertDB:[handler getUserID] withFriendID:[imagecache getFriendID] withImagePth:<#(NSString *)#>
+        NSString * path = [[handler getPath] stringByAppendingString:@".png"];
+        NSData * data =UIImageJPEGRepresentation(image, 1.0);
+        [data writeToFile:path atomically:YES];
+        [chat insertDB:[handler getUserID] withFriendID:[imagecache getFriendID] withImagePth:path];
+//        MainController * main = [[MainController alloc]init];
+//        [self.navigationController pushViewController:main animated:YES];
     }else{
-        }*/
+        [chat deleteDB:[handler getUserID] withFriendID:[imagecache getFriendID]];
         BackData * data = [BackData sharedObject];
         [data setImage:image];
-        MyFriendsViewController * friendVC = [[MyFriendsViewController alloc]init];
-        [self.navigationController pushViewController:friendVC animated:NO];
-    
+        }
+    MyFriendsViewController * friendVC = [[MyFriendsViewController alloc]init];
+    [self.navigationController pushViewController:friendVC animated:NO];
     
 }
 

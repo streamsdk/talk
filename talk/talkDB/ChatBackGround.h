@@ -19,4 +19,5 @@
 
 -(void) updateDB:(NSString *)userID withFriendID:(NSString *)friendID withImagePth:(NSString *)path;
 
+-(void) deleteDB:(NSString *)userID withFriendID:(NSString *)friendID;
 @end

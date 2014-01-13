@@ -35,8 +35,6 @@
 
 
 - (void)fetchFellowerAndFollowing:(NSString *)userName{
-    
-    
     //  Step 0: Check that the user has local Twitter accounts
     if ([self userHasAccessToTwitter]) {
         ACAccountType *twitterAccountType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
