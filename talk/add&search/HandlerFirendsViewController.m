@@ -444,17 +444,7 @@
 
     
 }
--(void)addFriends:(UIButton *)sender {
-    
-    _button = (UIButton *)sender;
-    
-    isAddFriend = YES;
-    NSString * str = [NSString stringWithFormat:@"Do you want to add %@ as a friend?",[friendsAddArray objectAtIndex:sender.tag]];
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
-    alert.delegate = self;
-    [alert show];
 
-}
 -(void)delete{
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * db = [[AddDB alloc]init];
@@ -479,9 +469,22 @@
     [updateArray addObject:my];
     [sco updateStreamCategoryObjectsInBackground:updateArray];
     
+    [_button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
     //[sender setTitle:@"add" forState:UIControlStateNormal];
     [_button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
     [myTableview reloadData];
+}
+
+-(void)addFriends:(UIButton *)sender {
+    
+    _button = (UIButton *)sender;
+    
+    isAddFriend = YES;
+    NSString * str = [NSString stringWithFormat:@"Do you want to add %@ as a friend?",[friendsAddArray objectAtIndex:sender.tag]];
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+    alert.delegate = self;
+    [alert show];
+    
 }
 -(void)add {
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
@@ -508,7 +511,7 @@
     [sco updateStreamCategoryObjects:updateArray];
     
     [myTableview reloadData];
-    [_button setTitle:@"friend" forState:UIControlStateNormal];
+    [_button setBackgroundImage:[UIImage imageNamed:@"friends.png"] forState:UIControlStateNormal];
     [_button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
 }
 -(void) addFriendSendRequest:(UIButton *) sender {
