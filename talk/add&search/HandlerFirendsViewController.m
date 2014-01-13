@@ -19,12 +19,18 @@
 #import "FileCache.h"
 #import "MBProgressHUD.h"
 
+#define SENDREQUEST_TAG 1000
+#define ADD_TAG  2000
+#define DELETE_TAG 3000
 #define SEARCH_TAG 10000
 @interface HandlerFirendsViewController ()
 {
     UIBarButtonItem *refreshitem;
     UILabel *label ;
-     NSMutableDictionary * addDict;
+    NSMutableDictionary * addDict;
+    BOOL isAddFriend;
+    BOOL isSendRequest;
+    UIButton * _button ;
 }
 @end
 
@@ -92,9 +98,7 @@
                     if (![friendsHistoryArray containsObject:[so objectId]]) {
                         [searchDB insertDB:[handler getUserID] withFriendID:[so objectId]];
                     }
-                    
                 }
-                
                 [myTableview reloadData];
             }];*/
             NSMutableArray * friends = [sq find];
@@ -184,7 +188,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
+    isAddFriend= NO;
+    isSendRequest = NO;
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     friendsAddPoint = CGPointZero;
     friendsSearchPoint = CGPointZero;
@@ -312,7 +317,7 @@
 
                     if ([status isEqualToString:@"request"]) {
                         [button setFrame:CGRectMake(cell.frame.size.width-100, 15,60, 30)];
-                        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You need to add addFriends page！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Cancel", nil];
+                        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You need to add addFriends page！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
                         [alert show];
                         
                     }else {
@@ -321,7 +326,7 @@
                         cell.textLabel.text = str;
                         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20.0f];
                         [cell addSubview:button];
-                        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You are already friends！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Cancel", nil];
+                        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You are already friends！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
                         [alert show];
                     }
                     
@@ -393,40 +398,6 @@
     
     
 }
--(void) addFriendSendRequest:(UIButton *) sender {
-    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-    NSString * loginName= [handler getUserID];
-    NSString *string= [friendsSearchArray objectAtIndex:sender.tag];
-    
-    
-    STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handler getUserID]];
-    STreamObject * so = [[STreamObject alloc]init];
-    [so setObjectId:string];
-    [so addStaff:@"status" withObject:@"sendRequest"];
-    [so setCategory:loginName];
-    [so updateInBackground];
-    NSMutableArray *update = [[NSMutableArray alloc] init] ;
-    [update addObject:so];
-    [sto updateStreamCategoryObjectsInBackground:update];
-    
-    
-    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:string];
-    STreamObject *my = [[STreamObject alloc]init];
-    [my setObjectId:loginName];
-    [my addStaff:@"status" withObject:@"request"];
-    NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
-    [updateArray addObject:my];
-    [sco updateStreamCategoryObjectsInBackground:updateArray];
-    
-    SearchDB * db = [[SearchDB alloc]init];
-    [db insertDB:[handler getUserID] withFriendID:string];
-    [sender setFrame:CGRectMake(220, 15, 32, 32)];
-   // [sender setTitle:@"sendRequest" forState:UIControlStateNormal];
-    [sender setBackgroundImage:[UIImage imageNamed:@"invitation.png"] forState:UIControlStateNormal];
-    
-    
-}
-
 #pragma mark --segmentAction
 -(void)segmentAction:(UISegmentedControl *)Seg{
     
@@ -460,12 +431,33 @@
 
 -(void)deleteFriends:(UIButton *)sender {
     
+    isAddFriend = NO;
+    _button = (UIButton *)sender;
+    NSString * str = [NSString stringWithFormat:@"You want to delete this friend %@?",[friendsAddArray objectAtIndex:sender.tag]];
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+    alert.delegate = self;
+    [alert show];
+
+    
+}
+-(void)addFriends:(UIButton *)sender {
+    
+    _button = (UIButton *)sender;
+    
+    isAddFriend = YES;
+    NSString * str = [NSString stringWithFormat:@"Do you want to add %@ as a friend?",[friendsAddArray objectAtIndex:sender.tag]];
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+    alert.delegate = self;
+    [alert show];
+
+}
+-(void)delete{
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * db = [[AddDB alloc]init];
-    [db updateDB:[handle getUserID] withFriendID:[friendsAddArray objectAtIndex:sender.tag] withStatus:@"request"];
+    [db updateDB:[handle getUserID] withFriendID:[friendsAddArray objectAtIndex:_button.tag] withStatus:@"request"];
     STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handle getUserID]];
     STreamObject * so = [[STreamObject alloc]init];
-    [so setObjectId:[friendsAddArray objectAtIndex:sender.tag]];
+    [so setObjectId:[friendsAddArray objectAtIndex:_button.tag]];
     [so addStaff:@"status" withObject:@"request"];
     NSMutableArray *update= [[NSMutableArray alloc] init] ;
     
@@ -473,7 +465,7 @@
     [sto updateStreamCategoryObjectsInBackground:update];
     
     NSString * loginName= [handle getUserID];
-    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[friendsAddArray objectAtIndex:sender.tag]];
+    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[friendsAddArray objectAtIndex:_button.tag]];
     STreamObject *my = [[STreamObject alloc]init];
     
     [my setObjectId:loginName];
@@ -484,17 +476,17 @@
     [sco updateStreamCategoryObjectsInBackground:updateArray];
     
     //[sender setTitle:@"add" forState:UIControlStateNormal];
-    [sender addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
+    [_button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
     [myTableview reloadData];
 }
--(void)addFriends:(UIButton *)sender {
+-(void)add {
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * db = [[AddDB alloc]init];
     
-    [db updateDB:[handle getUserID] withFriendID:[friendsAddArray objectAtIndex:sender.tag] withStatus:@"friend"];
+    [db updateDB:[handle getUserID] withFriendID:[friendsAddArray objectAtIndex:_button.tag] withStatus:@"friend"];
     STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handle getUserID]];
     STreamObject * so = [[STreamObject alloc]init];
-    [so setObjectId:[friendsAddArray objectAtIndex:sender.tag]];
+    [so setObjectId:[friendsAddArray objectAtIndex:_button.tag]];
     [so addStaff:@"status" withObject:@"friend"];
     NSMutableArray *update = [[NSMutableArray alloc] init] ;
     
@@ -502,7 +494,7 @@
     [sto updateStreamCategoryObjects:update];
     
     
-    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[friendsAddArray objectAtIndex:sender.tag]];
+    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[friendsAddArray objectAtIndex:_button.tag]];
     STreamObject *my = [[STreamObject alloc]init];
     [my setObjectId:[handle getUserID]];
     [my addStaff:@"status" withObject:@"friend"];
@@ -512,9 +504,65 @@
     [sco updateStreamCategoryObjects:updateArray];
     
     [myTableview reloadData];
-    [sender setTitle:@"friend" forState:UIControlStateNormal];
-    [sender addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
+    [_button setTitle:@"friend" forState:UIControlStateNormal];
+    [_button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
+}
+-(void) addFriendSendRequest:(UIButton *) sender {
+    _button = (UIButton *)sender;
     
+    isSendRequest = YES;
+    NSString * str = [NSString stringWithFormat:@"Are you sure the invitation sent to %@?",[friendsSearchArray objectAtIndex:_button.tag]];
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+    alert.delegate = self;
+    [alert show];
+    
+}
+-(void) sendRequest{
+    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+    NSString * loginName= [handler getUserID];
+    NSString * string= [friendsSearchArray objectAtIndex:_button.tag];
+    STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handler getUserID]];
+    STreamObject * so = [[STreamObject alloc]init];
+    [so setObjectId:string];
+    [so addStaff:@"status" withObject:@"sendRequest"];
+    [so setCategory:loginName];
+    [so updateInBackground];
+    NSMutableArray *update = [[NSMutableArray alloc] init] ;
+    [update addObject:so];
+    [sto updateStreamCategoryObjectsInBackground:update];
+    
+    
+    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:string];
+    STreamObject *my = [[STreamObject alloc]init];
+    [my setObjectId:loginName];
+    [my addStaff:@"status" withObject:@"request"];
+    NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
+    [updateArray addObject:my];
+    [sco updateStreamCategoryObjectsInBackground:updateArray];
+    
+    SearchDB * db = [[SearchDB alloc]init];
+    [db insertDB:[handler getUserID] withFriendID:string];
+    [_button setFrame:CGRectMake(220, 15, 32, 32)];
+    // [sender setTitle:@"sendRequest" forState:UIControlStateNormal];
+    [_button setBackgroundImage:[UIImage imageNamed:@"invitation.png"] forState:UIControlStateNormal];
+}
+-(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (isSendRequest) {
+        if (buttonIndex==1) {
+            [self sendRequest];
+            isSendRequest = NO;
+        }
+    }else{
+        if (isAddFriend) {
+            if (buttonIndex==1) {
+                [self add];
+            }
+        }else{
+            if (buttonIndex==1) {
+                [self delete];
+            }
+        }
+    }
 }
 
 -(void) loadAvatar:(NSString *)userID withCell:(UITableViewCell *)cell{

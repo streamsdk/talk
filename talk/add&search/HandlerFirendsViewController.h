@@ -14,7 +14,7 @@ typedef enum {
     FriendsHistory   = 2,
 }FriendsType;
 
-@interface HandlerFirendsViewController : UIViewController <UISearchBarDelegate, UISearchDisplayDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface HandlerFirendsViewController : UIViewController <UISearchBarDelegate, UISearchDisplayDelegate,UITableViewDelegate,UITableViewDataSource,UIAlertViewDelegate>
 {
     FriendsType _friendsType;
     UITableView *myTableview;
