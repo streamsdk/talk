@@ -9,6 +9,8 @@
 #import "ImageViewController.h"
 #import "MainController.h"
 #import "CreateUI.h"
+#import "BrushColorViewController.h"
+#import "ImageCache.h"
 
 #define CLOCKBUTTON_TAG 10000
 #define UNDO_TAG 1000
@@ -41,7 +43,12 @@ static NSMutableArray *colors;
     }
     return self;
 }
-
+-(void)viewWillAppear:(BOOL)animated{
+    ImageCache * cache = [ImageCache sharedObject];
+    UIButton * brush =(UIButton * )[self.view viewWithTag:BRUSH_TAG];
+    [self.drawView setLineColor:[[cache getBrushColor] count]-1];
+    brush.backgroundColor=[[cache getBrushColor]lastObject];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -53,8 +60,14 @@ static NSMutableArray *colors;
 
     creat = [[CreateUI alloc]init];
     
-    colors=[[NSMutableArray alloc]initWithObjects:[UIColor greenColor],[UIColor blueColor],[UIColor redColor],[UIColor orangeColor],[UIColor purpleColor],[UIColor yellowColor],[UIColor brownColor],[UIColor whiteColor],[UIColor magentaColor],[UIColor darkGrayColor], nil];
+    colors=[[NSMutableArray alloc]init];
+    ImageCache * cache = [ImageCache sharedObject];
     
+    //初始化颜色数组，将用到的颜色存储到数组里
+    colors = [cache getBrushColor];
+    if ([colors count]==0) {
+        [colors addObject:[UIColor greenColor]];
+    }
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     CGRect frameBack = CGRectMake(10, 26, 32, 32);
     [backButton setFrame:frameBack];
@@ -87,7 +100,7 @@ static NSMutableArray *colors;
     [l setCornerRadius:2.0];
     v.backgroundColor = [UIColor clearColor];
      [self.view addSubview:v];
-    for (int i=0; i<10; i++) {
+    for (int i=0; i<1; i++) {
         
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [btn setFrame:CGRectMake(10*i, 0, 10, 8)];
@@ -137,10 +150,10 @@ static NSMutableArray *colors;
     [self.view addSubview:doneButton];
 }
 -(void)setColor:(id)sender {
-    UIButton * brush =(UIButton * )[self.view viewWithTag:BRUSH_TAG];
-    UIButton *button=(UIButton *)sender;
-    [self.drawView setLineColor:button.tag];
-    brush.backgroundColor=[colors objectAtIndex:button.tag];
+    BrushColorViewController  *colorVC = [[BrushColorViewController alloc]init];
+    colorVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    colorVC.textColor = @"fontcolor";
+    [self presentViewController:colorVC animated:YES completion:nil];
 }
 -(void)undoClicked{
     [ self.drawView revocation];
@@ -178,8 +191,10 @@ static NSMutableArray *colors;
     UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
     UIButton * use =(UIButton * )[self.view viewWithTag:USERPHOTO_TAG];
     UIButton * done =(UIButton * )[self.view viewWithTag:DONE_TAG];
-    UIView *v =(UIView *)[self.view viewWithTag:VIEW_TAG];
-    v.hidden = NO;
+//    UIView *v =(UIView *)[self.view viewWithTag:VIEW_TAG];
+//    v.hidden = NO;
+    UIButton * brush =(UIButton * )[self.view viewWithTag:BRUSH_TAG];
+    [brush addTarget:self action:@selector(setColor:) forControlEvents:UIControlEventTouchUpInside];
     undo.hidden = NO;
     redo.hidden = NO;
     use.hidden = YES;

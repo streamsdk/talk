@@ -29,4 +29,8 @@
 -(NSInteger)getMessagesCount:(NSString *)friendId;
 
 -(void) removeFriendID:(NSString *)friendId;
+
+-(void) setBrushColor:(UIColor *)color;
+
+-(NSMutableArray *)getBrushColor;
 @end

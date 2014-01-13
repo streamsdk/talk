@@ -198,6 +198,7 @@
 		0E19E83918716AA100523232 /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E83018716AA100523232 /* grayArrow@2x.png */; };
 		0E19E83A18716AA100523232 /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E83118716AA100523232 /* whiteArrow.png */; };
 		0E19E83B18716AA100523232 /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E83218716AA100523232 /* whiteArrow@2x.png */; };
+		0E1C181A1883976D00153F92 /* BrushColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1C18191883976D00153F92 /* BrushColorViewController.m */; };
 		0E1F9750186D8D7400C709CE /* AddDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1F974F186D8D7400C709CE /* AddDB.m */; };
 		0E1F9753186D964A00C709CE /* SearchDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1F9752186D964A00C709CE /* SearchDB.m */; };
 		0E2A5142185C6A6600D93C9B /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2A5141185C6A6600D93C9B /* ImageCache.m */; };
@@ -668,6 +669,8 @@
 		0E19E83018716AA100523232 /* grayArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grayArrow@2x.png"; sourceTree = "<group>"; };
 		0E19E83118716AA100523232 /* whiteArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteArrow.png; sourceTree = "<group>"; };
 		0E19E83218716AA100523232 /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteArrow@2x.png"; sourceTree = "<group>"; };
+		0E1C18181883976D00153F92 /* BrushColorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BrushColorViewController.h; path = Classes/BrushColorViewController.h; sourceTree = "<group>"; };
+		0E1C18191883976D00153F92 /* BrushColorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BrushColorViewController.m; path = Classes/BrushColorViewController.m; sourceTree = "<group>"; };
 		0E1F974E186D8D7400C709CE /* AddDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddDB.h; path = talkDB/AddDB.h; sourceTree = "<group>"; };
 		0E1F974F186D8D7400C709CE /* AddDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddDB.m; path = talkDB/AddDB.m; sourceTree = "<group>"; };
 		0E1F9751186D964A00C709CE /* SearchDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchDB.h; path = talkDB/SearchDB.h; sourceTree = "<group>"; };
@@ -1855,6 +1858,8 @@
 			children = (
 				0E49F06A187E7BA200749A6D /* MyView.h */,
 				0E49F06B187E7BA200749A6D /* MyView.m */,
+				0E1C18181883976D00153F92 /* BrushColorViewController.h */,
+				0E1C18191883976D00153F92 /* BrushColorViewController.m */,
 				0EF14D2C1876B8CD008F4AF5 /* ImageViewController.h */,
 				0EF14D2D1876B8CD008F4AF5 /* ImageViewController.m */,
 				0E0EDF4C1877AFAD00477C42 /* ImageSendProtocol.h */,
@@ -2424,6 +2429,7 @@
 				03D9BF7B18145E370039118F /* XMPPStream.m in Sources */,
 				0E4B13D8187CF15F0070752B /* DisappearImageController.m in Sources */,
 				0E8A4F33182B7F8000705C1F /* CreateUI.m in Sources */,
+				0E1C181A1883976D00153F92 /* BrushColorViewController.m in Sources */,
 				0E49F042187E333700749A6D /* ALMoviePlayerController.m in Sources */,
 				03D9C0A618145E410039118F /* XMPPMessage+XEP_0308.m in Sources */,
 				03D9C0EB18145E510039118F /* NSString+DDXML.m in Sources */,

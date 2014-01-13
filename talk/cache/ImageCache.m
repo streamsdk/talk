@@ -15,10 +15,9 @@ static NSMutableDictionary *_imageDictionary;
 static NSMutableDictionary *_selfImageDictionary;
 static NSMutableArray *_cachedSelfImageFiles;
 static NSString * _friendID;
-
 static NSMutableArray *_messagesCount;
-
 static NSMutableDictionary *_messagesDict;
+static NSMutableArray * _colors;
 
 @implementation ImageCache
 
@@ -36,6 +35,7 @@ static NSMutableDictionary *_messagesDict;
         _selfImageDictionary = [[NSMutableDictionary alloc] init];
         _messagesCount = [[NSMutableArray alloc]init];
         _messagesDict = [[NSMutableDictionary alloc]init];
+        _colors =[[NSMutableArray alloc]init];
     });
     
     return sharedInstance;
@@ -102,5 +102,13 @@ static NSMutableDictionary *_messagesDict;
 }
 -(void) removeFriendID:(NSString *)friendId{
     [_messagesDict removeObjectForKey:friendId];
+}
+//BrushColor
+-(void) setBrushColor:(UIColor *)color{
+    [_colors addObject:color];
+}
+
+-(NSMutableArray *)getBrushColor{
+    return _colors;
 }
 @end

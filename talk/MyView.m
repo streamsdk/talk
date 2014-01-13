@@ -7,7 +7,7 @@
 //
 
 #import "MyView.h"
-
+#import "ImageCache.h"
 
 @implementation MyView
 //保存线条颜色
@@ -44,8 +44,15 @@ static NSMutableArray *colors;
 {
     self = [super initWithFrame:frame];
     if (self) {
+        colors=[[NSMutableArray alloc]init];
+        ImageCache * cache = [ImageCache sharedObject];
+        
         //初始化颜色数组，将用到的颜色存储到数组里
-        colors=[[NSMutableArray alloc]initWithObjects:[UIColor greenColor],[UIColor blueColor],[UIColor redColor],[UIColor orangeColor],[UIColor purpleColor],[UIColor yellowColor],[UIColor brownColor],[UIColor whiteColor],[UIColor magentaColor],[UIColor darkGrayColor], nil];
+        colors = [cache getBrushColor];
+        if ([colors count]==0) {
+            [colors addObject:[UIColor greenColor]];
+        }
+            
         WidthArray=[[NSMutableArray alloc]init];
         deleWidthArray=[[NSMutableArray alloc]init];
         pointArray=[[NSMutableArray alloc]init];
