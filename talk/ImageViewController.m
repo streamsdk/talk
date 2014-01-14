@@ -111,7 +111,7 @@ static NSMutableArray *colors;
     }
    
     drawView = [[MyView alloc]initWithFrame:CGRectMake(20, 100, self.view.frame.size.width -40, 300)];
-    drawView.userInteractionEnabled = NO;
+    drawView.userInteractionEnabled = YES;
     UIImage * newImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(self.view.frame.size.width -40, 300)];
     [drawView setBackgroundColor:[UIColor colorWithPatternImage:newImage]];
     [self.view addSubview:drawView];
@@ -150,10 +150,7 @@ static NSMutableArray *colors;
     [self.view addSubview:doneButton];
 }
 -(void)setColor:(id)sender {
-    BrushColorViewController  *colorVC = [[BrushColorViewController alloc]init];
-    colorVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    colorVC.textColor = @"fontcolor";
-    [self presentViewController:colorVC animated:YES completion:nil];
+    
 }
 -(void)undoClicked{
     [ self.drawView revocation];
@@ -167,14 +164,13 @@ static NSMutableArray *colors;
     [drawView.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *newImage=UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    UIImageWriteToSavedPhotosAlbum(newImage, self, nil, nil);
+//    UIImageWriteToSavedPhotosAlbum(newImage, self, nil, nil);
     drawView.userInteractionEnabled = NO;
     image = newImage;
 
     drawView.userInteractionEnabled = NO;
     UIButton * undo =(UIButton * )[self.view viewWithTag:UNDO_TAG];
     UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
-//    UIButton * brush =(UIButton * )[self.view viewWithTag:BRUSH_TAG];
     UIButton * use =(UIButton * )[self.view viewWithTag:USERPHOTO_TAG];
     UIButton * done =(UIButton * )[self.view viewWithTag:DONE_TAG];
     UIView *v =(UIView *)[self.view viewWithTag:VIEW_TAG];
@@ -186,15 +182,18 @@ static NSMutableArray *colors;
 }
 
 -(void) paintbrushClicked {
-    drawView.userInteractionEnabled = YES;
     UIButton * undo =(UIButton * )[self.view viewWithTag:UNDO_TAG];
     UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
     UIButton * use =(UIButton * )[self.view viewWithTag:USERPHOTO_TAG];
     UIButton * done =(UIButton * )[self.view viewWithTag:DONE_TAG];
 //    UIView *v =(UIView *)[self.view viewWithTag:VIEW_TAG];
 //    v.hidden = NO;
-    UIButton * brush =(UIButton * )[self.view viewWithTag:BRUSH_TAG];
-    [brush addTarget:self action:@selector(setColor:) forControlEvents:UIControlEventTouchUpInside];
+//    UIButton * brush =(UIButton * )[self.view viewWithTag:BRUSH_TAG];
+//    [brush addTarget:self action:@selector(setColor:) forControlEvents:UIControlEventTouchUpInside];
+    BrushColorViewController  *colorVC = [[BrushColorViewController alloc]init];
+    colorVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    colorVC.textColor = @"fontcolor";
+    [self presentViewController:colorVC animated:YES completion:nil];
     undo.hidden = NO;
     redo.hidden = NO;
     use.hidden = YES;
@@ -213,6 +212,14 @@ static NSMutableArray *colors;
 }
 -(void) sendImageClicked {
     [self setImageSendProtocol:mainVC];
+    
+    UIGraphicsBeginImageContext(drawView.bounds.size);
+    [drawView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *newImage=UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    //    UIImageWriteToSavedPhotosAlbum(newImage, self, nil, nil);
+    drawView.userInteractionEnabled = NO;
+    image = newImage;
     [imageSendProtocol sendImages:image withTime:time ];
     
     [self dismissViewControllerAnimated:YES completion:^{
@@ -241,6 +248,7 @@ static NSMutableArray *colors;
     }else{
         time = [timeArray objectAtIndex:row];
         
+        [button setBackgroundImage:[UIImage imageNamed:@"clockselect.png"] forState:UIControlStateNormal];
         [button setTitle:time forState:UIControlStateNormal] ;
     }
 }
@@ -283,10 +291,10 @@ static NSMutableArray *colors;
     return newImage;
 }
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-//    UIButton * undo =(UIButton * )[self.view viewWithTag:UNDO_TAG];
-//    UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
-//    undo.hidden = NO;
-//    redo.hidden=NO;
+    UIButton * undo =(UIButton * )[self.view viewWithTag:UNDO_TAG];
+    UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
+    undo.hidden = NO;
+    redo.hidden=NO;
 }
 - (void)didReceiveMemoryWarning
 {

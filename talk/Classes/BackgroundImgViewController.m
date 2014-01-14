@@ -64,7 +64,7 @@
     self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, (IMAGE_HEIGHT_WIDTH+SPACE_WIDTH)*line);
     [self.view addSubview:self.scrollView];
     
-//    self.contentSizeForViewInPopover = CGSizeMake(250, 400);
+    self.contentSizeForViewInPopover = CGSizeMake(250, 400);
     
 }
 -(void) imageSeleted:(UIGestureRecognizer *) gestureRecognizer {
@@ -87,9 +87,15 @@
         BackData * data = [BackData sharedObject];
         [data setImage:image];
         }
-    MyFriendsViewController * friendVC = [[MyFriendsViewController alloc]init];
-    [self.navigationController pushViewController:friendVC animated:NO];
-    
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+        NSLog(@"back");
+        
+    }];
+
+//    MyFriendsViewController * friendVC = [[MyFriendsViewController alloc]init];
+//    [self.navigationController pushViewController:friendVC animated:NO];
+//    
 }
 
 - (void)closeSelected:(id)sender 

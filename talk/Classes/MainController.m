@@ -35,6 +35,8 @@
 #import "DisPlayerViewController.h"
 #import "DisappearImageController.h"
 #import "ChatSettingViewController.h"
+#import "BackgroundImgViewController.h"
+
 #import "ChatBackGround.h"
 #define BUTTON_TAG 20000
 #define TOOLBARTAG		200
@@ -49,6 +51,7 @@
     
     UIScrollView *scrollView;//表情滚动视图
     UIPageControl *pageControl;
+    UIButton *sendButton;
     
     BOOL keyboardIsShow;//键盘是否显示
     BOOL isFace;
@@ -157,8 +160,29 @@
     [self scrollBubbleViewToBottomAnimated:YES];
 }
 -(void)SetBackground{
-    ChatSettingViewController * chat = [[ChatSettingViewController alloc]init];
-    [self.navigationController pushViewController:chat animated:YES];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                  initWithTitle:@"---- setting ----"
+                                  delegate:self
+                                  cancelButtonTitle:@"取消"
+                                  destructiveButtonTitle:@"确定"
+                                  otherButtonTitles:@"set chat background", @"clear history data",nil];
+    actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+    [actionSheet showInView:self.view];
+//    ChatSettingViewController * chat = [[ChatSettingViewController alloc]init];
+//    [self.navigationController pushViewController:chat animated:YES];
+}
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+   
+    if (buttonIndex ==1) {
+        BackgroundImgViewController * bgView = [[BackgroundImgViewController alloc]init];
+        bgView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentViewController:bgView animated:YES completion:nil];
+
+    }else if (buttonIndex ==2){
+        UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You sure clear data?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+        view .delegate = self;
+        [view show];
+    }
 }
 - (void)viewDidLoad
 {
@@ -496,6 +520,8 @@
         }];
         [messageText becomeFirstResponder];
         [pageControl setHidden:YES];
+        [sendButton removeFromSuperview];
+
 
     }else{
         
@@ -576,8 +602,8 @@
     [faceButton setImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
     [pageControl setHidden:NO];
     keyboardIsShow=NO;
-    UIButton *button = (UIButton *)[self.view viewWithTag:BUTTON_TAG];
-    [button removeFromSuperview];
+//    UIButton *button = (UIButton *)[self.view viewWithTag:BUTTON_TAG];
+    [sendButton removeFromSuperview];
     [messageText resignFirstResponder];
 }
 
@@ -628,6 +654,7 @@
 -(void) faceClicked {
     [scrollView removeFromSuperview];
     [pageControl removeFromSuperview];
+    [sendButton removeFromSuperview];
     //创建表情键盘
     scrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, keyboardHeight)];
     [scrollView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"facesBack"]]];
@@ -656,7 +683,7 @@
     [pageControl addTarget:self action:@selector(changePage:)forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:pageControl];
     
-    UIButton *sendButton = [createUI setButtonFrame:CGRectMake(260, self.view.frame.size.height-35, 50, 30) withTitle:@"send"];
+     sendButton= [createUI setButtonFrame:CGRectMake(260, self.view.frame.size.height-35, 50, 30) withTitle:@"send"];
     [sendButton.titleLabel setFont:[UIFont systemFontOfSize:15.0f]];
     [[sendButton layer] setBorderColor:[[UIColor blackColor] CGColor]];
     [[sendButton layer] setBorderWidth:1];
@@ -782,9 +809,7 @@
                 [picker dismissViewControllerAnimated:YES completion:NULL];
                 [self dismissKeyBoard];
                 [self scrollBubbleViewToBottomAnimated:YES];
-
             }
-        
     }
 
 }
@@ -797,6 +822,17 @@
         }else{
             [self sendVideo:nil];
         }
+    }else {
+        HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
+        ImageCache * imagecache = [ImageCache sharedObject];
+        TalkDB * talk = [[TalkDB alloc]init];
+        if (buttonIndex == 1) {
+            [talk deleteDB:[handler getUserID] withOtherID:[imagecache getFriendID]];
+        }
+        bubbleData = [[NSMutableArray alloc]init];
+        bubbleData = [talk readInitDB:[handler getUserID] withOtherID:[imagecache getFriendID]];
+        [bubbleTableView reloadData];
+
     }
 }
 - (CGFloat) getVideoDuration:(NSURL*) URL
@@ -862,16 +898,6 @@
         
 }
 
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0) {
-        [self takeVideo];
-    }else if (buttonIndex == 1) {
-        [self addVideo];
-        
-    }
-    
-}
 -(void)bigImage:(UIImage *)image{
     UIImageViewController * iView = [[UIImageViewController alloc]init];
     iView.image = image;

@@ -65,6 +65,7 @@
 
     ImageCache *imageCache = [ImageCache sharedObject];
     [imageCache setFriendID:nil];
+    [self readAddDb];
     [self.tableView reloadData];
     
 }

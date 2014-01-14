@@ -453,6 +453,7 @@
     STreamObject * so = [[STreamObject alloc]init];
     [so setObjectId:[friendsAddArray objectAtIndex:_button.tag]];
     [so addStaff:@"status" withObject:@"request"];
+    [so setCategory:@""];
     NSMutableArray *update= [[NSMutableArray alloc] init] ;
     
     [update addObject:so];
@@ -508,7 +509,7 @@
     NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
     
     [updateArray addObject:my];
-    [sco updateStreamCategoryObjects:updateArray];
+    [sco updateStreamCategoryObjectsInBackground:updateArray];
     
     [myTableview reloadData];
     [_button setBackgroundImage:[UIImage imageNamed:@"friends.png"] forState:UIControlStateNormal];

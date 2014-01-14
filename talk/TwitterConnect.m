@@ -7,6 +7,9 @@
 //
 
 #import "TwitterConnect.h"
+#import "Twitter.h"
+#import "ImageCache.h"
+#import "HandlerUserIdAndDateFormater.h"
 
 @implementation TwitterConnect
 
@@ -55,19 +58,28 @@
                             NSDictionary *timelineData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&jsonError];
                             if (timelineData) {
                                 //NSLog(@"Timeline Response: %@\n", timelineData);
-                                
+                                NSMutableArray * twitters = [[NSMutableArray alloc]init];
+//                                HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+                                ImageCache * cache =[ImageCache sharedObject];
                                 NSArray *users = [timelineData objectForKey:@"users"];
                                 for (NSDictionary *user in users){
                                     NSString *name = [user objectForKey:@"name"];
                                     NSString *screenName = [user objectForKey:@"screen_name"];
                                     NSString *userId = [user objectForKey:@"id"];
                                     NSString *profileUrl = [user objectForKey:@"profile_image_url"];
+                                    Twitter * twitter = [[Twitter alloc]init];
+                                    [twitter setName:name];
+                                    [twitter setScreenName:screenName];
+                                    [twitter setUserid:userId];
+                                    [twitter setProfileUrl:profileUrl];
+                                    [twitters addObject:twitter];
                                     
                                     NSLog(@"follower name: %@", name);
                                     NSLog(@"follower screen name: %@", screenName);
                                     NSLog(@"follower user id: %@", userId);
                                     NSLog(@"follower profile url: %@", profileUrl);
                                 }
+                                [cache setTwitters:twitters];
                             }
                             else {
                                 // Our JSON deserialization went awry

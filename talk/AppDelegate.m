@@ -45,10 +45,10 @@
     ChatBackGround * chat = [[ChatBackGround alloc]init];
     [chat initDB];
     
-    /*TwitterConnect * twitter = [[TwitterConnect alloc]init];
+    TwitterConnect * twitter = [[TwitterConnect alloc]init];
     ACAccountStore  *accountStore = [[ACAccountStore alloc] init];
     [twitter setAccountStore:accountStore];
-    [twitter fetchFellowerAndFollowing:@"15Slogn"];*/
+    [twitter fetchFellowerAndFollowing:@"15Slogn"];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
 
            //    [[UIApplication sharedApplication] setStatusBarHidden:YES];

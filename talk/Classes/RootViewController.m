@@ -12,7 +12,7 @@
 #import "SignUpViewController.h"
 #import "MyFriendsViewController.h"
 #import "TwitterConnect.h"
-
+#import "TwitterViewController.h"
 @interface RootViewController ()
 
 @end
@@ -70,18 +70,23 @@
     [twitterBtn setFrame:CGRectMake(0, self.view.frame.size.height -50, self.view.frame.size.width, 38)];
     [twitterBtn setTitle:@"Twitter" forState:UIControlStateNormal];
     twitterBtn.titleLabel.font = [UIFont fontWithName:@"Chalkduster" size:18.0f];
-    [twitterBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [twitterBtn setBackgroundColor:[UIColor colorWithWhite:0.2 alpha:0.2]];
+    [twitterBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [twitterBtn setBackgroundColor:[UIColor colorWithRed:0/255 green:172/255 blue:2337/255 alpha:1.0]];
     [twitterBtn addTarget:self action:@selector(twitterBtn) forControlEvents:UIControlEventTouchUpInside];
     [imageview addSubview:twitterBtn];
     
 }
 -(void)twitterBtn{
     NSLog(@"");
-   /* TwitterConnect * twitter = [[TwitterConnect alloc]init];
+    
+    /*TwitterConnect * twitter = [[TwitterConnect alloc]init];
     ACAccountStore  *accountStore = [[ACAccountStore alloc] init];
     [twitter setAccountStore:accountStore];
-    [twitter fetchFellowerAndFollowing:@"15Slogn"];*/
+    [twitter fetchFellowerAndFollowing:@"15Slogn"];
+   
+    TwitterViewController *twitterVC = [[TwitterViewController alloc]init];
+    [self.navigationController pushViewController:twitterVC animated:YES]; */
+
 }
 -(void) login {
   

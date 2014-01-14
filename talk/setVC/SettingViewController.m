@@ -166,6 +166,10 @@
         cell .textLabel.text = [userData objectAtIndex:indexPath.row];
         cell.detailTextLabel.text = [userData objectAtIndex:indexPath.row+1];
     }else if(indexPath.section==1){
+        UISwitch* mySwitch = [[ UISwitch alloc]initWithFrame:CGRectMake(240.0,5.0,60.0,24.0)];
+        [cell addSubview:mySwitch];
+        [ mySwitch setOn:YES animated:YES];
+        [ mySwitch addTarget: self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
         cell .textLabel.text = [userData objectAtIndex:indexPath.section+1];
     }else if(indexPath.section==2){
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -178,6 +182,11 @@
 
     return cell;
     
+
+}
+- (void) switchValueChanged:(id)sender{
+//    UISwitch* control = (UISwitch*)sender;
+//        BOOL on = control.on;
 
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

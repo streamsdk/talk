@@ -18,7 +18,7 @@ static NSString * _friendID;
 static NSMutableArray *_messagesCount;
 static NSMutableDictionary *_messagesDict;
 static NSMutableArray * _colors;
-
+static NSMutableArray * _twitters;
 @implementation ImageCache
 
 
@@ -36,6 +36,7 @@ static NSMutableArray * _colors;
         _messagesCount = [[NSMutableArray alloc]init];
         _messagesDict = [[NSMutableDictionary alloc]init];
         _colors =[[NSMutableArray alloc]init];
+        _twitters = [[NSMutableArray alloc]init];
     });
     
     return sharedInstance;
@@ -110,5 +111,14 @@ static NSMutableArray * _colors;
 
 -(NSMutableArray *)getBrushColor{
     return _colors;
+}
+
+-(void)setTwitters:(NSMutableArray *)twitters{
+    
+    _twitters = twitters;
+}
+
+-(NSMutableArray *)getTwitters{
+    return _twitters;
 }
 @end

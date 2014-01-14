@@ -33,4 +33,8 @@
 -(void) setBrushColor:(UIColor *)color;
 
 -(NSMutableArray *)getBrushColor;
+
+-(void)setTwitters:(NSMutableArray *)twitters;;
+
+-(NSMutableArray *)getTwitters;
 @end
