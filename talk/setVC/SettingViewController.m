@@ -20,6 +20,7 @@
 {
     UIImage *avatarImg;
     BOOL isaAatarImg;
+    NSMutableDictionary * dict ;
 }
 @end
 
@@ -106,12 +107,15 @@
     [imageview addGestureRecognizer:tap];
     [self.view addSubview:imageview];
    
-    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"SetChatBackground",@"Exit", nil];
-    myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(0,170, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStyleGrouped];
+    dict = [[NSMutableDictionary alloc]init];
+    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"Twitter",@"SetChatBackground",@"About",@"Exit", nil];
+    myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,170, self.view.bounds.size.width-20, self.view.bounds.size.height-180) style:UITableViewStyleGrouped];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
     myTableView.dataSource = self;
+    myTableView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:myTableView];
+    
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"loading friends...";
     [self.view addSubview:HUD];
@@ -123,28 +127,29 @@
     }];
 
 }
-//-(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
-//    return 4;
-//}
+-(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
+    return 4;
+}
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
-    /*switch (section) {
+    switch (section) {
         case 0:
             return 1;
             break;
         case 1:
-            return 2;
+            return 1;
             break;
         case 2:
-            return 3;
+            return 2;
             break;
         case 3:
             return 1;
             break;
         default:
             break;
-    }*/
-    return [userData count]-1;
+    }
+    return 0;
+//    return [userData count]-1;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -152,25 +157,23 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier ];
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-        [cell setBackgroundColor:[UIColor clearColor]];
-        if (indexPath.row!=0) {
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
-        }
-
+//        [cell setBackgroundColor:[UIColor clearColor]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
-    
-    
-    if (indexPath.row==0) {
-        cell .textLabel.text = [userData objectAtIndex:indexPath.row];
-         cell.detailTextLabel.text = [userData objectAtIndex:indexPath.row+1];
-        
-    }else{
-        cell .textLabel.text = [userData objectAtIndex:indexPath.row+1];
 
     }
-   
+    if (indexPath.section==0) {
+        
+        cell .textLabel.text = [userData objectAtIndex:indexPath.row];
+        cell.detailTextLabel.text = [userData objectAtIndex:indexPath.row+1];
+    }else if(indexPath.section==1){
+        cell .textLabel.text = [userData objectAtIndex:indexPath.section+1];
+    }else if(indexPath.section==2){
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+         cell .textLabel.text = [userData objectAtIndex:indexPath.row+3];
+    }else{
+        cell .textLabel.text = [userData lastObject];
+    }
     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:18.0f];
 
     return cell;
@@ -178,7 +181,31 @@
 
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row ==1) {
+    switch (indexPath.section) {
+    
+        case 1:
+          
+            break;
+        case 2:{
+            if (indexPath.row ==0) {
+                BackgroundImgViewController * bgView = [[BackgroundImgViewController alloc]init];
+                [self .navigationController pushViewController:bgView animated:NO];
+            }else{
+                NSLog(@"string");
+            }
+        }
+           
+            break;
+        case 3:{
+            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You sure Exit?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+            view .delegate = self;
+            [view show];
+        }
+            break;
+        default:
+            break;
+    }
+    /*if (indexPath.row ==1) {
         BackgroundImgViewController * bgView = [[BackgroundImgViewController alloc]init];
         [self .navigationController pushViewController:bgView animated:NO];
     }
@@ -186,7 +213,7 @@
         UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You sure Exit?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
         view .delegate = self;
         [view show];
-    }
+    }*/
 }
 
 -(void)headImageClicked:(UITapGestureRecognizer *)gestureRecognizer
