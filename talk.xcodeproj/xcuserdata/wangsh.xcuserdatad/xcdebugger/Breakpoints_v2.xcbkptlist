@@ -214,11 +214,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/setVC/SettingViewController.m"
-            timestampString = "411458744.118688"
+            timestampString = "411461302.074428"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "327"
-            endingLineNumber = "327"
+            startingLineNumber = "326"
+            endingLineNumber = "326"
             landmarkName = "-uploadProfileImage"
             landmarkType = "5">
          </BreakpointContent>
@@ -230,11 +230,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/setVC/SettingViewController.m"
-            timestampString = "411458744.118688"
+            timestampString = "411461302.074428"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "344"
-            endingLineNumber = "344"
+            startingLineNumber = "343"
+            endingLineNumber = "343"
             landmarkName = "-uploadProfileImage"
             landmarkType = "5">
          </BreakpointContent>

@@ -22,6 +22,7 @@
     UIImage *avatarImg;
     BOOL isaAatarImg;
     NSMutableDictionary * dict ;
+    UIImage *profileImage;
 }
 @end
 
@@ -51,16 +52,9 @@
     }
 }
 
--(void) loadAvatar:(NSString *)userID withCell:(UITableViewCell *)cell{
+-(void) loadAvatar:(NSString *)userID {
     
-    UIImageView * imageview = (UIImageView *)[cell viewWithTag:IMAGE_TAG];
-    CALayer *l = [imageview layer];
-    [l setMasksToBounds:YES];
-    [l setCornerRadius:CGRectGetHeight([imageview bounds]) / 2];
-    [l setBorderWidth:5];
-    [l setBorderColor:[[UIColor whiteColor]CGColor]];
-    
-    ImageCache *imageCache = [ImageCache sharedObject];
+       ImageCache *imageCache = [ImageCache sharedObject];
     if ([imageCache getUserMetadata:userID]!=nil) {
         NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
         NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
@@ -72,19 +66,19 @@
                     if ([pImageId isEqualToString:oId]){
                         [imageCache selfImageDownload:imageData withFileId:pImageId];
                         [fileCache writeFileDoc:pImageId withData:imageData];
-                        imageview.image = [UIImage imageWithData: [imageCache getImage:pImageId]];
+                        profileImage = [UIImage imageWithData: [imageCache getImage:pImageId]];
                     }
                 }];
             }
         }else{
             if (pImageId) {
-               imageview.image = [UIImage imageWithData: [imageCache getImage:pImageId]];
+               profileImage = [UIImage imageWithData: [imageCache getImage:pImageId]];
             }else{
-               l.contents = (id)[[UIImage imageNamed:@"headImage.jpg"] CGImage];
+              profileImage = [UIImage imageNamed:@"headImage.jpg"];
             }
         }
     }else{
-       l.contents = (id)[[UIImage imageNamed:@"headImage.jpg"] CGImage];
+      profileImage= [UIImage imageNamed:@"headImage.jpg"];
     }
     
 }
@@ -123,7 +117,7 @@
     [logOut addTarget:self action:@selector(LogOut) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:logOut];
 
-    /*__block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"loading friends...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
@@ -131,7 +125,7 @@
     }completionBlock:^{
         [HUD removeFromSuperview];
         HUD = nil;
-    }];*/
+    }];
 
 }
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
@@ -187,16 +181,21 @@
             CALayer *l = [imageview layer];
             [l setMasksToBounds:YES];
             [l setCornerRadius:CGRectGetHeight([imageview bounds]) / 2];
-            [l setBorderWidth:5];
+            [l setBorderWidth:3];
             [l setBorderColor:[[UIColor lightGrayColor]CGColor]];
-            l.contents = (id)[[UIImage imageNamed:@"headImage.jpg"] CGImage];
+            if (profileImage) {
+                l.contents = (id)[profileImage CGImage];
+            }else{
+                l.contents = (id)[[UIImage imageNamed:@"headImage.jpg"] CGImage];
+            }
+            
             imageview.userInteractionEnabled = YES;
             imageview.tag = IMAGE_TAG;
             UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headImageClicked:)];
             [imageview addGestureRecognizer:tap];
             [cell addSubview:imageview];
             HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
-            [self loadAvatar:[handle getUserID] withCell:cell];
+//            [self loadAvatar:[handle getUserID] withCell:cell];
         }else if (indexPath.row==1){
             cell .textLabel.text = [userData objectAtIndex:indexPath.row-1];
             cell.detailTextLabel.text = [userData objectAtIndex:indexPath.row];
