@@ -261,7 +261,6 @@
         [cell setBackgroundColor:[UIColor clearColor]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.tag = indexPath.row;
         //[[button layer] setBorderColor:[[UIColor blueColor] CGColor]];
         //[[button layer] setBorderWidth:1];
         //[[button layer] setCornerRadius:4];
@@ -276,6 +275,8 @@
     switch (_friendsType) {
         case FriendsAdd:{
             [button setFrame:CGRectMake(cell.frame.size.width-100, 15, 32, 32)];
+            button.tag = indexPath.row;
+
             if (friendsAddArray && [friendsAddArray count]!=0) {
                 NSString *status = [addDict objectForKey:[friendsAddArray objectAtIndex:indexPath.row]];
                 if ([status isEqualToString:@"friend"]) {
@@ -306,6 +307,8 @@
         }
             break;
         case FriendsSearch:{
+            button.tag = indexPath.row;
+
             if (friendsSearchArray && [friendsSearchArray count]!=0) {
                 
                 NSString * str = [friendsSearchArray objectAtIndex:indexPath.row];
@@ -321,6 +324,7 @@
                         [alert show];
                         
                     }else {
+                        
                         [button setFrame:CGRectMake(cell.frame.size.width-100, 15, 60, 30)];
                         [button setTitle:@"friend" forState:UIControlStateNormal];
                         cell.textLabel.text = str;
@@ -346,6 +350,8 @@
             
             break;
         case FriendsHistory:{
+            button.tag = indexPath.row;
+
             [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
             [self loadAvatar:[friendsHistoryArray objectAtIndex:indexPath.row] withCell:cell];
             [button setFrame:CGRectMake(cell.frame.size.width-100, 15, 32, 32)];
@@ -449,31 +455,22 @@
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * db = [[AddDB alloc]init];
     [db updateDB:[handle getUserID] withFriendID:[friendsAddArray objectAtIndex:_button.tag] withStatus:@"request"];
-    STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handle getUserID]];
     STreamObject * so = [[STreamObject alloc]init];
+    [so setCategory:[handle getUserID]];
     [so setObjectId:[friendsAddArray objectAtIndex:_button.tag]];
     [so addStaff:@"status" withObject:@"request"];
-    [so setCategory:@""];
-    NSMutableArray *update= [[NSMutableArray alloc] init] ;
+    [so updateInBackground];
+
     
-    [update addObject:so];
-    [sto updateStreamCategoryObjectsInBackground:update];
-    
-    NSString * loginName= [handle getUserID];
-    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[friendsAddArray objectAtIndex:_button.tag]];
     STreamObject *my = [[STreamObject alloc]init];
-    
-    [my setObjectId:loginName];
+    [my setCategory:[friendsAddArray objectAtIndex:_button.tag]];
+    [my setObjectId:[handle getUserID]];
     [my addStaff:@"status" withObject:@"sendRequest"];
-    NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
-    
-    [updateArray addObject:my];
-    [sco updateStreamCategoryObjectsInBackground:updateArray];
-    
+    [my updateInBackground];
     [_button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
     //[sender setTitle:@"add" forState:UIControlStateNormal];
     [_button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
-    [myTableview reloadData];
+       [myTableview reloadData];
 }
 
 -(void)addFriends:(UIButton *)sender {
@@ -492,24 +489,22 @@
     AddDB * db = [[AddDB alloc]init];
     
     [db updateDB:[handle getUserID] withFriendID:[friendsAddArray objectAtIndex:_button.tag] withStatus:@"friend"];
-    STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handle getUserID]];
+//    STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handle getUserID]];
     STreamObject * so = [[STreamObject alloc]init];
+    [so setCategory:[handle getUserID]];
     [so setObjectId:[friendsAddArray objectAtIndex:_button.tag]];
     [so addStaff:@"status" withObject:@"friend"];
-    NSMutableArray *update = [[NSMutableArray alloc] init] ;
+    [so updateInBackground];
     
-    [update addObject:so];
-    [sto updateStreamCategoryObjects:update];
+//    NSMutableArray *update = [[NSMutableArray alloc] init] ;
     
-    
-    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:[friendsAddArray objectAtIndex:_button.tag]];
+//    [update addObject:so];
+//    [sto updateStreamCategoryObjects:update];
     STreamObject *my = [[STreamObject alloc]init];
+    [my setCategory:[friendsAddArray objectAtIndex:_button.tag]];
     [my setObjectId:[handle getUserID]];
     [my addStaff:@"status" withObject:@"friend"];
-    NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
-    
-    [updateArray addObject:my];
-    [sco updateStreamCategoryObjectsInBackground:updateArray];
+    [my updateInBackground];
     
     [myTableview reloadData];
     [_button setBackgroundImage:[UIImage imageNamed:@"friends.png"] forState:UIControlStateNormal];
@@ -528,24 +523,17 @@
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * loginName= [handler getUserID];
     NSString * string= [friendsSearchArray objectAtIndex:_button.tag];
-    STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handler getUserID]];
     STreamObject * so = [[STreamObject alloc]init];
+    [so setCategory:loginName];
     [so setObjectId:string];
     [so addStaff:@"status" withObject:@"sendRequest"];
-    [so setCategory:loginName];
     [so updateInBackground];
-    NSMutableArray *update = [[NSMutableArray alloc] init] ;
-    [update addObject:so];
-    [sto updateStreamCategoryObjectsInBackground:update];
     
-    
-    STreamCategoryObject *sco = [[STreamCategoryObject alloc]initWithCategory:string];
     STreamObject *my = [[STreamObject alloc]init];
+    [my setCategory:string];
     [my setObjectId:loginName];
     [my addStaff:@"status" withObject:@"request"];
-    NSMutableArray *updateArray = [[NSMutableArray alloc] init] ;
-    [updateArray addObject:my];
-    [sco updateStreamCategoryObjectsInBackground:updateArray];
+    [my updateInBackground];
     
     SearchDB * db = [[SearchDB alloc]init];
     [db insertDB:[handler getUserID] withFriendID:string];
@@ -563,10 +551,12 @@
         if (isAddFriend) {
             if (buttonIndex==1) {
                 [self add];
+//                isAddFriend = NO;
             }
         }else{
             if (buttonIndex==1) {
                 [self delete];
+//                isAddFriend = YES;
             }
         }
     }

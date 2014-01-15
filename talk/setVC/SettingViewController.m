@@ -53,6 +53,12 @@
 -(void) loadAvatar:(NSString *)userID {
     
     UIImageView * imageview = (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
+    CALayer *l = [imageview layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:CGRectGetHeight([imageview bounds]) / 2];
+    [l setBorderWidth:5];
+    [l setBorderColor:[[UIColor whiteColor]CGColor]];
+    
     ImageCache *imageCache = [ImageCache sharedObject];
     if ([imageCache getUserMetadata:userID]!=nil) {
         NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
@@ -72,10 +78,12 @@
         }else{
             if (pImageId) {
                imageview.image = [UIImage imageWithData: [imageCache getImage:pImageId]];
+            }else{
+               l.contents = (id)[[UIImage imageNamed:@"headImage.jpg"] CGImage];
             }
         }
     }else{
-        [imageview setImage:[UIImage imageNamed:@"headImage.jpg"]];
+       l.contents = (id)[[UIImage imageNamed:@"headImage.jpg"] CGImage];
     }
     
 }
@@ -96,11 +104,15 @@
     NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
     NSString * loginName= [array objectAtIndex:0];
     
-    UIImageView * imageview = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - 100)/2, 70, 100, 100)];
-    [imageview setImage:[UIImage imageNamed:@"headImage.jpg"]];
+    UIImageView * imageview = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - 120)/2, 80, 120, 120)];
+//    [imageview setImage:[UIImage imageNamed:@"headImage.jpg"]];
     CALayer *l = [imageview layer];
     [l setMasksToBounds:YES];
-    [l setCornerRadius:8.0];
+    [l setCornerRadius:CGRectGetHeight([imageview bounds]) / 2];
+    [l setBorderWidth:5];
+    [l setBorderColor:[[UIColor whiteColor]CGColor]];
+    l.contents = (id)[[UIImage imageNamed:@"headImage.jpg"] CGImage];
+
     imageview.userInteractionEnabled = YES;
     imageview.tag = IMAGE_TAG;
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headImageClicked:)];
@@ -109,7 +121,7 @@
    
     dict = [[NSMutableDictionary alloc]init];
     userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"Twitter",@"SetChatBackground",@"About",@"Exit", nil];
-    myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,170, self.view.bounds.size.width-20, self.view.bounds.size.height-180) style:UITableViewStyleGrouped];
+    myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,200, self.view.bounds.size.width-20, self.view.bounds.size.height-200) style:UITableViewStyleGrouped];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
     myTableView.dataSource = self;
@@ -224,15 +236,51 @@
         [view show];
     }*/
 }
-
--(void)headImageClicked:(UITapGestureRecognizer *)gestureRecognizer
-{
+-(void)addPhoto{
     UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
     imagePickerController.navigationBar.tintColor = [UIColor colorWithRed:72.0/255.0 green:106.0/255.0 blue:154.0/255.0 alpha:1.0];
 	imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 	imagePickerController.delegate = self;
 	imagePickerController.allowsEditing = NO;
 	[self presentViewController:imagePickerController animated:YES completion:NULL];
+}
+- (void)takePhoto
+{
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:@"该设备不支持拍照功能"
+                                                       delegate:nil
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:@"好", nil];
+        [alert show];
+    }else{
+        UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
+        imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        imagePickerController.delegate = self;
+        imagePickerController.allowsEditing = NO;
+        [self presentViewController:imagePickerController animated:YES completion:NULL];
+    }
+}
+-(void)headImageClicked:(UITapGestureRecognizer *)gestureRecognizer
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                  initWithTitle:@"---- select photo ----"
+                                  delegate:self
+                                  cancelButtonTitle:@"取消"
+                                  destructiveButtonTitle:@"确定"
+                                  otherButtonTitles:@"Camera", @"Local Photo",nil];
+    actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+    [actionSheet showInView:self.view];
+    
+}
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    if (buttonIndex ==1) {
+        [self takePhoto];
+    }else if (buttonIndex ==2){
+        [self addPhoto];
+    }
 }
 #pragma mark imagePickerController Delegate
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
