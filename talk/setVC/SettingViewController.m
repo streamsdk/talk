@@ -8,6 +8,7 @@
 
 #import "SettingViewController.h"
 #import "BackgroundImgViewController.h"
+#import "HandlerUserIdAndDateFormater.h"
 #import "LoginViewController.h"
 #import <arcstreamsdk/STreamFile.h>
 #import <arcstreamsdk/STreamUser.h>
@@ -50,9 +51,9 @@
     }
 }
 
--(void) loadAvatar:(NSString *)userID {
+-(void) loadAvatar:(NSString *)userID withCell:(UITableViewCell *)cell{
     
-    UIImageView * imageview = (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
+    UIImageView * imageview = (UIImageView *)[cell viewWithTag:IMAGE_TAG];
     CALayer *l = [imageview layer];
     [l setMasksToBounds:YES];
     [l setCornerRadius:CGRectGetHeight([imageview bounds]) / 2];
@@ -99,36 +100,30 @@
     
     UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveClicked)];
     self.navigationItem.rightBarButtonItem = rightItem;
-    
-    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-    NSString * loginName= [array objectAtIndex:0];
-    
-    UIImageView * imageview = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - 120)/2, 80, 120, 120)];
-//    [imageview setImage:[UIImage imageNamed:@"headImage.jpg"]];
-    CALayer *l = [imageview layer];
-    [l setMasksToBounds:YES];
-    [l setCornerRadius:CGRectGetHeight([imageview bounds]) / 2];
-    [l setBorderWidth:5];
-    [l setBorderColor:[[UIColor whiteColor]CGColor]];
-    l.contents = (id)[[UIImage imageNamed:@"headImage.jpg"] CGImage];
-
-    imageview.userInteractionEnabled = YES;
-    imageview.tag = IMAGE_TAG;
-    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headImageClicked:)];
-    [imageview addGestureRecognizer:tap];
-    [self.view addSubview:imageview];
-   
+    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    NSString * loginName = [handle getUserID];
     dict = [[NSMutableDictionary alloc]init];
-    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"Twitter",@"SetChatBackground",@"About",@"Exit", nil];
-    myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,200, self.view.bounds.size.width-20, self.view.bounds.size.height-200) style:UITableViewStyleGrouped];
+    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"Email",@"Email",@"Terms of Service",@"Privacy Policy",@"About", nil];
+    myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height-80) style:UITableViewStyleGrouped];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
     myTableView.dataSource = self;
     myTableView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:myTableView];
     
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    UIButton * logOut = [UIButton buttonWithType:UIButtonTypeCustom];
+    [logOut setFrame:CGRectMake(10, self.view.bounds.size.height-60, self.view.bounds.size.width-20, 50)];
+    [[logOut layer] setBorderColor:[[UIColor redColor] CGColor]];
+    [[logOut layer] setBorderWidth:1];
+    [[logOut layer] setCornerRadius:4];
+    [logOut setTitle:@"Log Out" forState:UIControlStateNormal];
+    logOut.titleLabel.font = [UIFont systemFontOfSize:20.0f];
+    [logOut setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [logOut setBackgroundColor:[UIColor redColor]];
+    [logOut addTarget:self action:@selector(LogOut) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:logOut];
+
+    /*__block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"loading friends...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
@@ -136,32 +131,41 @@
     }completionBlock:^{
         [HUD removeFromSuperview];
         HUD = nil;
-    }];
+    }];*/
 
 }
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
-    return 4;
+    return 2;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
     switch (section) {
         case 0:
-            return 1;
+            return 3;
             break;
         case 1:
-            return 1;
+            return 3;
             break;
-        case 2:
-            return 2;
-            break;
-        case 3:
-            return 1;
-            break;
+
         default:
             break;
     }
     return 0;
 //    return [userData count]-1;
+}
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    NSString* head=nil;
+    switch (section) {
+        case 0:
+           head = @"Basic user info";
+            break;
+        case 1:
+            head = @"Support";
+            break;
+        default:
+            break;
+    }
+    return head;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -171,24 +175,37 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
 //        [cell setBackgroundColor:[UIColor clearColor]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if (indexPath.section!=0) {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
+        }
     }
     if (indexPath.section==0) {
-        
-        cell .textLabel.text = [userData objectAtIndex:indexPath.row];
-        cell.detailTextLabel.text = [userData objectAtIndex:indexPath.row+1];
+        if (indexPath.row==0) {
+            UIImageView * imageview = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - 120)/2, 0, 100, 100)];
+            //    [imageview setImage:[UIImage imageNamed:@"headImage.jpg"]];
+            CALayer *l = [imageview layer];
+            [l setMasksToBounds:YES];
+            [l setCornerRadius:CGRectGetHeight([imageview bounds]) / 2];
+            [l setBorderWidth:5];
+            [l setBorderColor:[[UIColor lightGrayColor]CGColor]];
+            l.contents = (id)[[UIImage imageNamed:@"headImage.jpg"] CGImage];
+            imageview.userInteractionEnabled = YES;
+            imageview.tag = IMAGE_TAG;
+            UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headImageClicked:)];
+            [imageview addGestureRecognizer:tap];
+            [cell addSubview:imageview];
+            HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+            [self loadAvatar:[handle getUserID] withCell:cell];
+        }else if (indexPath.row==1){
+            cell .textLabel.text = [userData objectAtIndex:indexPath.row-1];
+            cell.detailTextLabel.text = [userData objectAtIndex:indexPath.row];
+        }else{
+            cell .textLabel.text = [userData objectAtIndex:indexPath.row];
+            cell.detailTextLabel.text = [userData objectAtIndex:indexPath.row+1];
+        }
     }else if(indexPath.section==1){
-        UISwitch* mySwitch = [[ UISwitch alloc]initWithFrame:CGRectMake(240.0,5.0,60.0,24.0)];
-        [cell addSubview:mySwitch];
-        [ mySwitch setOn:YES animated:YES];
-        [ mySwitch addTarget: self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
-        cell .textLabel.text = [userData objectAtIndex:indexPath.section+1];
-    }else if(indexPath.section==2){
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
-         cell .textLabel.text = [userData objectAtIndex:indexPath.row+3];
-    }else{
-        cell .textLabel.text = [userData lastObject];
+            cell .textLabel.text = [userData objectAtIndex:indexPath.row+4];
     }
     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:18.0f];
 
@@ -196,45 +213,33 @@
     
 
 }
-- (void) switchValueChanged:(id)sender{
-//    UISwitch* control = (UISwitch*)sender;
-//        BOOL on = control.on;
-
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.section==0) {
+        if (indexPath.row==0) {
+            return 100;
+        }
+    }
+     return 44;
+  
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
-    
         case 1:
-          
             break;
         case 2:{
-            if (indexPath.row ==0) {
-                BackgroundImgViewController * bgView = [[BackgroundImgViewController alloc]init];
-                [self .navigationController pushViewController:bgView animated:NO];
-            }else{
-                NSLog(@"string");
-            }
-        }
-           
-            break;
-        case 3:{
-            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You sure Exit?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
-            view .delegate = self;
-            [view show];
+//            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You sure Exit?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+//            view .delegate = self;
+//            [view show];
         }
             break;
         default:
             break;
     }
-    /*if (indexPath.row ==1) {
-        BackgroundImgViewController * bgView = [[BackgroundImgViewController alloc]init];
-        [self .navigationController pushViewController:bgView animated:NO];
-    }
-    if (indexPath.row ==2) {
-        UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You sure Exit?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
-        view .delegate = self;
-        [view show];
-    }*/
+}
+-(void)LogOut{
+    UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You sure Log Out?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+    view .delegate = self;
+    [view show];
 }
 -(void)addPhoto{
     UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
