@@ -65,7 +65,10 @@
 
     ImageCache *imageCache = [ImageCache sharedObject];
     [imageCache setFriendID:nil];
+    userData = [[NSMutableArray alloc]init];
+    sectionHeadsKeys=[[NSMutableArray alloc]init];
     [self readAddDb];
+    sortedArrForArrays = [self getChineseStringArr:userData];
     [self.tableView reloadData];
     
 }
