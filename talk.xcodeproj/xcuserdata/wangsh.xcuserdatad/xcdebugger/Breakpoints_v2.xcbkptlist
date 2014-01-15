@@ -214,11 +214,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/setVC/SettingViewController.m"
-            timestampString = "411461302.074428"
+            timestampString = "411470421.319184"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "326"
-            endingLineNumber = "326"
+            startingLineNumber = "361"
+            endingLineNumber = "361"
             landmarkName = "-uploadProfileImage"
             landmarkType = "5">
          </BreakpointContent>
@@ -230,12 +230,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/setVC/SettingViewController.m"
-            timestampString = "411461302.074428"
+            timestampString = "411470421.319184"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "343"
-            endingLineNumber = "343"
+            startingLineNumber = "378"
+            endingLineNumber = "378"
             landmarkName = "-uploadProfileImage"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "talk/setVC/SettingViewController.m"
+            timestampString = "411471004.04859"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "-viewWillAppear:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "talk/setVC/EmailViewController.m"
+            timestampString = "411471011.617832"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "-Done"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

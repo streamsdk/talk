@@ -15,13 +15,13 @@
 #import "ImageCache.h"
 #import "FileCache.h"
 #import "MBProgressHUD.h"
+#import "EmailViewController.h"
 
 #define IMAGE_TAG 10000
 @interface SettingViewController ()
 {
     UIImage *avatarImg;
     BOOL isaAatarImg;
-    NSMutableDictionary * dict ;
     UIImage *profileImage;
 }
 @end
@@ -82,7 +82,18 @@
     }
     
 }
-
+-(void) viewWillAppear:(BOOL)animated{
+    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    NSString * loginName = [handle getUserID];
+    ImageCache * imageCache = [ImageCache sharedObject];
+    NSMutableDictionary *userMetadata=[imageCache getUserMetadata:[handle getUserID]];
+    NSString *email=[userMetadata objectForKey:@"Email"];
+    if (!email) {
+        email= @"email is null";
+    }
+    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"Email",email,@"Terms of Service",@"Privacy Policy",@"About",@"Log Out", nil];
+    [myTableView reloadData];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -96,16 +107,15 @@
     self.navigationItem.rightBarButtonItem = rightItem;
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     NSString * loginName = [handle getUserID];
-    dict = [[NSMutableDictionary alloc]init];
-    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"Email",@"Email",@"Terms of Service",@"Privacy Policy",@"About", nil];
-    myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height-80) style:UITableViewStyleGrouped];
+   
+    myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height) style:UITableViewStyleGrouped];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
     myTableView.dataSource = self;
     myTableView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:myTableView];
     
-    UIButton * logOut = [UIButton buttonWithType:UIButtonTypeCustom];
+   /* UIButton * logOut = [UIButton buttonWithType:UIButtonTypeCustom];
     [logOut setFrame:CGRectMake(10, self.view.bounds.size.height-60, self.view.bounds.size.width-20, 50)];
     [[logOut layer] setBorderColor:[[UIColor redColor] CGColor]];
     [[logOut layer] setBorderWidth:1];
@@ -115,7 +125,7 @@
     [logOut setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [logOut setBackgroundColor:[UIColor redColor]];
     [logOut addTarget:self action:@selector(LogOut) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:logOut];
+    [self.view addSubview:logOut];*/
 
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"loading friends...";
@@ -129,7 +139,7 @@
 
 }
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return 3;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
@@ -140,7 +150,9 @@
         case 1:
             return 3;
             break;
-
+        case 2:
+            return 1;
+            break;
         default:
             break;
     }
@@ -169,10 +181,7 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
 //        [cell setBackgroundColor:[UIColor clearColor]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        if (indexPath.section!=0) {
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
-        }
+        
     }
     if (indexPath.section==0) {
         if (indexPath.row==0) {
@@ -194,17 +203,32 @@
             UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headImageClicked:)];
             [imageview addGestureRecognizer:tap];
             [cell addSubview:imageview];
-            HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+//            HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
 //            [self loadAvatar:[handle getUserID] withCell:cell];
         }else if (indexPath.row==1){
             cell .textLabel.text = [userData objectAtIndex:indexPath.row-1];
             cell.detailTextLabel.text = [userData objectAtIndex:indexPath.row];
         }else{
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell .textLabel.text = [userData objectAtIndex:indexPath.row];
             cell.detailTextLabel.text = [userData objectAtIndex:indexPath.row+1];
         }
     }else if(indexPath.section==1){
-            cell .textLabel.text = [userData objectAtIndex:indexPath.row+4];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+        cell .textLabel.text = [userData objectAtIndex:indexPath.row+4];
+    }else if(indexPath.section==2){
+        /*cell .textLabel.text = [userData objectAtIndex:indexPath.row+7];
+        cell.backgroundColor = [UIColor redColor];
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.textLabel.textAlignment =NSTextAlignmentRight;*/
+        cell.backgroundColor = [UIColor redColor];
+        UIButton * logOut = [UIButton buttonWithType:UIButtonTypeCustom];
+        [logOut setFrame:CGRectMake(10,0, self.view.bounds.size.width-20, 44)];
+        [logOut setTitle:@"Log Out" forState:UIControlStateNormal];
+        logOut.titleLabel.font = [UIFont systemFontOfSize:20.0f];
+        [logOut setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [cell addSubview:logOut];
     }
     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:18.0f];
 
@@ -223,12 +247,23 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
-        case 1:
+        case 0:{
+            if (indexPath.row==2) {
+                EmailViewController *email = [[EmailViewController alloc]init];
+                [self.navigationController pushViewController:email animated:YES];
+            }
+        }
             break;
-        case 2:{
+        case 1:{
 //            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You sure Exit?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
 //            view .delegate = self;
 //            [view show];
+        }
+            break;
+        case 2:{
+            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You sure Log Out?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+            view .delegate = self;
+            [view show];
         }
             break;
         default:
