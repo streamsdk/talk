@@ -228,6 +228,7 @@
         [logOut setTitle:@"Log Out" forState:UIControlStateNormal];
         logOut.titleLabel.font = [UIFont systemFontOfSize:20.0f];
         [logOut setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [logOut addTarget:self action:@selector(LogOut) forControlEvents:UIControlEventTouchUpInside];
         [cell addSubview:logOut];
     }
     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:18.0f];
@@ -260,12 +261,7 @@
 //            [view show];
         }
             break;
-        case 2:{
-            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You sure Log Out?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
-            view .delegate = self;
-            [view show];
-        }
-            break;
+       
         default:
             break;
     }
