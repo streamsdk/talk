@@ -11,6 +11,7 @@
 #import <arcstreamsdk/STreamFile.h>
 #import <arcstreamsdk/STreamUser.h>
 #import <arcstreamsdk/STreamQuery.h>
+#import <MediaPlayer/MediaPlayer.h>
 #import "NSBubbleData.h"
 #import "STreamXMPP.h"
 #import "Voice.h"
@@ -32,7 +33,7 @@
 #import "AudioHandler.h"
 #import "HandlerUserIdAndDateFormater.h"
 #import "ImageViewController.h"
-#import "DisPlayerViewController.h"
+//#import "DisPlayerViewController.h"
 #import "DisappearImageController.h"
 #import "ChatSettingViewController.h"
 #import "BackgroundImgViewController.h"
@@ -67,6 +68,10 @@
     UIImage * sendImage;
     
     BOOL isVideo;
+    BOOL isClearData;
+    BOOL isSave;
+    NSString * saveVideoPath;
+    
 }
 
 @property(nonatomic,retain) Voice * voice;
@@ -92,7 +97,7 @@
     //初始化为NO added
     keyboardIsShow=NO;
     isFace = NO;
-    
+    isSave = NO;
     recordOrKeyboardButton = [createUI setButtonFrame:CGRectMake(0, 5, 30, 30) withTitle:(@"nil")];
     [recordOrKeyboardButton setImage:[UIImage imageNamed:@"microphonefat.png"] forState:UIControlStateNormal];
     [recordOrKeyboardButton addTarget:self action:@selector(KeyboardTorecordClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -179,6 +184,7 @@
         [self presentViewController:bgView animated:YES completion:nil];
 
     }else if (buttonIndex ==2){
+        isClearData = YES;
         UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You sure clear data?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
         view .delegate = self;
         [view show];
@@ -190,6 +196,8 @@
 	// Do any additional setup after loading the view
     
     isVideo=NO;
+    isClearData = NO;
+    
     createUI = [[CreateUI alloc]init];
     
     self.voice = [[Voice alloc] init];
@@ -497,7 +505,6 @@
 }
 #pragma MARK face button 表情事件
 -(void)disFaceKeyboard{
-    [self scrollBubbleViewToBottomAnimated:YES];
     //如果直接点击表情，通过toolbar的位置来判断
     if (toolBar.frame.origin.y== self.view.bounds.size.height - toolBarHeight&&toolBar.frame.size.height==toolBarHeight) {
         [UIView animateWithDuration:Time animations:^{
@@ -509,6 +516,7 @@
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-keyboardHeight,self.view.frame.size.width, keyboardHeight)];
         }];
+        [self scrollBubbleViewToBottomAnimated:YES];
         [faceButton setImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
         [pageControl setHidden:NO];
         return;
@@ -524,7 +532,7 @@
 
 
     }else{
-        
+        [self scrollBubbleViewToBottomAnimated:YES];
         //键盘显示的时候，toolbar需要还原到正常位置，并显示表情
         [UIView animateWithDuration:Time animations:^{
             toolBar.frame = CGRectMake(0, self.view.frame.size.height-keyboardHeight-toolBar.frame.size.height,  self.view.bounds.size.width,toolBar.frame.size.height);
@@ -554,10 +562,10 @@
         [scrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, keyboardHeight)];
     }];
     [faceButton setImage:[UIImage imageNamed:@"face512.png"] forState:UIControlStateNormal];
-    [pageControl setHidden:YES];
     [messageText resignFirstResponder];
 //    UIButton *button = (UIButton *)[self.view viewWithTag:BUTTON_TAG];
     [sendButton removeFromSuperview];
+    [pageControl setHidden:YES];
 }
 
 
@@ -589,6 +597,7 @@
             [self autoMovekeyBoard:keyBoardFrame.size.height];
         }
     }];
+    [self scrollBubbleViewToBottomAnimated:YES];
     [faceButton setImage:[UIImage imageNamed:@"face512.png"] forState:UIControlStateNormal];
     [pageControl setHidden:YES];
     keyboardIsShow=YES;
@@ -781,7 +790,7 @@
         /*sendImage = image;
         [self sendPhoto:image withTime:@"0s"];
         [picker dismissViewControllerAnimated:YES completion:NULL];*/
-       
+       [self dismissKeyBoard];
         ImageViewController * imageview = [[ImageViewController alloc]init];
         imageview.image = image;
         [imageview setPickerController:picker];
@@ -794,9 +803,9 @@
             CGFloat time = [self getVideoDuration:videoPath];
             if (time<=10) {
             
-                NSString *tempFilePath = [videoPath path];
                 [picker dismissViewControllerAnimated:YES completion:NULL];
-                UISaveVideoAtPathToSavedPhotosAlbum(tempFilePath,self, @selector(errorVideoCheck:didFinishSavingWithError:contextInfo:),NULL);
+//                NSString *tempFilePath = [videoPath path];
+//                UISaveVideoAtPathToSavedPhotosAlbum(tempFilePath,self, @selector(errorVideoCheck:didFinishSavingWithError:contextInfo:),NULL);
                 UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"the video is permanent？" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
                 alert.delegate = self;
                 [alert show];
@@ -820,7 +829,9 @@
         }else{
             [self sendVideo:nil];
         }
-    }else {
+        isVideo = NO;
+    }
+    if(isClearData){
         HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
         ImageCache * imagecache = [ImageCache sharedObject];
         TalkDB * talk = [[TalkDB alloc]init];
@@ -830,7 +841,13 @@
         bubbleData = [[NSMutableArray alloc]init];
         bubbleData = [talk readInitDB:[handler getUserID] withOtherID:[imagecache getFriendID]];
         [bubbleTableView reloadData];
-
+        isClearData = NO;
+    }
+    if (isSave){
+        if (buttonIndex == 1) {
+            UISaveVideoAtPathToSavedPhotosAlbum(saveVideoPath,self, @selector(errorVideoCheck:didFinishSavingWithError:contextInfo:),NULL);
+        }
+        isSave = NO;
     }
 }
 - (CGFloat) getVideoDuration:(NSURL*) URL
@@ -847,7 +864,12 @@
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 - (void)errorVideoCheck:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
-	
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                    message:@"You have successed!"
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 -(void)sendClicked{
@@ -904,14 +926,40 @@
 }
 
 -(void) playerVideo:(NSString *)path  withTime:(NSString *)time withDate:(NSDate *)date{
-    
-    DisPlayerViewController * playerVC = [[DisPlayerViewController alloc]init];
-    playerVC.videopath = path;
-    playerVC.time = time;
-    playerVC.date = date;
-//    playerVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-//    [self presentViewController:playerVC animated:YES completion:nil];
-    [self.navigationController pushViewController:playerVC animated:YES];
+    isSave = YES;
+    saveVideoPath = path;
+    NSURL * url = [NSURL fileURLWithPath:path];
+    MPMoviePlayerViewController* playerView = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
+    [self presentViewController:playerView animated:YES completion:NULL];
+    if (time) {
+        ImageCache * cache = [ImageCache  sharedObject];
+        TalkDB * talkDB = [[TalkDB alloc]init];
+        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        [friendDict setObject:@"-1" forKey:@"time"];
+        [friendDict setObject:path forKey:@"video"];
+        [jsonDic setObject:friendDict forKey:[cache getFriendID]];
+        NSString  *str = [jsonDic JSONString];
+        [talkDB updateDB:date withContent:str];
+    }else{
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moviePlayerPreloadFinish:)
+                                                     name:MPMoviePlayerPlaybackDidFinishNotification
+                                                   object:[playerView moviePlayer]];
+
+    }
+    /*else{
+        DisPlayerViewController * playerVC = [[DisPlayerViewController alloc]init];
+        playerVC.videopath = path;
+        playerVC.time = time;
+        playerVC.date = date;
+        [self.navigationController pushViewController:playerVC animated:YES];
+    }*/
+}
+-(void)moviePlayerPreloadFinish:(NSNotificationCenter *)notificationCenter{
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You need to save this video？" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+    alert.delegate = self;
+    [alert show];
     
 }
 -(void)disappearImage:(UIImage *)image withDissapearTime:(NSString *)time withDissapearPath:(NSString *)path withSendOrReceiveTime:(NSDate *)date{
@@ -927,9 +975,8 @@
 -(void)reloadTable{
     NSBubbleData * bubble = [bubbleData lastObject];
     bubble.delegate = self;
-
+    
     [bubbleTableView reloadData];
-    [self dismissKeyBoard];
     [self scrollBubbleViewToBottomAnimated:YES];
 }
 -(void)sendImages:(UIImage *)image withTime:(NSString *)time{

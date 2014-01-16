@@ -335,11 +335,14 @@
         path = photoPath;
     }else if ([type isEqualToString:@"video"]){
          NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        NSString *duration = [json objectForKey:@"duration"];
         
         HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
         NSString * mp4Path = [[handler getPath] stringByAppendingString:@".mp4"];
         [data writeToFile : mp4Path atomically: YES ];
         [handler videoPath:mp4Path];
+        if (duration)
+            [friendDict setObject:duration forKey:@"time"];
         [friendDict setObject:mp4Path forKey:@"video"];
         [jsonDic setObject:friendDict forKey:fromID];
         path = mp4Path;

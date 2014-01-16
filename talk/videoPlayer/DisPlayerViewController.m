@@ -93,10 +93,10 @@
         videoHeight = 535.f;
     } else {
         videoWidth = self.view.frame.size.width;
-        videoHeight =self.view.frame.size.height - 64;
+        videoHeight =self.view.frame.size.height - 100;
     }
     
-    self.defaultFrame = CGRectMake(0, 64, videoWidth, videoHeight);
+    self.defaultFrame = CGRectMake(0, 70, videoWidth, videoHeight);
     
     if (self.moviePlayer.isFullscreen)
         return;
