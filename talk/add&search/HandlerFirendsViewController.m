@@ -300,7 +300,6 @@
         [l setCornerRadius:8.0];
     }
     UIButton * button = (UIButton *)[cell viewWithTag:CELL_BUTTON_TAG];
-    button.tag = indexPath.row;
     switch (_friendsType) {
         case FriendsAdd:{
             
@@ -309,6 +308,7 @@
                 if ([status isEqualToString:@"friend"]) {
 
                     [button setBackgroundImage:[UIImage imageNamed:@"friends.png"]  forState:UIControlStateNormal];
+                     button.tag = indexPath.row;
                     [button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
                     [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
                     [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
@@ -316,8 +316,8 @@
                     cell.textLabel.text = [friendsAddArray objectAtIndex:indexPath.row];
                     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
                 }else if ([status isEqualToString:@"request"]){
-                    
                     [button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
+                    button.tag = indexPath.row;
                     [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
                     [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
                     [self loadAvatar:[friendsAddArray objectAtIndex:indexPath.row] withCell:cell];
@@ -347,7 +347,7 @@
                         
                     }else {
                         [button setBackgroundImage:[UIImage imageNamed:@"friends.png"] forState:UIControlStateNormal];
-
+                         button.tag = indexPath.row;
                         cell.textLabel.text = str;
                         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20.0f];
                         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You are already friends！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
@@ -356,6 +356,7 @@
                     
                 }else{
                     [button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
+                     button.tag = indexPath.row;
                     [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
                     cell.textLabel.text = str;
                     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20.0f];
@@ -369,6 +370,7 @@
             [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
             [self loadAvatar:[friendsHistoryArray objectAtIndex:indexPath.row] withCell:cell];
             [button setBackgroundImage:[UIImage imageNamed:@"invitation.png"] forState:UIControlStateNormal];
+             button.tag = indexPath.row;
             cell.textLabel.text = [friendsHistoryArray objectAtIndex:indexPath.row];
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
         }
@@ -522,9 +524,9 @@
     [my setObjectId:[handle getUserID]];
     [my addStaff:@"status" withObject:@"friend"];
     [my updateInBackground];
-     addDict = [db readDB:[handle getUserID]];
-    [myTableview reloadData];
+//     addDict = [db readDB:[handle getUserID]];
     [_button setBackgroundImage:[UIImage imageNamed:@"friends.png"] forState:UIControlStateNormal];
+    [myTableview reloadData];
 //    [_button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
 }
 -(void) addFriendSendRequest:(UIButton *) sender {
@@ -552,15 +554,16 @@
     [my addStaff:@"status" withObject:@"request"];
     [my updateInBackground];
     
+    [_button setBackgroundImage:[UIImage imageNamed:@"invitation.png"] forState:UIControlStateNormal];
+
     SearchDB * db = [[SearchDB alloc]init];
+//    [myTableview reloadData];
     NSMutableArray *sendData=[db  readSearchDB:[handler getUserID]];
     if (![sendData containsObject:string]) {
         [db insertDB:[handler getUserID] withFriendID:string];
     }
     
-    [_button setFrame:CGRectMake(220, 15, 32, 32)];
-    // [sender setTitle:@"sendRequest" forState:UIControlStateNormal];
-    [_button setBackgroundImage:[UIImage imageNamed:@"invitation.png"] forState:UIControlStateNormal];
+        // [sender setTitle:@"sendRequest" forState:UIControlStateNormal];
 }
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (isSendRequest) {
