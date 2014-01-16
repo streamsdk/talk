@@ -553,7 +553,11 @@
     [my updateInBackground];
     
     SearchDB * db = [[SearchDB alloc]init];
-    [db insertDB:[handler getUserID] withFriendID:string];
+    NSMutableArray *sendData=[db  readSearchDB:[handler getUserID]];
+    if (![sendData containsObject:string]) {
+        [db insertDB:[handler getUserID] withFriendID:string];
+    }
+    
     [_button setFrame:CGRectMake(220, 15, 32, 32)];
     // [sender setTitle:@"sendRequest" forState:UIControlStateNormal];
     [_button setBackgroundImage:[UIImage imageNamed:@"invitation.png"] forState:UIControlStateNormal];
