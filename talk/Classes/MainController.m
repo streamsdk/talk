@@ -162,9 +162,11 @@
         [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageWithData:data]]];
     }
     [bubbleTableView reloadData];
+    [self dismissKeyBoard];
     [self scrollBubbleViewToBottomAnimated:YES];
 }
 -(void)SetBackground{
+    
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
                                   initWithTitle:@"---- setting ----"
                                   delegate:self

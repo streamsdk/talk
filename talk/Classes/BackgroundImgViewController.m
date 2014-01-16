@@ -37,11 +37,13 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    self.navigationController.navigationBarHidden = YES;
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     
-    self.img = [[NSArray alloc]initWithObjects:@"b1.png",@"b2.png",@"b3.png",@"b4.png",@"b5.png",@"b6.png",@"background.png",nil];
+	
+    self.img = [[NSArray alloc]initWithObjects:@"b11.png",@"b22.png",@"b33.png",@"b44.png",@"b55.png",@"b66.png",@"background.png",nil];
     
-    self.scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,0, self.view.frame.size.width, self.view.frame.size.height)];
+    self.scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,50, self.view.frame.size.width, self.view.frame.size.height-50)];
     int line = [self.img count]%COLUMN ? [self.img count]/COLUMN+1 :[self.img count]/COLUMN;
     int column;
     for (int i = 0; i < line; i++) {
@@ -60,11 +62,32 @@
             [self.scrollView addSubview:imageview];
         }
     }
-    self.scrollView.contentOffset = CGPointMake(self.view.frame.size.width, self.view.frame.size.height - 64);
-    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, (IMAGE_HEIGHT_WIDTH+SPACE_WIDTH)*line);
+    self.scrollView.showsVerticalScrollIndicator = NO;
+//    self.scrollView.contentOffset = CGPointMake(self.view.frame.size.width, self.view.frame.size.height - 50);
+    self.scrollView.contentSize = CGSizeMake(0 ,(IMAGE_HEIGHT_WIDTH+SPACE_WIDTH)*line);
     [self.view addSubview:self.scrollView];
     
-    self.contentSizeForViewInPopover = CGSizeMake(250, 400);
+    UIButton *btnClose = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width-70, 20, 60, 30)];
+	[btnClose addTarget:self action:@selector(closeSelected:) forControlEvents:UIControlEventTouchUpInside];
+	[btnClose.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
+    [[btnClose layer] setBorderColor:[[UIColor blueColor] CGColor]];
+    [[btnClose layer] setBorderWidth:1];
+    [[btnClose layer] setCornerRadius:4];
+	[btnClose setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+	[btnClose setTitle:@"Close" forState:UIControlStateNormal];
+	[self.view addSubview:btnClose];
+	
+	UIButton *btnDone = [[UIButton alloc] initWithFrame:CGRectMake(10, 20, 60, 30)];
+	[btnDone addTarget:self action:@selector(doneSelected:) forControlEvents:UIControlEventTouchUpInside];
+	[btnDone.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
+    [[btnDone layer] setBorderColor:[[UIColor blueColor] CGColor]];
+    [[btnDone layer] setBorderWidth:1];
+    [[btnDone layer] setCornerRadius:4];
+	[btnDone setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+	[btnDone setTitle:@"Done" forState:UIControlStateNormal];
+	[self.view addSubview:btnDone];
+    
+//    self.contentSizeForViewInPopover = CGSizeMake(250, 400);
     
 }
 -(void) imageSeleted:(UIGestureRecognizer *) gestureRecognizer {
@@ -86,7 +109,7 @@
         [chat deleteDB:[handler getUserID] withFriendID:[imagecache getFriendID]];
         BackData * data = [BackData sharedObject];
         [data setImage:image];
-        }
+    }
     [self dismissViewControllerAnimated:YES completion:^{
         
         NSLog(@"back");
@@ -106,6 +129,12 @@
     
     }];
 }
-
+-(void)doneSelected:(id)sender{
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+        NSLog(@"back");
+        
+    }];
+}
 @end
 
