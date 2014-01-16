@@ -556,8 +556,8 @@
     [faceButton setImage:[UIImage imageNamed:@"face512.png"] forState:UIControlStateNormal];
     [pageControl setHidden:YES];
     [messageText resignFirstResponder];
-    UIButton *button = (UIButton *)[self.view viewWithTag:BUTTON_TAG];
-    [button removeFromSuperview];
+//    UIButton *button = (UIButton *)[self.view viewWithTag:BUTTON_TAG];
+    [sendButton removeFromSuperview];
 }
 
 
@@ -602,8 +602,6 @@
     [faceButton setImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
     [pageControl setHidden:NO];
     keyboardIsShow=NO;
-//    UIButton *button = (UIButton *)[self.view viewWithTag:BUTTON_TAG];
-    [sendButton removeFromSuperview];
     [messageText resignFirstResponder];
 }
 
