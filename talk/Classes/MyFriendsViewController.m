@@ -149,7 +149,7 @@
 }
 -(void) readAddDb {
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
-
+    userData =[[NSMutableArray alloc]init];
     AddDB * addDB = [[AddDB alloc]init];
     NSMutableDictionary * dict = [addDB readDB:[handle getUserID]];
     NSArray * array = [dict allKeys];
@@ -168,16 +168,31 @@
     NSString * loginName= [handle getUserID];
     
     AddDB * addDB = [[AddDB alloc]init];
-    userData = [[NSMutableArray alloc]init];
     [self readAddDb];
-    
+//    [addDB deleteDB];
     STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:loginName];
     [sq setQueryLogicAnd:true];
     [sq whereEqualsTo:@"status" forValue:@"friend"];
-    
     NSMutableArray * friends = [sq find];
+    NSMutableArray *objectID = [[NSMutableArray alloc]init];
     for (STreamObject *so in friends) {
-        if (![userData containsObject:[so objectId]]){
+        [objectID addObject:[so objectId]];
+    }
+    AddDB * db = [[AddDB alloc]init];
+    if ([userData count]!=0 && [friends count]!=0) {
+        if ([userData count]>[friends count]) {
+            for (int i = 0;i<[userData count];i++) {
+                NSString *id = [userData objectAtIndex:i];
+                if (![objectID containsObject:id]) {
+                    [userData removeObject:id];
+                    [db deleteDB:id];
+                }
+            }
+        }
+    }
+
+    for (STreamObject *so in friends) {
+        if (![userData containsObject:[so objectId]]) {
             [userData addObject:[so objectId]];
             [addDB insertDB:[handle getUserID] withFriendID:[so objectId] withStatus:@"friend"];
         }

@@ -17,6 +17,8 @@
 
 -(NSMutableDictionary *) readDB:(NSString *)userID;
 
+-(void) deleteDB:(NSString * )friendID;
+
 -(void) deleteDB;
 
 -(void) updateDB:(NSString *)userID withFriendID:(NSString *)friendID withStatus:(NSString *)status;

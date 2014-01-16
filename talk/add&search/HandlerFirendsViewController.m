@@ -23,6 +23,7 @@
 #define ADD_TAG  2000
 #define DELETE_TAG 3000
 #define SEARCH_TAG 10000
+#define CELL_BUTTON_TAG 40000
 @interface HandlerFirendsViewController ()
 {
     UIBarButtonItem *refreshitem;
@@ -31,6 +32,7 @@
     BOOL isAddFriend;
     BOOL isSendRequest;
     UIButton * _button ;
+    BOOL isDeleteFriend;
 }
 @end
 
@@ -50,20 +52,42 @@
     STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:loginName];
     [sq setQueryLogicAnd:FALSE];
     [sq whereEqualsTo:@"status" forValue:@"friend"];
-    
     [sq whereEqualsTo:@"status" forValue:@"request"];
     NSMutableArray * array = [sq find];
-    AddDB * db = [[AddDB alloc]init];
-    
+    NSMutableArray *objectID = [[NSMutableArray alloc]init];
     for (STreamObject *so in array) {
-        if (![friendsAddArray containsObject:[so objectId]]) {
-            [db insertDB:[handler getUserID] withFriendID:[so objectId] withStatus:[so getValue:@"status"]];
-            [friendsAddArray addObject:[so objectId]];
-            [addDict setObject:[so getValue:@"status"] forKey:[so objectId]];
-        }
-        
+        [objectID addObject:[so objectId]];
     }
+    AddDB * db = [[AddDB alloc]init];
+    if ([friendsAddArray count]!=0 && [array count]!=0) {
+        if ([friendsAddArray count]>[array count]) {
+            for (int i = 0;i<[friendsAddArray count];i++) {
+                NSString *id = [friendsAddArray objectAtIndex:i];
+                if (![objectID containsObject:id]) {
+                    [friendsAddArray removeObject:id];
+                    [db deleteDB:id];
+                }
+            }
+        }
+    }
+    if ([array count]!=0) {
+        for (STreamObject *so in array) {
+            if ([friendsAddArray containsObject:[so objectId]]) {
+                if (![[addDict objectForKey:[so objectId]] isEqualToString:[so getValue:@"status"]]) {
+                    [db updateDB:[handler getUserID] withFriendID:[so objectId] withStatus:[so getValue:@"status"]];
+                    [addDict removeObjectForKey:[so objectId]];
+                    [addDict setObject:[so getValue:@"status"] forKey:[so objectId]];
+                }
+            }else{
+                [db insertDB:[handler getUserID] withFriendID:[so objectId] withStatus:[so getValue:@"status"]];
+                [friendsAddArray addObject:[so objectId]];
+                [addDict setObject:[so getValue:@"status"] forKey:[so objectId]];
+            }
+            
+        }
 
+    }
+   
 }
 
 -(void) refresh {
@@ -188,8 +212,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    isAddFriend= NO;
+    isAddFriend= YES;
     isSendRequest = NO;
+    isDeleteFriend= YES;
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     friendsAddPoint = CGPointZero;
     friendsSearchPoint = CGPointZero;
@@ -255,12 +280,15 @@
 {
     static NSString *cellIdentifier = @"EliteCellIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    UIButton * button;
+//    UIButton * button;
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
         [cell setBackgroundColor:[UIColor clearColor]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        button = [UIButton buttonWithType:UIButtonTypeCustom];
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [button setFrame:CGRectMake(cell.frame.size.width-100, 10, 40, 40)];
+        button.tag = CELL_BUTTON_TAG;
+        [cell addSubview:button];
         //[[button layer] setBorderColor:[[UIColor blueColor] CGColor]];
         //[[button layer] setBorderWidth:1];
         //[[button layer] setCornerRadius:4];
@@ -271,26 +299,24 @@
         [l setMasksToBounds:YES];
         [l setCornerRadius:8.0];
     }
-    
+    UIButton * button = (UIButton *)[cell viewWithTag:CELL_BUTTON_TAG];
+    button.tag = indexPath.row;
     switch (_friendsType) {
         case FriendsAdd:{
-            [button setFrame:CGRectMake(cell.frame.size.width-100, 15, 32, 32)];
-            button.tag = indexPath.row;
-
+            
             if (friendsAddArray && [friendsAddArray count]!=0) {
                 NSString *status = [addDict objectForKey:[friendsAddArray objectAtIndex:indexPath.row]];
                 if ([status isEqualToString:@"friend"]) {
-                    //[button setTitle:@"friend" forState:UIControlStateNormal];
-                    [button setBackgroundImage:[UIImage imageNamed:@"friends.png"] forState:UIControlStateNormal];
+
+                    [button setBackgroundImage:[UIImage imageNamed:@"friends.png"]  forState:UIControlStateNormal];
                     [button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
                     [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
                     [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
                     [self loadAvatar:[friendsAddArray objectAtIndex:indexPath.row] withCell:cell];
                     cell.textLabel.text = [friendsAddArray objectAtIndex:indexPath.row];
                     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
-                    [cell addSubview:button];
                 }else if ([status isEqualToString:@"request"]){
-                   // [button setTitle:@"add" forState:UIControlStateNormal];
+                    
                     [button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
                     [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
                     [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
@@ -298,8 +324,6 @@
                     [button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
                     cell.textLabel.text = [friendsAddArray objectAtIndex:indexPath.row];
                     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
-                    [cell addSubview:button];
-                    
                 }
                 
             }
@@ -307,7 +331,6 @@
         }
             break;
         case FriendsSearch:{
-            button.tag = indexPath.row;
 
             if (friendsSearchArray && [friendsSearchArray count]!=0) {
                 
@@ -319,30 +342,23 @@
                     NSString * status = [addDict objectForKey:str];
 
                     if ([status isEqualToString:@"request"]) {
-                        [button setFrame:CGRectMake(cell.frame.size.width-100, 15,60, 30)];
                         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You need to add addFriends page！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
                         [alert show];
                         
                     }else {
-                        
-                        [button setFrame:CGRectMake(cell.frame.size.width-100, 15, 60, 30)];
-                        [button setTitle:@"friend" forState:UIControlStateNormal];
+                        [button setBackgroundImage:[UIImage imageNamed:@"friends.png"] forState:UIControlStateNormal];
+
                         cell.textLabel.text = str;
                         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20.0f];
-                        [cell addSubview:button];
                         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You are already friends！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
                         [alert show];
                     }
                     
                 }else{
-                    [button setFrame:CGRectMake(cell.frame.size.width-100, 15, 32, 32)];
-                   // [button setTitle:@"add" forState:UIControlStateNormal];
                     [button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
                     [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
                     cell.textLabel.text = str;
                     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20.0f];
-                    [cell addSubview:button];
-                    
                 }
             }
 
@@ -350,15 +366,9 @@
             
             break;
         case FriendsHistory:{
-            button.tag = indexPath.row;
-
             [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
             [self loadAvatar:[friendsHistoryArray objectAtIndex:indexPath.row] withCell:cell];
-            [button setFrame:CGRectMake(cell.frame.size.width-100, 15, 32, 32)];
-//            friendsSearchArray = friendsHistoryArray;
             [button setBackgroundImage:[UIImage imageNamed:@"invitation.png"] forState:UIControlStateNormal];
-//            [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
-            [cell addSubview:button];
             cell.textLabel.text = [friendsHistoryArray objectAtIndex:indexPath.row];
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
         }
@@ -440,15 +450,22 @@
 #pragma mark add friends
 
 -(void)deleteFriends:(UIButton *)sender {
-    
-    isAddFriend = NO;
     _button = (UIButton *)sender;
-    NSString * str = [NSString stringWithFormat:@"You want to delete this friend %@?",[friendsAddArray objectAtIndex:sender.tag]];
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
-    alert.delegate = self;
-    [alert show];
-
-    
+    if (YES == isDeleteFriend) {
+        isAddFriend = NO;
+        NSString * str = [NSString stringWithFormat:@"You want to delete this friend %@?",[friendsAddArray objectAtIndex:sender.tag]];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+        alert.delegate = self;
+        [alert show];
+        isDeleteFriend = NO;
+    }else{
+        isAddFriend = YES;
+         isDeleteFriend = YES;
+        NSString * str = [NSString stringWithFormat:@"Do you want to add %@ as a friend?",[friendsAddArray objectAtIndex:sender.tag]];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+        alert.delegate = self;
+        [alert show];
+    }
 }
 
 -(void)delete{
@@ -468,47 +485,47 @@
     [my addStaff:@"status" withObject:@"sendRequest"];
     [my updateInBackground];
     [_button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
-    //[sender setTitle:@"add" forState:UIControlStateNormal];
-    [_button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
-       [myTableview reloadData];
+//    [_button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
+    [myTableview reloadData];
 }
 
 -(void)addFriends:(UIButton *)sender {
     
     _button = (UIButton *)sender;
-    
-    isAddFriend = YES;
-    NSString * str = [NSString stringWithFormat:@"Do you want to add %@ as a friend?",[friendsAddArray objectAtIndex:sender.tag]];
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
-    alert.delegate = self;
-    [alert show];
-    
+    if (YES == isAddFriend) {
+        NSString * str = [NSString stringWithFormat:@"Do you want to add %@ as a friend?",[friendsAddArray objectAtIndex:sender.tag]];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+        alert.delegate = self;
+        [alert show];
+    }else{
+        NSString * str = [NSString stringWithFormat:@"You want to delete this friend %@?",[friendsAddArray objectAtIndex:sender.tag]];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+        alert.delegate = self;
+        [alert show];
+    }
+
+   
 }
 -(void)add {
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * db = [[AddDB alloc]init];
     
     [db updateDB:[handle getUserID] withFriendID:[friendsAddArray objectAtIndex:_button.tag] withStatus:@"friend"];
-//    STreamCategoryObject *sto = [[STreamCategoryObject alloc]initWithCategory:[handle getUserID]];
     STreamObject * so = [[STreamObject alloc]init];
     [so setCategory:[handle getUserID]];
     [so setObjectId:[friendsAddArray objectAtIndex:_button.tag]];
     [so addStaff:@"status" withObject:@"friend"];
     [so updateInBackground];
     
-//    NSMutableArray *update = [[NSMutableArray alloc] init] ;
-    
-//    [update addObject:so];
-//    [sto updateStreamCategoryObjects:update];
     STreamObject *my = [[STreamObject alloc]init];
     [my setCategory:[friendsAddArray objectAtIndex:_button.tag]];
     [my setObjectId:[handle getUserID]];
     [my addStaff:@"status" withObject:@"friend"];
     [my updateInBackground];
-    
+     addDict = [db readDB:[handle getUserID]];
     [myTableview reloadData];
     [_button setBackgroundImage:[UIImage imageNamed:@"friends.png"] forState:UIControlStateNormal];
-    [_button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
+//    [_button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
 }
 -(void) addFriendSendRequest:(UIButton *) sender {
     _button = (UIButton *)sender;
@@ -551,12 +568,12 @@
         if (isAddFriend) {
             if (buttonIndex==1) {
                 [self add];
-//                isAddFriend = NO;
+                isAddFriend = NO;
             }
         }else{
             if (buttonIndex==1) {
                 [self delete];
-//                isAddFriend = YES;
+                isAddFriend = YES;
             }
         }
     }

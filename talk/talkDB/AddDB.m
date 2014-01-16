@@ -83,24 +83,41 @@
     return addDict;
 
 }
--(void) deleteDB {
+-(void) deleteDB:(NSString * )friendID {
     sqlite3 *database;
     if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
         sqlite3_close(database);
         NSAssert(0, @"Failed to open database");
     }
 //    select distinct * from ADDFRIENDS
+    NSString * sql =[NSString stringWithFormat:@"DELETE FROM ADDFRIENDS WHERE FRIENDID='%@'",friendID];
+    sqlite3_stmt *statement;
+    if (sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, nil) == SQLITE_OK) {
+        while (sqlite3_step(statement) == SQLITE_ROW) {
+            NSLog(@"delete");
+        }
+    }
+    sqlite3_step(statement);
+    sqlite3_finalize(statement);
+    sqlite3_close(database);
+}
+-(void) deleteDB{
+    sqlite3 *database;
+    if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
+        sqlite3_close(database);
+        NSAssert(0, @"Failed to open database");
+    }
+    //    select distinct * from ADDFRIENDS
     NSString * sql =@"DELETE FROM ADDFRIENDS";
     sqlite3_stmt *statement;
     if (sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, nil) == SQLITE_OK) {
-       
+        
         NSLog(@"delete");
     }
     sqlite3_step(statement);
     sqlite3_finalize(statement);
     sqlite3_close(database);
 }
-
 //
 -(void) updateDB:(NSString *)userID withFriendID:(NSString *)friendID withStatus:(NSString *)status {
     sqlite3 *database;
