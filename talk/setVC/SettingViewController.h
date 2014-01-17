@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SettingViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface SettingViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextFieldDelegate>
 
 @property (nonatomic,strong) UITableView * myTableView ;
 
 @property (nonatomic,strong) NSMutableArray * userData;
+
+@property (nonatomic,strong) UITextField * emailText;
 
 @end

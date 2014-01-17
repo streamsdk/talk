@@ -290,7 +290,7 @@
     NSString  *str = [jsonDic JSONString];
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
     NSDate * date =[NSDate dateWithTimeIntervalSinceNow:0];
     NSString * str2 = [dateFormatter stringFromDate:date];
     
@@ -360,7 +360,7 @@
     NSString * userID = [handler getUserID];
     NSString  *str = [jsonDic JSONString];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
     [db insertDBUserID:userID fromID:fromID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
     
     [messagesProtocol getFiles:data withFromID:fromID withBody:body withPath:path];

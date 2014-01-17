@@ -109,7 +109,7 @@
                 _uesrID = [array objectAtIndex:0];
             }
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
             NSDate *date = [dateFormatter dateFromString:time2];
             if ([userID isEqualToString:_userID] && [friendID isEqualToString:_friendID]) {
                 if (ismine == 0) {
@@ -220,7 +220,7 @@
         NSAssert(0, @"Failed to open database");
     }
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
     NSString * time = [dateFormatter stringFromDate:date];
     NSString * update = [NSString stringWithFormat:@"UPDATE FILEID SET CONTENT='%@' WHERE TIME='%@'",content,time];
     

@@ -48,7 +48,7 @@ static NSString * _videoPath;
 
 -(NSString *)getPath {
     NSDateFormatter* formater = [[NSDateFormatter alloc] init];
-    [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
+    [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss.SSS"];
     NSString *path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/out-%@", [formater stringFromDate:[NSDate date]]];
     return path;
 }
