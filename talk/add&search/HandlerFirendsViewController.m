@@ -474,20 +474,41 @@
 -(void)delete{
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * db = [[AddDB alloc]init];
-    [db updateDB:[handle getUserID] withFriendID:[friendsAddArray objectAtIndex:_button.tag] withStatus:@"request"];
-    STreamObject * so = [[STreamObject alloc]init];
-    [so setCategory:[handle getUserID]];
-    [so setObjectId:[friendsAddArray objectAtIndex:_button.tag]];
-    [so addStaff:@"status" withObject:@"request"];
-    [so updateInBackground];
+    SearchDB * search = [[SearchDB alloc]init];
+    NSString * friendID = [friendsAddArray objectAtIndex:_button.tag];
+    NSMutableArray * serarchArray=[ search readSearchDB:[handle getUserID]];
+    if ([serarchArray containsObject:friendID]) {
+        [db deleteDB:friendID];
+        STreamObject * so = [[STreamObject alloc]init];
+        [so setCategory:[handle getUserID]];
+        [so setObjectId:[friendsAddArray objectAtIndex:_button.tag]];
+        [so addStaff:@"status" withObject:@"sendRequest"];
+        [so updateInBackground];
+        
+        
+        STreamObject *my = [[STreamObject alloc]init];
+        [my setCategory:[friendsAddArray objectAtIndex:_button.tag]];
+        [my setObjectId:[handle getUserID]];
+        [my addStaff:@"status" withObject:@"request"];
+        [my updateInBackground];
 
+    }else{
+        [db updateDB:[handle getUserID] withFriendID:[friendsAddArray objectAtIndex:_button.tag] withStatus:@"request"];
+        STreamObject * so = [[STreamObject alloc]init];
+        [so setCategory:[handle getUserID]];
+        [so setObjectId:[friendsAddArray objectAtIndex:_button.tag]];
+        [so addStaff:@"status" withObject:@"request"];
+        [so updateInBackground];
+        
+        
+        STreamObject *my = [[STreamObject alloc]init];
+        [my setCategory:[friendsAddArray objectAtIndex:_button.tag]];
+        [my setObjectId:[handle getUserID]];
+        [my addStaff:@"status" withObject:@"sendRequest"];
+        [my updateInBackground];
+        [_button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
+    }
     
-    STreamObject *my = [[STreamObject alloc]init];
-    [my setCategory:[friendsAddArray objectAtIndex:_button.tag]];
-    [my setObjectId:[handle getUserID]];
-    [my addStaff:@"status" withObject:@"sendRequest"];
-    [my updateInBackground];
-    [_button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
     addDict = [db readDB:[handle getUserID]];
     friendsAddArray = [[NSMutableArray alloc]init];
     for (NSString * key in [addDict allKeys]) {

@@ -140,18 +140,19 @@
         HUD = nil;
     }];
     
-    [self readAddDb];
-    sortedArrForArrays = [self getChineseStringArr:userData];
+//    [self readAddDb];
+//    sortedArrForArrays = [self getChineseStringArr:userData];
     
     [_refreshHeaderView refreshLastUpdatedDate];
 
     [self.tableView reloadData];
 }
 -(void) readAddDb {
+    userData = [[NSMutableArray alloc]init];
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
-    userData =[[NSMutableArray alloc]init];
     AddDB * addDB = [[AddDB alloc]init];
     NSMutableDictionary * dict = [addDB readDB:[handle getUserID]];
+    NSLog(@"%d",[dict count]);
     NSArray * array = [dict allKeys];
     for (int i = 0;i< [array count];i++) {
         NSString *status = [dict objectForKey:[array objectAtIndex:i]];
@@ -162,13 +163,9 @@
 
 }
 -(void) loadFriends {
-
-    sectionHeadsKeys=[[NSMutableArray alloc]init];
+    [self readAddDb];
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     NSString * loginName= [handle getUserID];
-    
-    AddDB * addDB = [[AddDB alloc]init];
-    [self readAddDb];
 //    [addDB deleteDB];
     STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:loginName];
     [sq setQueryLogicAnd:true];
@@ -178,19 +175,19 @@
     for (STreamObject *so in friends) {
         [objectID addObject:[so objectId]];
     }
-    AddDB * db = [[AddDB alloc]init];
+    AddDB * addDB = [[AddDB alloc]init];
+
     if ([userData count]!=0 && [friends count]!=0) {
         if ([userData count]>[friends count]) {
             for (int i = 0;i<[userData count];i++) {
                 NSString *id = [userData objectAtIndex:i];
                 if (![objectID containsObject:id]) {
                     [userData removeObject:id];
-                    [db deleteDB:id];
+                    [addDB deleteDB:id];
                 }
             }
         }
     }
-
     for (STreamObject *so in friends) {
         if (![userData containsObject:[so objectId]]) {
             [userData addObject:[so objectId]];
@@ -198,6 +195,7 @@
         }
     }
     
+    sectionHeadsKeys=[[NSMutableArray alloc]init];
     sortedArrForArrays = [self getChineseStringArr:userData];
 
 }
