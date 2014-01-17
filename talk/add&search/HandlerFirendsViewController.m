@@ -279,16 +279,13 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellIdentifier = @"EliteCellIdentifier";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 //    UIButton * button;
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
         [cell setBackgroundColor:[UIColor clearColor]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [button setFrame:CGRectMake(cell.frame.size.width-100, 10, 40, 40)];
-        button.tag = CELL_BUTTON_TAG;
-        [cell addSubview:button];
+        
         //[[button layer] setBorderColor:[[UIColor blueColor] CGColor]];
         //[[button layer] setBorderWidth:1];
         //[[button layer] setCornerRadius:4];
@@ -299,7 +296,11 @@
         [l setMasksToBounds:YES];
         [l setCornerRadius:8.0];
     }
-    UIButton * button = (UIButton *)[cell viewWithTag:CELL_BUTTON_TAG];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setFrame:CGRectMake(cell.frame.size.width-100, 10, 40, 40)];
+//    button.tag = CELL_BUTTON_TAG;
+    [cell addSubview:button];
+//    UIButton * button = (UIButton *)[cell viewWithTag:CELL_BUTTON_TAG];
     switch (_friendsType) {
         case FriendsAdd:{
             
@@ -487,6 +488,11 @@
     [my addStaff:@"status" withObject:@"sendRequest"];
     [my updateInBackground];
     [_button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
+    addDict = [db readDB:[handle getUserID]];
+    friendsAddArray = [[NSMutableArray alloc]init];
+    for (NSString * key in [addDict allKeys]) {
+        [friendsAddArray addObject:key];
+    }
 //    [_button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
     [myTableview reloadData];
 }
@@ -524,7 +530,11 @@
     [my setObjectId:[handle getUserID]];
     [my addStaff:@"status" withObject:@"friend"];
     [my updateInBackground];
-//     addDict = [db readDB:[handle getUserID]];
+    addDict = [db readDB:[handle getUserID]];
+    friendsAddArray = [[NSMutableArray alloc]init];
+    for (NSString * key in [addDict allKeys]) {
+        [friendsAddArray addObject:key];
+    }
     [_button setBackgroundImage:[UIImage imageNamed:@"friends.png"] forState:UIControlStateNormal];
     [myTableview reloadData];
 //    [_button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
