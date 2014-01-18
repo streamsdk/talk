@@ -30,7 +30,7 @@
     self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = [UIColor blackColor];
     
-    UIImageView*imageView=[[UIImageView alloc] initWithFrame:CGRectMake(5, 100, self.view.frame.size.width-10,260)];
+    UIImageView*imageView=[[UIImageView alloc] initWithFrame:CGRectMake(5, 100, self.view.frame.size.width-10,self.view.frame.size.height-180)];
     [imageView setImage:image];
     imageView.tag = IMAGE_TAG;
     imageView.userInteractionEnabled=YES;

@@ -91,9 +91,9 @@ static NSMutableArray *colors;
     redoButton.tag=REDO_TAG;
     [redoButton addTarget:self action:@selector(redoClicked) forControlEvents:UIControlEventTouchUpInside];
 //selectcolors.png
-    drawView = [[MyView alloc]initWithFrame:CGRectMake(20, 100, self.view.frame.size.width -48, 300)];
+    drawView = [[MyView alloc]initWithFrame:CGRectMake(20, 100, self.view.frame.size.width -48, self.view.frame.size.height-180)];
     drawView.userInteractionEnabled = YES;
-    UIImage * newImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(self.view.frame.size.width -40, 300)];
+    UIImage * newImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(self.view.frame.size.width -40, self.view.frame.size.height-180)];
     [drawView setBackgroundColor:[UIColor colorWithPatternImage:newImage]];
     [self.view addSubview:drawView];
     [self.view sendSubviewToBack:drawView];
@@ -107,7 +107,7 @@ static NSMutableArray *colors;
     CALayer *ll = [colorsImageView layer];
     [ll setMasksToBounds:YES];
     [ll setCornerRadius:6.0];
-    [colorsImageView setImage:[UIImage imageNamed:@"selectcolors.png"]];
+    [colorsImageView setImage:[UIImage imageNamed:@"color.png"]];
     [colorsImageView setUserInteractionEnabled:YES];
     [self.view addSubview:colorsImageView];
     

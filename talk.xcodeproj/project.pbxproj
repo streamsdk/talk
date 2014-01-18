@@ -209,7 +209,7 @@
 		0E2E5EB718726D230044DC4C /* message_count@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E2E5EB518726D230044DC4C /* message_count@2x.png */; };
 		0E3A74F218740C9D00A9020D /* HandlerFirendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3A74F118740C9D00A9020D /* HandlerFirendsViewController.m */; };
 		0E3C3C9A188A1632003D43EB /* selectcolors.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E3C3C98188A1632003D43EB /* selectcolors.png */; };
-		0E3C3C9B188A1632003D43EB /* selectcolors@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E3C3C99188A1632003D43EB /* selectcolors@2x.png */; };
+		0E3C3C9F188A2CE7003D43EB /* color.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E3C3C9E188A2CE7003D43EB /* color.png */; };
 		0E49F040187E333700749A6D /* ALAirplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E49F026187E333700749A6D /* ALAirplayView.m */; };
 		0E49F041187E333700749A6D /* ALButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E49F028187E333700749A6D /* ALButton.m */; };
 		0E49F042187E333700749A6D /* ALMoviePlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E49F02A187E333700749A6D /* ALMoviePlayerController.m */; };
@@ -705,7 +705,7 @@
 		0E3A74F018740C9D00A9020D /* HandlerFirendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HandlerFirendsViewController.h; path = "add&search/HandlerFirendsViewController.h"; sourceTree = "<group>"; };
 		0E3A74F118740C9D00A9020D /* HandlerFirendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HandlerFirendsViewController.m; path = "add&search/HandlerFirendsViewController.m"; sourceTree = "<group>"; };
 		0E3C3C98188A1632003D43EB /* selectcolors.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectcolors.png; sourceTree = "<group>"; };
-		0E3C3C99188A1632003D43EB /* selectcolors@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selectcolors@2x.png"; sourceTree = "<group>"; };
+		0E3C3C9E188A2CE7003D43EB /* color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = color.png; sourceTree = "<group>"; };
 		0E49F025187E333700749A6D /* ALAirplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALAirplayView.h; sourceTree = "<group>"; };
 		0E49F026187E333700749A6D /* ALAirplayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALAirplayView.m; sourceTree = "<group>"; };
 		0E49F027187E333700749A6D /* ALButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALButton.h; sourceTree = "<group>"; };
@@ -2014,8 +2014,8 @@
 		0EE951A1185EA4B9003F4638 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0E3C3C9E188A2CE7003D43EB /* color.png */,
 				0E3C3C98188A1632003D43EB /* selectcolors.png */,
-				0E3C3C99188A1632003D43EB /* selectcolors@2x.png */,
 				0EF6EB4118853FF400AE64AA /* clockselect.png */,
 				0E1C18211883E8F100153F92 /* twitter.png */,
 				0E1C18221883E8F100153F92 /* twitter@2x.png */,
@@ -2293,6 +2293,7 @@
 				0EE951E9185EA4B9003F4638 /* missingAvatar@2x.png in Resources */,
 				0EE951DB185EA4B9003F4638 /* bubbleMine.png in Resources */,
 				0E95516E1887DD94007CD92C /* b66@2x.png in Resources */,
+				0E3C3C9F188A2CE7003D43EB /* color.png in Resources */,
 				0E95516D1887DD94007CD92C /* b66.png in Resources */,
 				0EE951F2185EA4B9003F4638 /* video.png in Resources */,
 				0EE951F0185EA4B9003F4638 /* typingSomeone.png in Resources */,
@@ -2338,7 +2339,6 @@
 				0348E5D91882A7D1002C7622 /* friends.png in Resources */,
 				0E9551661887DD94007CD92C /* b4.png in Resources */,
 				0E19E83718716AA100523232 /* blueArrow@2x.png in Resources */,
-				0E3C3C9B188A1632003D43EB /* selectcolors@2x.png in Resources */,
 				0EE951DF185EA4B9003F4638 /* camera_button_take.png in Resources */,
 				0EE951F5185EA4B9003F4638 /* Voice@2x.png in Resources */,
 				03557EAE1883134100CDB252 /* forward.png in Resources */,
