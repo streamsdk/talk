@@ -43,12 +43,6 @@ static NSMutableArray *colors;
     }
     return self;
 }
--(void)viewWillAppear:(BOOL)animated{
-    ImageCache * cache = [ImageCache sharedObject];
-    UIButton * brush =(UIButton * )[self.view viewWithTag:BRUSH_TAG];
-    [self.drawView setLineColor:[[cache getBrushColor] count]-1];
-    brush.backgroundColor=[[cache getBrushColor]lastObject];
-}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -103,7 +97,6 @@ static NSMutableArray *colors;
     
     //colorsimageview
     colorsImageView = [[UIImageView alloc]initWithFrame:CGRectMake(300, 100, 10, 300)];
-    colorsImageView.hidden = YES;
     CALayer *ll = [colorsImageView layer];
     [ll setMasksToBounds:YES];
     [ll setCornerRadius:6.0];
@@ -155,20 +148,15 @@ static NSMutableArray *colors;
     [drawView.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *newImage=UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-//    UIImageWriteToSavedPhotosAlbum(newImage, self, nil, nil);
-//    drawView.userInteractionEnabled = NO;
     image = newImage;
     UIButton * undo =(UIButton * )[self.view viewWithTag:UNDO_TAG];
     UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
     UIButton * use =(UIButton * )[self.view viewWithTag:USERPHOTO_TAG];
     UIButton * done =(UIButton * )[self.view viewWithTag:DONE_TAG];
-    UIView *v =(UIView *)[self.view viewWithTag:VIEW_TAG];
-    v.hidden = YES;
     undo.hidden = YES;
     redo.hidden = YES;
     use.hidden = NO;
     done.hidden = YES;
-    colorsImageView.hidden = YES;
 }
 
 -(void) paintbrushClicked {
@@ -181,7 +169,6 @@ static NSMutableArray *colors;
     redo.hidden = NO;
     use.hidden = YES;
     done.hidden = NO;
-    colorsImageView.hidden = NO;
     NSLog(@"");
 }
 
@@ -201,7 +188,6 @@ static NSMutableArray *colors;
     UIImage *newImage=UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     //    UIImageWriteToSavedPhotosAlbum(newImage, self, nil, nil);
-    drawView.userInteractionEnabled = NO;
     image = newImage;
     [imageSendProtocol sendImages:image withTime:time ];
     
@@ -279,18 +265,28 @@ static NSMutableArray *colors;
 {
     UIButton * undo =(UIButton * )[self.view viewWithTag:UNDO_TAG];
     UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
+    UIButton * done =(UIButton * )[self.view viewWithTag:DONE_TAG];
+    UIButton * use =(UIButton * )[self.view viewWithTag:USERPHOTO_TAG];
+    use.hidden = YES;
     undo.hidden = NO;
     redo.hidden=NO;
-    [drawView setUserInteractionEnabled:YES];
-
+    done.hidden=NO;
+    
 	CGPoint locationPoint = [[touches anyObject] locationInView:colorsImageView];
-	[self populateColorsForPoint:locationPoint];
+    if ((locationPoint.x>0&& locationPoint.x<20)&&((locationPoint.y>0&& locationPoint.y<300))) {
+        [self populateColorsForPoint:locationPoint];
+    }
+//    NSLog(@"x=%f,y=%f",locationPoint.x,locationPoint.y);
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	CGPoint locationPoint = [[touches anyObject] locationInView:colorsImageView];
-	[self populateColorsForPoint:locationPoint];
+	if ((locationPoint.x>0&& locationPoint.x<20)&&((locationPoint.y>0&& locationPoint.y<300))) {
+        [self populateColorsForPoint:locationPoint];
+        
+    }
+//     NSLog(@"x1=%f,y1=%f",locationPoint.x,locationPoint.y);
 }
 - (void)populateColorsForPoint:(CGPoint)point
 {
