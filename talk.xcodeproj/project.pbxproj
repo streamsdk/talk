@@ -198,7 +198,6 @@
 		0E19E83918716AA100523232 /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E83018716AA100523232 /* grayArrow@2x.png */; };
 		0E19E83A18716AA100523232 /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E83118716AA100523232 /* whiteArrow.png */; };
 		0E19E83B18716AA100523232 /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E83218716AA100523232 /* whiteArrow@2x.png */; };
-		0E1C181A1883976D00153F92 /* BrushColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1C18191883976D00153F92 /* BrushColorViewController.m */; };
 		0E1C181F1883E37B00153F92 /* line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1C181D1883E37B00153F92 /* line@2x.png */; };
 		0E1C18201883E37B00153F92 /* line.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1C181E1883E37B00153F92 /* line.png */; };
 		0E1C18231883E8F100153F92 /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1C18211883E8F100153F92 /* twitter.png */; };
@@ -209,6 +208,8 @@
 		0E2E5EB618726D230044DC4C /* message_count.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E2E5EB418726D230044DC4C /* message_count.png */; };
 		0E2E5EB718726D230044DC4C /* message_count@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E2E5EB518726D230044DC4C /* message_count@2x.png */; };
 		0E3A74F218740C9D00A9020D /* HandlerFirendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3A74F118740C9D00A9020D /* HandlerFirendsViewController.m */; };
+		0E3C3C9A188A1632003D43EB /* selectcolors.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E3C3C98188A1632003D43EB /* selectcolors.png */; };
+		0E3C3C9B188A1632003D43EB /* selectcolors@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E3C3C99188A1632003D43EB /* selectcolors@2x.png */; };
 		0E49F040187E333700749A6D /* ALAirplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E49F026187E333700749A6D /* ALAirplayView.m */; };
 		0E49F041187E333700749A6D /* ALButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E49F028187E333700749A6D /* ALButton.m */; };
 		0E49F042187E333700749A6D /* ALMoviePlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E49F02A187E333700749A6D /* ALMoviePlayerController.m */; };
@@ -689,8 +690,6 @@
 		0E19E83018716AA100523232 /* grayArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grayArrow@2x.png"; sourceTree = "<group>"; };
 		0E19E83118716AA100523232 /* whiteArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteArrow.png; sourceTree = "<group>"; };
 		0E19E83218716AA100523232 /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteArrow@2x.png"; sourceTree = "<group>"; };
-		0E1C18181883976D00153F92 /* BrushColorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BrushColorViewController.h; path = Classes/BrushColorViewController.h; sourceTree = "<group>"; };
-		0E1C18191883976D00153F92 /* BrushColorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BrushColorViewController.m; path = Classes/BrushColorViewController.m; sourceTree = "<group>"; };
 		0E1C181D1883E37B00153F92 /* line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line@2x.png"; sourceTree = "<group>"; };
 		0E1C181E1883E37B00153F92 /* line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line.png; sourceTree = "<group>"; };
 		0E1C18211883E8F100153F92 /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitter.png; sourceTree = "<group>"; };
@@ -705,6 +704,8 @@
 		0E2E5EB518726D230044DC4C /* message_count@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message_count@2x.png"; sourceTree = "<group>"; };
 		0E3A74F018740C9D00A9020D /* HandlerFirendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HandlerFirendsViewController.h; path = "add&search/HandlerFirendsViewController.h"; sourceTree = "<group>"; };
 		0E3A74F118740C9D00A9020D /* HandlerFirendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HandlerFirendsViewController.m; path = "add&search/HandlerFirendsViewController.m"; sourceTree = "<group>"; };
+		0E3C3C98188A1632003D43EB /* selectcolors.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectcolors.png; sourceTree = "<group>"; };
+		0E3C3C99188A1632003D43EB /* selectcolors@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selectcolors@2x.png"; sourceTree = "<group>"; };
 		0E49F025187E333700749A6D /* ALAirplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALAirplayView.h; sourceTree = "<group>"; };
 		0E49F026187E333700749A6D /* ALAirplayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALAirplayView.m; sourceTree = "<group>"; };
 		0E49F027187E333700749A6D /* ALButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALButton.h; sourceTree = "<group>"; };
@@ -1907,8 +1908,6 @@
 			children = (
 				0E49F06A187E7BA200749A6D /* MyView.h */,
 				0E49F06B187E7BA200749A6D /* MyView.m */,
-				0E1C18181883976D00153F92 /* BrushColorViewController.h */,
-				0E1C18191883976D00153F92 /* BrushColorViewController.m */,
 				0EF14D2C1876B8CD008F4AF5 /* ImageViewController.h */,
 				0EF14D2D1876B8CD008F4AF5 /* ImageViewController.m */,
 				0E0EDF4C1877AFAD00477C42 /* ImageSendProtocol.h */,
@@ -2015,6 +2014,8 @@
 		0EE951A1185EA4B9003F4638 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0E3C3C98188A1632003D43EB /* selectcolors.png */,
+				0E3C3C99188A1632003D43EB /* selectcolors@2x.png */,
 				0EF6EB4118853FF400AE64AA /* clockselect.png */,
 				0E1C18211883E8F100153F92 /* twitter.png */,
 				0E1C18221883E8F100153F92 /* twitter@2x.png */,
@@ -2337,6 +2338,7 @@
 				0348E5D91882A7D1002C7622 /* friends.png in Resources */,
 				0E9551661887DD94007CD92C /* b4.png in Resources */,
 				0E19E83718716AA100523232 /* blueArrow@2x.png in Resources */,
+				0E3C3C9B188A1632003D43EB /* selectcolors@2x.png in Resources */,
 				0EE951DF185EA4B9003F4638 /* camera_button_take.png in Resources */,
 				0EE951F5185EA4B9003F4638 /* Voice@2x.png in Resources */,
 				03557EAE1883134100CDB252 /* forward.png in Resources */,
@@ -2347,6 +2349,7 @@
 				0ED8ECA018288DC400C84741 /* black_bg_ip5@2x.png in Resources */,
 				0EE951DD185EA4B9003F4638 /* bubbleSomeone.png in Resources */,
 				030D10D0186D344700910292 /* camera_icon150.png in Resources */,
+				0E3C3C9A188A1632003D43EB /* selectcolors.png in Resources */,
 				0E9551611887DD94007CD92C /* b22.png in Resources */,
 				0EE951F8185EA4B9003F4638 /* selectAdd.png in Resources */,
 				0E49F046187E333700749A6D /* movieBackward@2x.png in Resources */,
@@ -2515,7 +2518,6 @@
 				03D9BF7B18145E370039118F /* XMPPStream.m in Sources */,
 				0E4B13D8187CF15F0070752B /* DisappearImageController.m in Sources */,
 				0E8A4F33182B7F8000705C1F /* CreateUI.m in Sources */,
-				0E1C181A1883976D00153F92 /* BrushColorViewController.m in Sources */,
 				0E49F042187E333700749A6D /* ALMoviePlayerController.m in Sources */,
 				03D9C0A618145E410039118F /* XMPPMessage+XEP_0308.m in Sources */,
 				03D9C0EB18145E510039118F /* NSString+DDXML.m in Sources */,

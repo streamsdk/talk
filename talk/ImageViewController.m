@@ -9,7 +9,6 @@
 #import "ImageViewController.h"
 #import "MainController.h"
 #import "CreateUI.h"
-#import "BrushColorViewController.h"
 #import "ImageCache.h"
 
 #define CLOCKBUTTON_TAG 10000
@@ -26,6 +25,7 @@ static NSMutableArray *colors;
     NSString * time;
     MainController * mainVC;
     CreateUI * creat;
+    UIImageView *colorsImageView;
 }
 @end
 
@@ -73,8 +73,6 @@ static NSMutableArray *colors;
     [backButton setFrame:frameBack];
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
 
-    
-    
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton * brushButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-50, 26, 30, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"brush.png"]];
@@ -92,30 +90,26 @@ static NSMutableArray *colors;
     redoButton.hidden = YES;
     redoButton.tag=REDO_TAG;
     [redoButton addTarget:self action:@selector(redoClicked) forControlEvents:UIControlEventTouchUpInside];
-    UIView* v = [[UIView alloc]initWithFrame:CGRectMake(self.view.frame.size.width-120, 58, 100, 8)];
-    v.tag = VIEW_TAG;
-    v.hidden = YES;
-    CALayer *l = [v layer];
-    [l setMasksToBounds:YES];
-    [l setCornerRadius:2.0];
-    v.backgroundColor = [UIColor clearColor];
-     [self.view addSubview:v];
-    for (int i=0; i<1; i++) {
-        
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [btn setFrame:CGRectMake(10*i, 0, 10, 8)];
-         btn.tag = i;
-        [btn setBackgroundColor:[colors objectAtIndex:i]];
-        [btn addTarget:self action:@selector(setColor:) forControlEvents:UIControlEventTouchUpInside];
-        [v addSubview:btn];
-    }
-   
-    drawView = [[MyView alloc]initWithFrame:CGRectMake(20, 100, self.view.frame.size.width -40, 300)];
+//selectcolors.png
+    drawView = [[MyView alloc]initWithFrame:CGRectMake(20, 100, self.view.frame.size.width -48, 300)];
     drawView.userInteractionEnabled = YES;
     UIImage * newImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(self.view.frame.size.width -40, 300)];
     [drawView setBackgroundColor:[UIColor colorWithPatternImage:newImage]];
     [self.view addSubview:drawView];
     [self.view sendSubviewToBack:drawView];
+    CALayer *l = [drawView layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:8.0];
+    
+    //colorsimageview
+    colorsImageView = [[UIImageView alloc]initWithFrame:CGRectMake(300, 100, 10, 300)];
+    colorsImageView.hidden = YES;
+    CALayer *ll = [colorsImageView layer];
+    [ll setMasksToBounds:YES];
+    [ll setCornerRadius:6.0];
+    [colorsImageView setImage:[UIImage imageNamed:@"selectcolors.png"]];
+    [colorsImageView setUserInteractionEnabled:YES];
+    [self.view addSubview:colorsImageView];
     
     UIButton *useButton = [UIButton buttonWithType:UIButtonTypeCustom];
     CGRect frame = CGRectMake(self.view.frame.size.width-53, self.view.frame.size.height-47, 32, 32);
@@ -149,9 +143,6 @@ static NSMutableArray *colors;
     [self.view addSubview:brushButton];
     [self.view addSubview:doneButton];
 }
--(void)setColor:(id)sender {
-    
-}
 -(void)undoClicked{
     [ self.drawView revocation];
 }
@@ -165,10 +156,8 @@ static NSMutableArray *colors;
     UIImage *newImage=UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 //    UIImageWriteToSavedPhotosAlbum(newImage, self, nil, nil);
-    drawView.userInteractionEnabled = NO;
+//    drawView.userInteractionEnabled = NO;
     image = newImage;
-
-    drawView.userInteractionEnabled = NO;
     UIButton * undo =(UIButton * )[self.view viewWithTag:UNDO_TAG];
     UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
     UIButton * use =(UIButton * )[self.view viewWithTag:USERPHOTO_TAG];
@@ -179,27 +168,21 @@ static NSMutableArray *colors;
     redo.hidden = YES;
     use.hidden = NO;
     done.hidden = YES;
+    colorsImageView.hidden = YES;
 }
 
 -(void) paintbrushClicked {
+    [drawView setUserInteractionEnabled:YES];
     UIButton * undo =(UIButton * )[self.view viewWithTag:UNDO_TAG];
     UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
     UIButton * use =(UIButton * )[self.view viewWithTag:USERPHOTO_TAG];
     UIButton * done =(UIButton * )[self.view viewWithTag:DONE_TAG];
-//    UIView *v =(UIView *)[self.view viewWithTag:VIEW_TAG];
-//    v.hidden = NO;
-//    UIButton * brush =(UIButton * )[self.view viewWithTag:BRUSH_TAG];
-//    [brush addTarget:self action:@selector(setColor:) forControlEvents:UIControlEventTouchUpInside];
-    BrushColorViewController  *colorVC = [[BrushColorViewController alloc]init];
-    colorVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    colorVC.textColor = @"fontcolor";
-    [self presentViewController:colorVC animated:YES completion:nil];
     undo.hidden = NO;
     redo.hidden = NO;
     use.hidden = YES;
     done.hidden = NO;
-    
-    NSLog(@"<#string#>");
+    colorsImageView.hidden = NO;
+    NSLog(@"");
 }
 
 -(void) back {
@@ -290,12 +273,128 @@ static NSMutableArray *colors;
     UIGraphicsEndImageContext();
     return newImage;
 }
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+#pragma mark - Touch Detection -
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
     UIButton * undo =(UIButton * )[self.view viewWithTag:UNDO_TAG];
     UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
     undo.hidden = NO;
     redo.hidden=NO;
+    [drawView setUserInteractionEnabled:YES];
+
+	CGPoint locationPoint = [[touches anyObject] locationInView:colorsImageView];
+	[self populateColorsForPoint:locationPoint];
 }
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	CGPoint locationPoint = [[touches anyObject] locationInView:colorsImageView];
+	[self populateColorsForPoint:locationPoint];
+}
+- (void)populateColorsForPoint:(CGPoint)point
+{
+    CGImageRef inImage = [UIImage imageNamed:@"color.png"].CGImage;
+    CGContextRef cgctx = [self createARGBBitmapContextFromImage:inImage];
+    UIColor *color= [[UIColor alloc]init];
+    if (cgctx == NULL)
+        return ;
+    
+    size_t w = CGImageGetWidth(inImage);
+    size_t h = CGImageGetHeight(inImage);
+    CGRect rect = {{0,0},{w,h}};
+    
+    CGContextDrawImage(cgctx, rect, inImage);
+    
+    unsigned char* data = CGBitmapContextGetData (cgctx);
+    
+    if (data != NULL) {
+        @try {
+            int offset = 4*((w*round(point.y))+round(point.x));
+            NSLog(@"offset: %d", offset);
+            int alpha =  data[offset];
+            int red = data[offset+1];
+            int green = data[offset+2];
+            int blue = data[offset+3];
+            NSLog(@"offset: %i colors: RGB A %i %i %i  %i",offset,red,green,blue,alpha);
+            color  = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
+        }
+        @catch (NSException * e) {
+            NSLog(@"%@",[e reason]);
+        }
+        @finally {
+        }
+        
+    }
+    CGContextRelease(cgctx);
+    if (data) { free(data); }
+    
+    UIButton * brush = (UIButton *)[self.view viewWithTag:BRUSH_TAG];
+    [colors addObject:color];
+    [brush setBackgroundColor:color];
+    ImageCache * cache = [ImageCache sharedObject];
+    [cache setBrushColor:color];
+    [self.drawView setLineColor:[colors count]-1];
+}
+- (CGContextRef) createARGBBitmapContextFromImage:(CGImageRef) inImage {
+    
+    CGContextRef    context = NULL;
+    CGColorSpaceRef colorSpace;
+    void *          bitmapData;
+    int             bitmapByteCount;
+    int             bitmapBytesPerRow;
+    
+    // Get image width, height. We'll use the entire image.
+    size_t pixelsWide = CGImageGetWidth(inImage);
+    size_t pixelsHigh = CGImageGetHeight(inImage);
+    
+    // Declare the number of bytes per row. Each pixel in the bitmap in this
+    // example is represented by 4 bytes; 8 bits each of red, green, blue, and
+    // alpha.
+    bitmapBytesPerRow   = (pixelsWide * 4);
+    bitmapByteCount     = (bitmapBytesPerRow * pixelsHigh);
+    
+    // Use the generic RGB color space.
+    colorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    if (colorSpace == NULL)
+    {
+        fprintf(stderr, "Error allocating color space\n");
+        return NULL;
+    }
+    
+    // Allocate memory for image data. This is the destination in memory
+    // where any drawing to the bitmap context will be rendered.
+    bitmapData = malloc( bitmapByteCount );
+    if (bitmapData == NULL)
+    {
+        fprintf (stderr, "Memory not allocated!");
+        CGColorSpaceRelease( colorSpace );
+        return NULL;
+    }
+    
+    // Create the bitmap context. We want pre-multiplied ARGB, 8-bits
+    // per component. Regardless of what the source image format is
+    // (CMYK, Grayscale, and so on) it will be converted over to the format
+    // specified here by CGBitmapContextCreate.
+    context = CGBitmapContextCreate (bitmapData,
+                                     pixelsWide,
+                                     pixelsHigh,
+                                     8,      // bits per component
+                                     bitmapBytesPerRow,
+                                     colorSpace,
+                                     kCGImageAlphaPremultipliedFirst);
+    if (context == NULL)
+    {
+        free (bitmapData);
+        fprintf (stderr, "Context not created!");
+    }
+    // Make sure and release colorspace before returning
+    CGColorSpaceRelease( colorSpace );
+    
+    return context;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
