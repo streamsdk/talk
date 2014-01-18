@@ -33,7 +33,7 @@
 #import "AudioHandler.h"
 #import "HandlerUserIdAndDateFormater.h"
 #import "ImageViewController.h"
-//#import "DisPlayerViewController.h"
+#import "DisPlayerViewController.h"
 #import "DisappearImageController.h"
 #import "ChatSettingViewController.h"
 #import "BackgroundImgViewController.h"
@@ -798,7 +798,10 @@
         [imageview setPickerController:picker];
         [picker  presentViewController:imageview animated:YES completion:NULL];
         [picker dismissViewControllerAnimated:YES completion:NULL];
-        
+        [self dismissViewControllerAnimated:YES completion:^{
+            [picker dismissViewControllerAnimated:YES completion:NULL];
+            
+        }];
         }else{
             isVideo = YES;
             videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
@@ -930,10 +933,11 @@
 -(void) playerVideo:(NSString *)path  withTime:(NSString *)time withDate:(NSDate *)date{
     isSave = YES;
     saveVideoPath = path;
-    NSURL * url = [NSURL fileURLWithPath:path];
-    MPMoviePlayerViewController* playerView = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
-    [self presentViewController:playerView animated:YES completion:NULL];
+    
     if (time) {
+        NSURL * url = [NSURL fileURLWithPath:path];
+        MPMoviePlayerViewController* playerView = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
+        [self presentViewController:playerView animated:YES completion:NULL];
         ImageCache * cache = [ImageCache  sharedObject];
         TalkDB * talkDB = [[TalkDB alloc]init];
         NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
@@ -944,11 +948,17 @@
         NSString  *str = [jsonDic JSONString];
         [talkDB updateDB:date withContent:str];
     }else{
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(moviePlayerPreloadFinish:)
-                                                     name:MPMoviePlayerPlaybackDidFinishNotification
-                                                   object:[playerView moviePlayer]];
-
+//        [[NSNotificationCenter defaultCenter] addObserver:self
+//                                                 selector:@selector(moviePlayerPreloadFinish:)
+//                                                     name:MPMoviePlayerPlaybackDidFinishNotification
+//                                                   object:[playerView moviePlayer]];
+        DisPlayerViewController * playerVC = [[DisPlayerViewController alloc]init];
+        playerVC.videopath = path;
+        playerVC.time = time;
+        playerVC.date = date;
+        playerVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentViewController:playerVC animated:YES completion:nil];
+//        [self.navigationController pushViewController:playerVC animated:YES];
     }
     /*else{
         DisPlayerViewController * playerVC = [[DisPlayerViewController alloc]init];

@@ -153,13 +153,13 @@
         NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
         NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
         if ([imageCache getImage:pImageId] == nil && pImageId){
-//            FileCache *fileCache = [FileCache sharedObject];
+            FileCache *fileCache = [FileCache sharedObject];
             STreamFile *file = [[STreamFile alloc] init];
             if (![imageCache getImage:pImageId]){
                 [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
                     if ([pImageId isEqualToString:oId]){
                         [imageCache selfImageDownload:imageData withFileId:pImageId];
-//                        [fileCache writeFileDoc:pImageId withData:imageData];
+                        [fileCache writeFileDoc:pImageId withData:imageData];
                     }
                 }];
             }

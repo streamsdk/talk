@@ -105,9 +105,13 @@
 }
 
 - (void)moviePlayerWillMoveFromWindow {
-    if (![self.view.subviews containsObject:self.moviePlayer.view])
+    if (![self.view.subviews containsObject:self.moviePlayer.view]){
         [self.view addSubview:self.moviePlayer.view];
-    
+        
+    }
+    [self dismissViewControllerAnimated:NO completion:^{
+        NSLog(@"palyer done!");
+    }];
     [self.moviePlayer setFrame:self.defaultFrame];
 }
 

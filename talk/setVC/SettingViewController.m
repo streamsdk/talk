@@ -334,6 +334,7 @@
              }];
 
         }
+         isaAatarImg=NO;
      }else{
          if (buttonIndex == 1) {
              LoginViewController *loginVC = [[LoginViewController alloc]init];
@@ -343,25 +344,23 @@
     
 }
 -(void) uploadProfileImage{
-    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-    NSString * loginName= [array objectAtIndex:0];
-    
+    HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
     STreamUser * user = [[STreamUser alloc]init];
     STreamFile *file = [[STreamFile alloc] init];
     UIImage *sImage = [self imageWithImageSimple:avatarImg scaledToSize:CGSizeMake(60, 60)];
     NSData * data = UIImageJPEGRepresentation(sImage, 1.0);
     [file postData:data];
-    
+    NSLog(@"errorMessage：%@",[file errorMessage]);
+    NSLog(@"ID:%@",[file fileId]);
     NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
     if ([[file errorMessage] isEqualToString:@""] && [file fileId]){
         [metaData setValue:[file fileId] forKey:@"profileImageId"];
-        [user updateUserMetadata:loginName withMetadata:metaData];
+        [user updateUserMetadata:[handle getUserID] withMetadata:metaData];
         ImageCache *imageCache = [ImageCache sharedObject];
-        [imageCache saveUserMetadata:loginName withMetadata:metaData];
+        [imageCache saveUserMetadata:[handle getUserID] withMetadata:metaData];
     }
-    NSLog(@"ID:%@",[file fileId]);
-
+    [self loadAvatar:[handle getUserID]];
+    [myTableView reloadData];
 }
 
 -(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
