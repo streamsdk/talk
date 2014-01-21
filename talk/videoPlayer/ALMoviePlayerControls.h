@@ -92,10 +92,12 @@ typedef enum {
  */
 @property (nonatomic, readonly, getter = isShowing) BOOL showing;
 
+@property (nonatomic) BOOL SaveFile;
 
+@property(nonatomic,retain) NSString * videoPath;
 /** 
  The default initializer method. The parameter may not be nil.
  */
-- (id)initWithMoviePlayer:(ALMoviePlayerController *)moviePlayer style:(ALMoviePlayerControlsStyle)style;
+- (id)initWithMoviePlayer:(ALMoviePlayerController *)moviePlayer style:(ALMoviePlayerControlsStyle)style save:(BOOL)isSave;
 
 @end

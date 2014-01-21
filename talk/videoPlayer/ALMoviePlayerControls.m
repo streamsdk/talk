@@ -14,7 +14,6 @@
 #import <QuartzCore/QuartzCore.h>
 
 @implementation UIDevice (ALSystemVersion)
-
 + (float)iOSVersion {
     static float version = 0.f;
     static dispatch_once_t onceToken;
@@ -64,23 +63,24 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
 @property (nonatomic, strong) ALButton *seekForwardButton;
 @property (nonatomic, strong) ALButton *seekBackwardButton;
 @property (nonatomic, strong) ALButton *scaleButton;
-
+@property (nonatomic, strong) ALButton *saveButton;
 @end
 
 @implementation ALMoviePlayerControls
-
+@synthesize videoPath;
 # pragma mark - Construct/Destruct
 
-- (id)initWithMoviePlayer:(ALMoviePlayerController *)moviePlayer style:(ALMoviePlayerControlsStyle)style {
+- (id)initWithMoviePlayer:(ALMoviePlayerController *)moviePlayer style:(ALMoviePlayerControlsStyle)style save:(BOOL)isSave{
     self = [super init];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
         
         _moviePlayer = moviePlayer;
         _style = style;
-        _showing = NO;
+        _showing = isSave;
         _fadeDelay = 5.0;
         _timeRemainingDecrements = NO;
+        _SaveFile = isSave;
         _barColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
         
         _barHeight = [UIDevice iOSVersion] >= 7.0 ? 50.f : 30.f;
@@ -187,6 +187,18 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
         _seekBackwardButton.delegate = self;
         [_seekBackwardButton addTarget:self action:@selector(seekBackwardPressed:) forControlEvents:UIControlEventTouchUpInside];
         [_bottomBar addSubview:_seekBackwardButton];
+        
+        if (_SaveFile) {
+            _saveButton = [[ALButton alloc] init];
+            [_saveButton setTitle:@"Save" forState:UIControlStateNormal];
+            [_saveButton setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
+            _saveButton.titleLabel.shadowOffset = CGSizeMake(1.f, 1.f);
+            [_saveButton.titleLabel setFont:[UIFont systemFontOfSize:14.f]];
+            _saveButton.delegate = self;
+            [_saveButton addTarget:self action:@selector(saveBackwardPressed:) forControlEvents:UIControlEventTouchUpInside];
+            [_bottomBar addSubview:_saveButton];
+        }
+       
     }
     
     else if (_style == ALMoviePlayerControlsStyleEmbedded || (_style == ALMoviePlayerControlsStyleDefault && !_moviePlayer.isFullscreen)) {
@@ -212,7 +224,7 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
     
     _airplayView = [[ALAirplayView alloc] init];
     _airplayView.delegate = self;
-    [_bottomBar addSubview:_airplayView];
+//    [_bottomBar addSubview:_airplayView];
     
     _activityBackgroundView = [[UIView alloc] init];
     [_activityBackgroundView setBackgroundColor:[UIColor blackColor]];
@@ -237,6 +249,7 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
     _seekForwardButton.delegate = nil;
     _seekBackwardButton.delegate = nil;
     _scaleButton.delegate = nil;//
+    _saveButton.delegate = nil;
 }
 
 # pragma mark - Setters
@@ -405,6 +418,7 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
 }
 
 - (void)fullscreenPressed:(UIButton *)button {
+
     if (self.style == ALMoviePlayerControlsStyleDefault) {
         self.style = self.moviePlayer.isFullscreen ? ALMoviePlayerControlsStyleEmbedded : ALMoviePlayerControlsStyleFullscreen;
     }
@@ -437,6 +451,19 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
         [self performSelector:@selector(hideControls:) withObject:nil afterDelay:self.fadeDelay];
     }
 }
+- (void)saveBackwardPressed:(UIButton *)button {
+    
+    UISaveVideoAtPathToSavedPhotosAlbum(videoPath,self, @selector(errorVideoCheck:didFinishSavingWithError:contextInfo:),NULL);
+
+}
+- (void)errorVideoCheck:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                    message:@"You have successfully stored in the photo album"
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     if (self.style == ALMoviePlayerControlsStyleNone)
@@ -466,6 +493,7 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
     [self monitorMoviePlayback]; //reset values
     [self hideControls:nil];
     self.state = ALMoviePlayerControlsStateIdle;
+    
 }
 
 - (void)movieLoadStateDidChange:(NSNotification *)note {
@@ -559,6 +587,7 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
 }
 
 - (void)hideControls:(void(^)(void))completion {
+
     if (self.isShowing) {
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideControls:) object:nil];
         [UIView animateWithDuration:0.3 delay:0.0 options:0 animations:^{
@@ -568,6 +597,7 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
             self.bottomBar.alpha = 0.f;
         } completion:^(BOOL finished) {
             _showing = NO;
+//            [self.delegate moviePlayerWillMoveFromWindow];
             if (completion)
                 completion();
         }];
@@ -644,8 +674,8 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
     CGFloat volumeWidth = isIpad() ? 210.f : 120.f;
     CGFloat seekWidth = 36.f;
     CGFloat seekHeight = 20.f;
-    CGFloat airplayWidth = 30.f;
-    CGFloat airplayHeight = 22.f;
+//    CGFloat airplayWidth = 30.f;
+//    CGFloat airplayHeight = 22.f;
     CGFloat playWidth = 18.f;
     CGFloat playHeight = 22.f;
     CGFloat labelWidth = 30.f;
@@ -667,7 +697,7 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
         self.playPauseButton.frame = CGRectMake(self.bottomBar.frame.size.width/2 - playWidth/2, self.barHeight/2 - playHeight/2, playWidth, playHeight);
         self.seekForwardButton.frame = CGRectMake(self.playPauseButton.frame.origin.x + self.playPauseButton.frame.size.width + paddingBetweenPlaybackButtons, self.barHeight/2 - seekHeight/2 + 1.f, seekWidth, seekHeight);
         self.seekBackwardButton.frame = CGRectMake(self.playPauseButton.frame.origin.x - paddingBetweenPlaybackButtons - seekWidth, self.barHeight/2 - seekHeight/2 + 1.f, seekWidth, seekHeight);
-        
+        self.saveButton.frame = CGRectMake(paddingFromBezel,  self.barHeight/2 - fullscreenHeight/2, fullscreenWidth, fullscreenHeight);
         //hide volume view in iPhone's portrait orientation
         if (self.frame.size.width <= iPhoneScreenPortraitWidth) {
             self.volumeView.alpha = 0.f;
@@ -676,7 +706,7 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
             self.volumeView.frame = CGRectMake(paddingFromBezel, self.barHeight/2 - volumeHeight/2, volumeWidth, volumeHeight);
         }
         
-        self.airplayView.frame = CGRectMake(self.bottomBar.frame.size.width - paddingFromBezel - airplayWidth, self.barHeight/2 - airplayHeight/2, airplayWidth, airplayHeight);
+//        self.airplayView.frame = CGRectMake(self.bottomBar.frame.size.width - paddingFromBezel - airplayWidth, self.barHeight/2 - airplayHeight/2, airplayWidth, airplayHeight);
     }
     
     else if (self.style == ALMoviePlayerControlsStyleEmbedded || (self.style == ALMoviePlayerControlsStyleDefault && !self.moviePlayer.isFullscreen)) {
@@ -690,7 +720,7 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
         CGFloat fullscreenWidth = 28.f;
         CGFloat fullscreenHeight = fullscreenWidth;
         self.fullscreenButton.frame = CGRectMake(self.bottomBar.frame.size.width - paddingFromBezel - fullscreenWidth, self.barHeight/2 - fullscreenHeight/2, fullscreenWidth, fullscreenHeight);
-        self.airplayView.frame = CGRectMake(self.fullscreenButton.frame.origin.x - paddingBetweenButtons - airplayWidth, self.barHeight/2 - airplayHeight/2, airplayWidth, airplayHeight);
+//        self.airplayView.frame = CGRectMake(self.fullscreenButton.frame.origin.x - paddingBetweenButtons - airplayWidth, self.barHeight/2 - airplayHeight/2, airplayWidth, airplayHeight);
         self.timeRemainingLabel.frame = CGRectMake(self.airplayView.frame.origin.x - paddingBetweenButtons - labelWidth, 0, labelWidth, self.barHeight);
     }
     

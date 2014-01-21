@@ -69,8 +69,6 @@
     
     BOOL isVideo;
     BOOL isClearData;
-    BOOL isSave;
-    NSString * saveVideoPath;
     
 }
 
@@ -97,7 +95,6 @@
     //初始化为NO added
     keyboardIsShow=NO;
     isFace = NO;
-    isSave = NO;
     recordOrKeyboardButton = [createUI setButtonFrame:CGRectMake(0, 5, 30, 30) withTitle:(@"nil")];
     [recordOrKeyboardButton setImage:[UIImage imageNamed:@"microphonefat.png"] forState:UIControlStateNormal];
     [recordOrKeyboardButton addTarget:self action:@selector(KeyboardTorecordClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -785,24 +782,18 @@
 #pragma mark - UIImagePickerControllerDelegate
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    
     if ([[info objectForKey:UIImagePickerControllerMediaType] isEqualToString:(NSString*)kUTTypeImage]) {
        
         UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
-        /*sendImage = image;
-        [self sendPhoto:image withTime:@"0s"];
-        [picker dismissViewControllerAnimated:YES completion:NULL];*/
        [self dismissKeyBoard];
+       
         ImageViewController * imageview = [[ImageViewController alloc]init];
         imageview.image = image;
         [imageview setPickerController:picker];
+        imageview.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [picker  presentViewController:imageview animated:YES completion:NULL];
         [picker dismissViewControllerAnimated:YES completion:NULL];
-        [self dismissViewControllerAnimated:YES completion:^{
-            [picker dismissViewControllerAnimated:YES completion:NULL];
-            
-        }];
-        }else{
+    }else{
             isVideo = YES;
             videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
             CGFloat time = [self getVideoDuration:videoPath];
@@ -847,12 +838,6 @@
         bubbleData = [talk readInitDB:[handler getUserID] withOtherID:[imagecache getFriendID]];
         [bubbleTableView reloadData];
         isClearData = NO;
-    }
-    if (isSave){
-        if (buttonIndex == 1) {
-            UISaveVideoAtPathToSavedPhotosAlbum(saveVideoPath,self, @selector(errorVideoCheck:didFinishSavingWithError:contextInfo:),NULL);
-        }
-        isSave = NO;
     }
 }
 - (CGFloat) getVideoDuration:(NSURL*) URL
@@ -931,49 +916,15 @@
 }
 
 -(void) playerVideo:(NSString *)path  withTime:(NSString *)time withDate:(NSDate *)date{
-    isSave = YES;
-    saveVideoPath = path;
-    
-    if (time) {
-        NSURL * url = [NSURL fileURLWithPath:path];
-        MPMoviePlayerViewController* playerView = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
-        [self presentViewController:playerView animated:YES completion:NULL];
-        ImageCache * cache = [ImageCache  sharedObject];
-        TalkDB * talkDB = [[TalkDB alloc]init];
-        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
-        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-        [friendDict setObject:@"-1" forKey:@"time"];
-        [friendDict setObject:path forKey:@"video"];
-        [jsonDic setObject:friendDict forKey:[cache getFriendID]];
-        NSString  *str = [jsonDic JSONString];
-        [talkDB updateDB:date withContent:str];
-    }else{
-//        [[NSNotificationCenter defaultCenter] addObserver:self
-//                                                 selector:@selector(moviePlayerPreloadFinish:)
-//                                                     name:MPMoviePlayerPlaybackDidFinishNotification
-//                                                   object:[playerView moviePlayer]];
-        DisPlayerViewController * playerVC = [[DisPlayerViewController alloc]init];
-        playerVC.videopath = path;
-        playerVC.time = time;
-        playerVC.date = date;
-        playerVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [self presentViewController:playerVC animated:YES completion:nil];
-//        [self.navigationController pushViewController:playerVC animated:YES];
-    }
-    /*else{
-        DisPlayerViewController * playerVC = [[DisPlayerViewController alloc]init];
-        playerVC.videopath = path;
-        playerVC.time = time;
-        playerVC.date = date;
-        [self.navigationController pushViewController:playerVC animated:YES];
-    }*/
+
+    DisPlayerViewController * playerVC = [[DisPlayerViewController alloc]init];
+    playerVC.videopath = path;
+    playerVC.time = time;
+    playerVC.date = date;
+    playerVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:playerVC animated:YES completion:nil];
 }
--(void)moviePlayerPreloadFinish:(NSNotificationCenter *)notificationCenter{
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You need to save this video？" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
-    alert.delegate = self;
-    [alert show];
-    
-}
+
 -(void)disappearImage:(UIImage *)image withDissapearTime:(NSString *)time withDissapearPath:(NSString *)path withSendOrReceiveTime:(NSDate *)date{
     DisappearImageController * disappear = [[DisappearImageController alloc]init];
     disappear.disappearImage = image;

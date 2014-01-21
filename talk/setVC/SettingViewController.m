@@ -347,7 +347,8 @@
     HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
     STreamUser * user = [[STreamUser alloc]init];
     STreamFile *file = [[STreamFile alloc] init];
-    UIImage *sImage = [self imageWithImageSimple:avatarImg scaledToSize:CGSizeMake(60, 60)];
+    CGSize size = avatarImg.size;
+    UIImage *sImage = [self imageWithImageSimple:avatarImg scaledToSize:CGSizeMake(size.width*0.3, size.height*0.3)];
     NSData * data = UIImageJPEGRepresentation(sImage, 1.0);
     [file postData:data];
     NSLog(@"errorMessage：%@",[file errorMessage]);

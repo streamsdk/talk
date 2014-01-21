@@ -31,59 +31,59 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.title =@"VideoPlayer";
-    if (!time) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveFile)];
-    }
     //create a player
-    self.moviePlayer = [[ALMoviePlayerController alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
+    self.moviePlayer = [[ALMoviePlayerController alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     self.moviePlayer.view.alpha = 0.f;
     self.moviePlayer.delegate = self; //IMPORTANT!
     
     //create the controls
-    ALMoviePlayerControls *movieControls = [[ALMoviePlayerControls alloc] initWithMoviePlayer:self.moviePlayer style:ALMoviePlayerControlsStyleDefault];
+    ALMoviePlayerControls *movieControls;
+    if (time) {
+        movieControls= [[ALMoviePlayerControls alloc] initWithMoviePlayer:self.moviePlayer style:ALMoviePlayerControlsStyleDefault save:NO];
+        ImageCache * cache = [ImageCache  sharedObject];
+        TalkDB * talkDB = [[TalkDB alloc]init];
+        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        [friendDict setObject:@"-1" forKey:@"time"];
+        [friendDict setObject:videopath forKey:@"video"];
+        [jsonDic setObject:friendDict forKey:[cache getFriendID]];
+        NSString  *str = [jsonDic JSONString];
+        [talkDB updateDB:date withContent:str];
+    }
+    else{
+        movieControls= [[ALMoviePlayerControls alloc] initWithMoviePlayer:self.moviePlayer style:ALMoviePlayerControlsStyleDefault save:YES];
+        [movieControls setVideoPath:videopath];
+    }
+//    movieControls.delegate = self;
     [movieControls setBarColor:[UIColor colorWithRed:195/255.0 green:29/255.0 blue:29/255.0 alpha:0.5]];
     [movieControls setTimeRemainingDecrements:YES];
+
     //assign controls
     [self.moviePlayer setControls:movieControls];
     [self.view addSubview:self.moviePlayer.view];
     
     [self.moviePlayer setContentURL:[NSURL fileURLWithPath:videopath]];
     
-    //delay initial load so statusBarOrientation returns correct value
-    double delayInSeconds = 0.2;
+    
+    double delayInSeconds = 0.3;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [self configureViewForOrientation:[UIApplication sharedApplication].statusBarOrientation];
-        [UIView animateWithDuration:0.2 delay:0.0 options:0 animations:^{
+        [UIView animateWithDuration:0.3 delay:0.0 options:0 animations:^{
             self.moviePlayer.view.alpha = 1.f;
         } completion:^(BOOL finished) {
-            if (time) {
-                ImageCache * cache = [ImageCache  sharedObject];
-                TalkDB * talkDB = [[TalkDB alloc]init];
-                NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
-                NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-                [friendDict setObject:@"-1" forKey:@"time"];
-                [friendDict setObject:videopath forKey:@"video"];
-                [jsonDic setObject:friendDict forKey:[cache getFriendID]];
-                NSString  *str = [jsonDic JSONString];
-                [talkDB updateDB:date withContent:str];
-               
-            }
+            
             
         }];
     });
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(moviePlayerPreloadFinish:)
+//                                                 name:MPMoviePlayerPlaybackDidFinishNotification
+//                                               object:moviePlayer];
+
 }
--(void) saveFile {
-    UISaveVideoAtPathToSavedPhotosAlbum(self.videopath,self, @selector(errorVideoCheck:didFinishSavingWithError:contextInfo:),NULL);
-    
-}
-- (void)errorVideoCheck:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
-                                                    message:@"You have successfully stored in the photo album"
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
+-(void)moviePlayerPreloadFinish:(NSNotificationCenter *)notificationCenter{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)configureViewForOrientation:(UIInterfaceOrientation)orientation {
     CGFloat videoWidth = 0;
@@ -93,10 +93,10 @@
         videoHeight = 535.f;
     } else {
         videoWidth = self.view.frame.size.width;
-        videoHeight =self.view.frame.size.height - 100;
+        videoHeight =self.view.frame.size.height;
     }
     
-    self.defaultFrame = CGRectMake(0, 70, videoWidth, videoHeight);
+    self.defaultFrame = CGRectMake(0, 0, videoWidth, videoHeight);
     
     if (self.moviePlayer.isFullscreen)
         return;
@@ -105,16 +105,15 @@
 }
 
 - (void)moviePlayerWillMoveFromWindow {
-    if (![self.view.subviews containsObject:self.moviePlayer.view]){
-        [self.view addSubview:self.moviePlayer.view];
-        
-    }
-    [self dismissViewControllerAnimated:NO completion:^{
-        NSLog(@"palyer done!");
+   
+    [self dismissViewControllerAnimated:YES completion:^{
+        if (![self.view.subviews containsObject:self.moviePlayer.view]){
+            [self.view addSubview:self.moviePlayer.view];
+        }
+        [self.moviePlayer setFrame:self.defaultFrame];
     }];
-    [self.moviePlayer setFrame:self.defaultFrame];
+  
 }
-
 - (void)movieTimedOut {
     NSLog(@"VIDEO TIMED OUT");
 }
