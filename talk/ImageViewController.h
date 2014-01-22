@@ -18,6 +18,5 @@
 }
 @property (nonatomic,strong) UIImage * image;
 @property (nonatomic,assign) id <ImageSendProtocol> imageSendProtocol;
-@property (nonatomic ,strong)UIImagePickerController * pickerController;
 @property (strong,nonatomic)  MyView *drawView;
 @end

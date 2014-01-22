@@ -783,36 +783,34 @@
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     if ([[info objectForKey:UIImagePickerControllerMediaType] isEqualToString:(NSString*)kUTTypeImage]) {
-       
         UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
-       [self dismissKeyBoard];
-       
-        ImageViewController * imageview = [[ImageViewController alloc]init];
-        imageview.image = image;
-        [imageview setPickerController:picker];
-        imageview.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [picker  presentViewController:imageview animated:YES completion:NULL];
-        [picker dismissViewControllerAnimated:YES completion:NULL];
-    }else{
-            isVideo = YES;
-            videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
-            CGFloat time = [self getVideoDuration:videoPath];
-            if (time<=10) {
-            
-                [picker dismissViewControllerAnimated:YES completion:NULL];
-//                NSString *tempFilePath = [videoPath path];
-//                UISaveVideoAtPathToSavedPhotosAlbum(tempFilePath,self, @selector(errorVideoCheck:didFinishSavingWithError:contextInfo:),NULL);
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"the video is permanent？" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
-                alert.delegate = self;
-                [alert show];
-            }else{
+        [self dismissKeyBoard];
+        [picker dismissViewControllerAnimated:NO completion:^{
+            ImageViewController * imageview = [[ImageViewController alloc]init];
+            imageview.image = image;
+            imageview.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+            [self  presentViewController:imageview animated:NO completion:NULL];
+        }];
 
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Video time is too long" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
-                [alert show];
-                [picker dismissViewControllerAnimated:YES completion:NULL];
-                [self dismissKeyBoard];
-                [self scrollBubbleViewToBottomAnimated:YES];
-            }
+    }else{
+        isVideo = YES;
+        videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
+        CGFloat time = [self getVideoDuration:videoPath];
+        if (time<=10) {
+            
+            [picker dismissViewControllerAnimated:YES completion:NULL];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"the video is permanent？" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
+            alert.delegate = self;
+            [alert show];
+        }else{
+            
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Video time is too long" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+            [alert show];
+            [picker dismissViewControllerAnimated:YES completion:NULL];
+            [self dismissKeyBoard];
+            [self scrollBubbleViewToBottomAnimated:YES];
+        }
+
     }
 
 }

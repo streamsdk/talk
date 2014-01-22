@@ -32,7 +32,6 @@ static NSMutableArray *colors;
 @implementation ImageViewController
 @synthesize image;
 @synthesize imageSendProtocol;
-@synthesize pickerController;
 @synthesize drawView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -63,31 +62,31 @@ static NSMutableArray *colors;
         [colors addObject:[UIColor greenColor]];
     }
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frameBack = CGRectMake(10, 26, 32, 32);
+    CGRect frameBack = CGRectMake(10, 26, 40, 40);
     [backButton setFrame:frameBack];
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
 
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton * brushButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-50, 26, 30, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"brush.png"]];
+    UIButton * brushButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-50, 26, 32, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"brush.png"]];
     
     [brushButton addTarget:self action:@selector(paintbrushClicked) forControlEvents:UIControlEventTouchUpInside];
     brushButton.tag = BRUSH_TAG;
     [brushButton setBackgroundColor:[UIColor greenColor]];
     
-    UIButton * undoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-130, 26, 30, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"undo.png"]];
+    UIButton * undoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-130, 26, 32, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"undo.png"]];
     undoButton.hidden =YES;
     undoButton.tag=UNDO_TAG;
     [undoButton addTarget:self action:@selector(undoClicked) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton * redoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-90, 26, 30, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"redo.png"]];
+    UIButton * redoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-90, 26, 32, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"redo.png"]];
     redoButton.hidden = YES;
     redoButton.tag=REDO_TAG;
     [redoButton addTarget:self action:@selector(redoClicked) forControlEvents:UIControlEventTouchUpInside];
 //selectcolors.png
     drawView = [[MyView alloc]initWithFrame:CGRectMake(20, 100, self.view.frame.size.width -48, self.view.frame.size.height-180)];
     drawView.userInteractionEnabled = YES;
-    UIImage * newImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(self.view.frame.size.width -40, self.view.frame.size.height-180)];
+    UIImage * newImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(self.view.frame.size.width -48, self.view.frame.size.height-180)];
     [drawView setBackgroundColor:[UIColor colorWithPatternImage:newImage]];
     [self.view addSubview:drawView];
     [self.view sendSubviewToBack:drawView];
@@ -105,14 +104,14 @@ static NSMutableArray *colors;
     [self.view addSubview:colorsImageView];
     
     UIButton *useButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frame = CGRectMake(self.view.frame.size.width-53, self.view.frame.size.height-47, 32, 32);
+    CGRect frame = CGRectMake(self.view.frame.size.width-53, self.view.frame.size.height-56, 40, 40);
     [useButton setFrame:frame];
     [useButton setImage:[UIImage imageNamed:@"forward.png"] forState:UIControlStateNormal];
     [useButton addTarget:self action:@selector(sendImageClicked) forControlEvents:UIControlEventTouchUpInside];
     useButton.tag = USERPHOTO_TAG;
     
     UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frameDone = CGRectMake(self.view.frame.size.width-53, self.view.frame.size.height-56, 45, 45);
+    CGRect frameDone = CGRectMake(self.view.frame.size.width-52, self.view.frame.size.height-56, 45, 45);
     [doneButton setFrame:frameDone];
     [doneButton setImage:[UIImage imageNamed:@"tick512.png"] forState:UIControlStateNormal];
     [doneButton addTarget:self action:@selector(doneClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -120,7 +119,7 @@ static NSMutableArray *colors;
     doneButton.hidden = YES;
     
     UIButton * clockButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [clockButton setFrame:CGRectMake(10, self.view.frame.size.height-49, 32, 32)];
+    [clockButton setFrame:CGRectMake(10, self.view.frame.size.height-56, 40, 40)];
     [clockButton setBackgroundImage:[UIImage imageNamed:@"clocknew.png"] forState:UIControlStateNormal];
     clockButton .tag = CLOCKBUTTON_TAG;
     clockButton.titleLabel.font = [UIFont systemFontOfSize:12.0f];
@@ -191,10 +190,7 @@ static NSMutableArray *colors;
     image = newImage;
     [imageSendProtocol sendImages:image withTime:time ];
     
-    [self dismissViewControllerAnimated:YES completion:^{
-        [pickerController dismissViewControllerAnimated:YES completion:NULL];
-       
-    }];
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 -(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
