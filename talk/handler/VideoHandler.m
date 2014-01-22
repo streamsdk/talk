@@ -51,8 +51,8 @@
     
     AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:videoPath options:nil];
     NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
-//    NSString*  _mp4Quality = AVAssetExportPresetLowQuality;
-    NSString*  _mp4Quality =AVAssetExportPresetHighestQuality;
+    NSString*  _mp4Quality = AVAssetExportPresetLowQuality;
+//    NSString*  _mp4Quality =AVAssetExportPresetHighestQuality;
     if ([compatiblePresets containsObject:_mp4Quality]) {
         
         UIAlertView *_alert = [[UIAlertView alloc] init];
