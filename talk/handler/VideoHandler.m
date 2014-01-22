@@ -23,16 +23,17 @@
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     
     NSString * mp4Path = [handler getVideopath];
-    
+   
     if ([fromID isEqualToString:sendID]) {
         NSURL *url = [NSURL fileURLWithPath:mp4Path];
         MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
         player.shouldAutoplay = NO;
         UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-        NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withTime:time withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
+        NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withTime:time withType:@"video" date:[handler getDate] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
         if (otherData)
             bdata.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:bdata];
+        
     }
 
 }
@@ -153,8 +154,8 @@
 
 -(void) sendVideo:(UIImage *)image withData:(NSData *)videoData withVideoTime:(NSString *)time{
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
-    
-    NSBubbleData * bdata = [NSBubbleData dataWithImage:image withData:videoData withTime:time withType:@"video" date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withVidePath:_mp4Path];
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
+    NSBubbleData * bdata = [NSBubbleData dataWithImage:image withData:videoData withTime:time withType:@"video" date:date type:BubbleTypeMine withVidePath:_mp4Path];
     if (_myData)
         bdata.avatar = [UIImage imageWithData:_myData];
     [_bubbleData addObject:bdata];
@@ -171,7 +172,7 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
 
-    [db insertDBUserID:[handler getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+    [db insertDBUserID:[handler getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     
     NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
     if (time)

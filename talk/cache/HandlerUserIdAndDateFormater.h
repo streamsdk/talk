@@ -22,4 +22,8 @@
 
 -(NSString *)getVideopath;
 
+-(void) setDate:(NSDate *)date;
+
+-(NSDate *)getDate;
+
 @end

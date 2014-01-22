@@ -16,9 +16,9 @@
 @implementation AudioHandler
 
 - (void)receiveAudioFile:(NSData *)data withBody:(NSString *)body forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
-    
-    if ([fromID isEqualToString:sendID]) {
-        NSBubbleData *bubble = [NSBubbleData dataWithtimes:body date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse withData:data];
+    HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
+       if ([fromID isEqualToString:sendID]) {
+        NSBubbleData *bubble = [NSBubbleData dataWithtimes:body date:[handler getDate] type:BubbleTypeSomeoneElse withData:data];
         if (otherData)
             bubble.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:bubble];
@@ -33,8 +33,9 @@
     NSError * err = nil;
     NSData * audioData = [NSData dataWithContentsOfFile:[url path] options: 0 error:&err];
     NSString * bodyData = [NSString stringWithFormat:@"%d",(int)voice.recordTime];
-    
-    NSBubbleData *bubble = [NSBubbleData dataWithtimes:bodyData date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine withData:audioData];
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
+
+    NSBubbleData *bubble = [NSBubbleData dataWithtimes:bodyData date:date type:BubbleTypeMine withData:audioData];
     if (myData)
         bubble.avatar = [UIImage imageWithData:myData];
     [bubbleData addObject:bubble];
@@ -49,7 +50,7 @@
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-    [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+    [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     
     
     NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];

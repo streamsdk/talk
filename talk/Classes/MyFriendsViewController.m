@@ -335,7 +335,6 @@
          NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
         NSString *duration = [json objectForKey:@"duration"];
         
-        HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
         NSString * mp4Path = [[handler getPath] stringByAppendingString:@".mp4"];
         [data writeToFile : mp4Path atomically: YES ];
         [handler videoPath:mp4Path];
@@ -348,7 +347,6 @@
         
         NSString *duration = [json objectForKey:@"duration"];
         NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
-        HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
         NSString * recordFilePath = [[handler getPath] stringByAppendingString:@".aac"];
         [data writeToFile:recordFilePath atomically:YES];
         path = recordFilePath;
@@ -361,7 +359,9 @@
     NSString  *str = [jsonDic JSONString];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-    [db insertDBUserID:userID fromID:fromID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
+    NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
+    [handler setDate:date];
+    [db insertDBUserID:userID fromID:fromID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
     
     [messagesProtocol getFiles:data withFromID:fromID withBody:body withPath:path];
      [self.tableView reloadData];

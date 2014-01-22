@@ -8,6 +8,7 @@
 
 #import "HandlerUserIdAndDateFormater.h"
 static NSString * _videoPath;
+static NSDate * _date;
 
 @implementation HandlerUserIdAndDateFormater
 +(HandlerUserIdAndDateFormater *)sharedObject {
@@ -16,6 +17,7 @@ static NSString * _videoPath;
     dispatch_once(&onceToken, ^{
         
         sharedInstance = [[HandlerUserIdAndDateFormater alloc] init];
+        _date =[[NSDate alloc]init];
        
     });
     
@@ -60,5 +62,13 @@ static NSString * _videoPath;
 -(NSString *)getVideopath{
     
     return _videoPath;
+}
+-(void) setDate:(NSDate *)date{
+    
+    _date = date;
+}
+
+-(NSDate *)getDate{
+    return _date;
 }
 @end

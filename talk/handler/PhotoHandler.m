@@ -27,14 +27,15 @@
 @synthesize controller;
 
 -(void)receiveFile:(NSData *)data withPath:(NSString *)path forBubbleDataArray:(NSMutableArray *)bubbleData withTime:(NSString *)time forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
-    
+    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+
     if ([fromID isEqualToString:sendID]) {
         UIImage * image = [UIImage imageWithData:data];
         NSBubbleData * bubble;
         if (time) {
-             bubble = [NSBubbleData dataWithImage:image withImageTime:time withPath:path date:[NSDate dateWithTimeIntervalSinceNow:0] withType:BubbleTypeSomeoneElse];
+             bubble = [NSBubbleData dataWithImage:image withImageTime:time withPath:path date:[handler getDate] withType:BubbleTypeSomeoneElse];
         }else{
-            bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+            bubble = [NSBubbleData dataWithImage:image date:[handler getDate] type:BubbleTypeSomeoneElse];
         }
         if (otherData) {
             bubble.avatar = [UIImage imageWithData:otherData];
@@ -51,10 +52,10 @@
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     
     NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];
-    
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
     NSBubbleData * bubble;
     if (time)
-        bubble = [NSBubbleData dataWithImage:image withImageTime:time withPath:photoPath date:[NSDate dateWithTimeIntervalSinceNow:0] withType:BubbleTypeMine];
+        bubble = [NSBubbleData dataWithImage:image withImageTime:time withPath:photoPath date:date withType:BubbleTypeMine];
     else
         bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
     if (myData) {
@@ -74,7 +75,7 @@
     TalkDB * db = [[TalkDB alloc]init];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-    [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+    [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     
     
     NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
