@@ -58,7 +58,7 @@ static XMPPReconnect *xmppReconnect;
     xmppReconnect = [[XMPPReconnect alloc] init];
     [xmppReconnect activate:xmppStream];
     [xmppStream addDelegate:self delegateQueue:dispatch_get_main_queue()];
-    [xmppStream setHostName:@"streamsdk.cn"];
+    [xmppStream setHostName:@"streamsdk.com"];
     //[xmppStream setHostName:@"192.168.1.15"];
     
     [xmppStream setHostPort:5222];
@@ -74,7 +74,7 @@ static XMPPReconnect *xmppReconnect;
     
     [myJID appendString:[STreamSession getClientAuthKey]];
     [myJID appendString:userName];
-    [myJID appendString:@"@streamsdk.cn"];
+    [myJID appendString:@"@streamsdk.com"];
     
 	myPassword = password;
     uName = userName;
@@ -155,7 +155,7 @@ static XMPPReconnect *xmppReconnect;
         NSMutableString *userJID = [[NSMutableString alloc] init];
         [userJID appendString:[STreamSession getClientAuthKey]];
         [userJID appendString:userName];
-        [userJID appendString:@"@streamsdk.cn"];
+        [userJID appendString:@"@streamsdk.com"];
         
         NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
         
@@ -217,7 +217,7 @@ static XMPPReconnect *xmppReconnect;
 	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
     
     NSString *from = [message fromStr];
-    NSArray *array = [from componentsSeparatedByString:@"@streamsdk.cn"];
+    NSArray *array = [from componentsSeparatedByString:@"@streamsdk.com"];
     
     NSString * str = [[STreamSession getClientAuthKey] lowercaseString];
     NSString *fromID = nil;
@@ -327,7 +327,7 @@ static XMPPReconnect *xmppReconnect;
     NSMutableString *userJID = [[NSMutableString alloc] init];
     [userJID appendString:[STreamSession getClientAuthKey]];
     [userJID appendString:toUser];
-    [userJID appendString:@"@streamsdk.cn"];
+    [userJID appendString:@"@streamsdk.com"];
     
     NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
     [body setStringValue:message];

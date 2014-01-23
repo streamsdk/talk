@@ -24,7 +24,7 @@
 		03557EAE1883134100CDB252 /* forward.png in Resources */ = {isa = PBXBuildFile; fileRef = 03557EAD1883134100CDB252 /* forward.png */; };
 		0355801F18812D940036CC3C /* TwitterConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 0355801E18812D940036CC3C /* TwitterConnect.m */; };
 		037E0431186605A8005ADCEC /* libidn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9C0E018145E510039118F /* libidn.a */; };
-		03C01B1D185ACFB600137E85 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C01B1C185ACFB600137E85 /* arcstreamsdk.framework */; };
+		0385E49F1890DEB000DC62A2 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0385E49E1890DEB000DC62A2 /* arcstreamsdk.framework */; };
 		03D9BEFC18145C080039118F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9BEFB18145C080039118F /* Foundation.framework */; };
 		03D9BEFE18145C080039118F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9BEFD18145C080039118F /* CoreGraphics.framework */; };
 		03D9BF0018145C080039118F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9BEFF18145C080039118F /* UIKit.framework */; };
@@ -360,7 +360,7 @@
 		03557EAD1883134100CDB252 /* forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forward.png; sourceTree = "<group>"; };
 		0355801D18812D940036CC3C /* TwitterConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterConnect.h; sourceTree = "<group>"; };
 		0355801E18812D940036CC3C /* TwitterConnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterConnect.m; sourceTree = "<group>"; };
-		03C01B1C185ACFB600137E85 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
+		0385E49E1890DEB000DC62A2 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
 		03D9BEF818145C080039118F /* talk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = talk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03D9BEFB18145C080039118F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		03D9BEFD18145C080039118F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -869,7 +869,6 @@
 			files = (
 				0EF9B63E186EAAA1003DD866 /* QuartzCore.framework in Frameworks */,
 				037E0431186605A8005ADCEC /* libidn.a in Frameworks */,
-				03C01B1D185ACFB600137E85 /* arcstreamsdk.framework in Frameworks */,
 				03F5B05018339C1500A847A0 /* MediaPlayer.framework in Frameworks */,
 				03D9BF2B18145C6B0039118F /* MobileCoreServices.framework in Frameworks */,
 				0E8A4F38182B802600705C1F /* libsqlite3.dylib in Frameworks */,
@@ -878,6 +877,7 @@
 				0E0847361827304400350741 /* AVFoundation.framework in Frameworks */,
 				03D9BF3B18145CC20039118F /* libxml2.dylib in Frameworks */,
 				03D9BF3918145CB80039118F /* libresolv.dylib in Frameworks */,
+				0385E49F1890DEB000DC62A2 /* arcstreamsdk.framework in Frameworks */,
 				03D9BF3718145CB10039118F /* libz.dylib in Frameworks */,
 				03D9BF3518145C980039118F /* CoreData.framework in Frameworks */,
 				03D9BF3318145C900039118F /* CFNetwork.framework in Frameworks */,
@@ -948,8 +948,8 @@
 		03D9BEFA18145C080039118F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0385E49E1890DEB000DC62A2 /* arcstreamsdk.framework */,
 				0EF9B63D186EAAA1003DD866 /* QuartzCore.framework */,
-				03C01B1C185ACFB600137E85 /* arcstreamsdk.framework */,
 				03F5B04F18339C1500A847A0 /* MediaPlayer.framework */,
 				0E8A4F37182B802600705C1F /* libsqlite3.dylib */,
 				0EDCAA7E1829F11500BF9101 /* CoreVideo.framework */,
