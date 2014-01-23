@@ -181,13 +181,6 @@ static NSMutableArray *colors;
 }
 -(void) sendImageClicked {
     [self setImageSendProtocol:mainVC];
-    
-    UIGraphicsBeginImageContext(drawView.bounds.size);
-    [drawView.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *newImage=UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    //    UIImageWriteToSavedPhotosAlbum(newImage, self, nil, nil);
-    image = newImage;
     [imageSendProtocol sendImages:image withTime:time ];
     
     [self dismissViewControllerAnimated:YES completion:NULL];

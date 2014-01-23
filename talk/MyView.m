@@ -165,9 +165,7 @@ static NSMutableArray *colors;
 #pragma mark -
 //手指开始触屏开始
 static CGPoint MyBeganpoint;
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{	
-}
+
 //手指移动时候发出
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {

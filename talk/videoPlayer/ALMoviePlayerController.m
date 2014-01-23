@@ -179,7 +179,16 @@ static const NSTimeInterval fullscreenAnimationDuration = 0.3;
         }];
         
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:MPMoviePlayerWillExitFullscreenNotification object:nil];
+        if ([self.delegate respondsToSelector:@selector(moviePlayerWillMoveFromWindow)]) {
+            [self.delegate moviePlayerWillMoveFromWindow];
+        }
+        [UIView animateWithDuration:animated ? fullscreenAnimationDuration : 0.0 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
+            self.movieBackgroundView.alpha = 0.f;
+        } completion:^(BOOL finished) {
+            [self.movieBackgroundView removeFromSuperview];
+            [[NSNotificationCenter defaultCenter] postNotificationName:MPMoviePlayerDidExitFullscreenNotification object:nil];
+        }];
+        /*[[NSNotificationCenter defaultCenter] postNotificationName:MPMoviePlayerWillExitFullscreenNotification object:nil];
         [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillChangeStatusBarOrientationNotification object:nil];
         [UIView animateWithDuration:animated ? fullscreenAnimationDuration : 0.0 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
             self.view.alpha = 0.f;
@@ -194,7 +203,7 @@ static const NSTimeInterval fullscreenAnimationDuration = 0.3;
                 [self.movieBackgroundView removeFromSuperview];
                 [[NSNotificationCenter defaultCenter] postNotificationName:MPMoviePlayerDidExitFullscreenNotification object:nil];
             }];
-        }];
+        }];*/
     }
 }
 

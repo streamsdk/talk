@@ -24,6 +24,7 @@
 #define DELETE_TAG 3000
 #define SEARCH_TAG 10000
 #define CELL_BUTTON_TAG 40000
+#define SEARCH_LABEL_TAG 50000
 @interface HandlerFirendsViewController ()
 {
     UIBarButtonItem *refreshitem;
@@ -146,6 +147,8 @@
 
 -(void) addFriends {
 
+    UILabel * searchLabel = (UILabel *)[self.view viewWithTag:SEARCH_LABEL_TAG];
+    [searchLabel removeFromSuperview];
     [myTableview removeFromSuperview];
     myTableview = [[UITableView alloc]initWithFrame:CGRectMake(-2, 100, self.view.frame.size.width+4, self.view.frame.size.height-100)];
     myTableview.dataSource = self;
@@ -169,26 +172,26 @@
     self.navigationItem.rightBarButtonItem = refreshitem;
 }
 -(void) searchFriends{
-    
     [myTableview removeFromSuperview];
-    myTableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 140, self.view.frame.size.width, self.view.frame.size.height-140)];
-    myTableview.dataSource = self;
-    myTableview.delegate = self;
-    [myTableview setBackgroundColor:[UIColor clearColor]];
-    [self.view addSubview:myTableview];
-    
-    [friendsSearchArray removeAllObjects];
-    _friendsType = FriendsSearch;
     self.title = @"Search Friends";
-    myTableview.tableHeaderView = nil;
     [self.view addSubview:_searchBar];
 
-    refreshitem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelSelected)];
-    self.navigationItem.rightBarButtonItem = refreshitem;
+    UILabel * searchLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-300, self.view.frame.size.width,100)];
+    searchLabel .backgroundColor = [UIColor clearColor];
+    searchLabel.textColor = [UIColor lightGrayColor];
+    searchLabel.text = @"please search friend";
+    searchLabel.font = [UIFont systemFontOfSize:20.0f];
+    searchLabel.textAlignment = NSTextAlignmentCenter;
+    searchLabel.tag =SEARCH_LABEL_TAG;
+    [self.view addSubview:searchLabel];
+    
+    self.navigationItem.rightBarButtonItem = nil;
 
 }
 
 -(void) historyFriends {
+    UILabel * searchLabel = (UILabel *)[self.view viewWithTag:SEARCH_LABEL_TAG];
+    [searchLabel removeFromSuperview];
     [_searchBar removeFromSuperview];
     _friendsType = FriendsHistory;
     self.title = @"Hostory Friends";
@@ -230,7 +233,7 @@
     _searchBar.barStyle=UIBarStyleDefault;
     _searchBar.placeholder=@"search";
     _searchBar.keyboardType=UIKeyboardTypeNamePhonePad;
-    
+
     NSArray *segmentedArray = [[NSArray alloc]initWithObjects:@"Add",@"Search",@"History",nil];
     
     segmentedControl = [[UISegmentedControl alloc]initWithItems:segmentedArray];
@@ -389,7 +392,6 @@
 }
 #pragma mark searchBarDelegate
 -(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    
     [searchBar resignFirstResponder];
     NSString *string = searchBar.text;
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
@@ -419,6 +421,30 @@
         [alertview show];
     }
     
+    
+}
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+    
+    UILabel * searchLabel = (UILabel *)[self.view viewWithTag:SEARCH_LABEL_TAG];
+    [searchLabel removeFromSuperview];
+    [_searchBar removeFromSuperview];
+    myTableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 140, self.view.frame.size.width, self.view.frame.size.height-140)];
+    myTableview.dataSource = self;
+    myTableview.delegate = self;
+    [myTableview setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:myTableview];
+    
+    [friendsSearchArray removeAllObjects];
+    _friendsType = FriendsSearch;
+    
+    myTableview.tableHeaderView = nil;
+    [self.view addSubview:_searchBar];
+    [searchBar becomeFirstResponder];
+    
+    refreshitem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelSelected)];
+    self.navigationItem.rightBarButtonItem = refreshitem;
+}
+-(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar{
     
 }
 #pragma mark --segmentAction

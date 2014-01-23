@@ -106,12 +106,13 @@
 
 - (void)moviePlayerWillMoveFromWindow {
    
-    [self dismissViewControllerAnimated:YES completion:^{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    /*[self dismissViewControllerAnimated:YES completion:^{
         if (![self.view.subviews containsObject:self.moviePlayer.view]){
             [self.view addSubview:self.moviePlayer.view];
         }
         [self.moviePlayer setFrame:self.defaultFrame];
-    }];
+    }];*/
   
 }
 - (void)movieTimedOut {
