@@ -74,6 +74,7 @@
         
         exportSession.outputURL = [NSURL fileURLWithPath: _mp4Path];
         exportSession.outputFileType = AVFileTypeMPEG4;
+        
         [exportSession exportAsynchronouslyWithCompletionHandler:^{
             switch ([exportSession status]) {
                 case AVAssetExportSessionStatusFailed:
@@ -95,12 +96,21 @@
                     break;
                 case AVAssetExportSessionStatusCompleted:
                     NSLog(@"Successful!");
-                    [self performSelectorOnMainThread:@selector(convertFinish) withObject:nil waitUntilDone:NO];
+                    [self performSelectorOnMainThread:@selector(convertFinish:) withObject:nil waitUntilDone:NO];
                     break;
                 default:
                     break;
             }
         }];
+        date = [NSDate dateWithTimeIntervalSinceNow:0];
+        MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:videoPath];
+        player.shouldAutoplay = NO;
+        NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
+        UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+        NSBubbleData * bdata = [NSBubbleData dataWithImage:fileImage withData:videoData withTime:_time withType:@"video" date:date type:BubbleTypeMine withVidePath:_mp4Path];
+        if (_myData)
+            bdata.avatar = [UIImage imageWithData:_myData];
+        [_bubbleData addObject:bdata];
     }
     else
     {
@@ -141,25 +151,19 @@
     return second;
 }
 
-- (void) convertFinish
+- (void) convertFinish:(UIImage *)fileImage
 {
 //    NSInteger size = [self getFileSize:_mp4Path];
 //    CGFloat f = [self getVideoDuration:videoPath];
-    MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:videoPath];
-    player.shouldAutoplay = NO;
-    NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
-    UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+//    MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:videoPath];
+//    player.shouldAutoplay = NO
+//    UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+     NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
     [self sendVideo:fileImage withData:videoData withVideoTime:_time];
 }
 
 -(void) sendVideo:(UIImage *)image withData:(NSData *)videoData withVideoTime:(NSString *)time{
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
-    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
-    NSBubbleData * bdata = [NSBubbleData dataWithImage:image withData:videoData withTime:time withType:@"video" date:date type:BubbleTypeMine withVidePath:_mp4Path];
-    if (_myData)
-        bdata.avatar = [UIImage imageWithData:_myData];
-    [_bubbleData addObject:bdata];
-    
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
     if (time)
         [friendDict setObject:time forKey:@"time"];

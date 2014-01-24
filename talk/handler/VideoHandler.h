@@ -21,6 +21,7 @@
     NSData * _myData;
     NSString *_sendID;
     NSString *_time;
+    NSDate *date;
 
 }
 @property(nonatomic, strong)UIViewController *controller;

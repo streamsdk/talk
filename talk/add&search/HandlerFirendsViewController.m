@@ -172,8 +172,15 @@
     self.navigationItem.rightBarButtonItem = refreshitem;
 }
 -(void) searchFriends{
+
     [myTableview removeFromSuperview];
     self.title = @"Search Friends";
+    _searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64+36, self.view.bounds.size.width, 40)];
+    _searchBar.delegate = self;
+    _searchBar.tag =SEARCH_TAG;
+    _searchBar.barStyle=UIBarStyleDefault;
+    _searchBar.placeholder=@"search";
+    _searchBar.keyboardType=UIKeyboardTypeNamePhonePad;
     [self.view addSubview:_searchBar];
 
     UILabel * searchLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-300, self.view.frame.size.width,100)];
@@ -227,12 +234,12 @@
     friendsSearchArray = [[NSMutableArray alloc]init];
     friendsHistoryArray = [[NSMutableArray alloc]init];
     
-    _searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64+36, self.view.bounds.size.width, 40)];
+    /*_searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64+36, self.view.bounds.size.width, 40)];
     _searchBar.delegate = self;
     _searchBar.tag =SEARCH_TAG;
     _searchBar.barStyle=UIBarStyleDefault;
     _searchBar.placeholder=@"search";
-    _searchBar.keyboardType=UIKeyboardTypeNamePhonePad;
+    _searchBar.keyboardType=UIKeyboardTypeNamePhonePad;*/
 
     NSArray *segmentedArray = [[NSArray alloc]initWithObjects:@"Add",@"Search",@"History",nil];
     
