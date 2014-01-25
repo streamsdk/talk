@@ -106,18 +106,20 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
     if (self.style == ALMoviePlayerControlsStyleNone)
         return;
 
-    //top bar
-    _topBar = [[ALMoviePlayerControlsBar alloc] init];
-    _topBar.color = _barColor;
-    _topBar.alpha = 0.f;
-    [self addSubview:_topBar];
-    
-    //bottom bar
-    _bottomBar = [[ALMoviePlayerControlsBar alloc] init];
-    _bottomBar.color = _barColor;
-    _bottomBar.alpha = 0.f;
-    [self addSubview:_bottomBar];
-    
+    if (_SaveFile) {
+        //top bar
+        _topBar = [[ALMoviePlayerControlsBar alloc] init];
+        _topBar.color = _barColor;
+        _topBar.alpha = 0.f;
+        [self addSubview:_topBar];
+        
+        //bottom bar
+        _bottomBar = [[ALMoviePlayerControlsBar alloc] init];
+        _bottomBar.color = _barColor;
+        _bottomBar.alpha = 0.f;
+        [self addSubview:_bottomBar];
+    }
+   
     _durationSlider = [[UISlider alloc] init];
     _durationSlider.value = 0.f;
     _durationSlider.continuous = YES;
@@ -149,46 +151,47 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
     _timeRemainingLabel.layer.shadowOpacity = 0.8f;
     
     if (_style == ALMoviePlayerControlsStyleFullscreen || (_style == ALMoviePlayerControlsStyleDefault && _moviePlayer.isFullscreen)) {
-        [_topBar addSubview:_durationSlider];
-        [_topBar addSubview:_timeElapsedLabel];
-        [_topBar addSubview:_timeRemainingLabel];
-        
-        _fullscreenButton = [[ALButton alloc] init];
-        [_fullscreenButton setTitle:@"Done" forState:UIControlStateNormal];
-        [_fullscreenButton setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
-        _fullscreenButton.titleLabel.shadowOffset = CGSizeMake(1.f, 1.f);
-        [_fullscreenButton.titleLabel setFont:[UIFont systemFontOfSize:14.f]];
-        _fullscreenButton.delegate = self;
-        [_fullscreenButton addTarget:self action:@selector(fullscreenPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [_topBar addSubview:_fullscreenButton];
-        
-        _scaleButton = [[ALButton alloc] init];
-        _scaleButton.delegate = self;
-        [_scaleButton setImage:[UIImage imageNamed:@"movieFullscreen.png"] forState:UIControlStateNormal];
-        [_scaleButton setImage:[UIImage imageNamed:@"movieEndFullscreen.png"] forState:UIControlStateSelected];
-        [_scaleButton addTarget:self action:@selector(scalePressed:) forControlEvents:UIControlEventTouchUpInside];
-        [_topBar addSubview:_scaleButton];
-        
-        _volumeView = [[MPVolumeView alloc] init];
-        [_volumeView setShowsRouteButton:NO];
-        [_volumeView setShowsVolumeSlider:YES];
-        [_bottomBar addSubview:_volumeView];
-        
-        _seekForwardButton = [[ALButton alloc] init];
-        [_seekForwardButton setImage:[UIImage imageNamed:@"movieForward.png"] forState:UIControlStateNormal];
-        [_seekForwardButton setImage:[UIImage imageNamed:@"movieForwardSelected.png"] forState:UIControlStateSelected];
-        _seekForwardButton.delegate = self;
-        [_seekForwardButton addTarget:self action:@selector(seekForwardPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [_bottomBar addSubview:_seekForwardButton];
-        
-        _seekBackwardButton = [[ALButton alloc] init];
-        [_seekBackwardButton setImage:[UIImage imageNamed:@"movieBackward.png"] forState:UIControlStateNormal];
-        [_seekBackwardButton setImage:[UIImage imageNamed:@"movieBackwardSelected.png"] forState:UIControlStateSelected];
-        _seekBackwardButton.delegate = self;
-        [_seekBackwardButton addTarget:self action:@selector(seekBackwardPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [_bottomBar addSubview:_seekBackwardButton];
-        
         if (_SaveFile) {
+            [_topBar addSubview:_durationSlider];
+            [_topBar addSubview:_timeElapsedLabel];
+            [_topBar addSubview:_timeRemainingLabel];
+            
+            _fullscreenButton = [[ALButton alloc] init];
+            [_fullscreenButton setTitle:@"Done" forState:UIControlStateNormal];
+            [_fullscreenButton setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
+            _fullscreenButton.titleLabel.shadowOffset = CGSizeMake(1.f, 1.f);
+            [_fullscreenButton.titleLabel setFont:[UIFont systemFontOfSize:14.f]];
+            _fullscreenButton.delegate = self;
+            [_fullscreenButton addTarget:self action:@selector(fullscreenPressed:) forControlEvents:UIControlEventTouchUpInside];
+            [_topBar addSubview:_fullscreenButton];
+            
+            _scaleButton = [[ALButton alloc] init];
+            _scaleButton.delegate = self;
+            [_scaleButton setImage:[UIImage imageNamed:@"movieFullscreen.png"] forState:UIControlStateNormal];
+            [_scaleButton setImage:[UIImage imageNamed:@"movieEndFullscreen.png"] forState:UIControlStateSelected];
+            [_scaleButton addTarget:self action:@selector(scalePressed:) forControlEvents:UIControlEventTouchUpInside];
+            [_topBar addSubview:_scaleButton];
+            
+            _volumeView = [[MPVolumeView alloc] init];
+            [_volumeView setShowsRouteButton:NO];
+            [_volumeView setShowsVolumeSlider:YES];
+            [_bottomBar addSubview:_volumeView];
+            
+            _seekForwardButton = [[ALButton alloc] init];
+            [_seekForwardButton setImage:[UIImage imageNamed:@"movieForward.png"] forState:UIControlStateNormal];
+            [_seekForwardButton setImage:[UIImage imageNamed:@"movieForwardSelected.png"] forState:UIControlStateSelected];
+            _seekForwardButton.delegate = self;
+            [_seekForwardButton addTarget:self action:@selector(seekForwardPressed:) forControlEvents:UIControlEventTouchUpInside];
+            [_bottomBar addSubview:_seekForwardButton];
+            
+            _seekBackwardButton = [[ALButton alloc] init];
+            [_seekBackwardButton setImage:[UIImage imageNamed:@"movieBackward.png"] forState:UIControlStateNormal];
+            [_seekBackwardButton setImage:[UIImage imageNamed:@"movieBackwardSelected.png"] forState:UIControlStateSelected];
+            _seekBackwardButton.delegate = self;
+            [_seekBackwardButton addTarget:self action:@selector(seekBackwardPressed:) forControlEvents:UIControlEventTouchUpInside];
+            [_bottomBar addSubview:_seekBackwardButton];
+            
+            
             _saveButton = [[ALButton alloc] init];
             [_saveButton setTitle:@"Save" forState:UIControlStateNormal];
             [_saveButton setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
