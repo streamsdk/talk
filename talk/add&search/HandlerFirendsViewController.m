@@ -173,6 +173,7 @@
 }
 -(void) searchFriends{
 
+    [friendsSearchArray removeAllObjects];
     [myTableview removeFromSuperview];
     self.title = @"Search Friends";
     _searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64+36, self.view.bounds.size.width, 40)];
@@ -403,49 +404,46 @@
     NSString *string = searchBar.text;
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     STreamUser * user = [[STreamUser alloc]init];
-
     NSString * loginName = [handler getUserID];
-    BOOL isUserExist = [user searchUser:string];
-    if (isUserExist) {
-        __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        HUD.labelText = @"loading friends...";
-        [self.view addSubview:HUD];
-        [HUD showAnimated:YES whileExecutingBlock:^{
+    
+    UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"No results found" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Yes", nil];
+
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"loading friends...";
+    [self.view addSubview:HUD];
+     __block BOOL isUserExist;
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        isUserExist = [user searchUser:string];
+        
+    }completionBlock:^{
+        if (isUserExist) {
             if (![loginName isEqualToString:string]) {
-                [friendsSearchArray removeAllObjects];
                 [friendsSearchArray addObject:string];
             }
-        }completionBlock:^{
-            [myTableview reloadData];
-            [HUD removeFromSuperview];
-            HUD = nil;
-        }];
+        }else{
+            [alertview show];
+        }
+        [myTableview reloadData];
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
 
-    }else{
-        [friendsSearchArray removeAllObjects];
-
-        UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"No results found" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
-        [alertview show];
-    }
-    
     
 }
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
     
     UILabel * searchLabel = (UILabel *)[self.view viewWithTag:SEARCH_LABEL_TAG];
     [searchLabel removeFromSuperview];
-    [_searchBar removeFromSuperview];
+    [myTableview removeFromSuperview];
     myTableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 140, self.view.frame.size.width, self.view.frame.size.height-140)];
     myTableview.dataSource = self;
     myTableview.delegate = self;
     [myTableview setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:myTableview];
-    
     [friendsSearchArray removeAllObjects];
     _friendsType = FriendsSearch;
     
     myTableview.tableHeaderView = nil;
-    [self.view addSubview:_searchBar];
     [searchBar becomeFirstResponder];
     
     refreshitem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelSelected)];
