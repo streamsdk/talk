@@ -186,8 +186,8 @@ static NSMutableArray *colors;
     [self setImageSendProtocol:mainVC];
 //    data = UIImageJPEGRepresentation(image, 1.0);
 
-    UIImage *_image=[self imageWithImageSimple:image scaledToSize:CGSizeMake(image.size.width*0.7,image.size.height*0.7)];
-    data = UIImageJPEGRepresentation(_image, 0.7);
+    UIImage *_image=[self imageWithImageSimple:image scaledToSize:CGSizeMake(image.size.width*0.6,image.size.height*0.6)];
+    data = UIImageJPEGRepresentation(_image, 0.6);
 }
 -(void) sendImageClicked {
     

@@ -29,8 +29,18 @@
 	// Do any additional setup after loading the view.
     self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = [UIColor blackColor];
+    CGFloat width = self.view.frame.size.width;
+    CGFloat height = self.view.frame.size.height;
+    CGFloat imgWidth = image.size.width;
+    CGFloat imgHeight = image.size.height;
     
-    UIImageView*imageView=[[UIImageView alloc] initWithFrame:CGRectMake(5, 100, self.view.frame.size.width-10,self.view.frame.size.height-180)];
+//    if (imgWidth > width) {
+//        imgWidth = width;
+//    }
+//    if (imgHeight > height) {
+//        imgHeight = height;
+//    }
+    UIImageView*imageView=[[UIImageView alloc] initWithFrame:CGRectMake((width-imgWidth)/2, (height -imgHeight)/2, imgWidth,imgHeight)];
     [imageView setImage:image];
     imageView.tag = IMAGE_TAG;
     imageView.userInteractionEnabled=YES;
