@@ -10,7 +10,7 @@
 #import "MainController.h"
 #import "CreateUI.h"
 #import "ImageCache.h"
-
+#import "UIImage+UIImageExtras.h"
 #define CLOCKBUTTON_TAG 10000
 #define UNDO_TAG 1000
 #define REDO_TAG 2000
@@ -187,6 +187,7 @@ static NSMutableArray *colors;
 //    data = UIImageJPEGRepresentation(image, 1.0);
 
     UIImage *_image=[self imageWithImageSimple:image scaledToSize:CGSizeMake(image.size.width*0.6,image.size.height*0.6)];
+//    UIImage *_image = [image imageByScalingToSize:image.size];
     data = UIImageJPEGRepresentation(_image, 0.6);
 }
 -(void) sendImageClicked {
@@ -257,6 +258,31 @@ static NSMutableArray *colors;
     UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return newImage;
+}
++ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size {
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+        UIGraphicsBeginImageContextWithOptions(size, NO, [[UIScreen mainScreen] scale]);
+    } else {
+        UIGraphicsBeginImageContext(size);
+    }
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
+
++ (UIImage *)imageWithImage:(UIImage *)image scaledToMaxWidth:(CGFloat)width maxHeight:(CGFloat)height {
+    CGFloat oldWidth = image.size.width;
+    CGFloat oldHeight = image.size.height;
+    
+    CGFloat scaleFactor = (oldWidth > oldHeight) ? width / oldWidth : height / oldHeight;
+    
+    CGFloat newHeight = oldHeight * scaleFactor;
+    CGFloat newWidth = oldWidth * scaleFactor;
+    CGSize newSize = CGSizeMake(newWidth, newHeight);
+    
+    return [self imageWithImage:image scaledToSize:newSize];
 }
 #pragma mark - Touch Detection -
 
@@ -389,6 +415,7 @@ static NSMutableArray *colors;
     
     return context;
 }
+
 
 - (void)didReceiveMemoryWarning
 {
