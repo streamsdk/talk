@@ -333,8 +333,10 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 
 -(void)player :(id) sender{
     
-    NSError *error=nil;
-    audioPlayer = [[AVAudioPlayer alloc] initWithData:audioData error:&error];
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    NSError *err = nil;
+    [audioSession setCategory :AVAudioSessionCategoryPlayback error:&err];
+    audioPlayer = [[AVAudioPlayer alloc] initWithData:audioData error:nil];
     audioPlayer.delegate = self;
     [audioPlayer prepareToPlay];
     [audioPlayer play];

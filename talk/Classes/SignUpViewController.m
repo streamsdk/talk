@@ -17,7 +17,7 @@
 #import "MBProgressHUD.h"
 #import "FileCache.h"
 #import "MyFriendsViewController.h"
-
+#import "RootViewController.h"
 @interface SignUpViewController ()<UIActionSheetDelegate>
 {
     UIActionSheet* actionSheet;
@@ -38,7 +38,8 @@
 }
 -(void) back {
     self.navigationController.navigationBarHidden = YES;
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    RootViewController * rvc =[[RootViewController alloc]init];
+    [self.navigationController pushViewController:rvc animated:NO];
 }
 - (void)viewDidLoad
 {
