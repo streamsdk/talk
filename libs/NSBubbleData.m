@@ -5,7 +5,6 @@
 //
 
 #import "NSBubbleData.h"
-#import "UIImage+UIImageExtras.h"
 #define BIG_IMG_WIDTH  300.0
 #define BIG_IMG_HEIGHT 300.0
 
@@ -100,18 +99,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 {
     _image = image;
     bigImageSize = image.size;
-    CGSize size = image.size;
-//    while(size.width >= 150)
-//    {
-//        image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(size.width*0.5, size.height*0.5)];
-//        size = image.size;
-//    }
-////    image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(100, 100)];
-////    size = image.size;
-    image = [image imageByScalingToSize:CGSizeMake(120, 120)];
-    size = image.size;
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
-    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
     imageView.image = image;
     imageView.layer.cornerRadius = 5.0;
     imageView.layer.masksToBounds = YES;
