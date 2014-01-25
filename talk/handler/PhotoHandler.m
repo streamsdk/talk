@@ -18,9 +18,6 @@
 @interface PhotoHandler()
 
 @end
-
-
-
 @implementation PhotoHandler
 
 
@@ -45,10 +42,11 @@
     
 }
 
--(void) sendPhoto :(UIImage *)image forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID withTime:(NSString *)time{
+-(void) sendPhoto :(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID withTime:(NSString *)time{
     
-    UIImage * _image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(image.size.width*0.7, image.size.height*0.7)];
-     NSData * data = UIImageJPEGRepresentation(_image, 0.7);
+//    UIImage * _image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(image.size.width*0.7, image.size.height*0.7)];
+//     NSData * data = UIImageJPEGRepresentation(_image, 0.7);
+    UIImage *image = [UIImage imageWithData:data];
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     
     NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];

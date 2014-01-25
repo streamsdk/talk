@@ -84,7 +84,7 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
         _barColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
         
         _barHeight = [UIDevice iOSVersion] >= 7.0 ? 50.f : 30.f;
-        
+        [_moviePlayer setScalingMode:MPMovieScalingModeAspectFill];
         _seekRate = 3.f;
         _state = ALMoviePlayerControlsStateIdle;
         
@@ -167,8 +167,8 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
             
             _scaleButton = [[ALButton alloc] init];
             _scaleButton.delegate = self;
-            [_scaleButton setImage:[UIImage imageNamed:@"movieFullscreen.png"] forState:UIControlStateNormal];
-            [_scaleButton setImage:[UIImage imageNamed:@"movieEndFullscreen.png"] forState:UIControlStateSelected];
+            [_scaleButton setImage:[UIImage imageNamed:@"movieEndFullscreen.png"] forState:UIControlStateNormal];
+            [_scaleButton setImage:[UIImage imageNamed:@"movieFullscreen.png"] forState:UIControlStateSelected];
             [_scaleButton addTarget:self action:@selector(scalePressed:) forControlEvents:UIControlEventTouchUpInside];
             [_topBar addSubview:_scaleButton];
             
@@ -190,7 +190,6 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
             _seekBackwardButton.delegate = self;
             [_seekBackwardButton addTarget:self action:@selector(seekBackwardPressed:) forControlEvents:UIControlEventTouchUpInside];
             [_bottomBar addSubview:_seekBackwardButton];
-            
             
             _saveButton = [[ALButton alloc] init];
             [_saveButton setTitle:@"Save" forState:UIControlStateNormal];
@@ -434,7 +433,7 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
 
 - (void)scalePressed:(UIButton *)button {
     button.selected = !button.selected;
-    [self.moviePlayer setScalingMode:button.selected ? MPMovieScalingModeAspectFill : MPMovieScalingModeAspectFit];
+    [self.moviePlayer setScalingMode:button.selected ? MPMovieScalingModeAspectFit : MPMovieScalingModeAspectFill];
 }
 
 - (void)seekForwardPressed:(UIButton *)button {
@@ -496,7 +495,11 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
     [self monitorMoviePlayback]; //reset values
     [self hideControls:nil];
     self.state = ALMoviePlayerControlsStateIdle;
-    [self.moviePlayer setFullscreen:NO animated:YES];
+    if (!_SaveFile) {
+        [self.moviePlayer setFullscreen:NO animated:YES];
+
+    }
+    
 }
 
 - (void)movieLoadStateDidChange:(NSNotification *)note {

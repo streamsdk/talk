@@ -345,7 +345,7 @@
     UIGraphicsEndImageContext();
     return newImage;
 }
--(void) sendPhoto :(UIImage *)image withTime:(NSString *)time{
+-(void) sendPhoto :(NSData *)data withTime:(NSString *)time{
     [self dismissKeyBoard];
     ImageCache *imageCache = [ImageCache sharedObject];
     
@@ -365,7 +365,7 @@
     NSString *sendToID =[imageCache getFriendID];*/
     if (sendToID) {
         [photoHandler setController:self];
-        [photoHandler sendPhoto:image forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID withTime:time];
+        [photoHandler sendPhoto:data forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID withTime:time];
     }
     
     [bubbleTableView reloadData];
@@ -766,7 +766,7 @@
         
         UIImagePickerController *imagePickerController=[[UIImagePickerController alloc] init];
         imagePickerController.sourceType=UIImagePickerControllerSourceTypeCamera;
-        imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
+        imagePickerController.videoQuality = UIImagePickerControllerQualityTypeLow;
         imagePickerController.delegate = self;
         imagePickerController.modalTransitionStyle=UIModalTransitionStyleFlipHorizontal;
          imagePickerController.mediaTypes = [NSArray arrayWithObjects:(NSString*)kUTTypeImage,(NSString*)kUTTypeMovie,nil];
@@ -940,8 +940,8 @@
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
 }
--(void)sendImages:(UIImage *)image withTime:(NSString *)time{
-    [self sendPhoto:image withTime:time];
+-(void)sendImages:(NSData *)data withTime:(NSString *)time{
+    [self sendPhoto:data withTime:time];
 }
 - (void)didReceiveMemoryWarning 
 {

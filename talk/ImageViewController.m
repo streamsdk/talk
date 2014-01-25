@@ -26,6 +26,7 @@ static NSMutableArray *colors;
     MainController * mainVC;
     CreateUI * creat;
     UIImageView *colorsImageView;
+    NSData * data;
 }
 @end
 
@@ -84,9 +85,9 @@ static NSMutableArray *colors;
     redoButton.tag=REDO_TAG;
     [redoButton addTarget:self action:@selector(redoClicked) forControlEvents:UIControlEventTouchUpInside];
 //selectcolors.png
+    UIImage * newImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(self.view.frame.size.width -48, self.view.frame.size.height-180)];
     drawView = [[MyView alloc]initWithFrame:CGRectMake(20, 100, self.view.frame.size.width -48, self.view.frame.size.height-180)];
     drawView.userInteractionEnabled = YES;
-    UIImage * newImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(self.view.frame.size.width -48, self.view.frame.size.height-180)];
     [drawView setBackgroundColor:[UIColor colorWithPatternImage:newImage]];
     [self.view addSubview:drawView];
     [self.view sendSubviewToBack:drawView];
@@ -107,6 +108,7 @@ static NSMutableArray *colors;
     CGRect frame = CGRectMake(self.view.frame.size.width-53, self.view.frame.size.height-56, 40, 40);
     [useButton setFrame:frame];
     [useButton setImage:[UIImage imageNamed:@"forward.png"] forState:UIControlStateNormal];
+    [useButton addTarget:self action:@selector(sendStart) forControlEvents:UIControlEventTouchDown];
     [useButton addTarget:self action:@selector(sendImageClicked) forControlEvents:UIControlEventTouchUpInside];
     useButton.tag = USERPHOTO_TAG;
     
@@ -134,6 +136,7 @@ static NSMutableArray *colors;
     [self.view addSubview:redoButton];
     [self.view addSubview:brushButton];
     [self.view addSubview:doneButton];
+    
 }
 -(void)undoClicked{
     [ self.drawView revocation];
@@ -179,9 +182,16 @@ static NSMutableArray *colors;
         
     }];
 }
--(void) sendImageClicked {
+-(void) sendStart {
     [self setImageSendProtocol:mainVC];
-    [imageSendProtocol sendImages:image withTime:time ];
+//    data = UIImageJPEGRepresentation(image, 1.0);
+
+    UIImage *_image=[self imageWithImageSimple:image scaledToSize:CGSizeMake(image.size.width*0.7,image.size.height*0.7)];
+    data = UIImageJPEGRepresentation(_image, 0.7);
+}
+-(void) sendImageClicked {
+    
+    [imageSendProtocol sendImages:data withTime:time ];
     
     [self dismissViewControllerAnimated:YES completion:NULL];
 }

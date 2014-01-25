@@ -106,9 +106,9 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
         image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(100, 100)];
         size = image.size;
     }*/
-    image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(100, 100)];
+//    image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(100, 100)];
     size = image.size;
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
     imageView.image = image;
     imageView.layer.cornerRadius = 5.0;
     imageView.layer.masksToBounds = YES;

@@ -10,6 +10,6 @@
 
 @protocol ImageSendProtocol <NSObject>
 
--(void)sendImages:(UIImage *)image withTime:(NSString *)time;
+-(void)sendImages:(NSData *)data withTime:(NSString *)time;
 
 @end
