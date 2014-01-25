@@ -7,6 +7,7 @@
 //
 
 #import "ImageViewController.h"
+#import "MBProgressHUD.h"
 #import "MainController.h"
 #import "CreateUI.h"
 #import "ImageCache.h"
@@ -182,13 +183,7 @@ static NSMutableArray *colors;
     }];
 }
 -(void) sendStart {
-    [self setImageSendProtocol:mainVC];
-    CGFloat maxWidth=self.view.frame.size.width;
-    CGFloat maxheight=self.view.frame.size.height;
-    UIImage *_image = [self imageWithImage:image
-                          scaledToMaxWidth:maxWidth
-                                 maxHeight:maxheight];
-    data = UIImageJPEGRepresentation(_image, 0.3);
+    
 }
 -(UIImage *)imageWithImage:(UIImage *)_image scaledToSize:(CGSize)size {
     if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
@@ -216,10 +211,24 @@ static NSMutableArray *colors;
     return [self imageWithImage:image scaledToSize:newSize];
 }
 -(void) sendImageClicked {
-    
-    [imageSendProtocol sendImages:data withTime:time ];
-    
-    [self dismissViewControllerAnimated:YES completion:NULL];
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"loading friends...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self setImageSendProtocol:mainVC];
+        CGFloat maxWidth=self.view.frame.size.width;
+        CGFloat maxheight=self.view.frame.size.height;
+        UIImage *_image = [self imageWithImage:image
+                              scaledToMaxWidth:maxWidth
+                                     maxHeight:maxheight];
+        data = UIImageJPEGRepresentation(_image, 0.3);
+      [imageSendProtocol sendImages:data withTime:time ];
+    }completionBlock:^{
+        [self dismissViewControllerAnimated:YES completion:NULL];
+        [HUD removeFromSuperview];
+        HUD = nil;
+        
+    }];
 }
 -(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
