@@ -59,6 +59,7 @@ static XMPPReconnect *xmppReconnect;
     [xmppReconnect activate:xmppStream];
     [xmppStream addDelegate:self delegateQueue:dispatch_get_main_queue()];
     [xmppStream setHostName:@"streamsdk.com"];
+    xmppStream.enableBackgroundingOnSocket = YES;
     //[xmppStream setHostName:@"192.168.1.15"];
     
     [xmppStream setHostPort:5222];
@@ -68,9 +69,9 @@ static XMPPReconnect *xmppReconnect;
 - (BOOL)connect: (NSString *)userName withPassword:(NSString *)password
 {
     [self setXmppStream];
-	if (![xmppStream isDisconnected]) {
+	/*if (![xmppStream isDisconnected]) {
 		return YES;
-	}
+	}*/
     
     [myJID appendString:[STreamSession getClientAuthKey]];
     [myJID appendString:userName];
@@ -215,6 +216,7 @@ static XMPPReconnect *xmppReconnect;
 - (void)xmppStream:(XMPPStream *)sender didReceiveMessage:(XMPPMessage *)message
 {
 	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
+    
     
     NSString *from = [message fromStr];
     NSArray *array = [from componentsSeparatedByString:@"@streamsdk.com"];
