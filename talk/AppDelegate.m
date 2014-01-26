@@ -128,7 +128,13 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
-{
+{    
+    if ([application respondsToSelector:@selector(setKeepAliveTimeout:handler:)]){
+        [application setKeepAliveTimeout:600 handler:^{
+            STreamXMPP *xmpp = [STreamXMPP sharedObject];
+            [xmpp disconnect];
+        }];
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application

@@ -73,6 +73,7 @@ static XMPPReconnect *xmppReconnect;
 		return YES;
 	}*/
     
+    myJID = [[NSMutableString alloc] init];
     [myJID appendString:[STreamSession getClientAuthKey]];
     [myJID appendString:userName];
     [myJID appendString:@"@streamsdk.com"];

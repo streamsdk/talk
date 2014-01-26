@@ -146,7 +146,27 @@
     [_refreshHeaderView refreshLastUpdatedDate];
 
     [self.tableView reloadData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appHasBackInForeground)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
 }
+
+
+- (void)appHasBackInForeground{
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"connecting ...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self connect];
+    }completionBlock:^{
+        [self.tableView reloadData];
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
+}
+
 -(void) readAddDb {
     userData = [[NSMutableArray alloc]init];
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
