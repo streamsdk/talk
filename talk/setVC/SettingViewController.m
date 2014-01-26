@@ -40,16 +40,7 @@
     return self;
 }
 -(void) saveClicked {
-    if (avatarImg) {
-        isaAatarImg = YES;
-        UIAlertView * view = [[UIAlertView alloc]initWithTitle:@"" message:@"Are you sure you want to submit your avatar？" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
-        view .delegate = self;
-        [view show];
-    }else {
-        UIAlertView * view = [[UIAlertView alloc]initWithTitle:@"" message:@"Please select your avatar！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
-        [view show];
-
-    }
+    
 }
 
 -(void) loadAvatar:(NSString *)userID {
@@ -92,8 +83,8 @@
     
     isaAatarImg = NO;
     
-    UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveClicked)];
-    self.navigationItem.rightBarButtonItem = rightItem;
+    /*UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveClicked)];
+    self.navigationItem.rightBarButtonItem = rightItem;*/
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     NSString * loginName = [handle getUserID];
     ImageCache * imageCache = [ImageCache sharedObject];
@@ -289,10 +280,10 @@
 -(void)headImageClicked:(UITapGestureRecognizer *)gestureRecognizer
 {
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
-                                  initWithTitle:@"---- select photo ----"
+                                  initWithTitle:nil
                                   delegate:self
                                   cancelButtonTitle:@"取消"
-                                  destructiveButtonTitle:@"确定"
+                                  destructiveButtonTitle:nil
                                   otherButtonTitles:@"Camera", @"Local Photo",nil];
     actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
     [actionSheet showInView:self.view];
@@ -300,9 +291,9 @@
 }
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     
-    if (buttonIndex ==1) {
+    if (buttonIndex ==0) {
         [self takePhoto];
-    }else if (buttonIndex ==2){
+    }else if (buttonIndex ==1){
         [self addPhoto];
     }
 }
@@ -312,8 +303,38 @@
     avatarImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     UIImageView * imageview= (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
     imageview.image = avatarImg;
-    [picker dismissViewControllerAnimated:YES completion:NULL];
+    [picker dismissViewControllerAnimated:YES completion:^{
+        [self uploadProfileImage];
+    }];
+    
+    
 }
+-(UIImage *)imageWithImage:(UIImage *)_image scaledToSize:(CGSize)size {
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+        UIGraphicsBeginImageContextWithOptions(size, NO, [[UIScreen mainScreen] scale]);
+    } else {
+        UIGraphicsBeginImageContext(size);
+    }
+    [_image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
+
+-(UIImage *)imageWithImage:(UIImage *)_image scaledToMaxWidth:(CGFloat)width maxHeight:(CGFloat)height {
+    CGFloat oldWidth = _image.size.width;
+    CGFloat oldHeight = _image.size.height;
+    
+    CGFloat scaleFactor = (oldWidth > oldHeight) ? width / oldWidth : height / oldHeight;
+    
+    CGFloat newHeight = oldHeight * scaleFactor;
+    CGFloat newWidth = oldWidth * scaleFactor;
+    CGSize newSize = CGSizeMake(newWidth, newHeight);
+    
+    return [self imageWithImage:_image scaledToSize:newSize];
+}
+
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [picker dismissViewControllerAnimated:YES completion:NULL];
@@ -347,9 +368,9 @@
     HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
     STreamUser * user = [[STreamUser alloc]init];
     STreamFile *file = [[STreamFile alloc] init];
-    CGSize size = avatarImg.size;
-    UIImage *sImage = [self imageWithImageSimple:avatarImg scaledToSize:CGSizeMake(size.width*0.3, size.height*0.3)];
-    NSData * data = UIImageJPEGRepresentation(sImage, 1.0);
+//    CGSize size = avatarImg.size;
+    UIImage *sImage = [self imageWithImage:avatarImg scaledToMaxWidth:100 maxHeight:100];
+    NSData * data = UIImageJPEGRepresentation(sImage, 0.8);
     [file postData:data];
     NSLog(@"errorMessage：%@",[file errorMessage]);
     NSLog(@"ID:%@",[file fileId]);
@@ -364,13 +385,13 @@
     [myTableView reloadData];
 }
 
--(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
+/*-(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
     UIGraphicsBeginImageContext(newSize);
     [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
     UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return newImage;
-}
+}*/
 #pragma mark UITEXTFILED-DELEGATE-
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     NSString * email = [[textField text]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
