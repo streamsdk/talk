@@ -102,6 +102,7 @@
 }
 -(void) loginUser {
     
+    [userNameText resignFirstResponder];
     STreamUser *user = [[STreamUser alloc]init];
     NSString *userName = userNameText.text;
     NSString *passWord = password.text;
@@ -110,35 +111,35 @@
     [nameArray writeToFile:nameFilePath atomically:YES];
     if (userName && ([userName length] != 0) && passWord &&([passWord length]!= 0)) {
         
-        [user logIn:userName withPassword:passWord];
-
-        NSLog(@"%@",[user errorMessage]);
-        if ([[user errorMessage] length] == 0) {
-            STreamUser *user = [[STreamUser alloc] init];
-            [user loadUserMetadata:userName response:^(BOOL succeed, NSString *error){
-                if ([error isEqualToString:userName]){
-                    NSMutableDictionary *dic = [user userMetadata];
-                    ImageCache *imageCache = [ImageCache sharedObject];
-                    [imageCache saveUserMetadata:userName withMetadata:dic];
-                }
-            }];
-            sleep(1);
-            __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-            HUD.labelText = @"loading friends...";
-            [self.view addSubview:HUD];
-            [HUD showAnimated:YES whileExecutingBlock:^{
+        __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        HUD.labelText = @"loading friends...";
+        [self.view addSubview:HUD];
+        [HUD showAnimated:YES whileExecutingBlock:^{
+             [user logIn:userName withPassword:passWord];
+            NSLog(@"%@",[user errorMessage]);
+            if ([[user errorMessage] length] == 0) {
+                STreamUser *user = [[STreamUser alloc] init];
+                [user loadUserMetadata:userName response:^(BOOL succeed, NSString *error){
+                    if ([error isEqualToString:userName]){
+                        NSMutableDictionary *dic = [user userMetadata];
+                        ImageCache *imageCache = [ImageCache sharedObject];
+                        [imageCache saveUserMetadata:userName withMetadata:dic];
+                    }
+                }];
+      
                 [self loadAvatar:userName];
-            }completionBlock:^{
-                [HUD removeFromSuperview];
-                HUD = nil;
-            }];
-            
+            } else {
+                UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"user does not exist or password error,please sigUp" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+                [alertView show];
+            }
+
+        }completionBlock:^{
             MyFriendsViewController *myFriendVC = [[MyFriendsViewController alloc]init];
             [self.navigationController pushViewController:myFriendVC animated:YES];
-        } else {
-            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"user does not exist or password error,please sigUp" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
-            [alertView show];
-        }
+            [HUD removeFromSuperview];
+            HUD = nil;
+        }];
+
     }else {
         
         UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"please input user name or password" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];

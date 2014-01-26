@@ -92,6 +92,7 @@
 
 }
 -(void )signUpUser {
+    [userName resignFirstResponder];
     NSString *username = userName.text;
     NSString *pword = password.text;
     NSString *secondWord = surePassword.text;
@@ -102,59 +103,62 @@
         [metaData setValue:username forKey:@"name"];
         [metaData setValue:pword forKey:@"password"];
         [metaData setValue:@"" forKey:@"profileImageId"];
-        [user signUp:username withPassword:pword withMetadata:metaData];
         
-        NSString *error = [user errorMessage];
-        if ([error isEqualToString:@""]){
-            STreamObject * history = [[STreamObject alloc]init];
-            [history setObjectId:[username stringByAppendingString:@"messaginghistory"]];
-            [history createNewObject:^(BOOL succeed, NSString *objectId) {
-                if (succeed)
-                    NSLog(@"succeed");
-                else
-                    NSLog(@"failed");
-            }];
+        __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        HUD.labelText = @"loading friends...";
+        [self.view addSubview:HUD];
+        [HUD showAnimated:YES whileExecutingBlock:^{
+            [user signUp:username withPassword:pword withMetadata:metaData];
             
-            STreamCategoryObject * sto = [[STreamCategoryObject alloc]initWithCategory:username];
-            [sto createNewCategoryObject:^(BOOL succeed, NSString *response){
+            NSString *error = [user errorMessage];
+            if ([error isEqualToString:@""]){
+                STreamObject * history = [[STreamObject alloc]init];
+                [history setObjectId:[username stringByAppendingString:@"messaginghistory"]];
+                [history createNewObject:^(BOOL succeed, NSString *objectId) {
+                    if (succeed)
+                        NSLog(@"succeed");
+                    else
+                        NSLog(@"failed");
+                }];
                 
-                if (succeed)
-                    NSLog(@"succeed");
-                else
-                    NSLog(@"failed");
-            }];
-            NSString *nameFilePath = [self getCacheDirectory];
-            NSArray * nameArray = [[NSArray alloc]initWithObjects:username,pword, nil];
-            [nameArray writeToFile:nameFilePath atomically:YES];
-            [user logIn:username withPassword:pword];
-
-            if ([[user errorMessage] length] == 0) {
-                STreamUser *user = [[STreamUser alloc] init];
-                [user loadUserMetadata:username response:^(BOOL succeed, NSString *error){
-                    if ([error isEqualToString:username]){
-                        NSMutableDictionary *dic = [user userMetadata];
-                        ImageCache *imageCache = [ImageCache sharedObject];
-                        [imageCache saveUserMetadata:username withMetadata:dic];
-                    }
+                STreamCategoryObject * sto = [[STreamCategoryObject alloc]initWithCategory:username];
+                [sto createNewCategoryObject:^(BOOL succeed, NSString *response){
+                    
+                    if (succeed)
+                        NSLog(@"succeed");
+                    else
+                        NSLog(@"failed");
                 }];
-                sleep(1);
-                __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-                HUD.labelText = @"loading friends...";
-                [self.view addSubview:HUD];
-                [HUD showAnimated:YES whileExecutingBlock:^{
+                NSString *nameFilePath = [self getCacheDirectory];
+                NSArray * nameArray = [[NSArray alloc]initWithObjects:username,pword, nil];
+                [nameArray writeToFile:nameFilePath atomically:YES];
+                [user logIn:username withPassword:pword];
+                
+                if ([[user errorMessage] length] == 0) {
+                    STreamUser *user = [[STreamUser alloc] init];
+                    [user loadUserMetadata:username response:^(BOOL succeed, NSString *error){
+                        if ([error isEqualToString:username]){
+                            NSMutableDictionary *dic = [user userMetadata];
+                            ImageCache *imageCache = [ImageCache sharedObject];
+                            [imageCache saveUserMetadata:username withMetadata:dic];
+                        }
+                    }];
                     [self loadAvatar:username];
-                }completionBlock:^{
-                    [HUD removeFromSuperview];
-                    HUD = nil;
-                }];
+                }
+               
+            }else{
+                
+                UIAlertView * view  = [[UIAlertView alloc]initWithTitle:@"" message:@"User name or password error" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+                [view show];
             }
+        }completionBlock:^{
             MyFriendsViewController *myFriendVC = [[MyFriendsViewController alloc]init];
             [self.navigationController pushViewController:myFriendVC animated:YES];
-        }else{
-            
-            UIAlertView * view  = [[UIAlertView alloc]initWithTitle:@"" message:@"User name or password error" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
-            [view show];
-        }
+            [HUD removeFromSuperview];
+            HUD = nil;
+        }];
+
+        
        
     }
     

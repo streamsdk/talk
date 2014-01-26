@@ -382,7 +382,7 @@
         [imageCache saveUserMetadata:[handle getUserID] withMetadata:metaData];
     }
     [self loadAvatar:[handle getUserID]];
-    [myTableView reloadData];
+//    [myTableView reloadData];
 }
 
 /*-(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
