@@ -15,6 +15,8 @@
 #import "ImageCache.h"
 #import "FileCache.h"
 #import "MBProgressHUD.h"
+#import "TearmServiceViewController.h"
+#import "PrivacyPoolicyViewController.h"
 
 #define IMAGE_TAG 10000
 @interface SettingViewController ()
@@ -236,9 +238,14 @@
         }
             break;
         case 1:{
-//            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You sure Exit?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
-//            view .delegate = self;
-//            [view show];
+          /*if (indexPath.row == 0) {
+                TearmServiceViewController * tearm = [[TearmServiceViewController alloc]init];
+                [self.navigationController pushViewController:tearm animated:YES];
+            }
+            if (indexPath.row ==1) {
+                PrivacyPoolicyViewController *privacy = [[PrivacyPoolicyViewController alloc] init];
+                [self.navigationController pushViewController:privacy animated:YES];
+            }*/
         }
             break;
        

@@ -310,6 +310,8 @@
 		0EE951FA185EA4B9003F4638 /* talkBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE951CE185EA4B9003F4638 /* talkBg.png */; };
 		0EE951FB185EA4B9003F4638 /* video1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE951CF185EA4B9003F4638 /* video1.png */; };
 		0EE951FE185EE9EC003F4638 /* UIImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE951FD185EE9EC003F4638 /* UIImageViewController.m */; };
+		0EEFAE4E1895295500F44745 /* TearmServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEFAE4D1895295500F44745 /* TearmServiceViewController.m */; };
+		0EEFAE511895299500F44745 /* PrivacyPoolicyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEFAE501895299500F44745 /* PrivacyPoolicyViewController.m */; };
 		0EF14D2E1876B8CD008F4AF5 /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF14D2D1876B8CD008F4AF5 /* ImageViewController.m */; };
 		0EF6EB3A1884E81C00AE64AA /* Twitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF6EB391884E81C00AE64AA /* Twitter.m */; };
 		0EF6EB3D1884ED5300AE64AA /* TwitterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF6EB3C1884ED5300AE64AA /* TwitterViewController.m */; };
@@ -824,6 +826,10 @@
 		0EE951CF185EA4B9003F4638 /* video1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video1.png; sourceTree = "<group>"; };
 		0EE951FC185EE9EC003F4638 /* UIImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIImageViewController.h; path = Classes/UIImageViewController.h; sourceTree = "<group>"; };
 		0EE951FD185EE9EC003F4638 /* UIImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIImageViewController.m; path = Classes/UIImageViewController.m; sourceTree = "<group>"; };
+		0EEFAE4C1895295500F44745 /* TearmServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TearmServiceViewController.h; path = Classes/TearmServiceViewController.h; sourceTree = "<group>"; };
+		0EEFAE4D1895295500F44745 /* TearmServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TearmServiceViewController.m; path = Classes/TearmServiceViewController.m; sourceTree = "<group>"; };
+		0EEFAE4F1895299500F44745 /* PrivacyPoolicyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrivacyPoolicyViewController.h; path = setVC/PrivacyPoolicyViewController.h; sourceTree = "<group>"; };
+		0EEFAE501895299500F44745 /* PrivacyPoolicyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PrivacyPoolicyViewController.m; path = setVC/PrivacyPoolicyViewController.m; sourceTree = "<group>"; };
 		0EF14D2C1876B8CD008F4AF5 /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
 		0EF14D2D1876B8CD008F4AF5 /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
 		0EF6EB381884E81C00AE64AA /* Twitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Twitter.h; path = twitter/Twitter.h; sourceTree = "<group>"; };
@@ -2136,6 +2142,10 @@
 				0EE9518C185EA40D003F4638 /* BackgroundImgViewController.m */,
 				0EF79DFD18583ACF00EB8A64 /* SettingViewController.h */,
 				0EF79DFE18583ACF00EB8A64 /* SettingViewController.m */,
+				0EEFAE4C1895295500F44745 /* TearmServiceViewController.h */,
+				0EEFAE4D1895295500F44745 /* TearmServiceViewController.m */,
+				0EEFAE4F1895299500F44745 /* PrivacyPoolicyViewController.h */,
+				0EEFAE501895299500F44745 /* PrivacyPoolicyViewController.m */,
 				0EF79E1018584CAF00EB8A64 /* BackData.h */,
 				0EF79E1118584CAF00EB8A64 /* BackData.m */,
 			);
@@ -2477,6 +2487,7 @@
 				03D9C09318145E410039118F /* XMPPMessageArchiving.xcdatamodeld in Sources */,
 				03D9BF7918145E370039118F /* XMPPParser.m in Sources */,
 				03D9C07B18145E410039118F /* XMPPvCardTemp.m in Sources */,
+				0EEFAE511895299500F44745 /* PrivacyPoolicyViewController.m in Sources */,
 				03D9C06018145E410039118F /* XMPPRoster.m in Sources */,
 				03D9C0B618145E480039118F /* LibIDN.m in Sources */,
 				0EFAD95B18682AF2001F0DED /* HandlerUserIdAndDateFormater.m in Sources */,
@@ -2508,6 +2519,7 @@
 				0EF79DFF18583ACF00EB8A64 /* SettingViewController.m in Sources */,
 				03D9C06F18145E410039118F /* XMPPRoomOccupantHybridMemoryStorageObject.m in Sources */,
 				03D9C09A18145E410039118F /* XMPPPresence+XEP_0172.m in Sources */,
+				0EEFAE4E1895295500F44745 /* TearmServiceViewController.m in Sources */,
 				03D9C05B18145E410039118F /* XMPPRosterCoreDataStorage.m in Sources */,
 				03D9C07918145E410039118F /* XMPPvCardCoreDataStorageObject.m in Sources */,
 				03D9C09418145E410039118F /* XMPPMessageArchiving_Contact_CoreDataObject.m in Sources */,

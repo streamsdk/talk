@@ -165,10 +165,10 @@
 -(void)SetBackground{
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
-                                  initWithTitle:@"---- setting ----"
+                                  initWithTitle:nil
                                   delegate:self
                                   cancelButtonTitle:@"取消"
-                                  destructiveButtonTitle:@"确定"
+                                  destructiveButtonTitle:nil
                                   otherButtonTitles:@"set chat background", @"clear history data",nil];
     actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
     [actionSheet showInView:self.view];
@@ -186,12 +186,12 @@
         }
         isVideo = NO;
     }else{
-        if (buttonIndex ==1) {
+        if (buttonIndex ==0) {
             BackgroundImgViewController * bgView = [[BackgroundImgViewController alloc]init];
             bgView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
             [self presentViewController:bgView animated:YES completion:nil];
             
-        }else if (buttonIndex ==2){
+        }else if (buttonIndex ==1){
             isClearData = YES;
             UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You sure clear data?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
             view .delegate = self;
