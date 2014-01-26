@@ -61,7 +61,7 @@
     time--;
     disappearTime = [NSString stringWithFormat:@"%d",time];
     [button setTitle:disappearTime forState:UIControlStateNormal];
-    if (time==0) {
+    if (time==1) {
         ImageCache * cache = [ImageCache  sharedObject];
         TalkDB * talkDB = [[TalkDB alloc]init];
         NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
