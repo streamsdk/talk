@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ImageSendProtocol.h"
+#import "SendProtocol.h"
 #import "MyView.h"
 #import <QuartzCore/QuartzCore.h>
 @interface ImageViewController : UIViewController<UIPickerViewDataSource,UIPickerViewDelegate,UIActionSheetDelegate>
@@ -17,6 +17,6 @@
     
 }
 @property (nonatomic,strong) UIImage * image;
-@property (nonatomic,assign) id <ImageSendProtocol> imageSendProtocol;
+@property (nonatomic,assign) id <SendProtocol> imageSendProtocol;
 @property (strong,nonatomic)  MyView *drawView;
 @end

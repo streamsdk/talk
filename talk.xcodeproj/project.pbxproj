@@ -674,7 +674,7 @@
 		0E08478D182736BC00350741 /* UIBubbleTableViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBubbleTableViewDataSource.h; sourceTree = "<group>"; };
 		0E08478E182736BC00350741 /* UIBubbleTypingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBubbleTypingTableViewCell.h; sourceTree = "<group>"; };
 		0E08478F182736BC00350741 /* UIBubbleTypingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBubbleTypingTableViewCell.m; sourceTree = "<group>"; };
-		0E0EDF4C1877AFAD00477C42 /* ImageSendProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ImageSendProtocol.h; path = Classes/ImageSendProtocol.h; sourceTree = "<group>"; };
+		0E0EDF4C1877AFAD00477C42 /* SendProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SendProtocol.h; path = Classes/SendProtocol.h; sourceTree = "<group>"; };
 		0E0EDF4D1877E7FA00477C42 /* paintbrush@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paintbrush@2x.png"; sourceTree = "<group>"; };
 		0E0EDF4E1877E7FA00477C42 /* paintbrush.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paintbrush.png; sourceTree = "<group>"; };
 		0E0EDF511877F57E00477C42 /* brush.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brush.png; sourceTree = "<group>"; };
@@ -1910,7 +1910,7 @@
 				0E49F06B187E7BA200749A6D /* MyView.m */,
 				0EF14D2C1876B8CD008F4AF5 /* ImageViewController.h */,
 				0EF14D2D1876B8CD008F4AF5 /* ImageViewController.m */,
-				0E0EDF4C1877AFAD00477C42 /* ImageSendProtocol.h */,
+				0E0EDF4C1877AFAD00477C42 /* SendProtocol.h */,
 				0E4B13D6187CF15F0070752B /* DisappearImageController.h */,
 				0E4B13D7187CF15F0070752B /* DisappearImageController.m */,
 			);

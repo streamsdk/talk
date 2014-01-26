@@ -17,6 +17,7 @@
 @implementation DisPlayerViewController
 @synthesize moviePlayer,defaultFrame;
 @synthesize videopath,time,date;
+@synthesize pathUrl,isforever;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -38,32 +39,44 @@
     
     //create the controls
     ALMoviePlayerControls *movieControls;
-    if (time) {
-        movieControls= [[ALMoviePlayerControls alloc] initWithMoviePlayer:self.moviePlayer style:ALMoviePlayerControlsStyleDefault save:NO];
-        ImageCache * cache = [ImageCache  sharedObject];
-        TalkDB * talkDB = [[TalkDB alloc]init];
-        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
-        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-        [friendDict setObject:@"-1" forKey:@"time"];
-        [friendDict setObject:videopath forKey:@"video"];
-        [jsonDic setObject:friendDict forKey:[cache getFriendID]];
-        NSString  *str = [jsonDic JSONString];
-        [talkDB updateDB:date withContent:str];
-    }
-    else{
-        movieControls= [[ALMoviePlayerControls alloc] initWithMoviePlayer:self.moviePlayer style:ALMoviePlayerControlsStyleDefault save:YES];
+    if (isforever) {
+        movieControls = [[ALMoviePlayerControls alloc]initWithMoviePlayer:self.moviePlayer style:ALMoviePlayerControlsStyleDefault];
         [movieControls setVideoPath:videopath];
+        [movieControls setPathUrl:pathUrl];
+        [movieControls setVideoTime:time];
+    }else{
+        if (time) {
+            movieControls= [[ALMoviePlayerControls alloc] initWithMoviePlayer:self.moviePlayer style:ALMoviePlayerControlsStyleDefault save:NO];
+            ImageCache * cache = [ImageCache  sharedObject];
+            TalkDB * talkDB = [[TalkDB alloc]init];
+            NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+            NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+            [friendDict setObject:@"-1" forKey:@"time"];
+            [friendDict setObject:videopath forKey:@"video"];
+            [jsonDic setObject:friendDict forKey:[cache getFriendID]];
+            NSString  *str = [jsonDic JSONString];
+            [talkDB updateDB:date withContent:str];
+
+        }else{
+            movieControls= [[ALMoviePlayerControls alloc] initWithMoviePlayer:self.moviePlayer style:ALMoviePlayerControlsStyleDefault save:YES];
+            [movieControls setVideoPath:videopath];
+            
+        }
+
     }
-//    movieControls.delegate = self;
+    //    movieControls.delegate = self;
     [movieControls setBarColor:[UIColor colorWithRed:195/255.0 green:29/255.0 blue:29/255.0 alpha:0.5]];
     [movieControls setTimeRemainingDecrements:YES];
 
     //assign controls
     [self.moviePlayer setControls:movieControls];
     [self.view addSubview:self.moviePlayer.view];
-    
-    [self.moviePlayer setContentURL:[NSURL fileURLWithPath:videopath]];
-    
+    if (isforever) {
+        [self.moviePlayer setContentURL:pathUrl];
+
+    }else{
+        [self.moviePlayer setContentURL:[NSURL fileURLWithPath:videopath]];
+    }
     
     double delayInSeconds = 0.3;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
