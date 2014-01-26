@@ -45,7 +45,7 @@
     [self.view addSubview:imageView];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.tag = BUTTON_TAG;
-    [button setFrame:CGRectMake(260, 100, 50, 50)];
+    [button setFrame:CGRectMake(260, 40, 50, 50)];
     [button setBackgroundImage:[UIImage imageNamed:@"message_count.png"] forState:UIControlStateNormal];
     [button setTitle:disappearTime forState:UIControlStateNormal];
     [imageView addSubview:button];
