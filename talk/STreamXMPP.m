@@ -59,7 +59,7 @@ static XMPPReconnect *xmppReconnect;
     [xmppReconnect activate:xmppStream];
     [xmppStream addDelegate:self delegateQueue:dispatch_get_main_queue()];
     [xmppStream setHostName:@"streamsdk.com"];
-    xmppStream.enableBackgroundingOnSocket = YES;
+    //xmppStream.enableBackgroundingOnSocket = YES;
     //[xmppStream setHostName:@"192.168.1.15"];
     
     [xmppStream setHostPort:5222];
@@ -106,7 +106,7 @@ static XMPPReconnect *xmppReconnect;
 - (void)disconnect
 {
 	[self goOffline];
-	[xmppStream disconnect];
+    [xmppStream disconnect];
 }
 
 - (BOOL)connected{
