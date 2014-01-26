@@ -792,7 +792,7 @@
         imagePickerController.sourceType=UIImagePickerControllerSourceTypeCamera;
         imagePickerController.videoQuality = UIImagePickerControllerQualityTypeLow;
         imagePickerController.delegate = self;
-        imagePickerController.modalTransitionStyle=UIModalTransitionStyleFlipHorizontal;
+//        imagePickerController.modalTransitionStyle=UIModalTransitionStyleFlipHorizontal;
          imagePickerController.mediaTypes = [NSArray arrayWithObjects:(NSString*)kUTTypeImage,(NSString*)kUTTypeMovie,nil];
         imagePickerController.videoMaximumDuration = 10;
         
@@ -822,7 +822,7 @@
         videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
         CGFloat time = [self getVideoDuration:videoPath];
         if (time<=10) {
-            [picker dismissViewControllerAnimated:YES completion:^{
+            [picker dismissViewControllerAnimated:NO completion:^{
                 NSString * _time = [NSString stringWithFormat:@"%f",time];
                 DisPlayerViewController * playerVC = [[DisPlayerViewController alloc]init];
                 [playerVC setVideopath:[videoPath absoluteString]];
