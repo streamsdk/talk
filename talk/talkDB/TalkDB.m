@@ -125,8 +125,6 @@
                              NSString * time = [chatDic objectForKey:@"time"];
                             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
                             player.shouldAutoplay = NO;
-                            player.scalingMode = MPMovieScalingModeAspectFill;
-                            player.controlStyle = MPMovieControlStyleFullscreen;
                             UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"video"]];;
                             NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withTime:time withType:@"video" date:date type:BubbleTypeMine withVidePath:[chatDic objectForKey:@"video"]];

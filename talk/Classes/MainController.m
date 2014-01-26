@@ -37,7 +37,7 @@
 #import "DisappearImageController.h"
 #import "ChatSettingViewController.h"
 #import "BackgroundImgViewController.h"
-#import "ALMoviePlayerControls.h"
+
 #import "ChatBackGround.h"
 #define BUTTON_TAG 20000
 #define TOOLBARTAG		200
@@ -158,8 +158,6 @@
         NSData * data = [NSData dataWithContentsOfFile:path];
         [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageWithData:data]]];
     }
-    bubbleTableView.snapInterval = 120;
-    bubbleTableView.showAvatars = YES;
     [bubbleTableView reloadData];
     [self dismissKeyBoard];
     [self scrollBubbleViewToBottomAnimated:YES];
@@ -246,7 +244,6 @@
 
 - (NSInteger)rowsForBubbleTable:(UIBubbleTableView *)tableView
 {
-    NSLog(@"%d",[bubbleData count]);
     return [bubbleData count];
 }
 
@@ -370,45 +367,24 @@
         [photoHandler setController:self];
         [photoHandler sendPhoto:data forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID withTime:time];
     }
+    
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
 }
 
--(void) sendVideo:(NSString *)time withVideoUrl:(NSURL *)url{
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"uploading...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-//        videoHandler = [[VideoHandler alloc]init];
-        ImageCache *imageCache = [ImageCache sharedObject];
-        HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
-        NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[handler getUserID]];
-        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-        myData = [imageCache getImage:pImageId];
-        NSString *sendToID =[imageCache getFriendID];
-        NSMutableArray * dataArray = [[NSMutableArray alloc]init];
-        TalkDB * talk =[[TalkDB alloc]init];
-        dataArray = [talk readInitDB:[handler getUserID] withOtherID:sendToID];
-        bubbleData = dataArray;
-        for (NSBubbleData * data in bubbleData) {
-            data.delegate = self;
-        }
-        if (sendToID) {
-            [videoHandler setController:self];
-            [videoHandler setVideoPath:url];
-//
-            [videoHandler sendVideoforBubbleDataArray:bubbleData withVideoTime:time forBubbleMyData:myData withSendId:sendToID];
-              videoHandler.delegate = self;
-        }
-
-    }completionBlock:^{
-        [HUD removeFromSuperview];
-        HUD = nil;
-//        [bubbleTableView reloadData];
-        [self scrollBubbleViewToBottomAnimated:YES];
-        
-    }];
-    
+-(void) sendVideo:(NSString *)time {
+    ImageCache *imageCache = [ImageCache sharedObject];
+    NSString *sendToID =[imageCache getFriendID];
+    if (sendToID) {
+        [videoHandler setController:self];
+        [videoHandler setVideoPath:videoPath];
+        [videoHandler sendVideoforBubbleDataArray:bubbleData withVideoTime:time forBubbleMyData:myData withSendId:sendToID];
+         videoHandler.delegate = self;
+    }
+   
+    [self dismissKeyBoard];
+    [bubbleTableView reloadData];
+    [self scrollBubbleViewToBottomAnimated:YES];
 }
 #pragma mark send audio
 -(void) sendRecordAudio {
@@ -818,25 +794,14 @@
 
     }else{
         isVideo = YES;
-        [self dismissKeyBoard];
         videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
         CGFloat time = [self getVideoDuration:videoPath];
         if (time<=10) {
-            [picker dismissViewControllerAnimated:YES completion:^{
-                NSString * _time = [NSString stringWithFormat:@"%f",time];
-                DisPlayerViewController * playerVC = [[DisPlayerViewController alloc]init];
-                [playerVC setVideopath:[videoPath absoluteString]];
-                [playerVC setPathUrl:videoPath];
-                [playerVC setTime:_time];
-                [playerVC setIsforever:YES];
-                playerVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-                [self presentViewController:playerVC animated:YES completion:NULL];
-            }];
-           
-            /*[picker dismissViewControllerAnimated:YES completion:NULL];
+            
+            [picker dismissViewControllerAnimated:YES completion:NULL];
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"the video is permanent？" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
             alert.delegate = self;
-            [alert show];*/
+            [alert show];
         }else{
             
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Video time is too long" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
@@ -851,13 +816,13 @@
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (isVideo) {
-       /* CGFloat _time = [self getVideoDuration:videoPath];
+        CGFloat _time = [self getVideoDuration:videoPath];
         NSString * time = [NSString stringWithFormat:@"%f",_time];
         if (buttonIndex == 0) {
             [self sendVideo:time];
         }else{
             [self sendVideo:nil];
-        }*/
+        }
         isVideo = NO;
     }
     if(isClearData){
@@ -971,6 +936,7 @@
 -(void)reloadTable{
     NSBubbleData * bubble = [bubbleData lastObject];
     bubble.delegate = self;
+    
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
 }

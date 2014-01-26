@@ -13,7 +13,7 @@
 #import "IconView.h"
 #import "FacialView.h"
 #import "GetAllMessagesProtocol.h"
-#import "SendProtocol.h"
+#import "ImageSendProtocol.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MobileCoreServices/UTCoreTypes.h>
 
@@ -27,7 +27,7 @@
 #define facialViewHeight 170
 #define  buttonWh 34
 #define  ICONHEIGHT 80
-@interface MainController : UIViewController<UIBubbleTableViewDataSource,facialViewDelegate,UIVideoEditorControllerDelegate,UITextFieldDelegate,IconViewDelegate,UIAlertViewDelegate,GetAllMessagesProtocol,SendProtocol,UIActionSheetDelegate>
+@interface MainController : UIViewController<UIBubbleTableViewDataSource,facialViewDelegate,UIVideoEditorControllerDelegate,UITextFieldDelegate,IconViewDelegate,UIAlertViewDelegate,GetAllMessagesProtocol,ImageSendProtocol,UIActionSheetDelegate>
 {
     NSURL  *videoPath;
     

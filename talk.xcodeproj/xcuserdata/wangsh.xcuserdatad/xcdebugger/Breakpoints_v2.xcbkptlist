@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/handler/VideoHandler.m"
-            timestampString = "412411457.087206"
+            timestampString = "412231269.112248"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "130"
-            endingLineNumber = "130"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
             landmarkName = "-getFileSize:"
             landmarkType = "5">
          </BreakpointContent>
@@ -229,12 +229,28 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "talk/Classes/MainController.m"
-            timestampString = "412418348.184529"
+            filePath = "talk/handler/VideoHandler.m"
+            timestampString = "412243730.282875"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "751"
-            endingLineNumber = "751"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "-receiveVideoFile:forBubbleDataArray:forBubbleOtherData:withVideoTime:withSendId:withFromId:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "talk/Classes/MainController.m"
+            timestampString = "412312961.997407"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "727"
+            endingLineNumber = "727"
             landmarkName = "-takePhoto"
             landmarkType = "5">
          </BreakpointContent>
@@ -252,22 +268,6 @@
             startingLineNumber = "44"
             endingLineNumber = "44"
             landmarkName = "-setType:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "talk/Classes/MainController.m"
-            timestampString = "412418348.184529"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "299"
-            endingLineNumber = "299"
-            landmarkName = "-getFiles:withFromID:withBody:withPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

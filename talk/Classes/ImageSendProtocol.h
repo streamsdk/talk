@@ -8,10 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol SendProtocol <NSObject>
+@protocol ImageSendProtocol <NSObject>
 
 -(void)sendImages:(NSData *)data withTime:(NSString *)time;
-
--(void) sendVideo:(NSString *)time withVideoUrl:(NSURL *)url;
 
 @end

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MediaPlayer/MPMoviePlayerController.h>
-#import "SendProtocol.h"
+
 @class ALMoviePlayerController;
 
 typedef enum {
@@ -39,6 +39,7 @@ typedef enum {
 } ALMoviePlayerControlsState;
 
 @interface ALMoviePlayerControls : UIView
+
 /** 
  The style of the controls. Can be changed on the fly.
  
@@ -93,19 +94,10 @@ typedef enum {
 
 @property (nonatomic) BOOL SaveFile;
 
-@property (nonatomic) BOOL isForever;
-
 @property(nonatomic,retain) NSString * videoPath;
-
-@property(nonatomic,retain) NSURL * pathUrl;
-
-@property(nonatomic,retain) NSString * videoTime;
-
-@property (nonatomic,assign)id <SendProtocol> videoSendProtocolDelegate;
 /** 
  The default initializer method. The parameter may not be nil.
  */
 - (id)initWithMoviePlayer:(ALMoviePlayerController *)moviePlayer style:(ALMoviePlayerControlsStyle)style save:(BOOL)isSave;
-- (id)initWithMoviePlayer:(ALMoviePlayerController *)moviePlayer style:(ALMoviePlayerControlsStyle)style;
 
 @end

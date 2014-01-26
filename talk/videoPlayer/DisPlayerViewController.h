@@ -8,13 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "ALMoviePlayerController.h"
+
 @interface DisPlayerViewController : UIViewController <ALMoviePlayerControllerDelegate>
 
 @property (nonatomic,retain) NSString * videopath;
-@property (nonatomic,retain) NSURL* pathUrl;
 @property (nonatomic,retain) NSString * time;
 @property (nonatomic,retain) NSDate * date;
 @property (nonatomic, strong) ALMoviePlayerController *moviePlayer;
 @property (nonatomic) CGRect defaultFrame;
-@property (nonatomic,assign) BOOL isforever;
 @end

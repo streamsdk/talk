@@ -212,7 +212,7 @@ static NSMutableArray *colors;
 }
 -(void) sendImageClicked {
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"uploading...";
+    HUD.labelText = @"loading friends...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
         [self setImageSendProtocol:mainVC];
@@ -337,16 +337,16 @@ static NSMutableArray *colors;
     
     CGContextDrawImage(cgctx, rect, inImage);
     
-    unsigned char* _data = CGBitmapContextGetData (cgctx);
+    unsigned char* data = CGBitmapContextGetData (cgctx);
     
-    if (_data != NULL) {
+    if (data != NULL) {
         @try {
             int offset = 4*((w*round(point.y))+round(point.x));
             NSLog(@"offset: %d", offset);
-            int alpha =  _data[offset];
-            int red = _data[offset+1];
-            int green = _data[offset+2];
-            int blue = _data[offset+3];
+            int alpha =  data[offset];
+            int red = data[offset+1];
+            int green = data[offset+2];
+            int blue = data[offset+3];
             NSLog(@"offset: %i colors: RGB A %i %i %i  %i",offset,red,green,blue,alpha);
             color  = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
         }
@@ -358,7 +358,7 @@ static NSMutableArray *colors;
         
     }
     CGContextRelease(cgctx);
-    if (data) { free(_data); }
+    if (data) { free(data); }
     
     UIButton * brush = (UIButton *)[self.view viewWithTag:BRUSH_TAG];
     [colors addObject:color];
