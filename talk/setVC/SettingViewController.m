@@ -109,7 +109,7 @@
     [HUD showAnimated:YES whileExecutingBlock:^{
         [self loadAvatar:loginName];
     }completionBlock:^{
-        [myTableView reloadData];
+//        [myTableView reloadData];
         [HUD removeFromSuperview];
         HUD = nil;
     }];
