@@ -176,18 +176,29 @@
 //    [self.navigationController pushViewController:chat animated:YES];
 }
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-   
-    if (buttonIndex ==1) {
-        BackgroundImgViewController * bgView = [[BackgroundImgViewController alloc]init];
-        bgView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [self presentViewController:bgView animated:YES completion:nil];
-
-    }else if (buttonIndex ==2){
-        isClearData = YES;
-        UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You sure clear data?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
-        view .delegate = self;
-        [view show];
+    if (isVideo) {
+        CGFloat _time = [self getVideoDuration:videoPath];
+        NSString * time = [NSString stringWithFormat:@"%f",_time];
+        if (buttonIndex == 0) {
+            [self sendVideo:time];
+        }else{
+            [self sendVideo:nil];
+        }
+        isVideo = NO;
+    }else{
+        if (buttonIndex ==1) {
+            BackgroundImgViewController * bgView = [[BackgroundImgViewController alloc]init];
+            bgView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+            [self presentViewController:bgView animated:YES completion:nil];
+            
+        }else if (buttonIndex ==2){
+            isClearData = YES;
+            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You sure clear data?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+            view .delegate = self;
+            [view show];
+        }
     }
+   
 }
 - (void)viewDidLoad
 {
@@ -768,7 +779,7 @@
         imagePickerController.sourceType=UIImagePickerControllerSourceTypeCamera;
         imagePickerController.videoQuality = UIImagePickerControllerQualityTypeLow;
         imagePickerController.delegate = self;
-        imagePickerController.modalTransitionStyle=UIModalTransitionStyleFlipHorizontal;
+//        imagePickerController.modalTransitionStyle=UIModalTransitionStyleFlipHorizontal;
          imagePickerController.mediaTypes = [NSArray arrayWithObjects:(NSString*)kUTTypeImage,(NSString*)kUTTypeMovie,nil];
         imagePickerController.videoMaximumDuration = 10;
         
@@ -798,10 +809,20 @@
         CGFloat time = [self getVideoDuration:videoPath];
         if (time<=10) {
             
-            [picker dismissViewControllerAnimated:YES completion:NULL];
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"the video is permanent？" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
+            [picker dismissViewControllerAnimated:YES completion:^{
+                UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                              initWithTitle:nil
+                                              delegate:self
+                                              cancelButtonTitle:nil
+                                              destructiveButtonTitle:nil
+                                              otherButtonTitles:@"Disappear", @"appear",nil];
+                actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+                [actionSheet showInView:self.view];
+            }];
+           
+            /*UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"the video is permanent？" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
             alert.delegate = self;
-            [alert show];
+            [alert show];*/
         }else{
             
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Video time is too long" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
