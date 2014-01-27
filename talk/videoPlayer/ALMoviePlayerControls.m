@@ -64,6 +64,7 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
 @property (nonatomic, strong) ALButton *seekBackwardButton;
 @property (nonatomic, strong) ALButton *scaleButton;
 @property (nonatomic, strong) ALButton *saveButton;
+@property (nonatomic, strong) ALButton *disappearButton;
 @end
 
 @implementation ALMoviePlayerControls
@@ -118,6 +119,13 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
         _bottomBar.color = _barColor;
         _bottomBar.alpha = 0.f;
         [self addSubview:_bottomBar];
+    }else{
+      
+        _disappearButton = [[ALButton alloc]init];
+        [_disappearButton setFrame:CGRectMake(260, 40, 50, 50)];
+        [_disappearButton setBackgroundImage:[UIImage imageNamed:@"message_count.png"] forState:UIControlStateNormal];
+        [_disappearButton setTitle:@"" forState:UIControlStateNormal];
+        [self addSubview:_disappearButton];
     }
    
     _durationSlider = [[UISlider alloc] init];
@@ -205,7 +213,7 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
     
     else if (_style == ALMoviePlayerControlsStyleEmbedded || (_style == ALMoviePlayerControlsStyleDefault && !_moviePlayer.isFullscreen)) {
         [_bottomBar addSubview:_durationSlider];
-        [_bottomBar addSubview:_timeElapsedLabel];
+//        [_bottomBar addSubview:_timeElapsedLabel];
         [_bottomBar addSubview:_timeRemainingLabel];
         
         _fullscreenButton = [[ALButton alloc] init];
@@ -492,12 +500,14 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
     self.playPauseButton.selected = YES;
     [self.durationTimer invalidate];
     [self.moviePlayer setCurrentPlaybackTime:0.0];
-    [self monitorMoviePlayback]; //reset values
+//
     [self hideControls:nil];
     self.state = ALMoviePlayerControlsStateIdle;
     if (!_SaveFile) {
         [self.moviePlayer setFullscreen:NO animated:YES];
 
+    }else{
+        [self monitorMoviePlayback]; //reset values
     }
     
 }
@@ -655,6 +665,8 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
         secondsRemaining = floor(fmod(totalTime, 60.0));
     }
     self.timeRemainingLabel.text = self.timeRemainingDecrements ? [NSString stringWithFormat:@"-%.0f:%02.0f", minutesRemaining, secondsRemaining] : [NSString stringWithFormat:@"%.0f:%02.0f", minutesRemaining, secondsRemaining];
+    NSString *totaltime = self.timeRemainingDecrements ? [NSString stringWithFormat:@"%0.0f",secondsRemaining] : [NSString stringWithFormat:@"%0.0f",secondsRemaining];
+    [self.disappearButton setTitle:totaltime forState:UIControlStateNormal];
 }
 
 - (void)monitorMoviePlayback {
