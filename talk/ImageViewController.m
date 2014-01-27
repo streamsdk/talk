@@ -214,14 +214,19 @@ static NSMutableArray *colors;
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"loading friends...";
     [self.view addSubview:HUD];
+    data = UIImageJPEGRepresentation(image, 1.0);
+    NSInteger t = [data length]/1024;
     [HUD showAnimated:YES whileExecutingBlock:^{
         [self setImageSendProtocol:mainVC];
         CGFloat maxWidth=self.view.frame.size.width;
         CGFloat maxheight=self.view.frame.size.height;
-        UIImage *_image = [self imageWithImage:image
-                              scaledToMaxWidth:maxWidth
-                                     maxHeight:maxheight];
-        data = UIImageJPEGRepresentation(_image, 0.3);
+        if (t>100) {
+            UIImage *_image = [self imageWithImage:image
+                                  scaledToMaxWidth:maxWidth
+                                         maxHeight:maxheight];
+            data = UIImageJPEGRepresentation(_image, 0.3);
+        }
+        
       [imageSendProtocol sendImages:data withTime:time ];
     }completionBlock:^{
         [self dismissViewControllerAnimated:YES completion:NULL];

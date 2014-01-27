@@ -75,7 +75,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"MyFriends";
     self.navigationController.navigationItem.hidesBackButton = YES;
     self.navigationController.navigationBarHidden = NO;
    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
@@ -225,14 +224,16 @@
     STreamXMPP *con = [STreamXMPP sharedObject];
     [con setXmppDelegate:self];
     if (![con connected])
-       [con connect:[handle getUserID] withPassword:[handle getUserIDPassword]];
-    
+        self.title = @"connecting...";
+   [con connect:[handle getUserID] withPassword:[handle getUserIDPassword]];
+   
     
 }
 
 #pragma mark - STreamXMPPProtocol
 - (void)didAuthenticate{
     NSLog(@"");
+    self.title = @"reading...";
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     STreamObject *so = [[STreamObject alloc] init];
     NSMutableString *history = [[NSMutableString alloc] init];
@@ -273,10 +274,12 @@
 }
 
 - (void)didNotAuthenticate:(NSXMLElement *)error{
+    self.title = @"failed...";
     NSLog(@" ");
 }
 
 - (void)didReceivePresence:(XMPPPresence *)presence{
+    self.title = @"MyFriends";
     NSString *presenceType = [presence type];
     if ([presenceType isEqualToString:@"subscribe"]){
         
