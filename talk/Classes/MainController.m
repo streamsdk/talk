@@ -754,7 +754,6 @@
 }
 -(void)addVideo
 {
-    isVideo = YES;
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.navigationBar.tintColor = [UIColor colorWithRed:72.0/255.0 green:106.0/255.0 blue:154.0/255.0 alpha:1.0];
     imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -805,7 +804,7 @@
         }];
 
     }else{
-        
+        isVideo = YES;
         videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
         CGFloat time = [self getVideoDuration:videoPath];
         if (time<=10) {
@@ -826,17 +825,11 @@
             [alert show];*/
         }else{
             
-            if(isVideo) {
-                [picker dismissViewControllerAnimated:YES completion:^{
-                    NSString * t = [NSString stringWithFormat:@"%f",time];
-                    [self sendVideo:t];
-                }];
-            }
-           /* UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Video time is too long" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Video time is too long" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
             [alert show];
             [picker dismissViewControllerAnimated:YES completion:NULL];
             [self dismissKeyBoard];
-            [self scrollBubbleViewToBottomAnimated:YES];*/
+            [self scrollBubbleViewToBottomAnimated:YES];
         }
 
     }

@@ -123,8 +123,8 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
       
         _disappearButton = [[ALButton alloc]init];
         [_disappearButton setFrame:CGRectMake(260, 40, 50, 50)];
-//        [_disappearButton setBackgroundImage:[UIImage imageNamed:@"message_count.png"] forState:UIControlStateNormal];
-//        [_disappearButton setTitle:@"" forState:UIControlStateNormal];
+        [_disappearButton setBackgroundImage:[UIImage imageNamed:@"message_count.png"] forState:UIControlStateNormal];
+        [_disappearButton setTitle:@"" forState:UIControlStateNormal];
         [self addSubview:_disappearButton];
     }
    
@@ -665,8 +665,6 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
         secondsRemaining = floor(fmod(totalTime, 60.0));
     }
     self.timeRemainingLabel.text = self.timeRemainingDecrements ? [NSString stringWithFormat:@"-%.0f:%02.0f", minutesRemaining, secondsRemaining] : [NSString stringWithFormat:@"%.0f:%02.0f", minutesRemaining, secondsRemaining];
-    
-    [_disappearButton setBackgroundImage:[UIImage imageNamed:@"message_count.png"] forState:UIControlStateNormal];
     NSString *totaltime = self.timeRemainingDecrements ? [NSString stringWithFormat:@"%0.0f",secondsRemaining] : [NSString stringWithFormat:@"%0.0f",secondsRemaining];
     [self.disappearButton setTitle:totaltime forState:UIControlStateNormal];
 }
