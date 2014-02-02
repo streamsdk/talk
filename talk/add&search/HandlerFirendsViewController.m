@@ -242,7 +242,7 @@
     _searchBar.placeholder=@"search";
     _searchBar.keyboardType=UIKeyboardTypeNamePhonePad;*/
 
-    NSArray *segmentedArray = [[NSArray alloc]initWithObjects:@"Add",@"Search",@"History",nil];
+    NSArray *segmentedArray = [[NSArray alloc]initWithObjects:@"",@"",@"",nil];
     
     segmentedControl = [[UISegmentedControl alloc]initWithItems:segmentedArray];
 
@@ -251,12 +251,16 @@
     
     segmentedControl.segmentedControlStyle=UISegmentedControlStyleBordered;
     [segmentedControl addTarget:self action:@selector(segmentAction:)forControlEvents:UIControlEventValueChanged];
-   [segmentedControl setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [segmentedControl setBackgroundColor:[UIColor brownColor]];
+   //[segmentedControl setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [segmentedControl setBackgroundColor:[UIColor lightGrayColor]];
     NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor blueColor],UITextAttributeTextColor,[UIFont fontWithName:@"DIN Alternate" size:17],UITextAttributeFont ,nil];
     [segmentedControl setTitleTextAttributes:dic forState:UIControlStateNormal];
 
     [self.view addSubview:segmentedControl];
+    
+    [segmentedControl setImage:[[UIImage imageNamed:@"addf.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forSegmentAtIndex:0];
+    [segmentedControl setImage:[[UIImage imageNamed:@"searchf.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forSegmentAtIndex:1];
+    [segmentedControl setImage:[[UIImage imageNamed:@"mailf.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forSegmentAtIndex:2];
     
                                                         
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
@@ -381,7 +385,7 @@
         case FriendsHistory:{
             [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
             [self loadAvatar:[friendsHistoryArray objectAtIndex:indexPath.row] withCell:cell];
-            [button setBackgroundImage:[UIImage imageNamed:@"invitation.png"] forState:UIControlStateNormal];
+            [button setBackgroundImage:[UIImage imageNamed:@"invi.png"] forState:UIControlStateNormal];
              button.tag = indexPath.row;
             cell.textLabel.text = [friendsHistoryArray objectAtIndex:indexPath.row];
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];

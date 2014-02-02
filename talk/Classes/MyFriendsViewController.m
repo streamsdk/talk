@@ -326,65 +326,75 @@
     if (![friendId isEqualToString:fromID]) {
         [imageCache setMessagesCount:fromID];
     }
-    //parse new message format
-    NSData *jsonData = [body dataUsingEncoding:NSUTF8StringEncoding];
-    JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
-    NSDictionary *json = [decoder objectWithData:jsonData];
-    NSString *type = [json objectForKey:@"type"];
     
+    [imageCache saveJsonData:body forFileId:fileId];
     STreamFile *sf = [[STreamFile alloc] init];
-    NSData *data = [sf downloadAsData:fileId];
     
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
-   
-    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
-    NSString * path;
-    if ([type isEqualToString:@"photo"]) {
-        NSString *duration = [json objectForKey:@"duration"];
-        NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];
-        [data writeToFile:photoPath atomically:YES];
-        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-        if (duration) {
-            [friendDict setObject:duration forKey:@"time"];
+    [sf downloadAsData:fileId downloadedData:^(NSData *data, NSString *objectId){
+       
+        
+        NSString *jsonBody = [imageCache getJsonData:objectId];
+        NSData *jsonData = [jsonBody dataUsingEncoding:NSUTF8StringEncoding];
+        JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+        NSDictionary *json = [decoder objectWithData:jsonData];
+        NSString *type = [json objectForKey:@"type"];
+        
+        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
+        HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
+        NSString * path;
+        if ([type isEqualToString:@"photo"]) {
+            NSString *duration = [json objectForKey:@"duration"];
+            NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];
+            [data writeToFile:photoPath atomically:YES];
+            NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+            if (duration) {
+                [friendDict setObject:duration forKey:@"time"];
+            }
+            [friendDict setObject:photoPath forKey:@"photo"];
+            [jsonDic setObject:friendDict forKey:fromID];
+            path = photoPath;
+        }else if ([type isEqualToString:@"video"]){
+            NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+            NSString *duration = [json objectForKey:@"duration"];
+            
+            NSString * mp4Path = [[handler getPath] stringByAppendingString:@".mp4"];
+            [data writeToFile : mp4Path atomically: YES ];
+            [handler videoPath:mp4Path];
+            if (duration)
+                [friendDict setObject:duration forKey:@"time"];
+            [friendDict setObject:mp4Path forKey:@"video"];
+            [jsonDic setObject:friendDict forKey:fromID];
+            path = mp4Path;
+        }else if ([type isEqualToString:@"voice"]){
+            
+            NSString *duration = [json objectForKey:@"duration"];
+            NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
+            NSString * recordFilePath = [[handler getPath] stringByAppendingString:@".aac"];
+            [data writeToFile:recordFilePath atomically:YES];
+            path = recordFilePath;
+            [friendsDict setObject:duration forKey:@"time"];
+            [friendsDict setObject:recordFilePath forKey:@"audiodata"];
+            [jsonDic setObject:friendsDict forKey:fromID];
         }
-        [friendDict setObject:photoPath forKey:@"photo"];
-        [jsonDic setObject:friendDict forKey:fromID];
-        path = photoPath;
-    }else if ([type isEqualToString:@"video"]){
-         NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-        NSString *duration = [json objectForKey:@"duration"];
         
-        NSString * mp4Path = [[handler getPath] stringByAppendingString:@".mp4"];
-        [data writeToFile : mp4Path atomically: YES ];
-        [handler videoPath:mp4Path];
-        if (duration)
-            [friendDict setObject:duration forKey:@"time"];
-        [friendDict setObject:mp4Path forKey:@"video"];
-        [jsonDic setObject:friendDict forKey:fromID];
-        path = mp4Path;
-    }else if ([type isEqualToString:@"voice"]){
+        TalkDB * db = [[TalkDB alloc]init];
+        NSString * userID = [handler getUserID];
+        NSString  *str = [jsonDic JSONString];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+        NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
+        [handler setDate:date];
+        [db insertDBUserID:userID fromID:fromID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
         
-        NSString *duration = [json objectForKey:@"duration"];
-        NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
-        NSString * recordFilePath = [[handler getPath] stringByAppendingString:@".aac"];
-        [data writeToFile:recordFilePath atomically:YES];
-        path = recordFilePath;
-        [friendsDict setObject:duration forKey:@"time"];
-        [friendsDict setObject:recordFilePath forKey:@"audiodata"];
-        [jsonDic setObject:friendsDict forKey:fromID];
-    }
-    TalkDB * db = [[TalkDB alloc]init];
-    NSString * userID = [handler getUserID];
-    NSString  *str = [jsonDic JSONString];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-    NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
-    [handler setDate:date];
-    [db insertDBUserID:userID fromID:fromID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
+        [messagesProtocol getFiles:data withFromID:fromID withBody:body withPath:path];
+        [self.tableView reloadData];
+
+        
+        
+    }];
     
-    [messagesProtocol getFiles:data withFromID:fromID withBody:body withPath:path];
-     [self.tableView reloadData];
-}
+    
+  }
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 

@@ -148,43 +148,49 @@ static XMPPReconnect *xmppReconnect;
     
 }
 
+-(void)sendFileMessage:(NSString *)toUser withFileId:(NSString *)fileId withMessage:(NSString *)message{
+    
+    NSMutableString *userJID = [[NSMutableString alloc] init];
+    [userJID appendString:[STreamSession getClientAuthKey]];
+    [userJID appendString:toUser];
+    [userJID appendString:@"@streamsdk.com"];
+    
+    NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
+    [body setStringValue:message];
+    
+    NSXMLElement *properties = [NSXMLElement elementWithName:@"properties"];
+    NSXMLElement *property = [NSXMLElement elementWithName:@"property"];
+    NSXMLElement *name = [NSXMLElement elementWithName:@"name"];
+    NSXMLElement *value = [NSXMLElement elementWithName:@"value"];
+    NSXMLElement *m = [NSXMLElement elementWithName:@"message"];
+    
+    [name setStringValue:@"streamsdk.filetransfer"];
+    [value addAttribute:[NSXMLNode attributeWithName:@"type" stringValue:@"string"]];
+    [value setStringValue:fileId];
+    [property addChild:name];
+    [property addChild:value];
+    [properties addChild:property];
+    [m addAttributeWithName:@"to" stringValue:userJID];
+    [m addAttributeWithName:@"id" stringValue:@"1111111"];
+    [m addAttributeWithName:@"xmlns" stringValue:@"jabber:client"];
+    [m addChild:body];
+    [m addChild:properties];
+    [xmppStream sendElement:m];
+    
+    
+}
+
+
 -(void)sendFileInBackground:(NSData *)data toUser:(NSString *)userName finished:(FinishCall)doStaff byteSent:(DelegateCall)call withBodyData:(NSMutableDictionary *)bodyData{
     
     STreamFile *sf = [[STreamFile alloc] init];
    
     [sf postData:data finished:^(NSString *res){
         
-        NSMutableString *userJID = [[NSMutableString alloc] init];
-        [userJID appendString:[STreamSession getClientAuthKey]];
-        [userJID appendString:userName];
-        [userJID appendString:@"@streamsdk.com"];
-        
-        NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
-        
-        //new media message format
         [bodyData setObject:[sf fileId] forKey:@"fileId"];
         NSString *bodyJsonData = [bodyData JSONString];
-        [body setStringValue:bodyJsonData];
-        
-        NSXMLElement *properties = [NSXMLElement elementWithName:@"properties"];
-        NSXMLElement *property = [NSXMLElement elementWithName:@"property"];
-        
-        NSXMLElement *name = [NSXMLElement elementWithName:@"name"];
-        [name setStringValue:@"streamsdk.filetransfer"];
-        NSXMLElement *value = [NSXMLElement elementWithName:@"value"];
-        [value addAttribute:[NSXMLNode attributeWithName:@"type" stringValue:@"string"]];
-        [value setStringValue:[sf fileId]];
-        [property addChild:name];
-        [property addChild:value];
-        [properties addChild:property];
-        
-         NSXMLElement *m = [NSXMLElement elementWithName:@"message"];
-        [m addAttributeWithName:@"to" stringValue:userJID];
-        [m addAttributeWithName:@"id" stringValue:@"1111111"];
-        [m addAttributeWithName:@"xmlns" stringValue:@"jabber:client"];
-        [m addChild:body];
-        [m addChild:properties];
-        [xmppStream sendElement:m];
+        NSLog(@"body json data: %@", bodyJsonData);
+        [self sendFileMessage:userName withFileId:[sf fileId] withMessage:bodyJsonData];
         doStaff(res);
     
         

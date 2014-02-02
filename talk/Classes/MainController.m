@@ -193,7 +193,7 @@
             
         }else if (buttonIndex ==1){
             isClearData = YES;
-            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"You sure clear data?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"Are you sure clear data?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
             view .delegate = self;
             [view show];
         }
@@ -430,7 +430,7 @@
 -(void) recordCancel
 {
     [self.voice cancelled];
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"取消了" delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"Viewed" delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
     [alert show];
 }
 
@@ -815,7 +815,7 @@
                                               delegate:self
                                               cancelButtonTitle:nil
                                               destructiveButtonTitle:nil
-                                              otherButtonTitles:@"Disappear", @"appear",nil];
+                                              otherButtonTitles:@"Video disappear after played", @"Keep the video after played",nil];
                 actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
                 [actionSheet showInView:self.view];
             }];
@@ -825,7 +825,7 @@
             [alert show];*/
         }else{
             
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Video time is too long" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Exceed the allowed video size. Maxium size is 10MB" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
             [alert show];
             [picker dismissViewControllerAnimated:YES completion:NULL];
             [self dismissKeyBoard];

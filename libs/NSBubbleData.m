@@ -122,7 +122,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     disappearPath = path;
     senddate = date;
     
-    NSString * text =@"我抛了一张会消失的图片";
+    NSString * text =@"I sent a photo to you";
     UIFont *font = [UIFont systemFontOfSize:16.0f];
     CGSize size = [(text ? text : @"") sizeWithFont:font constrainedToSize:CGSizeMake(220, 9999) lineBreakMode:NSLineBreakByWordWrapping];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
@@ -146,13 +146,13 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     
     if ([time isEqualToString:@"-1"]) {
         [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        [button setTitle:@"已取消" forState:UIControlStateNormal];
+        [button setTitle:@"Viewed" forState:UIControlStateNormal];
         view.userInteractionEnabled = NO;
 
     }else{
         view.userInteractionEnabled = YES;
         [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        [button setTitle:@"点击查看" forState:UIControlStateNormal];
+        [button setTitle:@"Click to view" forState:UIControlStateNormal];
         [button addTarget:self action:@selector(lookImageClicked) forControlEvents:UIControlEventTouchUpInside];
     }
 
@@ -245,7 +245,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
         return [self initWithView:imageView date:date type:type insets:insets];
 
     }else{
-        NSString * text =@"我抛了一段会消失的视频";
+        NSString * text =@"I sent a video to you";
         UIFont *font = [UIFont systemFontOfSize:16.0f];
         CGSize size = [(text ? text : @"") sizeWithFont:font constrainedToSize:CGSizeMake(220, 9999) lineBreakMode:NSLineBreakByWordWrapping];
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
@@ -269,13 +269,13 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
         
         if ([time isEqualToString:@"-1"]) {
             [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-            [button setTitle:@"已取消" forState:UIControlStateNormal];
+            [button setTitle:@"Viewed" forState:UIControlStateNormal];
             view.userInteractionEnabled = NO;
             
         }else{
             view.userInteractionEnabled = YES;
             [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-            [button setTitle:@"点击查看" forState:UIControlStateNormal];
+            [button setTitle:@"Click to view" forState:UIControlStateNormal];
             [button addTarget:self action:@selector(playerVideo) forControlEvents:UIControlEventTouchUpInside];
         }
         

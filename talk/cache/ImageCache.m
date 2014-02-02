@@ -19,6 +19,8 @@ static NSMutableArray *_messagesCount;
 static NSMutableDictionary *_messagesDict;
 static NSMutableArray * _colors;
 static NSMutableArray * _twitters;
+static NSMutableDictionary *_jsonData;
+
 @implementation ImageCache
 
 
@@ -37,10 +39,23 @@ static NSMutableArray * _twitters;
         _messagesDict = [[NSMutableDictionary alloc]init];
         _colors =[[NSMutableArray alloc]init];
         _twitters = [[NSMutableArray alloc]init];
+        _jsonData = [[NSMutableDictionary alloc] init];
     });
     
     return sharedInstance;
 
+}
+
+-(void)saveJsonData:(NSString *)jd forFileId:(NSString *)fileId{
+    [_jsonData setObject:jd forKey:fileId];
+}
+
+-(NSString *)getJsonData:(NSString *)fileId{
+    return [_jsonData objectForKey:fileId];
+}
+
+-(void)deleteJsonData:(NSString *)fileId{
+    [_jsonData removeObjectForKey:fileId];
 }
 
 -(void)saveUserMetadata:(NSString *)userName withMetadata:(NSMutableDictionary *)metaData{

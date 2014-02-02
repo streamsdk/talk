@@ -37,4 +37,11 @@
 -(void)setTwitters:(NSMutableArray *)twitters;;
 
 -(NSMutableArray *)getTwitters;
+
+-(void)saveJsonData:(NSString *)jd forFileId:(NSString *)fileId;
+
+-(NSString *)getJsonData:(NSString *)fileId;
+
+-(void)deleteJsonData:(NSString *)fileId;
+
 @end

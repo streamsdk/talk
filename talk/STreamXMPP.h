@@ -30,6 +30,8 @@
 
 -(void)sendMessage:(NSString *)toUser withMessage:(NSString *)message;
 
+-(void)sendFileMessage:(NSString *)toUser withFileId:(NSString *)fileId withMessage:(NSString *)message;
+
 -(void)sendFileInBackground:(NSData *)data toUser:(NSString *)userName finished:(FinishCall)doStaff byteSent:(DelegateCall)call withBodyData:(NSMutableDictionary *)bodyData;
 
 @end

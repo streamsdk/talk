@@ -11,9 +11,12 @@
 		030D10D0186D344700910292 /* camera_icon150.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10CC186D344700910292 /* camera_icon150.png */; };
 		030D10D1186D344700910292 /* video150.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10CD186D344700910292 /* video150.png */; };
 		03451B8518326C5600030E79 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03451B8418326C5600030E79 /* SignUpViewController.m */; };
+		0345C21A189E9EF6007AB90F /* addf.png in Resources */ = {isa = PBXBuildFile; fileRef = 0345C219189E9EF5007AB90F /* addf.png */; };
+		0345C21C189EA1BB007AB90F /* searchf.png in Resources */ = {isa = PBXBuildFile; fileRef = 0345C21B189EA1BB007AB90F /* searchf.png */; };
+		0345C21E189EA20E007AB90F /* mailf.png in Resources */ = {isa = PBXBuildFile; fileRef = 0345C21D189EA20E007AB90F /* mailf.png */; };
+		0345C220189EA4D9007AB90F /* invi.png in Resources */ = {isa = PBXBuildFile; fileRef = 0345C21F189EA4D9007AB90F /* invi.png */; };
 		0348E5D91882A7D1002C7622 /* friends.png in Resources */ = {isa = PBXBuildFile; fileRef = 0348E5D81882A7D1002C7622 /* friends.png */; };
 		0348E5DB1882A9BC002C7622 /* addfriend.png in Resources */ = {isa = PBXBuildFile; fileRef = 0348E5DA1882A9BC002C7622 /* addfriend.png */; };
-		0348E5DD1882B09A002C7622 /* invitation.png in Resources */ = {isa = PBXBuildFile; fileRef = 0348E5DC1882B09A002C7622 /* invitation.png */; };
 		0348E5DF1882B7AC002C7622 /* clocknew.png in Resources */ = {isa = PBXBuildFile; fileRef = 0348E5DE1882B7AC002C7622 /* clocknew.png */; };
 		0348E5E31882BA2F002C7622 /* microphonefat.png in Resources */ = {isa = PBXBuildFile; fileRef = 0348E5E21882BA2F002C7622 /* microphonefat.png */; };
 		0348E5E51882BB4D002C7622 /* plus256.png in Resources */ = {isa = PBXBuildFile; fileRef = 0348E5E41882BB4D002C7622 /* plus256.png */; };
@@ -349,9 +352,12 @@
 		030D10CD186D344700910292 /* video150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video150.png; sourceTree = "<group>"; };
 		03451B8318326C5600030E79 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SignUpViewController.h; path = Classes/SignUpViewController.h; sourceTree = "<group>"; };
 		03451B8418326C5600030E79 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SignUpViewController.m; path = Classes/SignUpViewController.m; sourceTree = "<group>"; };
+		0345C219189E9EF5007AB90F /* addf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addf.png; sourceTree = "<group>"; };
+		0345C21B189EA1BB007AB90F /* searchf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchf.png; sourceTree = "<group>"; };
+		0345C21D189EA20E007AB90F /* mailf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mailf.png; sourceTree = "<group>"; };
+		0345C21F189EA4D9007AB90F /* invi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = invi.png; sourceTree = "<group>"; };
 		0348E5D81882A7D1002C7622 /* friends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friends.png; sourceTree = "<group>"; };
 		0348E5DA1882A9BC002C7622 /* addfriend.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addfriend.png; sourceTree = "<group>"; };
-		0348E5DC1882B09A002C7622 /* invitation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = invitation.png; sourceTree = "<group>"; };
 		0348E5DE1882B7AC002C7622 /* clocknew.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clocknew.png; sourceTree = "<group>"; };
 		0348E5E21882BA2F002C7622 /* microphonefat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = microphonefat.png; sourceTree = "<group>"; };
 		0348E5E41882BB4D002C7622 /* plus256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus256.png; sourceTree = "<group>"; };
@@ -2020,6 +2026,10 @@
 		0EE951A1185EA4B9003F4638 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0345C21F189EA4D9007AB90F /* invi.png */,
+				0345C21D189EA20E007AB90F /* mailf.png */,
+				0345C21B189EA1BB007AB90F /* searchf.png */,
+				0345C219189E9EF5007AB90F /* addf.png */,
 				0E3C3C9E188A2CE7003D43EB /* color.png */,
 				0E3C3C98188A1632003D43EB /* selectcolors.png */,
 				0EF6EB4118853FF400AE64AA /* clockselect.png */,
@@ -2035,7 +2045,6 @@
 				0348E5E41882BB4D002C7622 /* plus256.png */,
 				0348E5E21882BA2F002C7622 /* microphonefat.png */,
 				0348E5DE1882B7AC002C7622 /* clocknew.png */,
-				0348E5DC1882B09A002C7622 /* invitation.png */,
 				0348E5DA1882A9BC002C7622 /* addfriend.png */,
 				0348E5D81882A7D1002C7622 /* friends.png */,
 				0E03AAFB1880FDB800F7BDC7 /* colors.jpg */,
@@ -2262,11 +2271,13 @@
 				0348E5ED1882C577002C7622 /* tick512.png in Resources */,
 				0E19E80C18711C5A00523232 /* Target.png in Resources */,
 				0E9551621887DD94007CD92C /* b22@2x.png in Resources */,
+				0345C21C189EA1BB007AB90F /* searchf.png in Resources */,
 				0E49F050187E333700749A6D /* movieFullscreen@2x.png in Resources */,
 				0EE951ED185EA4B9003F4638 /* Text@2x.png in Resources */,
 				0E19E83518716AA100523232 /* blackArrow@2x.png in Resources */,
 				0E49F049187E333700749A6D /* movieEndFullscreen.png in Resources */,
 				0E9551641887DD94007CD92C /* b33.png in Resources */,
+				0345C21A189E9EF6007AB90F /* addf.png in Resources */,
 				0E49F04B187E333700749A6D /* movieForward.png in Resources */,
 				0EE951EC185EA4B9003F4638 /* Text.png in Resources */,
 				0EE951EF185EA4B9003F4638 /* typingMine@2x.png in Resources */,
@@ -2326,11 +2337,11 @@
 				0EF6EB4218853FF400AE64AA /* clockselect.png in Resources */,
 				0E95516F1887DD94007CD92C /* headImage.jpg in Resources */,
 				0E49F051187E333700749A6D /* moviePause.png in Resources */,
-				0348E5DD1882B09A002C7622 /* invitation.png in Resources */,
 				0E95515D1887DD94007CD92C /* b1.png in Resources */,
 				0E0434D3187A735700A16705 /* separator@2x.png in Resources */,
 				0EE951DC185EA4B9003F4638 /* bubbleMine@2x.png in Resources */,
 				0E95515F1887DD94007CD92C /* b11@2x.png in Resources */,
+				0345C21E189EA20E007AB90F /* mailf.png in Resources */,
 				0E49F068187E7B8F00749A6D /* redo.png in Resources */,
 				0EE951F6185EA4B9003F4638 /* photoMark.png in Resources */,
 				0E49F054187E333700749A6D /* moviePlay@2x.png in Resources */,
@@ -2364,6 +2375,7 @@
 				0EE951F8185EA4B9003F4638 /* selectAdd.png in Resources */,
 				0E49F046187E333700749A6D /* movieBackward@2x.png in Resources */,
 				030D10D1186D344700910292 /* video150.png in Resources */,
+				0345C220189EA4D9007AB90F /* invi.png in Resources */,
 				0ED8ECA218288DC400C84741 /* mic_talk_358x358@2x.png in Resources */,
 				0E49F04A187E333700749A6D /* movieEndFullscreen@2x.png in Resources */,
 				0E95515E1887DD94007CD92C /* b11.png in Resources */,
