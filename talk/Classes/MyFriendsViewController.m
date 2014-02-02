@@ -223,10 +223,10 @@
     [self setMessagesProtocol:mainVC];
     STreamXMPP *con = [STreamXMPP sharedObject];
     [con setXmppDelegate:self];
-    if (![con connected])
+    if (![con connected]){
         self.title = @"connecting...";
-   [con connect:[handle getUserID] withPassword:[handle getUserIDPassword]];
-   
+        [con connect:[handle getUserID] withPassword:[handle getUserIDPassword]];
+    }
     
 }
 
@@ -252,7 +252,8 @@
         NSString *type = [json objectForKey:@"type"];
         NSString *from = [json objectForKey:@"from"];
         if ([type isEqualToString:@"text"]){
-            [self didReceiveMessage:jsonValue withFrom:from];
+            NSString *receivedMessage = [json objectForKey:@"message"];
+            [self didReceiveMessage:receivedMessage withFrom:from];
         }else{
             NSString *fileId = [json objectForKey:@"fileId"];
             [self didReceiveFile:fileId withBody:jsonValue withFrom:from];
@@ -298,17 +299,12 @@
         [imageCache setMessagesCount:fromID];
     }
     
-    //parse new message format
-    NSData *jsonData = [message dataUsingEncoding:NSUTF8StringEncoding];
-    JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
-    NSDictionary *json = [decoder objectWithData:jsonData];
-    NSString *receiveMessage = [json objectForKey:@"message"];
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
 
     HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
     NSString * userID = [handler getUserID];
-    [friendDict setObject:receiveMessage forKey:@"messages"];
+    [friendDict setObject:message forKey:@"messages"];
     [jsonDic setObject:friendDict forKey:fromID];
     NSString  *str = [jsonDic JSONString];
     
@@ -320,7 +316,7 @@
      TalkDB * db = [[TalkDB alloc]init];
     [db insertDBUserID:userID fromID:fromID withContent:str withTime:str2 withIsMine:1];
     
-    [messagesProtocol getMessages:receiveMessage withFromID:fromID];
+    [messagesProtocol getMessages:message withFromID:fromID];
     [self.tableView reloadData];
 }
 

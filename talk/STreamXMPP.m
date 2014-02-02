@@ -214,6 +214,10 @@ static XMPPReconnect *xmppReconnect;
     [xmppDelegate didNotAuthenticate:error];
 }
 
+- (void)xmppStream:(XMPPStream *)sender didReceivePresence:(XMPPPresence *)presence {
+    [xmppDelegate didReceivePresence:presence];
+}
+
 - (void)xmppStream:(XMPPStream *)sender didReceiveMessage:(XMPPMessage *)message
 {
 	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
@@ -232,7 +236,25 @@ static XMPPReconnect *xmppReconnect;
     }
  	if ([message isMessageWithBody])
 	{
-		NSString *filetransferId = @"";
+		
+        NSString *messageBody = [message body];
+        NSData *jsonData = [messageBody dataUsingEncoding:NSUTF8StringEncoding];
+        JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+        NSDictionary *json = [decoder objectWithData:jsonData];
+        NSString *type = [json objectForKey:@"type"];
+        NSString *chatId = [json objectForKey:@"id"];
+        if ([type isEqualToString:@"ack"]){
+            NSLog(@"ack received");
+            return;
+        }
+        NSMutableDictionary *ack = [[NSMutableDictionary alloc] init];
+        [ack setObject:@"ack" forKey:@"type"];
+        [ack setObject:chatId forKey:@"id"];
+        NSString *messageSent = [ack JSONString];
+        [self sendMessage:fromID withMessage:messageSent];
+        
+        
+        NSString *filetransferId = @"";
         DDXMLElement *pro = [message elementForName:@"properties"];
         if (pro){
             DDXMLElement *p = [pro elementForName:@"property"];
@@ -245,9 +267,10 @@ static XMPPReconnect *xmppReconnect;
         }
         
         if (filetransferId && ![filetransferId isEqualToString:@""]){
-            [xmppDelegate didReceiveFile:filetransferId withBody:[message body] withFrom:fromID];
+            [xmppDelegate didReceiveFile:filetransferId withBody:messageBody withFrom:fromID];
         }else{
-            [xmppDelegate didReceiveMessage:[message body] withFrom:fromID];
+            NSString *receivedMessage = [json objectForKey:@"message"];
+            [xmppDelegate didReceiveMessage:receivedMessage withFrom:fromID];
         }
     }
 }
@@ -268,11 +291,6 @@ static XMPPReconnect *xmppReconnect;
     
 }
 
-- (NSArray *)getAllRoster{
-    NSArray *friends = [userFriends getAllKeys];
-    [friends delete:@"reserved.streamsdktoken"];
-    return [userFriends getAllKeys];
-}
 
 - (void)xmppStreamDidRegister:(XMPPStream *)sender{
     NSLog(@"I'm in register method");
@@ -283,47 +301,6 @@ static XMPPReconnect *xmppReconnect;
     NSLog(@"Sorry the registration is failed");
 }
 
-- (void)sendRosterRequest{
-    
-    NSXMLElement *queryElement = [NSXMLElement elementWithName: @"query" xmlns: @"jabber:iq:roster"];
-    NSXMLElement *iqStanza = [NSXMLElement elementWithName: @"iq"];
-    [iqStanza addAttributeWithName: @"from" stringValue:myJID];
-    [iqStanza addAttributeWithName: @"id" stringValue:[[xmppStream myJID] resource]];
-    [iqStanza addAttributeWithName: @"type" stringValue: @"get"];
-    [iqStanza addChild: queryElement];
-    [xmppStream sendElement: iqStanza];
-    
-}
-
-- (void)acceptRosterRequest:(XMPPPresence *)presence{
-    [self sendSubscribed:presence];
-    [self sendSubscribe:[presence fromStr]];
-}
-
-- (BOOL)xmppStream:(XMPPStream *)sender didReceiveIQ:(XMPPIQ *)iq
-{
-	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
-	NSXMLElement *queryElement = [iq elementForName: @"query" xmlns: @"jabber:iq:roster"];
-    
-    if (queryElement) {
-        NSArray *itemElements = [queryElement elementsForName: @"item"];
-        NSMutableArray *jids = [[NSMutableArray alloc] init];
-        for (int i=0; i<[itemElements count]; i++) {
-            NSString *jid=[[[itemElements objectAtIndex:i] attributeForName:@"jid"] stringValue];
-            [jids addObject:jid];
-            NSLog(@"%@", jid);
-        }
-        //there might be a problem here with multiple sent. Needs future check
-        NSArray *friends = [userFriends getAllKeys];
-        for (NSString *f in friends){
-            if (![jids containsObject:f] && ![f isEqualToString:@"reserved.streamsdktoken"]){
-                [self sendSubscribe:f];
-            }
-        }
-        
-    }
-	return NO;
-}
 
 - (void)sendMessage:(NSString *)toUser withMessage:(NSString *)message{
     
@@ -340,59 +317,6 @@ static XMPPReconnect *xmppReconnect;
     [m addChild:body];
     [xmppStream sendElement:m];
     
-}
-
-- (void)xmppStream:(XMPPStream *)sender didReceivePresence:(XMPPPresence *)presence {
-    NSString *presenceType = [presence type];
-    if([presenceType isEqualToString:@"subscribe"]){
-        NSArray *friends = [userFriends getAllKeys];
-        if ([friends containsObject:[presence fromStr]]){
-            [self sendSubscribed:presence];
-            [self sendSubscribe:[presence fromStr]];
-        }
-        else
-            [xmppDelegate didReceivePresence:presence];
-    }
-    
-    [xmppDelegate didReceivePresence:presence];
-}
-
-- (void)sendSubscribed:(XMPPPresence *)p{
-    
-    NSXMLElement *presence = [NSXMLElement elementWithName:@"presence"];
-    [presence addAttributeWithName:@"type" stringValue:@"subscribed"];
-    [presence addAttributeWithName:@"to" stringValue:[p fromStr]];
-    [presence addAttributeWithName:@"from" stringValue:myJID];
-    [[self xmppStream] sendElement:presence];
-    [self createRosterEntryIfNeeded:[p fromStr]];
-    
-}
-
-- (void)createRosterEntryIfNeeded: (NSString *)friendId{
-    
-    if (userFriends){
-        NSArray *keys = [userFriends getAllKeys];
-        if (![keys containsObject:friendId]){
-            [userFriends addStaff:friendId withObject:@"dummy"];
-            [userFriends updateInBackground];
-        }
-    }
-    
-}
-
-
-- (void)sendSubscribe: (NSString *)to{
-    
-    NSXMLElement *presence = [NSXMLElement elementWithName:@"presence"];
-    [presence addAttributeWithName:@"type" stringValue:@"subscribe"];
-    [presence addAttributeWithName:@"to" stringValue:to];
-    [presence addAttributeWithName:@"from" stringValue:myJID];
-    [[self xmppStream] sendElement:presence];
-    
-}
-
-- (void)xmppRoster:(XMPPRoster *)sender didReceiveBuddyRequest:(XMPPPresence *)presence{
-    NSLog(@"");
 }
 
 

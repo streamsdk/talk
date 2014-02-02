@@ -777,11 +777,11 @@
         
         UIImagePickerController *imagePickerController=[[UIImagePickerController alloc] init];
         imagePickerController.sourceType=UIImagePickerControllerSourceTypeCamera;
-        imagePickerController.videoQuality = UIImagePickerControllerQualityTypeLow;
+        imagePickerController.videoQuality = UIImagePickerControllerQualityTypeMedium;
         imagePickerController.delegate = self;
 //        imagePickerController.modalTransitionStyle=UIModalTransitionStyleFlipHorizontal;
          imagePickerController.mediaTypes = [NSArray arrayWithObjects:(NSString*)kUTTypeImage,(NSString*)kUTTypeMovie,nil];
-        imagePickerController.videoMaximumDuration = 10;
+        imagePickerController.videoMaximumDuration = 30;
         
         [self presentViewController:imagePickerController animated:YES completion:NULL];
         
@@ -807,7 +807,7 @@
         isVideo = YES;
         videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
         CGFloat time = [self getVideoDuration:videoPath];
-        if (time<=10) {
+        if (time<=30) {
             
             [picker dismissViewControllerAnimated:YES completion:^{
                 UIActionSheet *actionSheet = [[UIActionSheet alloc]

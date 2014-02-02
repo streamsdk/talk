@@ -76,9 +76,11 @@
     [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     
     
+    long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
     NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
     if (time)
         [bodyDic setObject:time forKey:@"duration"];
+    [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
     [bodyDic setObject:@"photo" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
     

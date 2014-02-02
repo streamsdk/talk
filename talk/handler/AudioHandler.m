@@ -54,6 +54,8 @@
     
     
     NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
+    long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
+    [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
     [bodyDic setObject:bodyData forKey:@"duration"];
     [bodyDic setObject:@"voice" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];

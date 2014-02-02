@@ -135,8 +135,8 @@
             [xmpp disconnect];
         }];
     }*/
-    STreamXMPP *xmpp = [STreamXMPP sharedObject];
-    [xmpp disconnect];
+   // STreamXMPP *xmpp = [STreamXMPP sharedObject];
+   // [xmpp disconnect];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application

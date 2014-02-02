@@ -44,14 +44,13 @@
     _sendID = sendID;
     _time = time;
     [self encodeToMp4];
-  
 }
 - (void)encodeToMp4
 {
     
     AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:videoPath options:nil];
     NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
-    NSString*  _mp4Quality = AVAssetExportPresetLowQuality;
+    NSString*  _mp4Quality = AVAssetExportPresetMediumQuality;
 //    NSString*  _mp4Quality =AVAssetExportPresetHighestQuality;
     if ([compatiblePresets containsObject:_mp4Quality]) {
         
@@ -168,6 +167,8 @@
     if (time)
         [friendDict setObject:time forKey:@"time"];
     [friendDict setObject:_mp4Path forKey:@"video"];
+    //[friendDict setObject:[videoPath absoluteString] forKey:@"video"];
+    
     [jsonDic setObject:friendDict forKey:_sendID];
     NSString  *str = [jsonDic JSONString];
     
@@ -179,10 +180,13 @@
     [db insertDBUserID:[handler getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     
     NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
+    long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
+    
     if (time)
         [bodyDic setObject:time forKey:@"duration"];
     [bodyDic setObject:@"video" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
+    [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
 
     
     STreamXMPP *con = [STreamXMPP sharedObject];

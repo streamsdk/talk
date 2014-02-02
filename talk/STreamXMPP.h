@@ -16,7 +16,6 @@
 @interface STreamXMPP : NSObject  <XMPPRosterDelegate>{
     
     XMPPStream *xmppStream;
-    STreamObject *userFriends;
 }
 + (STreamXMPP *)sharedObject;
 
@@ -30,10 +29,6 @@
 -(BOOL)connected;
 
 -(void)sendMessage:(NSString *)toUser withMessage:(NSString *)message;
-
--(NSArray *)getAllRoster;
-
--(void)acceptRosterRequest:(XMPPPresence *)presence;
 
 -(void)sendFileInBackground:(NSData *)data toUser:(NSString *)userName finished:(FinishCall)doStaff byteSent:(DelegateCall)call withBodyData:(NSMutableDictionary *)bodyData;
 

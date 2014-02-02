@@ -36,8 +36,10 @@
     STreamXMPP *con = [STreamXMPP sharedObject];
     
     //new message format
+    long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
     NSMutableDictionary *messagesDic = [[NSMutableDictionary alloc] init];
     [messagesDic setObject:messages forKey:@"message"];
+    [messagesDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
     [messagesDic setObject:@"text" forKey:@"type"];
     [messagesDic setObject:[handler getUserID] forKey:@"from"];
     NSString *messageSent = [messagesDic JSONString];
