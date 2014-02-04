@@ -10,6 +10,7 @@
 		030D10CF186D344700910292 /* photog150.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10CB186D344700910292 /* photog150.png */; };
 		030D10D0186D344700910292 /* camera_icon150.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10CC186D344700910292 /* camera_icon150.png */; };
 		030D10D1186D344700910292 /* video150.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10CD186D344700910292 /* video150.png */; };
+		0316AE1818A189DE00F3329A /* settings2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0316AE1718A189DE00F3329A /* settings2.png */; };
 		03451B8518326C5600030E79 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03451B8418326C5600030E79 /* SignUpViewController.m */; };
 		0345C21A189E9EF6007AB90F /* addf.png in Resources */ = {isa = PBXBuildFile; fileRef = 0345C219189E9EF5007AB90F /* addf.png */; };
 		0345C21C189EA1BB007AB90F /* searchf.png in Resources */ = {isa = PBXBuildFile; fileRef = 0345C21B189EA1BB007AB90F /* searchf.png */; };
@@ -350,6 +351,7 @@
 		030D10CB186D344700910292 /* photog150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photog150.png; sourceTree = "<group>"; };
 		030D10CC186D344700910292 /* camera_icon150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_icon150.png; sourceTree = "<group>"; };
 		030D10CD186D344700910292 /* video150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video150.png; sourceTree = "<group>"; };
+		0316AE1718A189DE00F3329A /* settings2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings2.png; sourceTree = "<group>"; };
 		03451B8318326C5600030E79 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SignUpViewController.h; path = Classes/SignUpViewController.h; sourceTree = "<group>"; };
 		03451B8418326C5600030E79 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SignUpViewController.m; path = Classes/SignUpViewController.m; sourceTree = "<group>"; };
 		0345C219189E9EF5007AB90F /* addf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addf.png; sourceTree = "<group>"; };
@@ -2026,6 +2028,7 @@
 		0EE951A1185EA4B9003F4638 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0316AE1718A189DE00F3329A /* settings2.png */,
 				0345C21F189EA4D9007AB90F /* invi.png */,
 				0345C21D189EA20E007AB90F /* mailf.png */,
 				0345C21B189EA1BB007AB90F /* searchf.png */,
@@ -2301,6 +2304,7 @@
 				0E2E5EB618726D230044DC4C /* message_count.png in Resources */,
 				0348E5E51882BB4D002C7622 /* plus256.png in Resources */,
 				030D10CF186D344700910292 /* photog150.png in Resources */,
+				0316AE1818A189DE00F3329A /* settings2.png in Resources */,
 				0E19E83918716AA100523232 /* grayArrow@2x.png in Resources */,
 				0EE951EE185EA4B9003F4638 /* typingMine.png in Resources */,
 				0E19E83418716AA100523232 /* blackArrow.png in Resources */,
