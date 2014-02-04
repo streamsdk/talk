@@ -20,6 +20,8 @@
 
 +(void) setUserName: (NSString *)name;
 
++(void) setUpServerUrl: (NSString *)serverUrl;
+
 +(NSString *) getUserName;
 
 /*!
