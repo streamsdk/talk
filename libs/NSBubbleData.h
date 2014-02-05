@@ -28,7 +28,6 @@ typedef enum _NSBubbleType
 @property (nonatomic, strong) UIImage *avatar;
 @property (nonatomic ,strong) AVAudioPlayer *audioPlayer;
 @property (nonatomic,strong) NSData * audioData;
-@property (nonatomic,strong) NSData * videoData;
 @property (nonatomic,retain) NSString * _videoPath;
 @property (nonatomic,retain) NSString * _videotime;
 @property (nonatomic,retain) NSDate * _videodate;
@@ -58,8 +57,9 @@ typedef enum _NSBubbleType
 + (id)dataWithtimes:(NSString *)times date:(NSDate *)date type:(NSBubbleType)type withData:(NSData *)data;
 
 //video
-- (id)initWithImage:(UIImage *)image withData:(NSData *)data withTime:(NSString *)time withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath;
-+ (id)dataWithImage:(UIImage *)image withData:(NSData *)data withTime:(NSString *)time withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath;
+//withData:(NSData *)data
+- (id)initWithImage:(UIImage *)image  withTime:(NSString *)time withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath;
++ (id)dataWithImage:(UIImage *)image  withTime:(NSString *)time withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath;
 
 
 - (id)initWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type insets:(UIEdgeInsets)insets;

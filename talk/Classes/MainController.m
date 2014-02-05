@@ -390,6 +390,8 @@
         [videoHandler setController:self];
         [videoHandler setVideoPath:videoPath];
         [videoHandler sendVideoforBubbleDataArray:bubbleData withVideoTime:time forBubbleMyData:myData withSendId:sendToID];
+        NSBubbleData * last = [bubbleData lastObject];
+        last.delegate = self;
          videoHandler.delegate = self;
     }
    

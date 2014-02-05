@@ -29,7 +29,7 @@
         MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
         player.shouldAutoplay = NO;
         UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-        NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withData:data withTime:time withType:@"video" date:[handler getDate] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
+        NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withTime:time withType:@"video" date:[handler getDate] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
         if (otherData)
             bdata.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:bdata];
@@ -104,9 +104,9 @@
         date = [NSDate dateWithTimeIntervalSinceNow:0];
         MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:videoPath];
         player.shouldAutoplay = NO;
-        NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
+//        NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
         UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-        NSBubbleData * bdata = [NSBubbleData dataWithImage:fileImage withData:videoData withTime:_time withType:@"video" date:date type:BubbleTypeMine withVidePath:_mp4Path];
+        NSBubbleData * bdata = [NSBubbleData dataWithImage:fileImage withTime:_time withType:@"video" date:date type:BubbleTypeMine withVidePath:_mp4Path];
         if (_myData)
             bdata.avatar = [UIImage imageWithData:_myData];
         [_bubbleData addObject:bdata];
