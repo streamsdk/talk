@@ -36,6 +36,7 @@
 {
     NSMutableDictionary *countDict;
     MainController *mainVC;
+    BOOL firstRead;
 }
 @end
 
@@ -63,13 +64,29 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
 
-    ImageCache *imageCache = [ImageCache sharedObject];
-    [imageCache setFriendID:nil];
-    userData = [[NSMutableArray alloc]init];
-    sectionHeadsKeys=[[NSMutableArray alloc]init];
-    [self readAddDb];
-    sortedArrForArrays = [self getChineseStringArr:userData];
-    [self.tableView reloadData];
+    if (firstRead) {
+        __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        HUD.labelText = @"loading ...";
+        [self.view addSubview:HUD];
+        [HUD showAnimated:YES whileExecutingBlock:^{
+            [self loadFriends];
+        }completionBlock:^{
+            [self.tableView reloadData];
+            [HUD removeFromSuperview];
+            HUD = nil;
+            firstRead = NO;
+        }];
+
+    }else{
+        ImageCache *imageCache = [ImageCache sharedObject];
+        [imageCache setFriendID:nil];
+        userData = [[NSMutableArray alloc]init];
+        sectionHeadsKeys=[[NSMutableArray alloc]init];
+        [self readAddDb];
+        sortedArrForArrays = [self getChineseStringArr:userData];
+        [self.tableView reloadData];
+    }
+    
     
 }
 - (void)viewDidLoad
@@ -88,7 +105,7 @@
     
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     _reloading= NO;
-    
+    firstRead = YES;
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-64)];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
