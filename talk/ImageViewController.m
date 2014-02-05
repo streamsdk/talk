@@ -136,6 +136,18 @@ static NSMutableArray *colors;
     [self.view addSubview:redoButton];
     [self.view addSubview:brushButton];
     [self.view addSubview:doneButton];
+    /*UIToolbar *toolBar=[[UIToolbar alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-75,self.view.frame.size.width,75)];
+    toolBar.opaque = NO;
+    toolBar.barStyle=UIBarButtonItemStylePlain;
+    toolBar.backgroundColor = [UIColor clearColor];
+    toolBar.clearsContextBeforeDrawing = YES;
+
+    UIBarButtonItem * useitem = [[UIBarButtonItem alloc] initWithCustomView:useButton];
+    UIBarButtonItem * doneitem = [[UIBarButtonItem alloc] initWithCustomView:useButton];
+    UIBarButtonItem * clockitem = [[UIBarButtonItem alloc] initWithCustomView:useButton];
+
+    toolBar.items = [[NSArray alloc]initWithObjects:clockitem,useitem,doneitem, nil];
+    [self.view addSubview:toolBar];*/
     
 }
 -(void)undoClicked{
