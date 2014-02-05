@@ -62,6 +62,7 @@
 
     userName = [createUI setTextFrame:CGRectMake(20,height, viewFrame.size.width-40, 40)];
     userName.keyboardType = UIKeyboardTypeAlphabet;
+    userName.autocapitalizationType = UITextAutocapitalizationTypeNone;
     userName.delegate = self;
     [userName becomeFirstResponder];
     userName.placeholder = @"Input User Name";

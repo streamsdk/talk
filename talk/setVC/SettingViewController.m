@@ -191,6 +191,7 @@
             emailText = [[UITextField alloc] initWithFrame:CGRectMake(100,0,160,44)];
             [emailText setBackgroundColor:[UIColor clearColor]];
             [emailText setKeyboardType:UIKeyboardTypeEmailAddress];
+            emailText.autocapitalizationType = UITextAutocapitalizationTypeNone;
             emailText.delegate = self;
             [emailText setEnabled:NO];
             emailText.returnKeyType = UIReturnKeyDone;

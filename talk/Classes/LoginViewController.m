@@ -68,6 +68,7 @@
     userNameText.delegate = self;
     [userNameText becomeFirstResponder];
     userNameText.keyboardType = UIKeyboardTypeAlphabet;
+    userNameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [imageview addSubview:userNameText];
     
     password = [createUI setTextFrame:CGRectMake(20,150, self.view.frame.size.width-40, 50)];

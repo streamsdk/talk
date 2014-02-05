@@ -106,7 +106,7 @@
     messageText = [createUI setTextFrame:CGRectMake(60, 3, toolBar.frame.size.width-95, 34)];
     messageText.delegate = self;
     messageText.returnKeyType = UIReturnKeySend;
-    
+    messageText.autocapitalizationType = UITextAutocapitalizationTypeNone;
     faceButton = [createUI setButtonFrame:CGRectMake(toolBar.frame.size.width-33, 3,30, 34) withTitle:@"nil"];
     [faceButton setImage:[UIImage imageNamed:@"face512.png"] forState:UIControlStateNormal];
     [faceButton addTarget:self action:@selector(faceClicked) forControlEvents:UIControlEventTouchUpInside];

@@ -182,6 +182,8 @@
     _searchBar.barStyle=UIBarStyleDefault;
     _searchBar.placeholder=@"search";
     _searchBar.keyboardType=UIKeyboardTypeNamePhonePad;
+    _searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+
     [self.view addSubview:_searchBar];
 
     UILabel * searchLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-300, self.view.frame.size.width,100)];
