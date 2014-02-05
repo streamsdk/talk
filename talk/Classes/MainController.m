@@ -938,6 +938,9 @@
 
 -(void) playerVideo:(NSString *)path  withTime:(NSString *)time withDate:(NSDate *)date{
 
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+     NSError *err = nil;
+    [audioSession setCategory :AVAudioSessionCategoryPlayback error:&err];
     DisPlayerViewController * playerVC = [[DisPlayerViewController alloc]init];
     playerVC.videopath = path;
     playerVC.time = time;
