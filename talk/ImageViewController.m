@@ -11,6 +11,8 @@
 #import "MainController.h"
 #import "CreateUI.h"
 #import "ImageCache.h"
+#import "MyToolbar.h"
+
 #define CLOCKBUTTON_TAG 10000
 #define UNDO_TAG 1000
 #define REDO_TAG 2000
@@ -18,6 +20,7 @@
 #define BRUSH_TAG 4000
 #define USERPHOTO_TAG 5000
 #define VIEW_TAG 6000
+#define TOOLBAR_TAG 7000
 //保存线条颜色
 static NSMutableArray *colors;
 @interface ImageViewController ()
@@ -27,6 +30,8 @@ static NSMutableArray *colors;
     CreateUI * creat;
     UIImageView *colorsImageView;
     NSData * data;
+    NSArray * itemsarray;
+    NSArray * donearray;
 }
 @end
 
@@ -104,8 +109,12 @@ static NSMutableArray *colors;
     [colorsImageView setUserInteractionEnabled:YES];
     [self.view addSubview:colorsImageView];
     
+    MyToolbar *toolBar=[[MyToolbar alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-75,self.view.frame.size.width,75)];
+    toolBar.backgroundColor = [UIColor blackColor];
+    toolBar.tag =TOOLBAR_TAG;
+    
     UIButton *useButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frame = CGRectMake(self.view.frame.size.width-53, self.view.frame.size.height-56, 40, 40);
+    CGRect frame = CGRectMake(260, 20, 40, 40);
     [useButton setFrame:frame];
     [useButton setImage:[UIImage imageNamed:@"forward.png"] forState:UIControlStateNormal];
     [useButton addTarget:self action:@selector(sendStart) forControlEvents:UIControlEventTouchDown];
@@ -113,15 +122,15 @@ static NSMutableArray *colors;
     useButton.tag = USERPHOTO_TAG;
     
     UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frameDone = CGRectMake(self.view.frame.size.width-52, self.view.frame.size.height-56, 45, 45);
+    CGRect frameDone = CGRectMake(260, 20, 45, 45);
     [doneButton setFrame:frameDone];
     [doneButton setImage:[UIImage imageNamed:@"tick512.png"] forState:UIControlStateNormal];
     [doneButton addTarget:self action:@selector(doneClicked) forControlEvents:UIControlEventTouchUpInside];
     doneButton.tag = DONE_TAG;
-    doneButton.hidden = YES;
+//    doneButton.hidden = YES;
     
     UIButton * clockButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [clockButton setFrame:CGRectMake(10, self.view.frame.size.height-56, 40, 40)];
+    [clockButton setFrame:CGRectMake(10,20, 40, 40)];
     [clockButton setBackgroundImage:[UIImage imageNamed:@"clocknew.png"] forState:UIControlStateNormal];
     clockButton .tag = CLOCKBUTTON_TAG;
     clockButton.titleLabel.font = [UIFont systemFontOfSize:12.0f];
@@ -130,24 +139,22 @@ static NSMutableArray *colors;
     
     [self.view addSubview:backButton];
     [self.view addSubview:drawView];
-    [self.view addSubview:useButton];
-    [self.view addSubview:clockButton];
+//    [self.view addSubview:useButton];
+//    [self.view addSubview:clockButton];
     [self.view addSubview:undoButton];
     [self.view addSubview:redoButton];
     [self.view addSubview:brushButton];
-    [self.view addSubview:doneButton];
-    /*UIToolbar *toolBar=[[UIToolbar alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-75,self.view.frame.size.width,75)];
-    toolBar.opaque = NO;
-    toolBar.barStyle=UIBarButtonItemStylePlain;
-    toolBar.backgroundColor = [UIColor clearColor];
-    toolBar.clearsContextBeforeDrawing = YES;
-
+//    [self.view addSubview:doneButton];
+   
+    UIBarButtonItem *fiexibleSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem * useitem = [[UIBarButtonItem alloc] initWithCustomView:useButton];
-    UIBarButtonItem * doneitem = [[UIBarButtonItem alloc] initWithCustomView:useButton];
-    UIBarButtonItem * clockitem = [[UIBarButtonItem alloc] initWithCustomView:useButton];
-
-    toolBar.items = [[NSArray alloc]initWithObjects:clockitem,useitem,doneitem, nil];
-    [self.view addSubview:toolBar];*/
+    UIBarButtonItem * doneitem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
+    UIBarButtonItem * clockitem = [[UIBarButtonItem alloc] initWithCustomView:clockButton];
+    
+    donearray =[[NSArray alloc]initWithObjects:clockitem,fiexibleSpace,useitem, nil];
+    toolBar.items =donearray;
+    itemsarray = [[NSArray alloc]initWithObjects:clockitem,fiexibleSpace,doneitem, nil];
+    [self.view addSubview:toolBar];
     
 }
 -(void)undoClicked{
@@ -158,6 +165,8 @@ static NSMutableArray *colors;
 }
 -(void)doneClicked {
     
+    MyToolbar * toolBar = (MyToolbar *)[self.view viewWithTag:TOOLBAR_TAG];
+    toolBar.items = donearray;
     UIGraphicsBeginImageContext(drawView.bounds.size);
     [drawView.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *newImage=UIGraphicsGetImageFromCurrentImageContext();
@@ -165,12 +174,12 @@ static NSMutableArray *colors;
     image = newImage;
     UIButton * undo =(UIButton * )[self.view viewWithTag:UNDO_TAG];
     UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
-    UIButton * use =(UIButton * )[self.view viewWithTag:USERPHOTO_TAG];
-    UIButton * done =(UIButton * )[self.view viewWithTag:DONE_TAG];
+//    UIButton * use =(UIButton * )[self.view viewWithTag:USERPHOTO_TAG];
+//    UIButton * done =(UIButton * )[self.view viewWithTag:DONE_TAG];
     undo.hidden = YES;
     redo.hidden = YES;
-    use.hidden = NO;
-    done.hidden = YES;
+//    use.hidden = NO;
+//    done.hidden = YES;
 }
 
 -(void) paintbrushClicked {
@@ -315,6 +324,8 @@ static NSMutableArray *colors;
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    MyToolbar * toolBar = (MyToolbar *)[self.view viewWithTag:TOOLBAR_TAG];
+    toolBar.items = itemsarray;
     UIButton * undo =(UIButton * )[self.view viewWithTag:UNDO_TAG];
     UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
     UIButton * done =(UIButton * )[self.view viewWithTag:DONE_TAG];

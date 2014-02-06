@@ -193,6 +193,7 @@
 		0E0EDF501877E7FA00477C42 /* paintbrush.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0EDF4E1877E7FA00477C42 /* paintbrush.png */; };
 		0E0EDF521877F57E00477C42 /* brush.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0EDF511877F57E00477C42 /* brush.png */; };
 		0E0F82F818A3273C00E81CA5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0F82F718A3273C00E81CA5 /* MessageUI.framework */; };
+		0E0F82FE18A3549400E81CA5 /* MyToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F82FD18A3549400E81CA5 /* MyToolbar.m */; };
 		0E19E80C18711C5A00523232 /* Target.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E80B18711C5A00523232 /* Target.png */; };
 		0E19E83318716AA100523232 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E19E82918716AA100523232 /* EGORefreshTableHeaderView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0E19E83418716AA100523232 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E82B18716AA100523232 /* blackArrow.png */; };
@@ -690,6 +691,8 @@
 		0E0EDF4E1877E7FA00477C42 /* paintbrush.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paintbrush.png; sourceTree = "<group>"; };
 		0E0EDF511877F57E00477C42 /* brush.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brush.png; sourceTree = "<group>"; };
 		0E0F82F718A3273C00E81CA5 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		0E0F82FC18A3549400E81CA5 /* MyToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyToolbar.h; path = Classes/MyToolbar.h; sourceTree = "<group>"; };
+		0E0F82FD18A3549400E81CA5 /* MyToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyToolbar.m; path = Classes/MyToolbar.m; sourceTree = "<group>"; };
 		0E178C4C186C1F8000E16F71 /* GetAllMessagesProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GetAllMessagesProtocol.h; path = Classes/GetAllMessagesProtocol.h; sourceTree = "<group>"; };
 		0E19E80B18711C5A00523232 /* Target.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Target.png; sourceTree = "<group>"; };
 		0E19E82818716AA100523232 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
@@ -1928,6 +1931,8 @@
 				0E49F06B187E7BA200749A6D /* MyView.m */,
 				0EF14D2C1876B8CD008F4AF5 /* ImageViewController.h */,
 				0EF14D2D1876B8CD008F4AF5 /* ImageViewController.m */,
+				0E0F82FC18A3549400E81CA5 /* MyToolbar.h */,
+				0E0F82FD18A3549400E81CA5 /* MyToolbar.m */,
 				0E0EDF4C1877AFAD00477C42 /* ImageSendProtocol.h */,
 				0E4B13D6187CF15F0070752B /* DisappearImageController.h */,
 				0E4B13D7187CF15F0070752B /* DisappearImageController.m */,
@@ -2439,6 +2444,7 @@
 				44A80EB4183129E2006069DE /* UIExpandingTextViewInternal.m in Sources */,
 				03D9C08118145E410039118F /* XMPPvCardTempModule.m in Sources */,
 				0E1F9753186D964A00C709CE /* SearchDB.m in Sources */,
+				0E0F82FE18A3549400E81CA5 /* MyToolbar.m in Sources */,
 				44A80EAD183129E2006069DE /* EmojiEmoticons.m in Sources */,
 				03D9C05F18145E410039118F /* XMPPUserMemoryStorageObject.m in Sources */,
 				03D9C08F18145E410039118F /* XMPPCapabilitiesCoreDataStorage.m in Sources */,
