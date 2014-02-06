@@ -33,7 +33,6 @@
     BOOL isAddFriend;
     BOOL isSendRequest;
     UIButton * _button ;
-    BOOL isDeleteFriend;
 }
 @end
 
@@ -227,7 +226,6 @@
 	// Do any additional setup after loading the view.
     isAddFriend= YES;
     isSendRequest = NO;
-    isDeleteFriend= YES;
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     friendsAddPoint = CGPointZero;
     friendsSearchPoint = CGPointZero;
@@ -491,21 +489,11 @@
 
 -(void)deleteFriends:(UIButton *)sender {
     _button = (UIButton *)sender;
-    if (YES == isDeleteFriend) {
-        isAddFriend = NO;
-        NSString * str = [NSString stringWithFormat:@"You want to delete this friend %@?",[friendsAddArray objectAtIndex:sender.tag]];
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
-        alert.delegate = self;
-        [alert show];
-        isDeleteFriend = NO;
-    }else{
-        isAddFriend = YES;
-         isDeleteFriend = YES;
-        NSString * str = [NSString stringWithFormat:@"Do you want to add %@ as a friend?",[friendsAddArray objectAtIndex:sender.tag]];
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
-        alert.delegate = self;
-        [alert show];
-    }
+    isAddFriend = NO;
+    NSString * str = [NSString stringWithFormat:@"You want to delete this friend %@?",[friendsAddArray objectAtIndex:sender.tag]];
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+    alert.delegate = self;
+    [alert show];
 }
 
 -(void)delete{
@@ -558,19 +546,10 @@
 -(void)addFriends:(UIButton *)sender {
     
     _button = (UIButton *)sender;
-    if (YES == isAddFriend) {
         NSString * str = [NSString stringWithFormat:@"Do you want to add %@ as a friend?",[friendsAddArray objectAtIndex:sender.tag]];
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
         alert.delegate = self;
         [alert show];
-    }else{
-        NSString * str = [NSString stringWithFormat:@"You want to delete this friend %@?",[friendsAddArray objectAtIndex:sender.tag]];
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
-        alert.delegate = self;
-        [alert show];
-    }
-
-   
 }
 -(void)add {
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
