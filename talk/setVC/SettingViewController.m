@@ -17,9 +17,10 @@
 #import "MBProgressHUD.h"
 #import "TearmServiceViewController.h"
 #import "PrivacyPoolicyViewController.h"
-
+#import <MessageUI/MessageUI.h>
+#import<MessageUI/MFMailComposeViewController.h>
 #define IMAGE_TAG 10000
-@interface SettingViewController ()
+@interface SettingViewController ()<MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate>
 {
     UIImage *avatarImg;
     BOOL isaAatarImg;
@@ -95,7 +96,7 @@
     if (!email) {
         email = @"";
     }
-    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"Email",email,@"Terms of Service",@"Privacy Policy",@"About",@"Log Out", nil];
+    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"Email",email,@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"About",@"Log Out", nil];
     myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height) style:UITableViewStyleGrouped];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
@@ -116,7 +117,7 @@
 
 }
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
+    return 4;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
@@ -125,9 +126,12 @@
             return 3;
             break;
         case 1:
-            return 3;
+            return 2;
             break;
         case 2:
+            return 3;
+            break;
+        case 3:
             return 1;
             break;
         default:
@@ -143,6 +147,9 @@
            head = @"Basic user info";
             break;
         case 1:
+            head = @"Invite to Viber";
+            break;
+        case 2:
             head = @"Support";
             break;
         default:
@@ -153,7 +160,7 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier ];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -203,6 +210,10 @@
 
         cell .textLabel.text = [userData objectAtIndex:indexPath.row+4];
     }else if(indexPath.section==2){
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        cell .textLabel.text = [userData objectAtIndex:indexPath.row+6];
+    }else if(indexPath.section==3){
         
         cell.backgroundColor = [UIColor redColor];
         UIButton * logOut = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -240,6 +251,34 @@
         }
             break;
         case 1:{
+            if (indexPath.row == 0) {
+                
+                Class messageClass = (NSClassFromString(@"MFMessageComposeViewController"));
+                
+                if (messageClass != nil) {
+                    if ([messageClass canSendText]) {
+                        [self displaySMSComposerSheet];
+                    }else {
+                        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@""message:@"设备不支持短信功能" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                        [alert show];
+                    }
+                }
+             }
+             if (indexPath.row ==1) {
+                 Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
+                 if (mailClass !=nil) {
+                     if ([mailClass canSendMail]) {
+                         [self displayMailComposerSheet];
+                     }else{
+                         UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@""message:@"设备不支持邮件功能" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                         [alert show];;
+                     }
+                 }
+             }
+        }
+            break;
+
+        case 2:{
           /*if (indexPath.row == 0) {
                 TearmServiceViewController * tearm = [[TearmServiceViewController alloc]init];
                 [self.navigationController pushViewController:tearm animated:YES];
@@ -419,6 +458,66 @@
     [myTableView reloadData];
     [textField resignFirstResponder];
     return YES;
+}
+-(void)displayMailComposerSheet
+{
+    MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+    
+    picker.mailComposeDelegate =self;
+    [picker setSubject:@"文件分享"];
+    NSString *emailBody =[NSString stringWithFormat:@"我分享了文件给您，地址是"] ;
+    [picker setMessageBody:emailBody isHTML:NO];
+    [self presentViewController:picker animated:YES completion:nil];
+}
+-(void)displaySMSComposerSheet
+{
+    MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
+    picker.messageComposeDelegate =self;
+    NSString *smsBody =[NSString stringWithFormat:@"我分享了文件给您"] ;
+    picker.body=smsBody;
+    [self presentViewController:picker animated:YES completion:nil];
+}
+-(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error{
+    switch (result)
+    {
+        caseMFMailComposeResultCancelled:
+            NSLog(@"Result: Mail sending canceled");
+            break;
+        caseMFMailComposeResultSaved:
+            NSLog(@"Result: Mail saved");
+            break;
+        caseMFMailComposeResultSent:
+            NSLog(@"Result: Mail sent");
+            break;
+        caseMFMailComposeResultFailed:
+            NSLog(@"Result: Mail sending failed");
+            break;
+        default:
+            NSLog(@"Result: Mail not sent");
+            break;
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+-(void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result{
+    switch (result)
+    {
+        caseMFMailComposeResultCancelled:
+            NSLog(@"Result: message sending canceled");
+            break;
+        caseMFMailComposeResultSaved:
+            NSLog(@"Result: message saved");
+            break;
+        caseMFMailComposeResultSent:
+            NSLog(@"Result: message sent");
+            break;
+        caseMFMailComposeResultFailed:
+            NSLog(@"Result: message sending failed");
+            break;
+        default:
+            NSLog(@"Result: message not sent");
+            break;
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)didReceiveMemoryWarning
 {

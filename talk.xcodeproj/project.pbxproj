@@ -192,6 +192,7 @@
 		0E0EDF4F1877E7FA00477C42 /* paintbrush@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0EDF4D1877E7FA00477C42 /* paintbrush@2x.png */; };
 		0E0EDF501877E7FA00477C42 /* paintbrush.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0EDF4E1877E7FA00477C42 /* paintbrush.png */; };
 		0E0EDF521877F57E00477C42 /* brush.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0EDF511877F57E00477C42 /* brush.png */; };
+		0E0F82F818A3273C00E81CA5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0F82F718A3273C00E81CA5 /* MessageUI.framework */; };
 		0E19E80C18711C5A00523232 /* Target.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E80B18711C5A00523232 /* Target.png */; };
 		0E19E83318716AA100523232 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E19E82918716AA100523232 /* EGORefreshTableHeaderView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0E19E83418716AA100523232 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E82B18716AA100523232 /* blackArrow.png */; };
@@ -688,6 +689,7 @@
 		0E0EDF4D1877E7FA00477C42 /* paintbrush@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paintbrush@2x.png"; sourceTree = "<group>"; };
 		0E0EDF4E1877E7FA00477C42 /* paintbrush.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paintbrush.png; sourceTree = "<group>"; };
 		0E0EDF511877F57E00477C42 /* brush.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brush.png; sourceTree = "<group>"; };
+		0E0F82F718A3273C00E81CA5 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		0E178C4C186C1F8000E16F71 /* GetAllMessagesProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GetAllMessagesProtocol.h; path = Classes/GetAllMessagesProtocol.h; sourceTree = "<group>"; };
 		0E19E80B18711C5A00523232 /* Target.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Target.png; sourceTree = "<group>"; };
 		0E19E82818716AA100523232 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
@@ -881,6 +883,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E0F82F818A3273C00E81CA5 /* MessageUI.framework in Frameworks */,
 				0EF9B63E186EAAA1003DD866 /* QuartzCore.framework in Frameworks */,
 				037E0431186605A8005ADCEC /* libidn.a in Frameworks */,
 				03F5B05018339C1500A847A0 /* MediaPlayer.framework in Frameworks */,
@@ -962,6 +965,7 @@
 		03D9BEFA18145C080039118F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0E0F82F718A3273C00E81CA5 /* MessageUI.framework */,
 				0316AE1918A1945200F3329A /* arcstreamsdk.framework */,
 				0EF9B63D186EAAA1003DD866 /* QuartzCore.framework */,
 				03F5B04F18339C1500A847A0 /* MediaPlayer.framework */,
