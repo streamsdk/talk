@@ -68,6 +68,7 @@
     UIImage * sendImage;
     
     BOOL isVideo;
+    BOOL isVideoFromGallery;
     BOOL isClearData;
     
 }
@@ -95,6 +96,7 @@
     //初始化为NO added
     keyboardIsShow=NO;
     isFace = NO;
+    isVideoFromGallery = NO;
     recordOrKeyboardButton = [createUI setButtonFrame:CGRectMake(0, 5, 30, 30) withTitle:(@"nil")];
     [recordOrKeyboardButton setImage:[UIImage imageNamed:@"microphonefat.png"] forState:UIControlStateNormal];
     [recordOrKeyboardButton addTarget:self action:@selector(KeyboardTorecordClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -756,6 +758,7 @@
 }
 -(void)addVideo
 {
+    isVideoFromGallery = YES;
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.navigationBar.tintColor = [UIColor colorWithRed:72.0/255.0 green:106.0/255.0 blue:154.0/255.0 alpha:1.0];
     imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -809,31 +812,60 @@
         isVideo = YES;
         videoPath = [info objectForKey:UIImagePickerControllerMediaURL];
         CGFloat time = [self getVideoDuration:videoPath];
-        if (time<=30) {
-            
-            [picker dismissViewControllerAnimated:YES completion:^{
-                UIActionSheet *actionSheet = [[UIActionSheet alloc]
-                                              initWithTitle:nil
-                                              delegate:self
-                                              cancelButtonTitle:nil
-                                              destructiveButtonTitle:nil
-                                              otherButtonTitles:@"Video disappear after played", @"Keep the video after played",nil];
-                actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-                [actionSheet showInView:self.view];
-            }];
-           
-            /*UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"the video is permanent？" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
-            alert.delegate = self;
-            [alert show];*/
-        }else{
-            
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Exceed the allowed video size. Maxium size is 10MB" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
-            [alert show];
-            [picker dismissViewControllerAnimated:YES completion:NULL];
-            [self dismissKeyBoard];
-            [self scrollBubbleViewToBottomAnimated:YES];
-        }
+        NSData * data = [NSData dataWithContentsOfURL:videoPath];
+        NSInteger size = [data length]/1024/1024;
+        if (isVideoFromGallery) {
+            if (size <= 15) {
+                [picker dismissViewControllerAnimated:YES completion:^{
+                    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                                  initWithTitle:nil
+                                                  delegate:self
+                                                  cancelButtonTitle:nil
+                                                  destructiveButtonTitle:nil
+                                                  otherButtonTitles:@"Video disappear after played", @"Keep the video after played",nil];
+                    actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+                    [actionSheet showInView:self.view];
+                }];
+                
 
+            }else{
+                isVideo = NO;
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Exceed the allowed video size. Maxium size is 15MB" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+                [alert show];
+                [picker dismissViewControllerAnimated:YES completion:NULL];
+                [self dismissKeyBoard];
+                [self scrollBubbleViewToBottomAnimated:YES];
+
+            }
+            isVideoFromGallery = NO;
+        }else{
+            if (time<=30) {
+                
+                [picker dismissViewControllerAnimated:YES completion:^{
+                    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                                  initWithTitle:nil
+                                                  delegate:self
+                                                  cancelButtonTitle:nil
+                                                  destructiveButtonTitle:nil
+                                                  otherButtonTitles:@"Video disappear after played", @"Keep the video after played",nil];
+                    actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+                    [actionSheet showInView:self.view];
+                }];
+                
+                /*UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"the video is permanent？" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
+                 alert.delegate = self;
+                 [alert show];*/
+            }else{
+                isVideo = NO;
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Exceed the allowed video size. Maxium size is 10MB" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+                [alert show];
+                [picker dismissViewControllerAnimated:YES completion:NULL];
+                [self dismissKeyBoard];
+                [self scrollBubbleViewToBottomAnimated:YES];
+            }
+
+        }
+        
     }
 
 }
