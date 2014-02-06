@@ -194,6 +194,7 @@
 		0E0EDF521877F57E00477C42 /* brush.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0EDF511877F57E00477C42 /* brush.png */; };
 		0E0F82F818A3273C00E81CA5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0F82F718A3273C00E81CA5 /* MessageUI.framework */; };
 		0E0F82FE18A3549400E81CA5 /* MyToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F82FD18A3549400E81CA5 /* MyToolbar.m */; };
+		0E0F830118A37D4100E81CA5 /* ACKMessageDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F830018A37D4100E81CA5 /* ACKMessageDB.m */; };
 		0E19E80C18711C5A00523232 /* Target.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E80B18711C5A00523232 /* Target.png */; };
 		0E19E83318716AA100523232 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E19E82918716AA100523232 /* EGORefreshTableHeaderView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0E19E83418716AA100523232 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E82B18716AA100523232 /* blackArrow.png */; };
@@ -693,6 +694,8 @@
 		0E0F82F718A3273C00E81CA5 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		0E0F82FC18A3549400E81CA5 /* MyToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyToolbar.h; path = Classes/MyToolbar.h; sourceTree = "<group>"; };
 		0E0F82FD18A3549400E81CA5 /* MyToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyToolbar.m; path = Classes/MyToolbar.m; sourceTree = "<group>"; };
+		0E0F82FF18A37D4100E81CA5 /* ACKMessageDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACKMessageDB.h; path = talkDB/ACKMessageDB.h; sourceTree = "<group>"; };
+		0E0F830018A37D4100E81CA5 /* ACKMessageDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ACKMessageDB.m; path = talkDB/ACKMessageDB.m; sourceTree = "<group>"; };
 		0E178C4C186C1F8000E16F71 /* GetAllMessagesProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GetAllMessagesProtocol.h; path = Classes/GetAllMessagesProtocol.h; sourceTree = "<group>"; };
 		0E19E80B18711C5A00523232 /* Target.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Target.png; sourceTree = "<group>"; };
 		0E19E82818716AA100523232 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
@@ -1945,6 +1948,8 @@
 			children = (
 				0E8A4F34182B7FE300705C1F /* TalkDB.h */,
 				0E8A4F35182B7FE300705C1F /* TalkDB.m */,
+				0E0F82FF18A37D4100E81CA5 /* ACKMessageDB.h */,
+				0E0F830018A37D4100E81CA5 /* ACKMessageDB.m */,
 				0E03AB0718811D6A00F7BDC7 /* ChatBackGround.h */,
 				0E03AB0818811D6A00F7BDC7 /* ChatBackGround.m */,
 				0E1F974E186D8D7400C709CE /* AddDB.h */,
@@ -2515,6 +2520,7 @@
 				03D9C07B18145E410039118F /* XMPPvCardTemp.m in Sources */,
 				0EEFAE511895299500F44745 /* PrivacyPoolicyViewController.m in Sources */,
 				03D9C06018145E410039118F /* XMPPRoster.m in Sources */,
+				0E0F830118A37D4100E81CA5 /* ACKMessageDB.m in Sources */,
 				03D9C0B618145E480039118F /* LibIDN.m in Sources */,
 				0EFAD95B18682AF2001F0DED /* HandlerUserIdAndDateFormater.m in Sources */,
 				0EF6EB3D1884ED5300AE64AA /* TwitterViewController.m in Sources */,

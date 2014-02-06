@@ -18,6 +18,7 @@
 #import "TalkDB.h"
 #import "AddDB.h"
 #import "SearchDB.h"
+#import "ACKMessageDB.h"
 #import "ChatBackGround.h"
 #import "ImageCache.h"
 #import "STreamXMPP.h"
@@ -44,7 +45,8 @@
     [searchDB initDB];
     ChatBackGround * chat = [[ChatBackGround alloc]init];
     [chat initDB];
-    
+//    ACKMessageDB  *ack = [[ACKMessageDB alloc]init];
+//    [ack initDB];
     /*TwitterConnect * twitter = [[TwitterConnect alloc]init];
     ACAccountStore  *accountStore = [[ACAccountStore alloc] init];
     [twitter setAccountStore:accountStore];
