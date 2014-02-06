@@ -98,7 +98,18 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 {
     _image = image;
     bigImageSize = image.size;
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    CGFloat maxWidth=100;
+    CGFloat maxheight=120;
+    UIImage *img = [self imageWithImage:image
+                          scaledToMaxWidth:maxWidth
+                                 maxHeight:maxheight];
+//    data = UIImageJPEGRepresentation(img, 0.5);
+    CGFloat f=img.size.width;
+    if ( f<= 60) {
+        f = 60;
+    }
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,f, img.size.height)];
     imageView.image = image;
     imageView.layer.cornerRadius = 5.0;
     imageView.layer.masksToBounds = YES;
@@ -226,9 +237,8 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
         size = image.size;
     }*/
     if (!time) {
-        image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(100, 100)];
         size = image.size;
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
         imageView.image = image;
         imageView.layer.cornerRadius = 5.0;
         imageView.layer.masksToBounds = YES;
@@ -350,11 +360,29 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     [delegate  disappearImage:disappearImage withDissapearTime:disappearTime withDissapearPath:disappearPath withSendOrReceiveTime:senddate];
 }
 #pragma mark scaled image
--(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
-    UIGraphicsBeginImageContext(newSize);
-    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
-    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+-(UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size {
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+        UIGraphicsBeginImageContextWithOptions(size, NO, [[UIScreen mainScreen] scale]);
+    } else {
+        UIGraphicsBeginImageContext(size);
+    }
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+    
     return newImage;
+}
+
+-(UIImage *)imageWithImage:(UIImage *)image scaledToMaxWidth:(CGFloat)width maxHeight:(CGFloat)height {
+    CGFloat oldWidth = image.size.width;
+    CGFloat oldHeight = image.size.height;
+    
+    CGFloat scaleFactor = (oldWidth > oldHeight) ? width / oldWidth : height / oldHeight;
+    
+    CGFloat newHeight = oldHeight * scaleFactor;
+    CGFloat newWidth = oldWidth * scaleFactor;
+    CGSize newSize = CGSizeMake(newWidth, newHeight);
+    
+    return [self imageWithImage:image scaledToSize:newSize];
 }
 @end
