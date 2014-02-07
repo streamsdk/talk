@@ -108,7 +108,8 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     if ( f<= 60) {
         f = 60;
     }
-    
+//    UIProgressView *progressView = [[UIProgressView alloc]initWithFrame:CGRectMake(0, img.size.height/2, 100, 6)];
+//    progressView.progress = 0.0f;
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,f, img.size.height)];
     imageView.image = image;
     imageView.layer.cornerRadius = 5.0;
@@ -246,7 +247,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
         UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(playerVideo)];
         [imageView addGestureRecognizer:tap];
         
-        UIImageView * imagevideo = [[UIImageView alloc]initWithFrame:CGRectMake(size.width - 30, size.height-30,30, 30)];
+        UIImageView * imagevideo = [[UIImageView alloc]initWithFrame:CGRectMake(70, 70,30, 30)];
         [imagevideo setImage:[UIImage imageNamed:@"video1.png"]];
         [imageView addSubview:imagevideo];
         UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
