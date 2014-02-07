@@ -19,6 +19,8 @@
 #import "PrivacyPoolicyViewController.h"
 #import <MessageUI/MessageUI.h>
 #import<MessageUI/MFMailComposeViewController.h>
+#import "STreamXMPP.h"
+
 #define IMAGE_TAG 10000
 @interface SettingViewController ()<MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate>
 {
@@ -406,6 +408,8 @@
          isaAatarImg=NO;
      }else{
          if (buttonIndex == 1) {
+             STreamXMPP * con = [STreamXMPP sharedObject];
+             [con disconnect];
              LoginViewController *loginVC = [[LoginViewController alloc]init];
              [self.navigationController pushViewController:loginVC animated:YES];
          }
