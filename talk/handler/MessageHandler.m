@@ -12,6 +12,8 @@
 #import "NSBubbleData.h"
 #import "STreamXMPP.h"
 #import "HandlerUserIdAndDateFormater.h"
+#import "ACKMessageDB.h"
+
 @implementation MessageHandler
 
 - ( void)receiveMessage:(NSString *)receiveMessage forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
@@ -43,8 +45,7 @@
     [messagesDic setObject:@"text" forKey:@"type"];
     [messagesDic setObject:[handler getUserID] forKey:@"from"];
     NSString *messageSent = [messagesDic JSONString];
-    [con sendMessage:sendID withMessage:messageSent];
-    
+
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
     [friendDict setObject:messages forKey:@"messages"];
     [jsonDic setObject:friendDict forKey:sendID];
@@ -53,7 +54,14 @@
     TalkDB * db = [[TalkDB alloc]init];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+    
+    ACKMessageDB *ack = [[ACKMessageDB alloc]init];
+    [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:sendID withContent:messageSent withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+    
+     [con sendMessage:sendID withMessage:messageSent];
+    
     [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
     
+   
 }
 @end

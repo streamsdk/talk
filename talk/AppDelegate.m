@@ -45,8 +45,8 @@
     [searchDB initDB];
     ChatBackGround * chat = [[ChatBackGround alloc]init];
     [chat initDB];
-//    ACKMessageDB  *ack = [[ACKMessageDB alloc]init];
-//    [ack initDB];
+    ACKMessageDB  *ack = [[ACKMessageDB alloc]init];
+    [ack initDB];
     /*TwitterConnect * twitter = [[TwitterConnect alloc]init];
     ACAccountStore  *accountStore = [[ACAccountStore alloc] init];
     [twitter setAccountStore:accountStore];

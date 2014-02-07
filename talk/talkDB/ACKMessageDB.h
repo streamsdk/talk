@@ -15,6 +15,6 @@
 
 -(void)insertDB:(NSString *)id withUserID:(NSString *)userID fromID:(NSString *)fromID withContent:(NSString *)content withTime:(NSString *)time withIsMine: (int)isMine;
 
--(void) deleteDB;
+-(void) deleteDB:(NSString *) id;
 
 @end

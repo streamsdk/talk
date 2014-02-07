@@ -13,6 +13,8 @@
 #import "STreamXMPP.h"
 #import <arcstreamsdk/JSONKit.h>
 #import "HandlerUserIdAndDateFormater.h"
+#import "ACKMessageDB.h"
+
 @implementation VideoHandler
 
 @synthesize controller,videoPath;
@@ -187,7 +189,9 @@
     [bodyDic setObject:@"video" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
     [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
-
+    
+    ACKMessageDB *ack = [[ACKMessageDB alloc]init];
+    [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     
     STreamXMPP *con = [STreamXMPP sharedObject];
     [con sendFileInBackground:videoData toUser:_sendID finished:^(NSString *res){

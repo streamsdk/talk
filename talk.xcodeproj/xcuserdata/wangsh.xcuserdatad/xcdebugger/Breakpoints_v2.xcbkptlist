@@ -198,11 +198,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/handler/VideoHandler.m"
-            timestampString = "412243730.282875"
+            timestampString = "413452343.787049"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
             landmarkName = "-receiveVideoFile:forBubbleDataArray:forBubbleOtherData:withVideoTime:withSendId:withFromId:"
             landmarkType = "5">
          </BreakpointContent>
@@ -246,11 +246,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/setVC/SettingViewController.m"
-            timestampString = "413346968.701682"
+            timestampString = "413455088.212079"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "282"
-            endingLineNumber = "282"
+            startingLineNumber = "284"
+            endingLineNumber = "284"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -262,11 +262,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/setVC/SettingViewController.m"
-            timestampString = "413346968.701682"
+            timestampString = "413455088.212079"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "281"
-            endingLineNumber = "281"
+            startingLineNumber = "283"
+            endingLineNumber = "283"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -325,12 +325,12 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "413376437.606376"
+                  timestampString = "413458939.546418"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
                   endingLineNumber = "1119"
-                  offsetFromSymbolStart = "480">
+                  offsetFromSymbolStart = "430">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -339,12 +339,12 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "413376437.606578"
+                  timestampString = "413458939.54665"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
                   endingLineNumber = "1119"
-                  offsetFromSymbolStart = "650">
+                  offsetFromSymbolStart = "496">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -356,11 +356,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/AppDelegate.m"
-            timestampString = "413271579.572998"
+            timestampString = "413377866.24224"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "141"
-            endingLineNumber = "141"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
             landmarkName = "-applicationDidEnterBackground:"
             landmarkType = "5">
          </BreakpointContent>
@@ -372,11 +372,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/handler/VideoHandler.m"
-            timestampString = "413272248.764663"
+            timestampString = "413452343.787049"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "32"
-            endingLineNumber = "32"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
             landmarkName = "-receiveVideoFile:forBubbleDataArray:forBubbleOtherData:withVideoTime:withSendId:withFromId:"
             landmarkType = "5">
          </BreakpointContent>
@@ -388,11 +388,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/handler/PhotoHandler.m"
-            timestampString = "413272564.3342"
+            timestampString = "413452343.787049"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "56"
-            endingLineNumber = "56"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
             landmarkName = "-sendPhoto:forBubbleDataArray:forBubbleMyData:withSendId:withTime:"
             landmarkType = "5">
          </BreakpointContent>
@@ -420,11 +420,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/STreamXMPP.m"
-            timestampString = "413362542.13016"
+            timestampString = "413452343.787049"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "256"
-            endingLineNumber = "256"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
             landmarkName = "-xmppStream:didReceiveMessage:"
             landmarkType = "5">
          </BreakpointContent>
@@ -436,11 +436,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/STreamXMPP.m"
-            timestampString = "413364023.752721"
+            timestampString = "413451097.517019"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "260"
-            endingLineNumber = "260"
+            startingLineNumber = "250"
+            endingLineNumber = "250"
             landmarkName = "-xmppStream:didReceiveMessage:"
             landmarkType = "5">
          </BreakpointContent>
@@ -452,27 +452,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/STreamXMPP.m"
-            timestampString = "413367085.500306"
+            timestampString = "413451097.517019"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
-            landmarkName = "-sendFileMessage:withFileId:withMessage:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "talk/STreamXMPP.m"
-            timestampString = "413367770.265542"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "251"
-            endingLineNumber = "251"
+            startingLineNumber = "234"
+            endingLineNumber = "234"
             landmarkName = "-xmppStream:didReceiveMessage:"
             landmarkType = "5">
          </BreakpointContent>
@@ -483,13 +467,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "talk/STreamXMPP.m"
-            timestampString = "413367863.622438"
+            filePath = "talk/handler/MessageHandler.m"
+            timestampString = "413451097.517019"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "313"
-            endingLineNumber = "313"
-            landmarkName = "-sendMessage:withMessage:"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
+            landmarkName = "-sendMessage:forBubbleDataArray:forBubbleMyData:withSendId:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

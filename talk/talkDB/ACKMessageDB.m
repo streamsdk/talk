@@ -47,7 +47,7 @@
     char *errorMsg = NULL;
     sqlite3_stmt *stmt;
     if (sqlite3_prepare_v2(database, update, -1, &stmt, nil) == SQLITE_OK) {
-        sqlite3_bind_text(stmt, 1, [userID UTF8String], -1, NULL);
+        sqlite3_bind_text(stmt, 1, [id UTF8String], -1, NULL);
         sqlite3_bind_text(stmt, 2, [userID UTF8String], -1, NULL);
         sqlite3_bind_text(stmt, 3, [fromID UTF8String], -1, NULL);
         sqlite3_bind_text(stmt, 4, [content UTF8String], -1, NULL);
@@ -60,14 +60,14 @@
     sqlite3_close(database);
 
 }
--(void) deleteDB{
+-(void) deleteDB:(NSString *) id{
     sqlite3 *database;
     if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
         sqlite3_close(database);
         NSAssert(0, @"Failed to open database");
     }
     //    select distinct * from ADDFRIENDS
-    NSString * sql =@"DELETE FROM ACK";
+    NSString * sql = [NSString stringWithFormat:@"DELETE FROM ACK WHERE ID='%@'",id];
     sqlite3_stmt *statement;
     if (sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, nil) == SQLITE_OK) {
         

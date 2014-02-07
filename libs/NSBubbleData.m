@@ -98,7 +98,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 {
     _image = image;
     bigImageSize = image.size;
-    CGFloat maxWidth=100;
+    CGFloat maxWidth=90;
     CGFloat maxheight=120;
     UIImage *img = [self imageWithImage:image
                           scaledToMaxWidth:maxWidth

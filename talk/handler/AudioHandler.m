@@ -12,6 +12,7 @@
 #import "STreamXMPP.h"
 #import <arcstreamsdk/JSONKit.h> 
 #import "HandlerUserIdAndDateFormater.h"
+#import "ACKMessageDB.h"
 
 @implementation AudioHandler
 
@@ -60,6 +61,8 @@
     [bodyDic setObject:@"voice" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
     
+    ACKMessageDB *ack = [[ACKMessageDB alloc]init];
+    [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     
     STreamXMPP *con = [STreamXMPP sharedObject];
     

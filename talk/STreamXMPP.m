@@ -12,9 +12,8 @@
 #import <CommonCrypto/CommonDigest.h>
 #import <arcstreamsdk/STreamFile.h>
 #import <arcstreamsdk/STreamSession.h>
-
 #import <CFNetwork/CFNetwork.h>
-
+#import "ACKMessageDB.h"
 #if DEBUG
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 #else
@@ -250,6 +249,8 @@ static XMPPReconnect *xmppReconnect;
         NSString *type = [json objectForKey:@"type"];
         NSString *chatId = [json objectForKey:@"id"];
         if ([type isEqualToString:@"ack"]){
+            ACKMessageDB *ack = [[ACKMessageDB alloc]init];
+            [ack deleteDB:chatId];
             NSLog(@"ack received");
             return;
         }

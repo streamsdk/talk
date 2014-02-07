@@ -14,6 +14,7 @@
 #import <arcstreamsdk/JSONKit.h>
 #import "HandlerUserIdAndDateFormater.h"
 #import "DisappearImageController.h"
+#import "ACKMessageDB.h"
 
 @interface PhotoHandler()
 
@@ -83,7 +84,8 @@
     [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
     [bodyDic setObject:@"photo" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
-    
+    ACKMessageDB *ack = [[ACKMessageDB alloc]init];
+    [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     STreamXMPP *con = [STreamXMPP sharedObject];
     [con sendFileInBackground:data toUser:sendID finished:^(NSString *res){
         NSLog(@"res:%@",res);
