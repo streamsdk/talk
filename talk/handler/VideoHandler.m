@@ -16,6 +16,7 @@
 #import "ACKMessageDB.h"
 #import "FilesUpload.h"
 #import "ImageCache.h"
+#import <arcstreamsdk/STreamFile.h>
 
 @implementation VideoHandler
 
@@ -55,8 +56,8 @@
     
     AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:videoPath options:nil];
     NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
-    NSString*  _mp4Quality = AVAssetExportPresetMediumQuality;
-//    NSString*  _mp4Quality =AVAssetExportPresetHighestQuality;
+   // NSString*  _mp4Quality = AVAssetExportPresetMediumQuality;
+    NSString*  _mp4Quality =AVAssetExportPresetHighestQuality;
     if ([compatiblePresets containsObject:_mp4Quality]) {
         
         UIAlertView *_alert = [[UIAlertView alloc] init];
@@ -217,20 +218,26 @@
     NSData *videoData = [NSData dataWithContentsOfFile:f.filepath];
     ImageCache *cache = [ImageCache sharedObject];
     
+    STreamFile *sf = [[STreamFile alloc] init];
     STreamXMPP *con = [STreamXMPP sharedObject];
-    [con sendFileInBackground:videoData toUser:f.id finished:^(NSString *res){
-        if ([res isEqualToString:@"ok"]) {
-            [cache removeFileUpload:f];
-            NSMutableArray *fileArray = [cache getFileUpload];
-            if (fileArray!=nil && [fileArray count]!=0) {
-                [self fileUpload:fileArray];
-            }
+    
+    [sf postData:videoData finished:^(NSString *res){
+        if ([res isEqualToString:@"ok"]){
+            [f.bodyDict setObject:[sf fileId] forKey:@"fileId"];
+            NSString *bodyJsonData = [f.bodyDict JSONString];
+            NSLog(@"body json data: %@", bodyJsonData);
+            [con sendFileMessage:f.id withFileId:[sf fileId] withMessage:bodyJsonData];
         }
-        NSLog(@"res:%@",res);
-    }byteSent:^(float b){
-//        sleep(3);
-         NSLog(@"byteSent:%f",b);
-    }withBodyData:f.bodyDict];
-
+        
+        [cache removeFileUpload:f];
+        NSMutableArray * fileArray = [cache getFileUpload];
+        if (fileArray != nil && [fileArray count] != 0) {
+            [self fileUpload:fileArray];
+        }
+        
+    }byteSent:^(float bytes){
+        NSLog(@"byteSent:%f", bytes);
+    }];
+    
 }
 @end

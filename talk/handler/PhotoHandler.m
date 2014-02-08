@@ -12,6 +12,7 @@
 #import "TalkDB.h"
 #import "STreamXMPP.h"
 #import <arcstreamsdk/JSONKit.h>
+#import <arcstreamsdk/STreamFile.h>
 #import "HandlerUserIdAndDateFormater.h"
 #import "DisappearImageController.h"
 #import "ACKMessageDB.h"
@@ -103,23 +104,32 @@
     
 }
 -(void) fileUpload :(NSMutableArray *)file{
+    
     FilesUpload * f = [file objectAtIndex:0];
     ImageCache * cache  =[ImageCache sharedObject];
     NSData * data = [NSData dataWithContentsOfFile:f.filepath];
+    
+    STreamFile *sf = [[STreamFile alloc] init];
     STreamXMPP *con = [STreamXMPP sharedObject];
-    [con sendFileInBackground:data toUser:f.id finished:^(NSString *res){
-        NSLog(@"res:%@",res);
-        if ([res isEqualToString:@"ok"]) {
-            [cache removeFileUpload:f];
-            NSMutableArray * fileArray = [cache getFileUpload];
-            if (fileArray != nil && [fileArray count] != 0) {
-                [self fileUpload:fileArray];
-            }
+    
+    [sf postData:data finished:^(NSString *res){
+        if ([res isEqualToString:@"ok"]){
+           [f.bodyDict setObject:[sf fileId] forKey:@"fileId"];
+           NSString *bodyJsonData = [f.bodyDict JSONString];
+           NSLog(@"body json data: %@", bodyJsonData);
+           [con sendFileMessage:f.id withFileId:[sf fileId] withMessage:bodyJsonData];
         }
-    }byteSent:^(float b){
-//        sleep(2);
-        NSLog(@"byteSent:%f",b);
-    }withBodyData:f.bodyDict];
+        
+        [cache removeFileUpload:f];
+        NSMutableArray * fileArray = [cache getFileUpload];
+        if (fileArray != nil && [fileArray count] != 0) {
+            [self fileUpload:fileArray];
+        }
+        
+    }byteSent:^(float bytes){
+        NSLog(@"byteSent:%f", bytes);
+    }];
+    
 }
 
 @end
