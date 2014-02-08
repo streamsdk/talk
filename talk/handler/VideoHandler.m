@@ -14,6 +14,8 @@
 #import <arcstreamsdk/JSONKit.h>
 #import "HandlerUserIdAndDateFormater.h"
 #import "ACKMessageDB.h"
+#import "FilesUpload.h"
+#import "ImageCache.h"
 
 @implementation VideoHandler
 
@@ -31,6 +33,7 @@
         MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
         player.shouldAutoplay = NO;
         UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+        img = fileImage;
         NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withTime:time withType:@"video" date:[handler getDate] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
         if (otherData)
             bdata.avatar = [UIImage imageWithData:otherData];
@@ -189,18 +192,45 @@
     [bodyDic setObject:@"video" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
     [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
-    
     ACKMessageDB *ack = [[ACKMessageDB alloc]init];
     [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     
+    ImageCache *cache = [ImageCache sharedObject];
+    NSMutableArray *fileArray = [cache getFileUpload];
+    
+    FilesUpload * file = [[FilesUpload alloc]init];
+    [file setId:_sendID];
+    [file setFilepath:_mp4Path];
+    [file setBodyDict:bodyDic];
+    
+    if (fileArray!=nil && [fileArray count]!=0) {
+        [cache setFileUpload:file];
+        return;
+    }
+    [cache setFileUpload:file];
+    [self fileUpload:fileArray];
+    [delegate reloadTable];
+
+}
+-(void) fileUpload :(NSMutableArray *)file{
+    FilesUpload * f =[file objectAtIndex:0];
+    NSData *videoData = [NSData dataWithContentsOfFile:f.filepath];
+    ImageCache *cache = [ImageCache sharedObject];
+    
     STreamXMPP *con = [STreamXMPP sharedObject];
-    [con sendFileInBackground:videoData toUser:_sendID finished:^(NSString *res){
+    [con sendFileInBackground:videoData toUser:f.id finished:^(NSString *res){
+        if ([res isEqualToString:@"ok"]) {
+            [cache removeFileUpload:f];
+            NSMutableArray *fileArray = [cache getFileUpload];
+            if (fileArray!=nil && [fileArray count]!=0) {
+                [self fileUpload:fileArray];
+            }
+        }
         NSLog(@"res:%@",res);
     }byteSent:^(float b){
-        NSLog(@"byteSent:%f",b);
-    }withBodyData:bodyDic];
-    
-    [delegate reloadTable];
+//        sleep(3);
+         NSLog(@"byteSent:%f",b);
+    }withBodyData:f.bodyDict];
 
 }
 @end

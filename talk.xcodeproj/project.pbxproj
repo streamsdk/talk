@@ -205,6 +205,7 @@
 		0E19E83918716AA100523232 /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E83018716AA100523232 /* grayArrow@2x.png */; };
 		0E19E83A18716AA100523232 /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E83118716AA100523232 /* whiteArrow.png */; };
 		0E19E83B18716AA100523232 /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E83218716AA100523232 /* whiteArrow@2x.png */; };
+		0E1B053118A623A7001715C6 /* FilesUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1B053018A623A7001715C6 /* FilesUpload.m */; };
 		0E1C181F1883E37B00153F92 /* line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1C181D1883E37B00153F92 /* line@2x.png */; };
 		0E1C18201883E37B00153F92 /* line.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1C181E1883E37B00153F92 /* line.png */; };
 		0E1C18231883E8F100153F92 /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1C18211883E8F100153F92 /* twitter.png */; };
@@ -708,6 +709,8 @@
 		0E19E83018716AA100523232 /* grayArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grayArrow@2x.png"; sourceTree = "<group>"; };
 		0E19E83118716AA100523232 /* whiteArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteArrow.png; sourceTree = "<group>"; };
 		0E19E83218716AA100523232 /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteArrow@2x.png"; sourceTree = "<group>"; };
+		0E1B052F18A623A7001715C6 /* FilesUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FilesUpload.h; path = handler/FilesUpload.h; sourceTree = "<group>"; };
+		0E1B053018A623A7001715C6 /* FilesUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FilesUpload.m; path = handler/FilesUpload.m; sourceTree = "<group>"; };
 		0E1C181D1883E37B00153F92 /* line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line@2x.png"; sourceTree = "<group>"; };
 		0E1C181E1883E37B00153F92 /* line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line.png; sourceTree = "<group>"; };
 		0E1C18211883E8F100153F92 /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitter.png; sourceTree = "<group>"; };
@@ -1786,6 +1789,8 @@
 				03F50C6F1867B54300E08C22 /* AudioHandler.m */,
 				0EFAD95918682AF2001F0DED /* HandlerUserIdAndDateFormater.h */,
 				0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */,
+				0E1B052F18A623A7001715C6 /* FilesUpload.h */,
+				0E1B053018A623A7001715C6 /* FilesUpload.m */,
 			);
 			name = handler;
 			sourceTree = "<group>";
@@ -2570,6 +2575,7 @@
 				03D9C05918145E410039118F /* XMPPResourceCoreDataStorageObject.m in Sources */,
 				03D9C08318145E410039118F /* NSXMLElement+XEP_0059.m in Sources */,
 				03D9C0E318145E510039118F /* DDAbstractDatabaseLogger.m in Sources */,
+				0E1B053118A623A7001715C6 /* FilesUpload.m in Sources */,
 				03D9C0E218145E510039118F /* GCDAsyncSocket.m in Sources */,
 				03D9C05418145E410039118F /* XMPPCoreDataStorage.m in Sources */,
 				0E084791182736BC00350741 /* UIBubbleHeaderTableViewCell.m in Sources */,
