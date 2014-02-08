@@ -20,6 +20,7 @@ static NSMutableDictionary *_messagesDict;
 static NSMutableArray * _colors;
 static NSMutableArray * _twitters;
 static NSMutableDictionary *_jsonData;
+static NSMutableDictionary * uploadDict;
 
 @implementation ImageCache
 
@@ -40,6 +41,7 @@ static NSMutableDictionary *_jsonData;
         _colors =[[NSMutableArray alloc]init];
         _twitters = [[NSMutableArray alloc]init];
         _jsonData = [[NSMutableDictionary alloc] init];
+        uploadDict = [[NSMutableDictionary alloc]init];
     });
     
     return sharedInstance;
@@ -135,5 +137,16 @@ static NSMutableDictionary *_jsonData;
 
 -(NSMutableArray *)getTwitters{
     return _twitters;
+}
+-(void) setFileUpload:(FileUpload *)file withTime:(NSString *)time{
+    [uploadDict  setObject:file forKey:time];
+}
+
+-(NSMutableDictionary *) getFileUpload{
+    
+    return uploadDict;
+}
+-(void) removefileUpload:(NSString *)key{
+    [uploadDict removeObjectForKey:key];
 }
 @end
