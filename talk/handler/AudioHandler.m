@@ -13,8 +13,6 @@
 #import <arcstreamsdk/JSONKit.h> 
 #import "HandlerUserIdAndDateFormater.h"
 #import "ACKMessageDB.h"
-#import "ImageCache.h"
-#import "FileUpload.h"
 
 @implementation AudioHandler
 
@@ -62,60 +60,21 @@
     [bodyDic setObject:bodyData forKey:@"duration"];
     [bodyDic setObject:@"voice" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
-    ImageCache * cache = [ImageCache sharedObject];
-    FileUpload * file = [[FileUpload alloc]init];
-    [file setFriendId:sendID];
-    [file setFileData:audioData];
-    [file setBodyDic:bodyDic];
-    [cache setFileUpload:file withTime:[dateFormatter stringFromDate:date]];
-
-    NSArray * key = [[cache getFileUpload]allKeys];
-    NSMutableDictionary * dict = [[NSMutableDictionary alloc]init];
-    NSMutableArray *myArray=[[NSMutableArray alloc]initWithCapacity:0];
-    if (key && [key count]!=0) {
-        for (NSString * k in key) {
-            [dict setObject:k forKey:@"time"];
-            [myArray addObject:dict];
-        }
-    }
-    NSMutableArray *dataArray=[[NSMutableArray alloc]initWithCapacity:0];
-    [dataArray addObjectsFromArray:myArray];
-    NSSortDescriptor*sorter=[[NSSortDescriptor alloc]initWithKey:@"time" ascending:YES];
-    NSMutableArray *sortDescriptors=[[NSMutableArray alloc]initWithObjects:&sorter count:1];
-    NSArray *keyArray=[dataArray sortedArrayUsingDescriptors:sortDescriptors];
-    NSMutableArray *sortArray = [[NSMutableArray alloc]init];
-    if (keyArray && [keyArray count]!=0) {
-        for (int i=0; i<[keyArray count]; i++) {
-            [sortArray addObject:[[keyArray objectAtIndex:i] objectForKey:@"time"]];
-        }
-    }
-
-
+    
     ACKMessageDB *ack = [[ACKMessageDB alloc]init];
     [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     
     STreamXMPP *con = [STreamXMPP sharedObject];
-    __block CGFloat byte = 0.0;
-    if(sortArray && [sortArray count]!=0) {
-          FileUpload * f = [[cache getFileUpload] objectForKey:[sortArray objectAtIndex:0]];
-        [con sendFileInBackground:f.fileData toUser:f.friendId finished:^(NSString *res) {
-            
-            NSLog(@"%@", res);
-            
-        }byteSent:^(float b){
-            if (b==1.000000) {
-                byte = 1.000000;
-                [cache removefileUpload:[sortArray objectAtIndex:0]];
-                [sortArray removeObjectAtIndex:0];
-            }
-            NSLog(@"%@", [NSString stringWithFormat:@"%f", b]);
-            
-        }withBodyData:f.bodyDic];
-//        if (byte != 1.000000) {
-//            sleep(1);
-//        }
-    }
     
+    [con sendFileInBackground:audioData toUser:sendID finished:^(NSString *res) {
+        
+        NSLog(@"%@", res);
+        
+    }byteSent:^(float b){
+        
+        NSLog(@"%@", [NSString stringWithFormat:@"%1.6f", b]);
+        
+    }withBodyData:bodyDic];
 }
 
 @end

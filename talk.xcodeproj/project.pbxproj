@@ -205,7 +205,6 @@
 		0E19E83918716AA100523232 /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E83018716AA100523232 /* grayArrow@2x.png */; };
 		0E19E83A18716AA100523232 /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E83118716AA100523232 /* whiteArrow.png */; };
 		0E19E83B18716AA100523232 /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E83218716AA100523232 /* whiteArrow@2x.png */; };
-		0E1B04ED18A5F14C001715C6 /* FileUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1B04EC18A5F14C001715C6 /* FileUpload.m */; };
 		0E1C181F1883E37B00153F92 /* line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1C181D1883E37B00153F92 /* line@2x.png */; };
 		0E1C18201883E37B00153F92 /* line.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1C181E1883E37B00153F92 /* line.png */; };
 		0E1C18231883E8F100153F92 /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1C18211883E8F100153F92 /* twitter.png */; };
@@ -709,8 +708,6 @@
 		0E19E83018716AA100523232 /* grayArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grayArrow@2x.png"; sourceTree = "<group>"; };
 		0E19E83118716AA100523232 /* whiteArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteArrow.png; sourceTree = "<group>"; };
 		0E19E83218716AA100523232 /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteArrow@2x.png"; sourceTree = "<group>"; };
-		0E1B04EB18A5F14C001715C6 /* FileUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileUpload.h; path = handler/FileUpload.h; sourceTree = "<group>"; };
-		0E1B04EC18A5F14C001715C6 /* FileUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FileUpload.m; path = handler/FileUpload.m; sourceTree = "<group>"; };
 		0E1C181D1883E37B00153F92 /* line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line@2x.png"; sourceTree = "<group>"; };
 		0E1C181E1883E37B00153F92 /* line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line.png; sourceTree = "<group>"; };
 		0E1C18211883E8F100153F92 /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitter.png; sourceTree = "<group>"; };
@@ -1787,8 +1784,6 @@
 				03F50C6C1867B50000E08C22 /* MessageHandler.m */,
 				03F50C6E1867B54300E08C22 /* AudioHandler.h */,
 				03F50C6F1867B54300E08C22 /* AudioHandler.m */,
-				0E1B04EB18A5F14C001715C6 /* FileUpload.h */,
-				0E1B04EC18A5F14C001715C6 /* FileUpload.m */,
 				0EFAD95918682AF2001F0DED /* HandlerUserIdAndDateFormater.h */,
 				0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */,
 			);
@@ -2597,7 +2592,6 @@
 				03D9BF5118145E270039118F /* XMPPDeprecatedDigestAuthentication.m in Sources */,
 				03D9C09F18145E410039118F /* XMPPAutoTime.m in Sources */,
 				03F5A18F1867376400CD60FD /* PhotoHandler.m in Sources */,
-				0E1B04ED18A5F14C001715C6 /* FileUpload.m in Sources */,
 				03D9C05618145E410039118F /* XMPPProcessOne.m in Sources */,
 				03D9BF7518145E370039118F /* XMPPIQ.m in Sources */,
 				03D9BF5018145E270039118F /* XMPPAnonymousAuthentication.m in Sources */,

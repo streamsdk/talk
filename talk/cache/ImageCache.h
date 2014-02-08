@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FileUpload.h"
+
 @interface ImageCache : NSObject
 
 +(ImageCache *)sharedObject;
@@ -44,9 +44,4 @@
 
 -(void)deleteJsonData:(NSString *)fileId;
 
--(void) setFileUpload:(FileUpload *)file withTime:(NSString *)time;
-
--(NSMutableDictionary *) getFileUpload;
-
--(void) removefileUpload:(NSString *)key;
 @end
