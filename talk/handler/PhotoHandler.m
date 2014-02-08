@@ -15,6 +15,8 @@
 #import "HandlerUserIdAndDateFormater.h"
 #import "DisappearImageController.h"
 #import "ACKMessageDB.h"
+#import "ImageCache.h"
+#import "FilesUpload.h"
 
 @interface PhotoHandler()
 
@@ -76,7 +78,6 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
     [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     
-    
     long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
     NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
     if (time)
@@ -86,22 +87,39 @@
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
     ACKMessageDB *ack = [[ACKMessageDB alloc]init];
     [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
+    
+    ImageCache * cache = [ImageCache sharedObject];
+    NSMutableArray * fileArray = [cache getFileUpload];
+    FilesUpload * file = [[FilesUpload alloc]init];
+    [file setId:sendID];
+    [file setFilepath:photoPath];
+    [file setBodyDict:bodyDic];
+    if (fileArray != nil && [fileArray count] != 0) {
+        [cache setFileUpload:file];
+        return;
+    }
+    [cache setFileUpload:file];
+    [self fileUpload:fileArray];
+    
+}
+-(void) fileUpload :(NSMutableArray *)file{
+    FilesUpload * f = [file objectAtIndex:0];
+    ImageCache * cache  =[ImageCache sharedObject];
+    NSData * data = [NSData dataWithContentsOfFile:f.filepath];
     STreamXMPP *con = [STreamXMPP sharedObject];
-    [con sendFileInBackground:data toUser:sendID finished:^(NSString *res){
+    [con sendFileInBackground:data toUser:f.id finished:^(NSString *res){
         NSLog(@"res:%@",res);
+        if ([res isEqualToString:@"ok"]) {
+            [cache removeFileUpload:f];
+            NSMutableArray * fileArray = [cache getFileUpload];
+            if (fileArray != nil && [fileArray count] != 0) {
+                [self fileUpload:fileArray];
+            }
+        }
     }byteSent:^(float b){
+//        sleep(2);
         NSLog(@"byteSent:%f",b);
-    }withBodyData:bodyDic];
-
+    }withBodyData:f.bodyDict];
 }
-
--(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
-    UIGraphicsBeginImageContext(newSize);
-    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
-    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
-}
-
 
 @end
