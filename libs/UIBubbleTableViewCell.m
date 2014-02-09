@@ -125,7 +125,8 @@
     progressView.progress =0.0f;
     activityIndicatorView = [[UIActivityIndicatorView alloc]init];
     [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-
+//    progressView.hidden = YES;
+//    activityIndicatorView.hidden = YES;
     if (type == BubbleTypeMine) {
         if (filetype == FileImage) {
             progressView .frame = CGRectMake(10, self.contentView.frame.size.height, 90, 10);
