@@ -355,6 +355,7 @@
         JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
         NSDictionary *json = [decoder objectWithData:jsonData];
         NSString *type = [json objectForKey:@"type"];
+        NSString *fromUser = [json objectForKey:@"from"];
         
         NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
         HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
@@ -368,7 +369,7 @@
                 [friendDict setObject:duration forKey:@"time"];
             }
             [friendDict setObject:photoPath forKey:@"photo"];
-            [jsonDic setObject:friendDict forKey:fromID];
+            [jsonDic setObject:friendDict forKey:fromUser];
             path = photoPath;
         }else if ([type isEqualToString:@"video"]){
             NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
@@ -380,7 +381,7 @@
             if (duration)
                 [friendDict setObject:duration forKey:@"time"];
             [friendDict setObject:mp4Path forKey:@"video"];
-            [jsonDic setObject:friendDict forKey:fromID];
+            [jsonDic setObject:friendDict forKey:fromUser];
             path = mp4Path;
         }else if ([type isEqualToString:@"voice"]){
             
@@ -391,7 +392,7 @@
             path = recordFilePath;
             [friendsDict setObject:duration forKey:@"time"];
             [friendsDict setObject:recordFilePath forKey:@"audiodata"];
-            [jsonDic setObject:friendsDict forKey:fromID];
+            [jsonDic setObject:friendsDict forKey:fromUser];
         }
         
         TalkDB * db = [[TalkDB alloc]init];
@@ -401,9 +402,9 @@
         [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
         NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
         [handler setDate:date];
-        [db insertDBUserID:userID fromID:fromID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
+        [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
         
-        [messagesProtocol getFiles:data withFromID:fromID withBody:body withPath:path];
+        [messagesProtocol getFiles:data withFromID:fromUser withBody:body withPath:path];
         [self.tableView reloadData];
 
         
