@@ -28,7 +28,7 @@
 @synthesize disappearTime;
 @synthesize disappearPath;
 @synthesize senddate;
-
+@synthesize fileType;
 #pragma mark - Lifecycle
 
 #if !__has_feature(objc_arc)
@@ -75,7 +75,7 @@ const UIEdgeInsets textInsetsSomeone = {5, 15, 11, 10};
 #endif
     
     UIEdgeInsets insets = (type == BubbleTypeMine ? textInsetsMine : textInsetsSomeone);
-    return [self initWithView:label date:date type:type insets:insets];
+    return [self initWithView:label date:date type:type withFileType:FileMessage insets:insets];
 }
 
 #pragma mark - Image bubble no time
@@ -123,7 +123,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 #endif
     
     UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
-    return [self initWithView:imageView date:date type:type insets:insets];
+    return [self initWithView:imageView date:date type:type withFileType:FileImage insets:insets];
 }
 #pragma mark -Custom image view  have time 
 
@@ -176,7 +176,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 #endif
     
     UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
-    return [self initWithView:view date:date type:type insets:insets];
+    return [self initWithView:view date:date type:type withFileType:FileDisappear insets:insets];
 }
 + (id) dataWithImage:(UIImage *)image withImageTime:(NSString *)time withPath:(NSString *)path date:(NSDate *)date withType:(NSBubbleType) type{
 #if !__has_feature(objc_arc)
@@ -215,7 +215,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 #endif
     
     UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
-    return [self initWithView:imageView date:date type:type insets:insets];
+    return [self initWithView:imageView date:date type:type withFileType:FileVoice insets:insets];
 
 }
 + (id)dataWithtimes:(NSString *)times date:(NSDate *)date type:(NSBubbleType)type withData:(NSData *)data{
@@ -251,7 +251,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
         [imagevideo setImage:[UIImage imageNamed:@"video1.png"]];
         [imageView addSubview:imagevideo];
         UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
-        return [self initWithView:imageView date:date type:type insets:insets];
+        return [self initWithView:imageView date:date type:type withFileType:FileVideo insets:insets];
 
     }else{
         NSString * text =@"I sent a video to you";
@@ -292,7 +292,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
         [view addGestureRecognizer:tap];
         
         UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
-        return [self initWithView:view date:date type:type insets:insets];
+        return [self initWithView:view date:date type:type  withFileType:FileDisappear insets:insets];
     }
 }
 + (id)dataWithImage:(UIImage *)image  withTime:(NSString *)time withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath{
@@ -304,16 +304,16 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 }
 #pragma mark - Custom view bubble
 
-+ (id)dataWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type insets:(UIEdgeInsets)insets
++ (id)dataWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type withFileType:(FileType)filetype insets:(UIEdgeInsets)insets
 {
 #if !__has_feature(objc_arc)
-    return [[[NSBubbleData alloc] initWithView:view date:date type:type insets:insets] autorelease];
+    return [[[NSBubbleData alloc] initWithView:view date:date type:type withFileType:filetype insets:insets] autorelease];
 #else
-    return [[NSBubbleData alloc] initWithView:view date:date type:type insets:insets];
+    return [[NSBubbleData alloc] initWithView:view date:date type:type withFileType:filetype insets:insets];
 #endif    
 }
 
-- (id)initWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type insets:(UIEdgeInsets)insets  
+- (id)initWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type withFileType:(FileType)filetype insets:(UIEdgeInsets)insets
 {
     self = [super init];
     if (self)
@@ -327,6 +327,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 #endif
         _type = type;
         _insets = insets;
+        fileType = filetype;
     }
     return self;
 }

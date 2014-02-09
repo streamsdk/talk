@@ -14,6 +14,8 @@
 @property (nonatomic, retain) UIView *customView;
 @property (nonatomic, retain) UIImageView *bubbleImage;
 @property (nonatomic, retain) UIImageView *avatarImage;
+@property (nonatomic,retain) UIProgressView * progressView;
+@property (nonatomic,retain) UIActivityIndicatorView *activityIndicatorView;
 
 - (void) setupInternalData;
 
@@ -26,6 +28,8 @@
 @synthesize bubbleImage = _bubbleImage;
 @synthesize showAvatar = _showAvatar;
 @synthesize avatarImage = _avatarImage;
+@synthesize progressView;
+@synthesize activityIndicatorView;
 
 - (void)setFrame:(CGRect)frame
 {
@@ -66,6 +70,8 @@
     
     NSBubbleType type = self.data.type;
     
+    FileType filetype = self.data.fileType;
+
     CGFloat width = self.data.view.frame.size.width;
     CGFloat height = self.data.view.frame.size.height;
 
@@ -114,7 +120,34 @@
     }
 
     self.bubbleImage.frame = CGRectMake(x, y, width + self.data.insets.left + self.data.insets.right, height + self.data.insets.top + self.data.insets.bottom);
+    progressView = [[UIProgressView alloc]init];
+    progressView.progress =0.0f;
+    activityIndicatorView = [[UIActivityIndicatorView alloc]init];
+    [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
 
+    if (type == BubbleTypeMine) {
+        if (filetype == FileImage) {
+            progressView .frame = CGRectMake(10, self.contentView.frame.size.height, 90, 10);
+//            [self.contentView addSubview:progressView];
+        }
+        if ( filetype == FileVideo) {
+            progressView .frame = CGRectMake(10, self.contentView.frame.size.height+50, 90, 10);
+            [self.contentView addSubview:progressView];
+        }
+        if (filetype == FileDisappear) {
+            activityIndicatorView.frame = CGRectMake(60, self.contentView.frame.size.height-10, 20, 20);
+            [activityIndicatorView setCenter:CGPointMake(60, self.contentView.frame.size.height-10)];
+            [activityIndicatorView startAnimating];
+//            [self.contentView addSubview:activityIndicatorView];
+            
+        }
+        if (filetype == FileVoice) {
+            activityIndicatorView.frame = CGRectMake(130, self.contentView.frame.size.height-10, 20, 20);
+            [activityIndicatorView setCenter:CGPointMake(130, self.contentView.frame.size.height-10)];
+            [activityIndicatorView startAnimating];
+//            [self.contentView addSubview:activityIndicatorView];
+        }
+    }
 }
 
 @end

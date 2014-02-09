@@ -15,6 +15,14 @@ typedef enum _NSBubbleType
     BubbleTypeMine = 0,
     BubbleTypeSomeoneElse = 1
 } NSBubbleType;
+typedef enum FileType
+{
+    FileMessage = 0,
+    FileImage = 1,
+    FileVideo = 2,
+    FileVoice = 3,
+    FileDisappear = 4
+} FileType;
 
 @interface NSBubbleData : NSObject <AVAudioPlayerDelegate>
 {
@@ -23,6 +31,7 @@ typedef enum _NSBubbleType
 }
 @property (readonly, nonatomic, strong) NSDate *date;
 @property (readonly, nonatomic) NSBubbleType type;
+@property (readonly, nonatomic) FileType fileType;
 @property (readonly, nonatomic, strong) UIView *view;
 @property (readonly, nonatomic) UIEdgeInsets insets;
 @property (nonatomic, strong) UIImage *avatar;
@@ -62,7 +71,7 @@ typedef enum _NSBubbleType
 + (id)dataWithImage:(UIImage *)image  withTime:(NSString *)time withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath;
 
 
-- (id)initWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type insets:(UIEdgeInsets)insets;
-+ (id)dataWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type insets:(UIEdgeInsets)insets;
+- (id)initWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type withFileType:(FileType)filetype insets:(UIEdgeInsets)insets;
++ (id)dataWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type withFileType:(FileType)filetype insets:(UIEdgeInsets)insets;
 
 @end
