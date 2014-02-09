@@ -8,6 +8,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UIBubbleTableViewCell.h"
 #import "NSBubbleData.h"
+#import "AppDelegate.h"
 
 @interface UIBubbleTableViewCell ()
 
@@ -138,7 +139,7 @@
             activityIndicatorView.frame = CGRectMake(60, self.contentView.frame.size.height-10, 20, 20);
             [activityIndicatorView setCenter:CGPointMake(60, self.contentView.frame.size.height-10)];
             [activityIndicatorView startAnimating];
-//            [self.contentView addSubview:activityIndicatorView];
+            [self.contentView addSubview:activityIndicatorView];
             
         }
         if (filetype == FileVoice) {
@@ -147,6 +148,8 @@
             [activityIndicatorView startAnimating];
 //            [self.contentView addSubview:activityIndicatorView];
         }
+        APPDELEGATE.progressView = progressView;
+        APPDELEGATE.activityIndicatorView = activityIndicatorView;
     }
 }
 

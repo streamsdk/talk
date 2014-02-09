@@ -17,6 +17,7 @@
 #import "FilesUpload.h"
 #import "ImageCache.h"
 #import <arcstreamsdk/STreamFile.h>
+#import "AppDelegate.h"
 
 @implementation VideoHandler
 
@@ -236,6 +237,11 @@
         }
         
     }byteSent:^(float bytes){
+        if (bytes == 1.000000) {
+            APPDELEGATE.progressView.progress = bytes;
+            APPDELEGATE.progressView.hidden = YES;
+            [APPDELEGATE.activityIndicatorView stopAnimating];
+        }
         NSLog(@"byteSent:%f", bytes);
     }];
     

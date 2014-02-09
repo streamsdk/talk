@@ -14,6 +14,8 @@
     
 }
 @property (strong, nonatomic) UIWindow *window;
+@property (nonatomic,strong) UIActivityIndicatorView *activityIndicatorView;
+@property (nonatomic,strong) UIProgressView * progressView;
 
 -(void)showFriendsView;
 @end
