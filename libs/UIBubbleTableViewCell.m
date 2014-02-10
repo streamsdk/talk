@@ -134,7 +134,8 @@
         }
         if ( filetype == FileVideo) {
             progressView .frame = CGRectMake(10, self.contentView.frame.size.height+50, 90, 10);
-//            [self.contentView addSubview:progressView];
+            progressView.hidden = YES;
+            [self.contentView addSubview:progressView];
         }
         if (filetype == FileDisappear) {
             activityIndicatorView.frame = CGRectMake(60, self.contentView.frame.size.height-10, 20, 20);

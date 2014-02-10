@@ -215,7 +215,6 @@
 
 }
 -(void) fileUpload :(NSMutableArray *)file{
-    APPDELEGATE.progressView.hidden = NO;
     
     FilesUpload * f =[file objectAtIndex:0];
     NSData *videoData = [NSData dataWithContentsOfFile:f.filepath];
@@ -239,6 +238,7 @@
         }
         
     }byteSent:^(float bytes){
+        APPDELEGATE.progressView.hidden = NO;
         APPDELEGATE.progressView.progress = bytes;
         if (bytes == 1.000000) {
             APPDELEGATE.progressView.hidden = YES;
