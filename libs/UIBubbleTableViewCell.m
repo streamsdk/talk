@@ -134,13 +134,13 @@
         }
         if ( filetype == FileVideo) {
             progressView .frame = CGRectMake(10, self.contentView.frame.size.height+50, 90, 10);
-            [self.contentView addSubview:progressView];
+//            [self.contentView addSubview:progressView];
         }
         if (filetype == FileDisappear) {
             activityIndicatorView.frame = CGRectMake(60, self.contentView.frame.size.height-10, 20, 20);
             [activityIndicatorView setCenter:CGPointMake(60, self.contentView.frame.size.height-10)];
             [activityIndicatorView startAnimating];
-            [self.contentView addSubview:activityIndicatorView];
+//            [self.contentView addSubview:activityIndicatorView];
             
         }
         if (filetype == FileVoice) {
