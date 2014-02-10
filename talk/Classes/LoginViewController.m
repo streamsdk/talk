@@ -154,7 +154,8 @@
     if ([imageCache getUserMetadata:userID]!=nil) {
         NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
         NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-        if ([imageCache getImage:pImageId] == nil && pImageId){
+//        if ([imageCache getImage:pImageId] == nil && pImageId){
+        if (pImageId!=nil && ![pImageId isEqualToString:@""] &&[imageCache getImage:pImageId]==nil){
             FileCache *fileCache = [FileCache sharedObject];
             STreamFile *file = [[STreamFile alloc] init];
             if (![imageCache getImage:pImageId]){
