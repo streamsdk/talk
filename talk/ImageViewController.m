@@ -90,8 +90,11 @@ static NSMutableArray *colors;
     redoButton.tag=REDO_TAG;
     [redoButton addTarget:self action:@selector(redoClicked) forControlEvents:UIControlEventTouchUpInside];
 //selectcolors.png
-    UIImage * newImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(self.view.frame.size.width -48, self.view.frame.size.height-180)];
-    drawView = [[MyView alloc]initWithFrame:CGRectMake(20, 100, self.view.frame.size.width -48, self.view.frame.size.height-180)];
+    CGFloat maxWidth=self.view.frame.size.width-48;
+    CGFloat maxheight=self.view.frame.size.height-180;
+    UIImage * newImage = [self imageWithImage:image scaledToMaxWidth:maxWidth
+                                    maxHeight:maxheight];
+    drawView = [[MyView alloc]initWithFrame:CGRectMake((self.view.frame.size.width-20-newImage.size.width)/2, (self.view.frame.size.height-newImage.size.height)/2, newImage.size.width, newImage.size.height)];
     drawView.userInteractionEnabled = YES;
     [drawView setBackgroundColor:[UIColor colorWithPatternImage:newImage]];
     [self.view addSubview:drawView];
@@ -310,14 +313,6 @@ static NSMutableArray *colors;
     NSInteger index = seg.selectedSegmentIndex;
     NSLog(@"%d",index);
     [actionSheet dismissWithClickedButtonIndex:index animated:YES];
-}
-
--(UIImage*)imageWithImageSimple:(UIImage*)_image scaledToSize:(CGSize)newSize{
-    UIGraphicsBeginImageContext(newSize);
-    [_image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
-    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
 }
 
 #pragma mark - Touch Detection -
