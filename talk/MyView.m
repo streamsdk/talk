@@ -21,7 +21,7 @@ static NSMutableArray *lineArray;
 //删除的线的数组，方便重做时取出来
 static NSMutableArray *deleArray;
 //线条宽度的数组
-static float lineWidthArray[4]={10.0,20.0,30.0,40.0};
+static float lineWidthArray[4]={3.0,20.0,30.0,40.0};
 //删除线条时删除的线条宽度储存的数组
 static NSMutableArray *deleWidthArray;
 //正常存储的线条宽度的数组
