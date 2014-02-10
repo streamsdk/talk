@@ -60,6 +60,39 @@
     sqlite3_close(database);
 
 }
+-(NSMutableArray *) readDb{
+    NSMutableArray *ackArray = [[NSMutableArray alloc]init];
+    sqlite3 *database;
+    
+    if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
+        sqlite3_close(database);
+        NSAssert(0, @"Failed to open database");
+    }
+    
+    NSString *sqlQuery = @"SELECT CONTENT, FROMID FROM ACK";
+    sqlite3_stmt * statement;
+    if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
+        while (sqlite3_step(statement) == SQLITE_ROW) {
+            char *_content = (char*)sqlite3_column_text(statement,0);
+            char *_friendId = (char*)sqlite3_column_text(statement,1);
+            NSString * friendId = [[NSString alloc]initWithUTF8String:_friendId];
+            NSString * json = [[NSString alloc]initWithUTF8String:_content];
+            NSMutableString *string = [[NSMutableString alloc]init];
+            [string appendString:friendId];
+            [string appendString:@"~∞§"];
+            [string appendString:json];
+            
+            [ackArray addObject:string];
+            
+           /* NSArray * array = [string componentsSeparatedByString:@"~∞§"];
+            NSString *id = [array objectAtIndex:0];
+            NSMutableString *  s= [[NSMutableString alloc]init];
+            [s appendString:id];
+            [s appendString:@"messaginghistory"];*/
+        }
+    }
+    return  ackArray;
+}
 -(void) deleteDB:(NSString *) id{
     sqlite3 *database;
     if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
@@ -68,6 +101,24 @@
     }
     //    select distinct * from ADDFRIENDS
     NSString * sql = [NSString stringWithFormat:@"DELETE FROM ACK WHERE ID='%@'",id];
+    sqlite3_stmt *statement;
+    if (sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, nil) == SQLITE_OK) {
+        
+        NSLog(@"delete");
+    }
+    sqlite3_step(statement);
+    sqlite3_finalize(statement);
+    sqlite3_close(database);
+
+}
+-(void) deleteDB {
+    sqlite3 *database;
+    if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
+        sqlite3_close(database);
+        NSAssert(0, @"Failed to open database");
+    }
+    //    select distinct * from ADDFRIENDS
+    NSString * sql =@"DELETE FROM ACk";
     sqlite3_stmt *statement;
     if (sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, nil) == SQLITE_OK) {
         

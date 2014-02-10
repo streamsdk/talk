@@ -14,6 +14,7 @@
 #import <arcstreamsdk/STreamSession.h>
 #import <CFNetwork/CFNetwork.h>
 #import "ACKMessageDB.h"
+
 #if DEBUG
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 #else
@@ -104,6 +105,25 @@ static XMPPReconnect *xmppReconnect;
 
 - (void)disconnect
 {
+    /*ACKMessageDB * ack = [[ACKMessageDB alloc]init];
+    NSMutableArray * ackArray = [ack  readDb];
+    [ack deleteDB];
+    if (ackArray!=nil && [ackArray count]!=0) {
+        for (NSMutableString * str in ackArray) {
+            long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
+            NSString * key = [NSString stringWithFormat:@"%lld",milliseconds];
+            NSArray * array = [str componentsSeparatedByString:@"~∞§"];
+            NSMutableString *id = [array objectAtIndex:0];
+            [id appendString:@"messaginghistory"];
+            STreamObject *so = [[STreamObject alloc]init];
+            [so setObjectId:id];
+            NSMutableString *history = [[NSMutableString alloc]init];
+            [history appendString:@"message.body."];
+            [history appendString:[array objectAtIndex:1]];
+            [so addStaff:key withObject:history];
+            [so updateInBackground];
+        }
+    }*/
 	[self goOffline];
     [xmppStream disconnect];
 }
