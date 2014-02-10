@@ -17,6 +17,7 @@
 @property (nonatomic, retain) UIImageView *avatarImage;
 @property (nonatomic,retain) UIProgressView * progressView;
 @property (nonatomic,retain) UIActivityIndicatorView *activityIndicatorView;
+@property (nonatomic,strong) UILabel * label;
 
 - (void) setupInternalData;
 
@@ -31,6 +32,7 @@
 @synthesize avatarImage = _avatarImage;
 @synthesize progressView;
 @synthesize activityIndicatorView;
+@synthesize label;
 
 - (void)setFrame:(CGRect)frame
 {
@@ -125,33 +127,50 @@
     progressView.progress =0.0f;
     activityIndicatorView = [[UIActivityIndicatorView alloc]init];
     [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+    label = [[UILabel alloc]init];
+    [label setBackgroundColor:[UIColor clearColor]];
+    [label setFont:[UIFont systemFontOfSize:10.0f]];
 //    progressView.hidden = YES;
 //    activityIndicatorView.hidden = YES;
     if (type == BubbleTypeMine) {
         if (filetype == FileImage) {
-            progressView .frame = CGRectMake(10, self.contentView.frame.size.height, 90, 10);
-//            [self.contentView addSubview:progressView];
-        }
-        if ( filetype == FileVideo) {
-            progressView .frame = CGRectMake(10, self.contentView.frame.size.height+50, 90, 10);
+            progressView .frame = CGRectMake(24, self.contentView.frame.size.height, 90, 8);
+            CGAffineTransform transform =CGAffineTransformMakeScale(1.0f,2.0f);
+            progressView.transform = transform;
             progressView.hidden = YES;
             [self.contentView addSubview:progressView];
+            label.frame = CGRectMake(0, self.contentView.frame.size.height, 60, 30);
+            label.hidden = YES;
+            [self.contentView addSubview:label];
+        }
+        if ( filetype == FileVideo) {
+            progressView .frame = CGRectMake(24, self.contentView.frame.size.height+25, 90, 8);
+            CGAffineTransform transform =CGAffineTransformMakeScale(1.0f,2.0f);
+            progressView.transform = transform;
+            progressView.hidden = YES;
+            [self.contentView addSubview:progressView];
+            label.frame = CGRectMake(0, self.contentView.frame.size.height+10, 60, 30);
+            label.hidden = YES;
+            [self.contentView addSubview:label];
+
         }
         if (filetype == FileDisappear) {
             activityIndicatorView.frame = CGRectMake(60, self.contentView.frame.size.height-10, 20, 20);
             [activityIndicatorView setCenter:CGPointMake(60, self.contentView.frame.size.height-10)];
-            [activityIndicatorView startAnimating];
-//            [self.contentView addSubview:activityIndicatorView];
+//            [activityIndicatorView startAnimating];
+            [self.contentView addSubview:activityIndicatorView];
             
         }
         if (filetype == FileVoice) {
             activityIndicatorView.frame = CGRectMake(130, self.contentView.frame.size.height-10, 20, 20);
             [activityIndicatorView setCenter:CGPointMake(130, self.contentView.frame.size.height-10)];
-            [activityIndicatorView startAnimating];
-//            [self.contentView addSubview:activityIndicatorView];
+//            [activityIndicatorView startAnimating];
+            [self.contentView addSubview:activityIndicatorView];
         }
+        APPDELEGATE.label = label;
         APPDELEGATE.progressView = progressView;
         APPDELEGATE.activityIndicatorView = activityIndicatorView;
+
     }
 }
 

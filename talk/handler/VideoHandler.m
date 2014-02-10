@@ -240,8 +240,12 @@
     }byteSent:^(float bytes){
         APPDELEGATE.progressView.hidden = NO;
         APPDELEGATE.progressView.progress = bytes;
+        [APPDELEGATE.activityIndicatorView startAnimating];
+        APPDELEGATE.label.hidden = NO;
+        APPDELEGATE.label.text = [NSString stringWithFormat:@"%.0f%%",bytes*100];
         if (bytes == 1.000000) {
             APPDELEGATE.progressView.hidden = YES;
+            APPDELEGATE.label.hidden = YES;
             [APPDELEGATE.activityIndicatorView stopAnimating];
         }
         NSLog(@"byteSent:%f", bytes);
