@@ -105,7 +105,7 @@ static XMPPReconnect *xmppReconnect;
 
 - (void)disconnect
 {
-    /*ACKMessageDB * ack = [[ACKMessageDB alloc]init];
+   /* ACKMessageDB * ack = [[ACKMessageDB alloc]init];
     NSMutableArray * ackArray = [ack  readDb];
     [ack deleteDB];
     if (ackArray!=nil && [ackArray count]!=0) {
@@ -113,15 +113,14 @@ static XMPPReconnect *xmppReconnect;
             long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
             NSString * key = [NSString stringWithFormat:@"%lld",milliseconds];
             NSArray * array = [str componentsSeparatedByString:@"~∞§"];
-            NSMutableString *id = [array objectAtIndex:0];
+            NSMutableString *id = [[NSMutableString alloc]init];
+            [id appendString:[array objectAtIndex:0]];
             [id appendString:@"messaginghistory"];
             STreamObject *so = [[STreamObject alloc]init];
             [so setObjectId:id];
-            NSMutableString *history = [[NSMutableString alloc]init];
-            [history appendString:@"message.body."];
-            [history appendString:[array objectAtIndex:1]];
+            NSString *history = [NSString stringWithFormat:@"message.body.%@",[array objectAtIndex:1]];
             [so addStaff:key withObject:history];
-            [so updateInBackground];
+            [so update];
         }
     }*/
 	[self goOffline];
