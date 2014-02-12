@@ -194,8 +194,9 @@
     [bodyDic setObject:@"video" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
     [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
+    NSString  *content = [bodyDic JSONString];
     ACKMessageDB *ack = [[ACKMessageDB alloc]init];
-    [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
+    [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:_sendID withContent:content withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     
     ImageCache *cache = [ImageCache sharedObject];
     NSMutableArray *fileArray = [cache getFileUpload];

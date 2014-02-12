@@ -86,8 +86,9 @@
     [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
     [bodyDic setObject:@"photo" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
+    NSString  *content = [bodyDic JSONString];
     ACKMessageDB *ack = [[ACKMessageDB alloc]init];
-    [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
+    [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:sendID withContent:content withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     
     ImageCache * cache = [ImageCache sharedObject];
     NSMutableArray * fileArray = [cache getFileUpload];
