@@ -36,6 +36,7 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     
+    _progressDict = [[NSMutableDictionary alloc]init];
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:247.0/255.0 green:229.0/255.0 blue:227.0/255.0 alpha:1.0]];
     TalkDB * talkDB = [[TalkDB alloc ]init];
     [talkDB initDB];

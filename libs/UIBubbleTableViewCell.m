@@ -15,9 +15,7 @@
 @property (nonatomic, retain) UIView *customView;
 @property (nonatomic, retain) UIImageView *bubbleImage;
 @property (nonatomic, retain) UIImageView *avatarImage;
-@property (nonatomic,retain) UIProgressView * progressView;
-@property (nonatomic,retain) UIActivityIndicatorView *activityIndicatorView;
-@property (nonatomic,strong) UILabel * label;
+
 
 - (void) setupInternalData;
 
@@ -130,7 +128,7 @@
     label = [[UILabel alloc]init];
     [label setBackgroundColor:[UIColor clearColor]];
     [label setFont:[UIFont systemFontOfSize:10.0f]];
-//    progressView.hidden = YES;
+  
 //    activityIndicatorView.hidden = YES;
     if (type == BubbleTypeMine) {
         if (filetype == FileImage) {
@@ -148,11 +146,11 @@
             CGAffineTransform transform =CGAffineTransformMakeScale(1.0f,2.0f);
             progressView.transform = transform;
             progressView.hidden = YES;
-            [self.contentView addSubview:progressView];
             label.frame = CGRectMake(0, self.contentView.frame.size.height+10, 60, 30);
             label.hidden = YES;
+            [self.contentView addSubview:progressView];
             [self.contentView addSubview:label];
-
+            
         }
         if (filetype == FileDisappear) {
             activityIndicatorView.frame = CGRectMake(60, self.contentView.frame.size.height-10, 20, 20);
@@ -167,6 +165,7 @@
 //            [activityIndicatorView startAnimating];
             [self.contentView addSubview:activityIndicatorView];
         }
+
         APPDELEGATE.label = label;
         APPDELEGATE.progressView = progressView;
         APPDELEGATE.activityIndicatorView = activityIndicatorView;

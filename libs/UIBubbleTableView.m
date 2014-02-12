@@ -9,7 +9,7 @@
 #import "NSBubbleData.h"
 #import "UIBubbleHeaderTableViewCell.h"
 #import "UIBubbleTypingTableViewCell.h"
-
+#import "AppDelegate.h"
 
 @interface UIBubbleTableView ()
 
@@ -220,10 +220,18 @@
     // Standard bubble    
     static NSString *cellId = @"tblBubbleCell";
     UIBubbleTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
-
     if (cell == nil) cell = [[UIBubbleTableViewCell alloc] init];
     [cell setBackgroundColor:[UIColor clearColor]];
+    NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
+//    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+//    [dict setObject:cell.label forKey:@"1"];
+//    [dict setObject:cell.progressView forKey:@"2"];
+//  [dict setObject:progressView forKey:@"3"];
+    NSString * path =data._videoPath;
+    if (path!=nil && ![path isEqualToString:@""]) {
+        [APPDELEGATE.progressDict setValue:cell.progressView forKey:path];
+    }
+
     cell.data = data;
     cell.showAvatar = self.showAvatars;
     return cell;

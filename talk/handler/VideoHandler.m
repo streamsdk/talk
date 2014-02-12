@@ -223,7 +223,11 @@
     
     STreamFile *sf = [[STreamFile alloc] init];
     STreamXMPP *con = [STreamXMPP sharedObject];
-    
+    __block UIProgressView *progressView = [[UIProgressView alloc]init];
+//    __block UILabel * label = [[UILabel alloc]init];
+//    NSMutableDictionary * dict = [APPDELEGATE.progressDict objectForKey:f.filepath];
+    progressView= (UIProgressView *)[APPDELEGATE.progressDict objectForKey:f.filepath];
+//    label = (UILabel*)[dict objectForKey:@"1"];
     [sf postData:videoData finished:^(NSString *res){
         if ([res isEqualToString:@"ok"]){
             [f.bodyDict setObject:[sf fileId] forKey:@"fileId"];
@@ -239,14 +243,14 @@
         }
         
     }byteSent:^(float bytes){
-        APPDELEGATE.progressView.hidden = NO;
-        APPDELEGATE.progressView.progress = bytes;
+        progressView.hidden = NO;
+        progressView.progress = bytes;
         [APPDELEGATE.activityIndicatorView startAnimating];
         APPDELEGATE.label.hidden = NO;
         APPDELEGATE.label.text = [NSString stringWithFormat:@"%.0f%%",bytes*100];
         if (bytes == 1.000000) {
-            APPDELEGATE.progressView.hidden = YES;
-            APPDELEGATE.label.hidden = YES;
+           progressView.hidden = YES;
+           APPDELEGATE.label.hidden = YES;
             [APPDELEGATE.activityIndicatorView stopAnimating];
         }
         NSLog(@"byteSent:%f", bytes);
