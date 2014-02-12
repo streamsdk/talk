@@ -195,6 +195,7 @@
 		0E0F82F818A3273C00E81CA5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0F82F718A3273C00E81CA5 /* MessageUI.framework */; };
 		0E0F82FE18A3549400E81CA5 /* MyToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F82FD18A3549400E81CA5 /* MyToolbar.m */; };
 		0E0F830118A37D4100E81CA5 /* ACKMessageDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F830018A37D4100E81CA5 /* ACKMessageDB.m */; };
+		0E10614818AB8109000564C7 /* Progress.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E10614718AB8109000564C7 /* Progress.m */; };
 		0E19E80C18711C5A00523232 /* Target.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E80B18711C5A00523232 /* Target.png */; };
 		0E19E83318716AA100523232 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E19E82918716AA100523232 /* EGORefreshTableHeaderView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0E19E83418716AA100523232 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E82B18716AA100523232 /* blackArrow.png */; };
@@ -697,6 +698,8 @@
 		0E0F82FD18A3549400E81CA5 /* MyToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyToolbar.m; path = Classes/MyToolbar.m; sourceTree = "<group>"; };
 		0E0F82FF18A37D4100E81CA5 /* ACKMessageDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACKMessageDB.h; path = talkDB/ACKMessageDB.h; sourceTree = "<group>"; };
 		0E0F830018A37D4100E81CA5 /* ACKMessageDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ACKMessageDB.m; path = talkDB/ACKMessageDB.m; sourceTree = "<group>"; };
+		0E10614618AB8109000564C7 /* Progress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Progress.h; path = handler/Progress.h; sourceTree = "<group>"; };
+		0E10614718AB8109000564C7 /* Progress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Progress.m; path = handler/Progress.m; sourceTree = "<group>"; };
 		0E178C4C186C1F8000E16F71 /* GetAllMessagesProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GetAllMessagesProtocol.h; path = Classes/GetAllMessagesProtocol.h; sourceTree = "<group>"; };
 		0E19E80B18711C5A00523232 /* Target.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Target.png; sourceTree = "<group>"; };
 		0E19E82818716AA100523232 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
@@ -1791,6 +1794,8 @@
 				0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */,
 				0E1B052F18A623A7001715C6 /* FilesUpload.h */,
 				0E1B053018A623A7001715C6 /* FilesUpload.m */,
+				0E10614618AB8109000564C7 /* Progress.h */,
+				0E10614718AB8109000564C7 /* Progress.m */,
 			);
 			name = handler;
 			sourceTree = "<group>";
@@ -2608,6 +2613,7 @@
 				03D9C09618145E410039118F /* XMPPMessageArchivingCoreDataStorage.m in Sources */,
 				03D9C0A418145E410039118F /* XMPPMessage+XEP_0224.m in Sources */,
 				03F50C701867B54300E08C22 /* AudioHandler.m in Sources */,
+				0E10614818AB8109000564C7 /* Progress.m in Sources */,
 				03D9C06818145E410039118F /* XMPPRoom.xcdatamodeld in Sources */,
 				03D9C05518145E410039118F /* XMPPGoogleSharedStatus.m in Sources */,
 				03D9BF0818145C080039118F /* main.m in Sources */,

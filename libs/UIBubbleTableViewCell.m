@@ -121,7 +121,7 @@
     }
 
     self.bubbleImage.frame = CGRectMake(x, y, width + self.data.insets.left + self.data.insets.right, height + self.data.insets.top + self.data.insets.bottom);
-    progressView = [[UIProgressView alloc]init];
+   /* progressView = [[UIProgressView alloc]init];
     progressView.progress =0.0f;
     activityIndicatorView = [[UIActivityIndicatorView alloc]init];
     [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
@@ -170,7 +170,7 @@
         APPDELEGATE.progressView = progressView;
         APPDELEGATE.activityIndicatorView = activityIndicatorView;
 
-    }
+    }*/
 }
 
 @end

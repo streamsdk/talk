@@ -10,6 +10,7 @@
 #import "UIBubbleHeaderTableViewCell.h"
 #import "UIBubbleTypingTableViewCell.h"
 #import "AppDelegate.h"
+#import "Progress.h"
 
 @interface UIBubbleTableView ()
 
@@ -223,17 +224,67 @@
     if (cell == nil) cell = [[UIBubbleTableViewCell alloc] init];
     [cell setBackgroundColor:[UIColor clearColor]];
     NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
-//    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-//    [dict setObject:cell.label forKey:@"1"];
-//    [dict setObject:cell.progressView forKey:@"2"];
-//  [dict setObject:progressView forKey:@"3"];
-    NSString * path =data._videoPath;
-    if (path!=nil && ![path isEqualToString:@""]) {
-        [APPDELEGATE.progressDict setValue:cell.progressView forKey:path];
-    }
-
     cell.data = data;
     cell.showAvatar = self.showAvatars;
+    if (cell.data.type == BubbleTypeMine) {
+         Progress * p = [[Progress alloc]init];
+        if ( cell.data.fileType == FileVideo) {
+            UIProgressView*progressView = [[UIProgressView alloc]init];
+            [progressView setProgressViewStyle:UIProgressViewStyleDefault];
+            progressView .frame = CGRectMake(24, cell.frame.size.height+25, 90, 8);
+            CGAffineTransform transform =CGAffineTransformMakeScale(1.0f,2.0f);
+            progressView.transform = transform;
+            progressView.hidden = YES;
+            UILabel *label = [[UILabel alloc]init];
+            label.backgroundColor = [UIColor clearColor];
+            label.frame = CGRectMake(0, cell.frame.size.height+10, 60, 30);
+            [label setFont:[UIFont systemFontOfSize:11.0f]];
+            label.hidden = YES;
+            [cell.contentView addSubview:progressView];
+            [cell.contentView addSubview:label];
+            p.progressView = progressView;
+            p.label = label;
+            NSString * path =data._videoPath;
+            if (path!=nil && ![path isEqualToString:@""]) {
+                [APPDELEGATE.progressDict setValue:p forKey:path];
+            }
+        }
+        if (cell.data.fileType == FileDisappear) {
+            UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]init];
+            [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+            activityIndicatorView.frame = CGRectMake(60, cell.frame.size.height-15, 20, 20);
+            [activityIndicatorView setCenter:CGPointMake(60, cell.frame.size.height-15)];
+            [cell.contentView addSubview:activityIndicatorView];
+            p.activityIndicatorView = activityIndicatorView;
+            NSString * path =data._videoPath;
+            if (path!=nil && ![path isEqualToString:@""]) {
+                [APPDELEGATE.progressDict setValue:p forKey:path];
+            }
+        }
+        if (cell.data.fileType == FileImage) {
+            UIProgressView*progressView = [[UIProgressView alloc]init];
+            [progressView setProgressViewStyle:UIProgressViewStyleDefault];
+            progressView .frame = CGRectMake(24, cell.frame.size.height, 90, 8);
+            CGAffineTransform transform =CGAffineTransformMakeScale(1.0f,2.0f);
+            progressView.transform = transform;
+            progressView.hidden = YES;
+            UILabel *label = [[UILabel alloc]init];
+            label.backgroundColor = [UIColor clearColor];
+            label.frame = CGRectMake(0, cell.frame.size.height, 60, 30);
+            [label setFont:[UIFont systemFontOfSize:11.0f]];
+            label.hidden = YES;
+            [cell.contentView addSubview:progressView];
+            [cell.contentView addSubview:label];
+            p.progressView = progressView;
+            p.label = label;
+            NSString * path =data._videoPath;
+            if (path!=nil && ![path isEqualToString:@""]) {
+                [APPDELEGATE.progressDict setValue:p forKey:path];
+            }
+        }
+    }
+
+    
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
