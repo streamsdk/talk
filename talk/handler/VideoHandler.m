@@ -195,17 +195,15 @@
     [bodyDic setObject:@"video" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
     [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
-    NSString  *content = [bodyDic JSONString];
-    ACKMessageDB *ack = [[ACKMessageDB alloc]init];
-    [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:_sendID withContent:content withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     
     ImageCache *cache = [ImageCache sharedObject];
     NSMutableArray *fileArray = [cache getFileUpload];
     
     FilesUpload * file = [[FilesUpload alloc]init];
-    [file setId:_sendID];
+    [file setId:[NSString stringWithFormat:@"%lld", milliseconds]];
     [file setFilepath:_mp4Path];
     [file setBodyDict:bodyDic];
+    [file setUserId:_sendID];
     
     if (fileArray!=nil && [fileArray count]!=0) {
         [cache setFileUpload:file];
@@ -218,6 +216,7 @@
 }
 -(void) fileUpload :(NSMutableArray *)file{
     
+    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     FilesUpload * f =[file objectAtIndex:0];
     NSData *videoData = [NSData dataWithContentsOfFile:f.filepath];
     ImageCache *cache = [ImageCache sharedObject];
@@ -229,6 +228,12 @@
             [f.bodyDict setObject:[sf fileId] forKey:@"fileId"];
             NSString *bodyJsonData = [f.bodyDict JSONString];
             NSLog(@"body json data: %@", bodyJsonData);
+            ACKMessageDB *ack = [[ACKMessageDB alloc]init];
+            NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+            [ack insertDB:f.id withUserID:[handler getUserID] fromID:f.userId withContent:bodyJsonData withTime:[dateFormatter stringFromDate:date] withIsMine:0];
+
             [con sendFileMessage:f.id withFileId:[sf fileId] withMessage:bodyJsonData];
         }
         

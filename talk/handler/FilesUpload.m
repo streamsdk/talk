@@ -13,4 +13,5 @@
 @synthesize id;
 @synthesize filepath;
 @synthesize bodyDict;
+@synthesize userId;
 @end
