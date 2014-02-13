@@ -200,14 +200,20 @@
     NSMutableArray *fileArray = [cache getFileUpload];
     
     FilesUpload * file = [[FilesUpload alloc]init];
-    [file setId:[NSString stringWithFormat:@"%lld", milliseconds]];
+    [file setTime:[NSString stringWithFormat:@"%lld", milliseconds]];
     [file setFilepath:_mp4Path];
     [file setBodyDict:bodyDic];
     [file setUserId:_sendID];
     
     if (fileArray!=nil && [fileArray count]!=0) {
         [cache setFileUpload:file];
-        return;
+        FilesUpload * f =[fileArray objectAtIndex:0];
+        long long ftime = [f.time longLongValue];
+        long long t = milliseconds/1000.0 - ftime/1000.0;
+        if ((milliseconds/1000.0 - ftime/1000.0)<8) {
+            return;
+        }
+        
     }
     [cache setFileUpload:file];
     [self fileUpload:fileArray];
@@ -231,7 +237,7 @@
             ACKMessageDB *ack = [[ACKMessageDB alloc]init];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-            [ack insertDB:f.id withUserID:[handler getUserID] fromID:f.userId withContent:bodyJsonData withTime:[dateFormatter stringFromDate:date] withIsMine:0];
+            [ack insertDB:f.time withUserID:[handler getUserID] fromID:f.userId withContent:bodyJsonData withTime:[dateFormatter stringFromDate:date] withIsMine:0];
 
             [con sendFileMessage:f.userId withFileId:[sf fileId] withMessage:bodyJsonData];
         }
@@ -243,6 +249,8 @@
         }
         
     }byteSent:^(float bytes){
+        long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
+        [f setTime:[NSString stringWithFormat:@"%lld", milliseconds]];
         Progress *p = (Progress *)[APPDELEGATE.progressDict objectForKey:f.filepath];
         UIProgressView *progressView= p.progressView;
         UILabel *label = p.label;

@@ -10,7 +10,7 @@
 
 @implementation FilesUpload
 
-@synthesize id;
+@synthesize time;
 @synthesize filepath;
 @synthesize bodyDict;
 @synthesize userId;

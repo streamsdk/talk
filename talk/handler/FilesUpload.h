@@ -10,7 +10,7 @@
 
 @interface FilesUpload : NSObject
 
-@property (nonatomic,retain) NSString * id;
+@property (nonatomic,retain) NSString * time;
 @property (nonatomic,retain) NSString *filepath;
 @property (nonatomic,retain) NSMutableDictionary * bodyDict;
 @property (nonatomic,retain) NSString * userId;

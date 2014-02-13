@@ -80,6 +80,7 @@
     [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     
     long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
+  
     NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
     if (time)
         [bodyDic setObject:time forKey:@"duration"];
@@ -91,7 +92,7 @@
     ImageCache * cache = [ImageCache sharedObject];
     NSMutableArray * fileArray = [cache getFileUpload];
     FilesUpload * file = [[FilesUpload alloc]init];
-    [file setId:[NSString stringWithFormat:@"%lld", milliseconds]];
+    [file setTime:[NSString stringWithFormat:@"%lld", milliseconds]];
     [file setFilepath:photoPath];
     [file setBodyDict:bodyDic];
     [file setUserId:sendID];
@@ -122,7 +123,7 @@
              NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-            [ack insertDB:f.id withUserID:[handler getUserID] fromID:f.userId withContent:bodyJsonData withTime:[dateFormatter stringFromDate:date] withIsMine:0];
+            [ack insertDB:f.time withUserID:[handler getUserID] fromID:f.userId withContent:bodyJsonData withTime:[dateFormatter stringFromDate:date] withIsMine:0];
            [con sendFileMessage:f.userId withFileId:[sf fileId] withMessage:bodyJsonData];
         }
         

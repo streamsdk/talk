@@ -197,22 +197,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "talk/Classes/MainController.m"
-            timestampString = "413700409.310926"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "755"
-            endingLineNumber = "755"
-            landmarkName = "-takePhoto"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "libs/UIBubbleTypingTableViewCell.m"
             timestampString = "412335466.557991"
             startingColumnNumber = "9223372036854775807"
@@ -293,12 +277,12 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "413953612.73925"
+                  timestampString = "413973928.232093"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
                   endingLineNumber = "1119"
-                  offsetFromSymbolStart = "480">
+                  offsetFromSymbolStart = "430">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -307,12 +291,12 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "413953612.739471"
+                  timestampString = "413973928.232305"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
                   endingLineNumber = "1119"
-                  offsetFromSymbolStart = "650">
+                  offsetFromSymbolStart = "496">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -371,13 +355,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "talk/STreamXMPP.m"
-            timestampString = "413952888.201919"
+            filePath = "talk/handler/VideoHandler.m"
+            timestampString = "413973655.071831"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "306"
-            endingLineNumber = "306"
-            landmarkName = "-xmppStream:didReceiveMessage:"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
+            landmarkName = "-sendVideo:withData:withVideoTime:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -387,45 +371,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "talk/Classes/MyFriendsViewController.m"
-            timestampString = "413954809.278815"
+            filePath = "talk/handler/VideoHandler.m"
+            timestampString = "413973935.650806"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "353"
-            endingLineNumber = "353"
-            landmarkName = "-didReceiveFile:withBody:withFrom:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "talk/Classes/MyFriendsViewController.m"
-            timestampString = "413955045.259858"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "340"
-            endingLineNumber = "340"
-            landmarkName = "-didReceiveFile:withBody:withFrom:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "talk/Classes/MyFriendsViewController.m"
-            timestampString = "413955110.87254"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "347"
-            endingLineNumber = "347"
-            landmarkName = "-didReceiveFile:withBody:withFrom:"
+            startingLineNumber = "214"
+            endingLineNumber = "214"
+            landmarkName = "-sendVideo:withData:withVideoTime:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
