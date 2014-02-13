@@ -97,10 +97,10 @@
     [file setBodyDict:bodyDic];
     [file setUserId:sendID];
     if (fileArray != nil && [fileArray count] != 0) {
-        [cache setFileUpload:file];
+        [cache addFileUpload:file];
         return;
     }
-    [cache setFileUpload:file];
+    [cache addFileUpload:file];
     [self fileUpload:fileArray];
     
 }

@@ -45,7 +45,7 @@
 
 -(void)deleteJsonData:(NSString *)fileId;
 
--(void) setFileUpload:(FilesUpload *)file;
+-(void) addFileUpload:(FilesUpload *)file;
 
 -(NSMutableArray *)getFileUpload;
 

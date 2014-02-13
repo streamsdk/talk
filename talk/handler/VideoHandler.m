@@ -206,7 +206,7 @@
     [file setUserId:_sendID];
     
     if (fileArray!=nil && [fileArray count]!=0) {
-        [cache setFileUpload:file];
+        [cache addFileUpload:file];
         FilesUpload * f =[fileArray objectAtIndex:0];
         long long ftime = [f.time longLongValue];
         long long t = milliseconds/1000.0 - ftime/1000.0;
@@ -215,7 +215,7 @@
         }
         
     }
-    [cache setFileUpload:file];
+    [cache addFileUpload:file];
     [self fileUpload:fileArray];
     [delegate reloadTable];
 

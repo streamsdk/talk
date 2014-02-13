@@ -139,7 +139,7 @@ static NSMutableArray *_fileUpload;
 -(NSMutableArray *)getTwitters{
     return _twitters;
 }
--(void) setFileUpload:(FilesUpload *)file{
+-(void) addFileUpload:(FilesUpload *)file{
     
     [_fileUpload addObject:file];
 }
