@@ -304,8 +304,8 @@ static XMPPReconnect *xmppReconnect;
         NSString *type = [json objectForKey:@"type"];
         NSString *chatId = [json objectForKey:@"id"];
         if ([type isEqualToString:@"ack"]){
-            ACKMessageDB *ack = [[ACKMessageDB alloc]init];
-            [ack deleteDB:chatId];
+//            ACKMessageDB *ack = [[ACKMessageDB alloc]init];
+//            [ack deleteDB:chatId];
             NSLog(@"ack received");
             return;
         }

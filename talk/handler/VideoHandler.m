@@ -229,12 +229,11 @@
             NSString *bodyJsonData = [f.bodyDict JSONString];
             NSLog(@"body json data: %@", bodyJsonData);
             ACKMessageDB *ack = [[ACKMessageDB alloc]init];
-            NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
             [ack insertDB:f.id withUserID:[handler getUserID] fromID:f.userId withContent:bodyJsonData withTime:[dateFormatter stringFromDate:date] withIsMine:0];
 
-            [con sendFileMessage:f.id withFileId:[sf fileId] withMessage:bodyJsonData];
+            [con sendFileMessage:f.userId withFileId:[sf fileId] withMessage:bodyJsonData];
         }
         
         [cache removeFileUpload:f];

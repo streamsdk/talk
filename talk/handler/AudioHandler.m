@@ -60,15 +60,23 @@
     [bodyDic setObject:bodyData forKey:@"duration"];
     [bodyDic setObject:@"voice" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
-    NSString  *content = [bodyDic JSONString];
-    ACKMessageDB *ack = [[ACKMessageDB alloc]init];
-    [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:sendID withContent:content withTime:[dateFormatter stringFromDate:date] withIsMine:0];
-    
+//    NSString  *content = [bodyDic JSONString];
+//    ACKMessageDB *ack = [[ACKMessageDB alloc]init];
+//    [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:sendID withContent:content withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     STreamXMPP *con = [STreamXMPP sharedObject];
     
     [con sendFileInBackground:audioData toUser:sendID finished:^(NSString *res) {
         
         NSLog(@"%@", res);
+        if ([res isEqualToString:@"ok"]) {
+            NSString *bodyJsonData = [bodyDic JSONString];
+            NSLog(@"body json data: %@", bodyJsonData);
+            ACKMessageDB *ack = [[ACKMessageDB alloc]init];
+            NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+            [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:sendID withContent:bodyJsonData withTime:[dateFormatter stringFromDate:date] withIsMine:0];
+        }
         
     }byteSent:^(float b){
         
