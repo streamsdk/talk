@@ -28,6 +28,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "HandlerFirendsViewController.h"
 #import "DownloadDB.h"
+#import "UploadDB.h"
 
 #define TABLECELL_TAG 10000
 #define BUTTON_TAG 20000
@@ -44,6 +45,7 @@
 
 @synthesize userData,sortedArrForArrays,sectionHeadsKeys,messagesProtocol;
 @synthesize button;
+@synthesize uploadProtocol;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -238,6 +240,7 @@
 -(void) connect {
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     [self setMessagesProtocol:mainVC];
+    [self setUploadProtocol:mainVC];
     STreamXMPP *con = [STreamXMPP sharedObject];
     [con setXmppDelegate:self];
     if (![con connected]){
@@ -301,6 +304,18 @@
         }
     }
     
+    /*UploadDB * uploadDB = [[UploadDB alloc]init];
+    NSMutableArray * uploadArray = [uploadDB readUploadDB];
+    if (uploadArray != nil && [uploadArray count] != 0) {
+        for (NSMutableArray* array in downloadArray) {
+            NSString * filePath = [array objectAtIndex:0];
+            NSString * time= [array objectAtIndex:1];
+            NSString * fromId = [array objectAtIndex:2];
+            NSString * type = [array objectAtIndex:3];
+            [uploadProtocol uploadVideoPath:filePath withTime:time withFrom:fromId withType:type];
+        }
+
+    }*/
 }
 
 - (void)didNotAuthenticate:(NSXMLElement *)error{

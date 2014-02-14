@@ -332,6 +332,7 @@
 		0EF9B63E186EAAA1003DD866 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF9B63D186EAAA1003DD866 /* QuartzCore.framework */; };
 		0EFAD95B18682AF2001F0DED /* HandlerUserIdAndDateFormater.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */; };
 		0EFC8CB518ADE0B900EF09D8 /* DownloadDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC8CB418ADE0B900EF09D8 /* DownloadDB.m */; };
+		0EFC8CB818AE167500EF09D8 /* UploadDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC8CB718AE167500EF09D8 /* UploadDB.m */; };
 		4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4413D0A0182FA98E00B01C14 /* LoginViewController.m */; };
 		44A80EAC183129E2006069DE /* Emoji.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A80E9B183129E2006069DE /* Emoji.m */; };
 		44A80EAD183129E2006069DE /* EmojiEmoticons.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A80E9D183129E2006069DE /* EmojiEmoticons.m */; };
@@ -873,6 +874,9 @@
 		0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HandlerUserIdAndDateFormater.m; path = cache/HandlerUserIdAndDateFormater.m; sourceTree = "<group>"; };
 		0EFC8CB318ADE0B900EF09D8 /* DownloadDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DownloadDB.h; path = talkDB/DownloadDB.h; sourceTree = "<group>"; };
 		0EFC8CB418ADE0B900EF09D8 /* DownloadDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DownloadDB.m; path = talkDB/DownloadDB.m; sourceTree = "<group>"; };
+		0EFC8CB618AE167500EF09D8 /* UploadDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UploadDB.h; path = talkDB/UploadDB.h; sourceTree = "<group>"; };
+		0EFC8CB718AE167500EF09D8 /* UploadDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UploadDB.m; path = talkDB/UploadDB.m; sourceTree = "<group>"; };
+		0EFC8CB918AE2BD200EF09D8 /* UploadProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadProtocol.h; sourceTree = "<group>"; };
 		4413D09F182FA98E00B01C14 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Classes/LoginViewController.h; sourceTree = "<group>"; };
 		4413D0A0182FA98E00B01C14 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Classes/LoginViewController.m; sourceTree = "<group>"; };
 		44A80E9A183129E2006069DE /* Emoji.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Emoji.h; sourceTree = "<group>"; };
@@ -1971,6 +1975,9 @@
 				0E1F9752186D964A00C709CE /* SearchDB.m */,
 				0EFC8CB318ADE0B900EF09D8 /* DownloadDB.h */,
 				0EFC8CB418ADE0B900EF09D8 /* DownloadDB.m */,
+				0EFC8CB618AE167500EF09D8 /* UploadDB.h */,
+				0EFC8CB718AE167500EF09D8 /* UploadDB.m */,
+				0EFC8CB918AE2BD200EF09D8 /* UploadProtocol.h */,
 			);
 			name = talkDB;
 			sourceTree = "<group>";
@@ -2563,6 +2570,7 @@
 				44A80EB2183129E2006069DE /* FacialView.m in Sources */,
 				0EE9518A185EA3EF003F4638 /* FileCache.m in Sources */,
 				0E084792182736BC00350741 /* UIBubbleTableView.m in Sources */,
+				0EFC8CB818AE167500EF09D8 /* UploadDB.m in Sources */,
 				03D9BF5418145E270039118F /* XMPPPlainAuthentication.m in Sources */,
 				0EF79DFF18583ACF00EB8A64 /* SettingViewController.m in Sources */,
 				03D9C06F18145E410039118F /* XMPPRoomOccupantHybridMemoryStorageObject.m in Sources */,

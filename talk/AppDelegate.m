@@ -23,6 +23,7 @@
 #import "ImageCache.h"
 #import "STreamXMPP.h"
 #import "DownloadDB.h"
+#import "UploadDB.h"
 //#import "TwitterConnect.h"
 
 @implementation AppDelegate
@@ -51,6 +52,8 @@
     [ack initDB];
     DownloadDB * downloadDB = [[DownloadDB alloc]init];
     [downloadDB initDB];
+    UploadDB *uploadDb = [[UploadDB alloc]init];
+    [uploadDb initDB];
     
     /*TwitterConnect * twitter = [[TwitterConnect alloc]init];
     ACAccountStore  *accountStore = [[ACAccountStore alloc] init];

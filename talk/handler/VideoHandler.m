@@ -206,11 +206,10 @@
     [file setUserId:_sendID];
     
     if (fileArray!=nil && [fileArray count]!=0) {
-        [cache addFileUpload:file];
         FilesUpload * f =[fileArray objectAtIndex:0];
         long long ftime = [f.time longLongValue];
-        long long t = milliseconds/1000.0 - ftime/1000.0;
-        if ((milliseconds/1000.0 - ftime/1000.0)<8) {
+        if ((milliseconds/1000.0 - ftime/1000.0)<8) {   
+            [cache addFileUpload:file];
             return;
         }
         
@@ -238,7 +237,7 @@
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
             [ack insertDB:f.time withUserID:[handler getUserID] fromID:f.userId withContent:bodyJsonData withTime:[dateFormatter stringFromDate:date] withIsMine:0];
-
+            
             [con sendFileMessage:f.userId withFileId:[sf fileId] withMessage:bodyJsonData];
         }
         

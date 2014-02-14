@@ -10,6 +10,7 @@
 #import "STreamXMPPProtocol.h"
 #import "GetAllMessagesProtocol.h"
 #import "EGORefreshTableHeaderView.h"
+#import "UploadProtocol.h"
 @interface MyFriendsViewController : UIViewController<STreamXMPPProtocol,EGORefreshTableHeaderDelegate,UITableViewDelegate,UITableViewDataSource>
 {
     EGORefreshTableHeaderView *_refreshHeaderView;
@@ -21,6 +22,7 @@
 @property (assign,nonatomic) id<GetAllMessagesProtocol> messagesProtocol;
 @property(nonatomic,strong) UITableView * tableView;
 @property(nonatomic,strong) UIButton * button;
+@property (assign,nonatomic) id<UploadProtocol> uploadProtocol;
 -(void)reloadTableViewDataSource;
 -(void)doneLoadingTableViewData;
 

@@ -307,7 +307,7 @@
             [photoHandler receiveFile:data withPath:path forBubbleDataArray:bubbleData withTime:time forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
             
         }else if ([type isEqualToString:@"video"]){
-            NSMutableDictionary * dic = [imageCache getBubbleData];
+           /* NSMutableDictionary * dic = [imageCache getBubbleData];
             if (dic !=nil && [dic count]!=0) {
                 NSArray * keys = [dic allKeys];
                 if ([keys containsObject:body]) {
@@ -331,7 +331,10 @@
                     
                 }
 
-            }
+            }*/
+            [videoHandler setController:self];
+            [videoHandler receiveVideoFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withVideoTime:time withSendId:sendToID withFromId:fromID];
+
            
         }else if ([type isEqualToString:@"voice"]){
             [audioHandler receiveAudioFile:data withBody:time forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
@@ -1034,6 +1037,9 @@
 }
 -(void)sendImages:(NSData *)data withTime:(NSString *)time{
     [self sendPhoto:data withTime:time];
+}
+-(void) uploadVideoPath:(NSString *)filePath withTime:(NSString *)time withFrom:(NSString *)fromID withType:(NSString *)type{
+    
 }
 - (void)didReceiveMemoryWarning 
 {
