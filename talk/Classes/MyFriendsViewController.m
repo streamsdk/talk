@@ -247,10 +247,23 @@
     
 }
 
-#pragma mark - STreamXMPPProtocol
-- (void)didAuthenticate{
-    NSLog(@"");
-    self.title = @"reading...";
+- (void)startDownload{
+    
+    DownloadDB * downloadDB = [[DownloadDB alloc]init];
+    NSMutableArray * downloadArray = [downloadDB readDownloadDB];
+    if (downloadArray!=nil && [downloadArray count]!=0) {
+        for (NSMutableArray* array in downloadArray) {
+            NSString * fileId = [array objectAtIndex:0];
+            NSString * body = [array objectAtIndex:1];
+            NSString * fromId = [array objectAtIndex:2];
+            [downloadDB deleteDownloadDBFromFileID:fileId];
+            [self didReceiveFile:fileId withBody:body withFrom:fromId];
+        }
+    }
+
+}
+
+- (void)readHistory{
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     STreamObject *so = [[STreamObject alloc] init];
     NSMutableString *history = [[NSMutableString alloc] init];
@@ -268,6 +281,7 @@
         NSDictionary *json = [decoder objectWithData:jsonData];
         NSString *type = [json objectForKey:@"type"];
         NSString *from = [json objectForKey:@"from"];
+        //TODO: CHECK other type
         if ([type isEqualToString:@"text"]){
             NSString *receivedMessage = [json objectForKey:@"message"];
             [self didReceiveMessage:receivedMessage withFrom:from];
@@ -288,19 +302,16 @@
         STreamObject *sob = [[STreamObject alloc] init];
         [sob removeKeyInBackground:removedKeys forObjectId:history];
     }
-    
-    DownloadDB * downloadDB = [[DownloadDB alloc]init];
-    NSMutableArray * downloadArray = [downloadDB readDownloadDB];
-    if (downloadArray!=nil && [downloadArray count]!=0) {
-        for (NSMutableArray* array in downloadArray) {
-            NSString * fileId = [array objectAtIndex:0];
-            NSString * body = [array objectAtIndex:1];
-            NSString * fromId = [array objectAtIndex:2];
-            [self didReceiveFile:fileId withBody:body withFrom:fromId];
-            [downloadDB deleteDownloadDBFromFileID:fileId];
-        }
-    }
-    
+}
+
+
+
+#pragma mark - STreamXMPPProtocol
+- (void)didAuthenticate{
+    NSLog(@"");
+    self.title = @"reading...";
+    [self startDownload];
+    [self readHistory];
 }
 
 - (void)didNotAuthenticate:(NSXMLElement *)error{
@@ -378,6 +389,7 @@
        
         
         NSString *jsonBody = [imageCache getJsonData:objectId];
+        [downloadDB deleteDownloadDBFromFileID:objectId];
         NSData *jsonData = [jsonBody dataUsingEncoding:NSUTF8StringEncoding];
         JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
         NSDictionary *json = [decoder objectWithData:jsonData];
@@ -431,8 +443,6 @@
         [handler setDate:date];
         [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
         [messagesProtocol getFiles:data withFromID:fromUser withBody:body withPath:path];
-        
-        [downloadDB deleteDownloadDBFromFileID:objectId];
         [self.tableView reloadData];
 
         
