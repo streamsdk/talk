@@ -21,7 +21,7 @@ static NSMutableArray * _colors;
 static NSMutableArray * _twitters;
 static NSMutableDictionary *_jsonData;
 static NSMutableArray *_fileUpload;
-
+static NSMutableDictionary * dic;
 @implementation ImageCache
 
 
@@ -42,7 +42,7 @@ static NSMutableArray *_fileUpload;
         _twitters = [[NSMutableArray alloc]init];
         _jsonData = [[NSMutableDictionary alloc] init];
         _fileUpload = [[NSMutableArray alloc]init];
-        
+        dic = [[NSMutableDictionary alloc]init];
     });
     
     return sharedInstance;
@@ -152,5 +152,18 @@ static NSMutableArray *_fileUpload;
 
     [_fileUpload removeObject:file];
 }
+-(void) saveBubbleData:(NSBubbleData *)bubbledata withKey:(NSString *)key{
+    
+    [dic setObject:bubbledata forKey:key];
+}
 
+-(NSMutableDictionary *)getBubbleData{
+    
+    return dic;
+}
+
+-(void)removeBubbleData:(NSString *)key{
+   
+    [dic removeObjectForKey:key];
+}
 @end

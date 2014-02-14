@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "FilesUpload.h"
+#import "NSBubbleData.h"
 
 @interface ImageCache : NSObject
 
@@ -50,4 +51,10 @@
 -(NSMutableArray *)getFileUpload;
 
 -(void)removeFileUpload:(FilesUpload *)file;
+
+-(void) saveBubbleData:(NSBubbleData *)bubbledata withKey:(NSString *)key;
+
+-(NSMutableDictionary *)getBubbleData;
+
+-(void)removeBubbleData:(NSString *)key;
 @end

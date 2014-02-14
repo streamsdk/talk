@@ -331,6 +331,7 @@
 		0EF79E1218584CAF00EB8A64 /* BackData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF79E1118584CAF00EB8A64 /* BackData.m */; };
 		0EF9B63E186EAAA1003DD866 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF9B63D186EAAA1003DD866 /* QuartzCore.framework */; };
 		0EFAD95B18682AF2001F0DED /* HandlerUserIdAndDateFormater.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */; };
+		0EFC8CB518ADE0B900EF09D8 /* DownloadDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC8CB418ADE0B900EF09D8 /* DownloadDB.m */; };
 		4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4413D0A0182FA98E00B01C14 /* LoginViewController.m */; };
 		44A80EAC183129E2006069DE /* Emoji.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A80E9B183129E2006069DE /* Emoji.m */; };
 		44A80EAD183129E2006069DE /* EmojiEmoticons.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A80E9D183129E2006069DE /* EmojiEmoticons.m */; };
@@ -870,6 +871,8 @@
 		0EF9B63D186EAAA1003DD866 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0EFAD95918682AF2001F0DED /* HandlerUserIdAndDateFormater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HandlerUserIdAndDateFormater.h; path = cache/HandlerUserIdAndDateFormater.h; sourceTree = "<group>"; };
 		0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HandlerUserIdAndDateFormater.m; path = cache/HandlerUserIdAndDateFormater.m; sourceTree = "<group>"; };
+		0EFC8CB318ADE0B900EF09D8 /* DownloadDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DownloadDB.h; path = talkDB/DownloadDB.h; sourceTree = "<group>"; };
+		0EFC8CB418ADE0B900EF09D8 /* DownloadDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DownloadDB.m; path = talkDB/DownloadDB.m; sourceTree = "<group>"; };
 		4413D09F182FA98E00B01C14 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Classes/LoginViewController.h; sourceTree = "<group>"; };
 		4413D0A0182FA98E00B01C14 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Classes/LoginViewController.m; sourceTree = "<group>"; };
 		44A80E9A183129E2006069DE /* Emoji.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Emoji.h; sourceTree = "<group>"; };
@@ -1966,6 +1969,8 @@
 				0E1F974F186D8D7400C709CE /* AddDB.m */,
 				0E1F9751186D964A00C709CE /* SearchDB.h */,
 				0E1F9752186D964A00C709CE /* SearchDB.m */,
+				0EFC8CB318ADE0B900EF09D8 /* DownloadDB.h */,
+				0EFC8CB418ADE0B900EF09D8 /* DownloadDB.m */,
 			);
 			name = talkDB;
 			sourceTree = "<group>";
@@ -2529,6 +2534,7 @@
 				03D9BF7918145E370039118F /* XMPPParser.m in Sources */,
 				03D9C07B18145E410039118F /* XMPPvCardTemp.m in Sources */,
 				0EEFAE511895299500F44745 /* PrivacyPoolicyViewController.m in Sources */,
+				0EFC8CB518ADE0B900EF09D8 /* DownloadDB.m in Sources */,
 				03D9C06018145E410039118F /* XMPPRoster.m in Sources */,
 				0E0F830118A37D4100E81CA5 /* ACKMessageDB.m in Sources */,
 				03D9C0B618145E480039118F /* LibIDN.m in Sources */,

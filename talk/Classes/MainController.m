@@ -293,19 +293,53 @@
     NSDictionary *json = [decoder objectWithData:jsonData];
     NSString *type = [json objectForKey:@"type"];
      NSString * time = [json objectForKey:@"duration"];
-    if ([type isEqualToString:@"photo"]) {
-        [photoHandler setController:self];
+    if ([path isEqualToString:[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0]]) {
         [photoHandler receiveFile:data withPath:path forBubbleDataArray:bubbleData withTime:time forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+        if ([bubbleData count]!=0) {
+            NSBubbleData * bubble = [bubbleData lastObject];
+            [imageCache saveBubbleData:bubble withKey:body];
+        }
+      
         
-    }else if ([type isEqualToString:@"video"]){
-        [videoHandler setController:self];
-        [videoHandler receiveVideoFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withVideoTime:time withSendId:sendToID withFromId:fromID];
-        
-    }else if ([type isEqualToString:@"voice"]){
-        [audioHandler receiveAudioFile:data withBody:time forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+    }else{
+        if ([type isEqualToString:@"photo"]) {
+            [photoHandler setController:self];
+            [photoHandler receiveFile:data withPath:path forBubbleDataArray:bubbleData withTime:time forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+            
+        }else if ([type isEqualToString:@"video"]){
+            NSMutableDictionary * dic = [imageCache getBubbleData];
+            if (dic !=nil && [dic count]!=0) {
+                NSArray * keys = [dic allKeys];
+                if ([keys containsObject:body]) {
+                    NSBubbleData * bdata = [dic objectForKey:body];
+                    NSMutableArray * dataArray = [[NSMutableArray alloc]init];
+                    for (NSBubbleData * b in bubbleData) {
+                        if ([b isEqual:bdata]) {
+                            [bubbleData removeObject:b];
+                            [imageCache removeBubbleData:body];
+                            [videoHandler setController:self];
+                            [videoHandler receiveVideoFile:data forBubbleDataArray:dataArray forBubbleOtherData:otherData withVideoTime:time withSendId:sendToID withFromId:fromID];
+                            
+                        }else{
+                            [dataArray addObject:b];
+                        }
+                    }
+                    bubbleData = dataArray;
+                }else{
+                    [videoHandler setController:self];
+                    [videoHandler receiveVideoFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withVideoTime:time withSendId:sendToID withFromId:fromID];
+                    
+                }
+
+            }
+           
+        }else if ([type isEqualToString:@"voice"]){
+            [audioHandler receiveAudioFile:data withBody:time forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+        }
+        NSBubbleData * bubble = [bubbleData lastObject];
+        bubble.delegate = self;
+
     }
-    NSBubbleData * bubble = [bubbleData lastObject];
-    bubble.delegate = self;
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
     

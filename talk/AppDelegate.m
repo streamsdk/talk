@@ -22,6 +22,7 @@
 #import "ChatBackGround.h"
 #import "ImageCache.h"
 #import "STreamXMPP.h"
+#import "DownloadDB.h"
 //#import "TwitterConnect.h"
 
 @implementation AppDelegate
@@ -48,6 +49,9 @@
     [chat initDB];
     ACKMessageDB  *ack = [[ACKMessageDB alloc]init];
     [ack initDB];
+    DownloadDB * downloadDB = [[DownloadDB alloc]init];
+    [downloadDB initDB];
+    
     /*TwitterConnect * twitter = [[TwitterConnect alloc]init];
     ACAccountStore  *accountStore = [[ACAccountStore alloc] init];
     [twitter setAccountStore:accountStore];

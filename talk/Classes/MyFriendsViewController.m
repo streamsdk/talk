@@ -27,7 +27,7 @@
 #import <arcstreamsdk/JSONKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "HandlerFirendsViewController.h"
-
+#import "DownloadDB.h"
 
 #define TABLECELL_TAG 10000
 #define BUTTON_TAG 20000
@@ -289,6 +289,18 @@
         [sob removeKeyInBackground:removedKeys forObjectId:history];
     }
     
+    DownloadDB * downloadDB = [[DownloadDB alloc]init];
+    NSMutableArray * downloadArray = [downloadDB readDownloadDB];
+    if (downloadArray!=nil && [downloadArray count]!=0) {
+        for (NSMutableArray* array in downloadArray) {
+            NSString * fileId = [array objectAtIndex:0];
+            NSString * body = [array objectAtIndex:1];
+            NSString * fromId = [array objectAtIndex:2];
+            [self didReceiveFile:fileId withBody:body withFrom:fromId];
+            [downloadDB deleteDownloadDBFromFileID:fileId];
+        }
+    }
+    
 }
 
 - (void)didNotAuthenticate:(NSXMLElement *)error{
@@ -343,9 +355,24 @@
     if (![friendId isEqualToString:fromID]) {
         [imageCache setMessagesCount:fromID];
     }
-    
+
     [imageCache saveJsonData:body forFileId:fileId];
     STreamFile *sf = [[STreamFile alloc] init];
+    /*NSString *jsonBody = [imageCache getJsonData:fileId];
+    NSData *jsonData = [jsonBody dataUsingEncoding:NSUTF8StringEncoding];
+    JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+    NSDictionary *json = [decoder objectWithData:jsonData];
+    NSString *type = [json objectForKey:@"type"];
+    NSString *fromUser = [json objectForKey:@"from"];
+    UIImage *image = [UIImage imageNamed:@"photog150.png"];
+    if ([type isEqualToString:@"video"]){
+        NSString * videopath =[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0];
+        NSData * data = UIImageJPEGRepresentation(image, 1.0);
+        [messagesProtocol getFiles:data withFromID:fromUser withBody:body withPath:videopath];
+    }*/
+    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
+    DownloadDB * downloadDB = [[DownloadDB alloc]init];
+    [downloadDB insertDownloadDB:[handler getUserID] fileID:fileId withBody:body withFrom:fromID];
     
     [sf downloadAsData:fileId downloadedData:^(NSData *data, NSString *objectId){
        
@@ -403,8 +430,9 @@
         NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
         [handler setDate:date];
         [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
-        
         [messagesProtocol getFiles:data withFromID:fromUser withBody:body withPath:path];
+        
+        [downloadDB deleteDownloadDBFromFileID:objectId];
         [self.tableView reloadData];
 
         
