@@ -211,7 +211,7 @@
     NSMutableArray * friends = [sq find];
     NSMutableArray *objectID = [[NSMutableArray alloc]init];
     for (STreamObject *so in friends) {
-        [objectID addObject:[so objectId]];
+        [objectID addObject:[[so objectId] lowercaseString]];
     }
     AddDB * addDB = [[AddDB alloc]init];
 
@@ -229,7 +229,7 @@
     for (STreamObject *so in friends) {
         if (![userData containsObject:[so objectId]]) {
             [userData addObject:[so objectId]];
-            [addDB insertDB:[handle getUserID] withFriendID:[so objectId] withStatus:@"friend"];
+            [addDB insertDB:[handle getUserID] withFriendID:[[so objectId] lowercaseString] withStatus:@"friend"];
         }
     }
     
@@ -250,10 +250,37 @@
     
 }
 
-#pragma mark - STreamXMPPProtocol
-- (void)didAuthenticate{
-    NSLog(@"");
-    self.title = @"reading...";
+- (void)startDownload{
+    DownloadDB * downloadDB = [[DownloadDB alloc]init];
+    NSMutableArray * downloadArray = [downloadDB readDownloadDB];
+    if (downloadArray!=nil && [downloadArray count]!=0) {
+        for (NSMutableArray* array in downloadArray) {
+            NSString * fileId = [array objectAtIndex:0];
+            NSString * body = [array objectAtIndex:1];
+            NSString * fromId = [array objectAtIndex:2];
+            [downloadDB deleteDownloadDBFromFileID:fileId];
+            [self didReceiveFile:fileId withBody:body withFrom:fromId];
+        }
+    }
+}
+
+- (void)startUpload{
+    
+    UploadDB * uploadDB = [[UploadDB alloc]init];
+    NSMutableArray * uploadArray = [uploadDB readUploadDB];
+    if (uploadArray != nil && [uploadArray count] != 0) {
+        for (NSMutableArray* array in uploadArray) {
+            NSString * filePath = [array objectAtIndex:0];
+            NSString * time= [array objectAtIndex:1];
+            NSString * fromId = [array objectAtIndex:2];
+            NSString * type = [array objectAtIndex:3];
+            [uploadProtocol uploadVideoPath:filePath withTime:time withFrom:fromId withType:type];
+        }
+    }
+}
+
+- (void)readHistory{
+    
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     STreamObject *so = [[STreamObject alloc] init];
     NSMutableString *history = [[NSMutableString alloc] init];
@@ -291,32 +318,19 @@
         STreamObject *sob = [[STreamObject alloc] init];
         [sob removeKeyInBackground:removedKeys forObjectId:history];
     }
-    
-    DownloadDB * downloadDB = [[DownloadDB alloc]init];
-    NSMutableArray * downloadArray = [downloadDB readDownloadDB];
-    if (downloadArray!=nil && [downloadArray count]!=0) {
-        for (NSMutableArray* array in downloadArray) {
-            NSString * fileId = [array objectAtIndex:0];
-            NSString * body = [array objectAtIndex:1];
-            NSString * fromId = [array objectAtIndex:2];
-            [self didReceiveFile:fileId withBody:body withFrom:fromId];
-            [downloadDB deleteDownloadDBFromFileID:fileId];
-        }
-    }
-    
-    UploadDB * uploadDB = [[UploadDB alloc]init];
-    NSMutableArray * uploadArray = [uploadDB readUploadDB];
-    if (uploadArray != nil && [uploadArray count] != 0) {
-        for (NSMutableArray* array in uploadArray) {
-            NSString * filePath = [array objectAtIndex:0];
-            NSString * time= [array objectAtIndex:1];
-            NSString * fromId = [array objectAtIndex:2];
-            NSString * type = [array objectAtIndex:3];
-            [uploadProtocol uploadVideoPath:filePath withTime:time withFrom:fromId withType:type];
-        }
 
-    }
 }
+
+#pragma mark - STreamXMPPProtocol
+- (void)didAuthenticate{
+    NSLog(@"");
+    self.title = @"reading...";
+    [self startDownload];
+    [self readHistory];
+    [self startUpload];
+}
+
+
 
 - (void)didNotAuthenticate:(NSXMLElement *)error{
     self.title = @"failed...";
@@ -366,17 +380,36 @@
 
 - (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID{
     ImageCache *imageCache = [ImageCache sharedObject];
+    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
+
     NSString *friendId = [imageCache getFriendID];
     if (![friendId isEqualToString:fromID]) {
         [imageCache setMessagesCount:fromID];
     }
 
-    [imageCache saveJsonData:body forFileId:fileId];
-    STreamFile *sf = [[STreamFile alloc] init];
-    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
     DownloadDB * downloadDB = [[DownloadDB alloc]init];
     [downloadDB insertDownloadDB:[handler getUserID] fileID:fileId withBody:body withFrom:fromID];
+    
+    STreamFile *sf = [[STreamFile alloc] init];
     /*NSData *jsonData = [body dataUsingEncoding:NSUTF8StringEncoding];
+    JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+    NSDictionary *json = [decoder objectWithData:jsonData];
+    NSString *type = [json objectForKey:@"type"];
+    
+    if ([type isEqualToString:@"video"]) {
+        NSString *tid= [json objectForKey:@"tid"];
+        if (tid){
+            fileId = tid;
+        }
+    }
+    
+    DownloadDB * downloadDB = [[DownloadDB alloc]init];
+    [downloadDB insertDownloadDB:[handler getUserID] fileID:fileId withBody:body withFrom:fromID];*/
+    
+    
+    
+    [imageCache saveJsonData:body forFileId:fileId];
+   /*NSData *jsonData = [body dataUsingEncoding:NSUTF8StringEncoding];
     JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
     NSDictionary *json = [decoder objectWithData:jsonData];
     NSString *type = [json objectForKey:@"type"];
@@ -426,6 +459,7 @@
        
         
         NSString *jsonBody = [imageCache getJsonData:objectId];
+        [downloadDB deleteDownloadDBFromFileID:objectId];
         NSData *jsonData = [jsonBody dataUsingEncoding:NSUTF8StringEncoding];
         JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
         NSDictionary *json = [decoder objectWithData:jsonData];
@@ -480,7 +514,6 @@
         [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
         [messagesProtocol getFiles:data withFromID:fromUser withBody:body withPath:path];
         
-        [downloadDB deleteDownloadDBFromFileID:objectId];
         [self.tableView reloadData];
 
         

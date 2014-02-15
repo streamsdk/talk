@@ -65,26 +65,26 @@
            //    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
   
-    //[STreamSession setUpServerUrl:@"http://streamsdk.com/print/print/"];
-    [STreamSession setUpServerUrl:@"http://streamsdk.cn/api/"];
+    [STreamSession setUpServerUrl:@"http://streamsdk.com/print/print/"];
+    //[STreamSession setUpServerUrl:@"http://streamsdk.cn/api/"];
     
-    [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3"
+    /*[STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3"
                       clientKey:@"01D901D6EFBA42145E54F52E465F407B" response:^(BOOL succeed, NSString *response){
                           
                           if (succeed){
 
                           }
                           
-                      }];
+                      }];*/
     
-    /*[STreamSession authenticate:@"7E95CF60694890DCD4CEFBF79BC3BAE4" secretKey:@"73B7C757A511B1574FDF63B3FEB638B7"
+    [STreamSession authenticate:@"7E95CF60694890DCD4CEFBF79BC3BAE4" secretKey:@"73B7C757A511B1574FDF63B3FEB638B7"
                       clientKey:@"4768674EDC06477EC63AEEF8FEAB0CF8" response:^(BOOL succeed, NSString *response){
                           
                           if (succeed){
                               
                           }
                           
-                      }];*/
+                      }];
 
     [NSThread sleepForTimeInterval:5];
     
