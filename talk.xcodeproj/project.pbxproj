@@ -28,6 +28,7 @@
 		03557EAC1883110600CDB252 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 03557EAB1883110600CDB252 /* back.png */; };
 		03557EAE1883134100CDB252 /* forward.png in Resources */ = {isa = PBXBuildFile; fileRef = 03557EAD1883134100CDB252 /* forward.png */; };
 		0355801F18812D940036CC3C /* TwitterConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 0355801E18812D940036CC3C /* TwitterConnect.m */; };
+		037D20B418AF560400928647 /* MediaHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D20B318AF560400928647 /* MediaHandler.m */; };
 		037E0431186605A8005ADCEC /* libidn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9C0E018145E510039118F /* libidn.a */; };
 		03D9BEFC18145C080039118F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9BEFB18145C080039118F /* Foundation.framework */; };
 		03D9BEFE18145C080039118F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9BEFD18145C080039118F /* CoreGraphics.framework */; };
@@ -378,6 +379,8 @@
 		03557EAD1883134100CDB252 /* forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forward.png; sourceTree = "<group>"; };
 		0355801D18812D940036CC3C /* TwitterConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterConnect.h; sourceTree = "<group>"; };
 		0355801E18812D940036CC3C /* TwitterConnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterConnect.m; sourceTree = "<group>"; };
+		037D20B218AF560400928647 /* MediaHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MediaHandler.h; path = handler/MediaHandler.h; sourceTree = "<group>"; };
+		037D20B318AF560400928647 /* MediaHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MediaHandler.m; path = handler/MediaHandler.m; sourceTree = "<group>"; };
 		03D9BEF818145C080039118F /* talk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = talk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03D9BEFB18145C080039118F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		03D9BEFD18145C080039118F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1789,6 +1792,8 @@
 		03F5A1891867367500CD60FD /* handler */ = {
 			isa = PBXGroup;
 			children = (
+				037D20B218AF560400928647 /* MediaHandler.h */,
+				037D20B318AF560400928647 /* MediaHandler.m */,
 				03F5A18D1867376400CD60FD /* PhotoHandler.h */,
 				03F5A18E1867376400CD60FD /* PhotoHandler.m */,
 				03F50C681867B4EB00E08C22 /* VideoHandler.h */,
@@ -2475,6 +2480,7 @@
 				44A80EAD183129E2006069DE /* EmojiEmoticons.m in Sources */,
 				03D9C05F18145E410039118F /* XMPPUserMemoryStorageObject.m in Sources */,
 				03D9C08F18145E410039118F /* XMPPCapabilitiesCoreDataStorage.m in Sources */,
+				037D20B418AF560400928647 /* MediaHandler.m in Sources */,
 				03D9C09B18145E410039118F /* XMPPMessage+XEP_0184.m in Sources */,
 				03D9C05A18145E410039118F /* XMPPRoster.xcdatamodel in Sources */,
 				03D9C09918145E410039118F /* XMPPMessage+XEP_0172.m in Sources */,
