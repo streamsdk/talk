@@ -67,57 +67,64 @@ static NSMutableArray *colors;
     if ([colors count]==0) {
         [colors addObject:[UIColor greenColor]];
     }
+    UIImage *newImg = [self imageWithImageSimple:image scaledToSize:CGSizeMake(self.view.frame.size.width, self.view.frame.size.height)];
+    drawView = [[MyView alloc]initWithFrame:self.view.frame];
+    drawView.userInteractionEnabled = YES;
+    [drawView setBackgroundColor:[UIColor colorWithPatternImage:newImg]];
+    [self.view sendSubviewToBack:drawView];
+//    CALayer *l = [drawView layer];
+//    [l setMasksToBounds:YES];
+//    [l setCornerRadius:8.0];
+    
+    UIView * topView = [[UIView alloc]initWithFrame:CGRectMake(0, 26, self.view.frame.size.width, 50)];
+    topView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
+    
+    UIView * colorView = [[UIView alloc]initWithFrame:CGRectMake(self.view.frame.size.width-20, 80, 20, 320)];
+    colorView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
+
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frameBack = CGRectMake(10, 26, 40, 40);
+    CGRect frameBack = CGRectMake(10, 5, 40, 40);
     [backButton setFrame:frameBack];
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
 
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton * brushButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-50, 26, 32, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"brush.png"]];
+    UIButton * brushButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-50, 10, 32, 30) withTitle:@"nil" withImage:[UIImage imageNamed:@"brush.png"]];
     
     [brushButton addTarget:self action:@selector(paintbrushClicked) forControlEvents:UIControlEventTouchUpInside];
     brushButton.tag = BRUSH_TAG;
     [brushButton setBackgroundColor:[UIColor greenColor]];
     
-    UIButton * undoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-130, 26, 32, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"undo.png"]];
+    UIButton * undoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-130, 10, 32, 30) withTitle:@"nil" withImage:[UIImage imageNamed:@"undo.png"]];
     undoButton.hidden =YES;
     undoButton.tag=UNDO_TAG;
     [undoButton addTarget:self action:@selector(undoClicked) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton * redoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-90, 26, 32, 26) withTitle:@"nil" withImage:[UIImage imageNamed:@"redo.png"]];
+    UIButton * redoButton = [creat setButtonFrame:CGRectMake(self.view.frame.size.width-90, 10, 32, 30) withTitle:@"nil" withImage:[UIImage imageNamed:@"redo.png"]];
     redoButton.hidden = YES;
     redoButton.tag=REDO_TAG;
     [redoButton addTarget:self action:@selector(redoClicked) forControlEvents:UIControlEventTouchUpInside];
-//selectcolors.png
-    CGFloat maxWidth=self.view.frame.size.width-48;
-    CGFloat maxheight=self.view.frame.size.height-180;
-    UIImage * newImage = [self imageWithImage:image scaledToMaxWidth:maxWidth
-                                    maxHeight:maxheight];
-    drawView = [[MyView alloc]initWithFrame:CGRectMake((self.view.frame.size.width-20-newImage.size.width)/2, (self.view.frame.size.height-newImage.size.height)/2, newImage.size.width, newImage.size.height)];
-    drawView.userInteractionEnabled = YES;
-    [drawView setBackgroundColor:[UIColor colorWithPatternImage:newImage]];
-    [self.view addSubview:drawView];
-    [self.view sendSubviewToBack:drawView];
-    CALayer *l = [drawView layer];
-    [l setMasksToBounds:YES];
-    [l setCornerRadius:8.0];
     
+    [topView addSubview:backButton];
+    [topView addSubview:brushButton];
+    [topView addSubview:undoButton];
+    [topView addSubview:redoButton];
+
     //colorsimageview
-    colorsImageView = [[UIImageView alloc]initWithFrame:CGRectMake(300, 100, 10, 300)];
+    colorsImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 10, 10, 300)];
     CALayer *ll = [colorsImageView layer];
     [ll setMasksToBounds:YES];
     [ll setCornerRadius:6.0];
     [colorsImageView setImage:[UIImage imageNamed:@"color.png"]];
     [colorsImageView setUserInteractionEnabled:YES];
-    [self.view addSubview:colorsImageView];
+    [colorView addSubview:colorsImageView];
     
-    MyToolbar *toolBar=[[MyToolbar alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-75,self.view.frame.size.width,75)];
-    toolBar.backgroundColor = [UIColor blackColor];
+    MyToolbar *toolBar=[[MyToolbar alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-60,self.view.frame.size.width,60)];
+    toolBar.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
     toolBar.tag =TOOLBAR_TAG;
     
     UIButton *useButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frame = CGRectMake(260, 20, 40, 40);
+    CGRect frame = CGRectMake(260, 10, 40, 40);
     [useButton setFrame:frame];
     [useButton setImage:[UIImage imageNamed:@"forward.png"] forState:UIControlStateNormal];
     [useButton addTarget:self action:@selector(sendStart) forControlEvents:UIControlEventTouchDown];
@@ -125,7 +132,7 @@ static NSMutableArray *colors;
     useButton.tag = USERPHOTO_TAG;
     
     UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frameDone = CGRectMake(260, 20, 45, 45);
+    CGRect frameDone = CGRectMake(260, 10, 45, 45);
     [doneButton setFrame:frameDone];
     [doneButton setImage:[UIImage imageNamed:@"tick512.png"] forState:UIControlStateNormal];
     [doneButton addTarget:self action:@selector(doneClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -133,22 +140,16 @@ static NSMutableArray *colors;
 //    doneButton.hidden = YES;
     
     UIButton * clockButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [clockButton setFrame:CGRectMake(10,20, 40, 40)];
+    [clockButton setFrame:CGRectMake(10,10, 40, 40)];
     [clockButton setBackgroundImage:[UIImage imageNamed:@"clocknew.png"] forState:UIControlStateNormal];
     clockButton .tag = CLOCKBUTTON_TAG;
     clockButton.titleLabel.font = [UIFont systemFontOfSize:12.0f];
     [clockButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [clockButton addTarget:self action:@selector(clockClicled) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.view addSubview:backButton];
     [self.view addSubview:drawView];
-//    [self.view addSubview:useButton];
-//    [self.view addSubview:clockButton];
-    [self.view addSubview:undoButton];
-    [self.view addSubview:redoButton];
-    [self.view addSubview:brushButton];
-//    [self.view addSubview:doneButton];
-   
+    [self.view addSubview:topView];
+    [self.view addSubview:colorView];
     UIBarButtonItem *fiexibleSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem * useitem = [[UIBarButtonItem alloc] initWithCustomView:useButton];
     UIBarButtonItem * doneitem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
@@ -177,12 +178,8 @@ static NSMutableArray *colors;
     image = newImage;
     UIButton * undo =(UIButton * )[self.view viewWithTag:UNDO_TAG];
     UIButton * redo =(UIButton * )[self.view viewWithTag:REDO_TAG];
-//    UIButton * use =(UIButton * )[self.view viewWithTag:USERPHOTO_TAG];
-//    UIButton * done =(UIButton * )[self.view viewWithTag:DONE_TAG];
     undo.hidden = YES;
     redo.hidden = YES;
-//    use.hidden = NO;
-//    done.hidden = YES;
 }
 
 -(void) paintbrushClicked {
@@ -455,5 +452,11 @@ static NSMutableArray *colors;
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(UIImage*)imageWithImageSimple:(UIImage*)_image scaledToSize:(CGSize)newSize{
+    UIGraphicsBeginImageContext(newSize);
+    [_image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
 @end
