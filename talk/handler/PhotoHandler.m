@@ -114,61 +114,7 @@
         }
     }
     [cache addFileUpload:file];
-    [self fileUpload:fileArray];
-    
-}
--(void) fileUpload :(NSMutableArray *)file{
-    
-    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-    FilesUpload * f = [file objectAtIndex:0];
-    ImageCache * cache  =[ImageCache sharedObject];
-    NSData * data = [NSData dataWithContentsOfFile:f.filepath];
-    
-    STreamFile *sf = [[STreamFile alloc] init];
-    STreamXMPP *con = [STreamXMPP sharedObject];
-    
-    [sf postData:data finished:^(NSString *res){
-        if ([res isEqualToString:@"ok"]){
-           [f.bodyDict setObject:[sf fileId] forKey:@"fileId"];
-           NSString *bodyJsonData = [f.bodyDict JSONString];
-           NSLog(@"body json data: %@", bodyJsonData);
-            ACKMessageDB *ack = [[ACKMessageDB alloc]init];
-             NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-            [ack insertDB:f.time withUserID:[handler getUserID] fromID:f.userId withContent:bodyJsonData withTime:[dateFormatter stringFromDate:date] withIsMine:0];
-            UploadDB * uploadDb = [[UploadDB alloc]init];
-            [uploadDb deleteUploadDBFromFilepath:f.filepath];
-            
-           [con sendFileMessage:f.userId withFileId:[sf fileId] withMessage:bodyJsonData];
-        }
-        
-        [cache removeFileUpload:f];
-        NSMutableArray * fileArray = [cache getFileUpload];
-        if (fileArray != nil && [fileArray count] != 0) {
-            [self fileUpload:fileArray];
-        }
-        
-    }byteSent:^(float bytes){
-        long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
-        [f setTime:[NSString stringWithFormat:@"%lld", milliseconds]];
-        Progress *p = (Progress *)[APPDELEGATE.progressDict objectForKey:f.filepath];
-        UIProgressView *progressView= p.progressView;
-        UILabel *label = p.label;
-        UIActivityIndicatorView *activityIndicatorView = p.activityIndicatorView;
-        progressView.hidden = NO;
-        progressView.progress = bytes;
-        [activityIndicatorView startAnimating];
-        label.hidden = NO;
-        label.text = [NSString stringWithFormat:@"%.0f%%",bytes*100];
-        if (bytes == 1.000000) {
-            progressView.hidden = YES;
-            label.hidden = YES;
-            [activityIndicatorView stopAnimating];
-        }
-
-        NSLog(@"byteSent:%f", bytes);
-    }];
+    [super doFileUpload:fileArray];
     
 }
 

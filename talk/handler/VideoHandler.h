@@ -7,13 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MediaHandler.h"
 
 @protocol reloadTableDeleage <NSObject>
 
 -(void)reloadTable;
 
 @end
-@interface VideoHandler : NSObject
+@interface VideoHandler : MediaHandler
 {
    
     NSString* _mp4Path;

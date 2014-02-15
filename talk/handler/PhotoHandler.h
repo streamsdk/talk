@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MediaHandler.h"
 
-@interface PhotoHandler : NSObject
+@interface PhotoHandler : MediaHandler
 
 @property (nonatomic,retain) NSString  *type;
 
