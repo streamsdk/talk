@@ -106,8 +106,12 @@
     [file setBodyDict:bodyDic];
     [file setUserId:sendID];
     if (fileArray != nil && [fileArray count] != 0) {
-        [cache addFileUpload:file];
-        return;
+        FilesUpload * f =[fileArray objectAtIndex:0];
+        long long ftime = [f.time longLongValue];
+        if ((milliseconds/1000.0 - ftime/1000.0)<8) {
+            [cache addFileUpload:file];
+            return;
+        }
     }
     [cache addFileUpload:file];
     [self fileUpload:fileArray];
@@ -146,6 +150,8 @@
         }
         
     }byteSent:^(float bytes){
+        long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
+        [f setTime:[NSString stringWithFormat:@"%lld", milliseconds]];
         Progress *p = (Progress *)[APPDELEGATE.progressDict objectForKey:f.filepath];
         UIProgressView *progressView= p.progressView;
         UILabel *label = p.label;
