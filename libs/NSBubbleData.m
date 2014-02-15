@@ -234,6 +234,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     _videotime = time;
     _videoPath = videoPath;
     _videodate = date;
+    disappearPath = videoPath;
     CGSize size = image.size;
     /*if (size.width > 200)
     {

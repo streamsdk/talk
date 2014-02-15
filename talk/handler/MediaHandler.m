@@ -37,6 +37,7 @@
             if ([f.type isEqualToString:@"video"]) {
                 STreamFile * sfile = [[STreamFile alloc]init];
                 [sfile postData:f.imageData];
+                sleep(3);
                 NSString * tid  = [sfile fileId];
                 if (tid) {
                     [f.bodyDict setObject:tid forKey:@"tid"];

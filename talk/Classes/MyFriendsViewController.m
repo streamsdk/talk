@@ -373,21 +373,54 @@
 
     [imageCache saveJsonData:body forFileId:fileId];
     STreamFile *sf = [[STreamFile alloc] init];
-    /*NSString *jsonBody = [imageCache getJsonData:fileId];
-    NSData *jsonData = [jsonBody dataUsingEncoding:NSUTF8StringEncoding];
-    JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
-    NSDictionary *json = [decoder objectWithData:jsonData];
-    NSString *type = [json objectForKey:@"type"];
-    NSString *fromUser = [json objectForKey:@"from"];
-    UIImage *image = [UIImage imageNamed:@"photog150.png"];
-    if ([type isEqualToString:@"video"]){
-        NSString * videopath =[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0];
-        NSData * data = UIImageJPEGRepresentation(image, 1.0);
-        [messagesProtocol getFiles:data withFromID:fromUser withBody:body withPath:videopath];
-    }*/
     HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
     DownloadDB * downloadDB = [[DownloadDB alloc]init];
     [downloadDB insertDownloadDB:[handler getUserID] fileID:fileId withBody:body withFrom:fromID];
+    /*NSData *jsonData = [body dataUsingEncoding:NSUTF8StringEncoding];
+    JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+    NSDictionary *json = [decoder objectWithData:jsonData];
+    NSString *type = [json objectForKey:@"type"];
+    if ([type isEqualToString:@"video"]) {
+        NSString *fromUser = [json objectForKey:@"from"];
+        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
+        HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
+        __block NSString *imgpath = [[handler getPath] stringByAppendingString:@".png"];
+      
+        if ([[json allKeys] containsObject:@"tid"]) {
+            [sf downloadAsData:[json objectForKey:@"tid"] downloadedData:^(NSData *data, NSString *objectId){
+                NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+                NSString *duration = [json objectForKey:@"duration"];
+                [data writeToFile : imgpath atomically: YES ];
+                [handler videoPath:imgpath];
+
+                if (duration)
+                    [friendDict setObject:duration forKey:@"time"];
+                [friendDict setObject:imgpath forKey:@"video"];
+                [jsonDic setObject:friendDict forKey:fromUser];
+                [messagesProtocol getFiles:data withFromID:fromUser withBody:body withPath:imgpath];
+                
+//                [downloadDB deleteDownloadDBFromFileID:objectId];
+
+            }];
+        }else{
+            UIImage * image = [UIImage imageNamed:@"photog150.png"];
+            NSData * data = UIImageJPEGRepresentation(image, 1.0);
+            [data writeToFile : imgpath atomically: YES ];
+            [handler videoPath:imgpath];
+            [messagesProtocol getFiles:data withFromID:fromUser withBody:body withPath:imgpath];
+            
+//            [downloadDB deleteDownloadDBFromFileID:objectId];
+        }
+        TalkDB * db = [[TalkDB alloc]init];
+        NSString * userID = [handler getUserID];
+        NSString  *str = [jsonDic JSONString];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+        NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
+        [handler setDate:date];
+        [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
+                [self.tableView reloadData];
+    }*/
     
     [sf downloadAsData:fileId downloadedData:^(NSData *data, NSString *objectId){
        
