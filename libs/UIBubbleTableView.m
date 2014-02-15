@@ -231,13 +231,13 @@
         if ( cell.data.fileType == FileVideo) {
             UIProgressView*progressView = [[UIProgressView alloc]init];
             [progressView setProgressViewStyle:UIProgressViewStyleDefault];
-            progressView .frame = CGRectMake(24, cell.frame.size.height+25, 90, 8);
+            progressView .frame = CGRectMake(24, cell.frame.size.height, 90, 8);
             CGAffineTransform transform =CGAffineTransformMakeScale(1.0f,2.0f);
             progressView.transform = transform;
             progressView.hidden = YES;
             UILabel *label = [[UILabel alloc]init];
             label.backgroundColor = [UIColor clearColor];
-            label.frame = CGRectMake(0, cell.frame.size.height+10, 60, 30);
+            label.frame = CGRectMake(0, cell.frame.size.height, 60, 30);
             [label setFont:[UIFont systemFontOfSize:11.0f]];
             label.hidden = YES;
             [cell.contentView addSubview:progressView];
@@ -262,25 +262,29 @@
             }
         }
         if (cell.data.fileType == FileImage) {
-            UIProgressView*progressView = [[UIProgressView alloc]init];
+            UIProgressView * progressView = [[UIProgressView alloc]init];
             [progressView setProgressViewStyle:UIProgressViewStyleDefault];
-            progressView .frame = CGRectMake(24, cell.frame.size.height, 90, 8);
+            progressView .frame = CGRectMake(24, cell.frame.size.height+25, 90, 8);
             CGAffineTransform transform =CGAffineTransformMakeScale(1.0f,2.0f);
             progressView.transform = transform;
             progressView.hidden = YES;
             UILabel *label = [[UILabel alloc]init];
             label.backgroundColor = [UIColor clearColor];
-            label.frame = CGRectMake(0, cell.frame.size.height, 60, 30);
+            label.frame = CGRectMake(0, cell.frame.size.height+10, 60, 30);
             [label setFont:[UIFont systemFontOfSize:11.0f]];
             label.hidden = YES;
             [cell.contentView addSubview:progressView];
             [cell.contentView addSubview:label];
             p.progressView = progressView;
             p.label = label;
-            NSString * path =data._videoPath;
-            if (path!=nil && ![path isEqualToString:@""]) {
-                [APPDELEGATE.progressDict setValue:p forKey:path];
-            }
+            
+            UILabel *label2 = [[UILabel alloc]init];
+            label2.frame = CGRectMake(0, 5, 60, 30);
+            [label2 setFont:[UIFont systemFontOfSize:12.0f]];
+            label.text=@"enfkewnfwf";
+            NSString * path =data.photopath;
+            [APPDELEGATE.progressDict setValue:p forKey:path];
+           
         }
     }
 

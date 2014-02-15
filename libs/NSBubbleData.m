@@ -29,6 +29,7 @@
 @synthesize disappearPath;
 @synthesize senddate;
 @synthesize fileType;
+@synthesize photopath;
 #pragma mark - Lifecycle
 
 #if !__has_feature(objc_arc)
@@ -85,17 +86,19 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 
 #pragma mark - Custom view photo
 
-+ (id)dataWithImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type
++ (id)dataWithImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type path:(NSString *)path
 {
 #if !__has_feature(objc_arc)
     return [[[NSBubbleData alloc] initWithImage:image date:date type:type] autorelease];
 #else
-    return [[NSBubbleData alloc] initWithImage:image date:date type:type];
+    return [[NSBubbleData alloc] initWithImage:image date:date type:type path:path];
 #endif    
 }
 
-- (id)initWithImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type
+- (id)initWithImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type path:(NSString *)path
 {
+
+    photopath =path;
     _image = image;
     bigImageSize = image.size;
     CGFloat maxWidth=90;

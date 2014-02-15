@@ -20,6 +20,7 @@
 #import "FilesUpload.h"
 #import "AppDelegate.h"
 #import "UploadDB.h"
+#import "Progress.h"
 
 @interface PhotoHandler()
 
@@ -38,7 +39,7 @@
         if (time) {
              bubble = [NSBubbleData dataWithImage:image withImageTime:time withPath:path date:[handler getDate] withType:BubbleTypeSomeoneElse];
         }else{
-            bubble = [NSBubbleData dataWithImage:image date:[handler getDate] type:BubbleTypeSomeoneElse];
+            bubble = [NSBubbleData dataWithImage:image date:[handler getDate] type:BubbleTypeSomeoneElse path:path];
         }
         if (otherData) {
             bubble.avatar = [UIImage imageWithData:otherData];
@@ -61,7 +62,7 @@
     if (time)
         bubble = [NSBubbleData dataWithImage:image withImageTime:time withPath:photoPath date:date withType:BubbleTypeMine];
     else
-        bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+        bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine path:photoPath];
     if (myData) {
         bubble.avatar = [UIImage imageWithData:myData];
     }
@@ -145,15 +146,19 @@
         }
         
     }byteSent:^(float bytes){
-        APPDELEGATE.progressView.hidden = NO;
-        APPDELEGATE.progressView.progress = bytes;
-        [APPDELEGATE.activityIndicatorView startAnimating];
-        APPDELEGATE.label.hidden = NO;
-        APPDELEGATE.label.text = [NSString stringWithFormat:@"%.0f%%",bytes*100];
+        Progress *p = (Progress *)[APPDELEGATE.progressDict objectForKey:f.filepath];
+        UIProgressView *progressView= p.progressView;
+        UILabel *label = p.label;
+        UIActivityIndicatorView *activityIndicatorView = p.activityIndicatorView;
+        progressView.hidden = NO;
+        progressView.progress = bytes;
+        [activityIndicatorView startAnimating];
+        label.hidden = NO;
+        label.text = [NSString stringWithFormat:@"%.0f%%",bytes*100];
         if (bytes == 1.000000) {
-            APPDELEGATE.progressView.hidden = YES;
-            APPDELEGATE.label.hidden = YES;
-            [APPDELEGATE.activityIndicatorView stopAnimating];
+            progressView.hidden = YES;
+            label.hidden = YES;
+            [activityIndicatorView stopAnimating];
         }
 
         NSLog(@"byteSent:%f", bytes);

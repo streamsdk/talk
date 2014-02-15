@@ -46,14 +46,14 @@ typedef enum FileType
 @property (nonatomic,retain) NSString *disappearPath;
 @property (nonatomic,retain) NSDate *senddate;
 @property (assign,nonatomic) id <PlayerDelegate> delegate;
-
+@property (nonatomic,retain) NSString * photopath;
 //message
 - (id)initWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type;
 + (id)dataWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type;
 
 //no time image
-- (id)initWithImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type;
-+ (id)dataWithImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type;
+- (id)initWithImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type path:(NSString *)path;
++ (id)dataWithImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type path:(NSString *)path;
 
 //have time image
 -(id) initWithImage:(UIImage *)image withImageTime:(NSString *)time withPath:(NSString *)path date:(NSDate *)date withType:(NSBubbleType) type;

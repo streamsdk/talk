@@ -242,14 +242,14 @@ static NSMutableArray *colors;
     NSInteger t = [data length]/1024;
     [HUD showAnimated:YES whileExecutingBlock:^{
         [self setImageSendProtocol:mainVC];
-        CGFloat maxWidth=self.view.frame.size.width;
-        CGFloat maxheight=self.view.frame.size.height;
-        if (t>100) {
-            UIImage *_image = [self imageWithImage:image
-                                  scaledToMaxWidth:maxWidth
-                                         maxHeight:maxheight];
-            data = UIImageJPEGRepresentation(_image, 0.3);
-        }
+//        CGFloat maxWidth=self.view.frame.size.width;
+//        CGFloat maxheight=self.view.frame.size.height;
+//        if (t>100) {
+//            UIImage *_image = [self imageWithImage:image
+//                                  scaledToMaxWidth:maxWidth
+//                                         maxHeight:maxheight];
+//            data = UIImageJPEGRepresentation(_image, 0.3);
+//        }
         
       [imageSendProtocol sendImages:data withTime:time ];
     }completionBlock:^{
