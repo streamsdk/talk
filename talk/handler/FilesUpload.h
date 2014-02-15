@@ -14,4 +14,7 @@
 @property (nonatomic,retain) NSString *filepath;
 @property (nonatomic,retain) NSMutableDictionary * bodyDict;
 @property (nonatomic,retain) NSString * userId;
+@property (nonatomic,retain) NSString * type;
+@property (nonatomic,retain) NSString * disappearTime;
+@property (nonatomic,retain) NSData *imageData;
 @end

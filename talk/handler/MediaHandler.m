@@ -32,9 +32,16 @@
     
     STreamFile *sf = [[STreamFile alloc] init];
     STreamXMPP *con = [STreamXMPP sharedObject];
-    
     [sf postData:data finished:^(NSString *res){
         if ([res isEqualToString:@"ok"]){
+            if ([f.type isEqualToString:@"video"]) {
+                STreamFile * sfile = [[STreamFile alloc]init];
+                [sfile postData:f.imageData];
+                NSString * tid  = [sfile fileId];
+                if (tid) {
+                    [f.bodyDict setObject:tid forKey:@"tid"];
+                }
+            }
             [f.bodyDict setObject:[sf fileId] forKey:@"fileId"];
             NSString *bodyJsonData = [f.bodyDict JSONString];
             NSLog(@"body json data: %@", bodyJsonData);

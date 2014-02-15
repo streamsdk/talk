@@ -1058,10 +1058,10 @@
         time =nil;
     }
     if ([type isEqualToString:@"video"]) {
-        videoPath = [NSURL URLWithString:filePath];
+       NSURL* _videoPath = [NSURL fileURLWithPath:filePath];
         
         [videoHandler setController:self];
-        [videoHandler setVideoPath:videoPath];
+        [videoHandler setVideoPath:_videoPath];
         [videoHandler setType:@"video"];
         [videoHandler sendVideoforBubbleDataArray:bubbleData withVideoTime:time forBubbleMyData:myData withSendId:fromID];
         NSBubbleData * last = [bubbleData lastObject];

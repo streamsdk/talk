@@ -38,7 +38,6 @@
         MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
         player.shouldAutoplay = NO;
         UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-        img = fileImage;
         NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withTime:time withType:@"video" date:[handler getDate] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
         if (otherData)
             bdata.avatar = [UIImage imageWithData:otherData];
@@ -54,18 +53,18 @@
     _sendID = sendID;
     _time = time;
     if ([type isEqualToString:@"video"]) {
-        _mp4Path = [videoPath absoluteString];
-        NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
+        _mp4Path = [videoPath path];
+        NSData *videoData = [NSData dataWithContentsOfURL:videoPath];
         
         date = [NSDate dateWithTimeIntervalSinceNow:0];
         MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:videoPath];
         player.shouldAutoplay = NO;
-//        UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+        UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
 //        NSBubbleData * bdata = [NSBubbleData dataWithImage:fileImage withTime:_time withType:@"video" date:date type:BubbleTypeMine withVidePath:_mp4Path];
 //        if (_myData)
 //            bdata.avatar = [UIImage imageWithData:_myData];
 //        [_bubbleData addObject:bdata];
-        UIImage *fileImage = [UIImage imageNamed:@""];
+//        UIImage *fileImage = [UIImage imageNamed:@""];
         [self sendVideo:fileImage withData:videoData withVideoTime:_time];
     }else{
         [self encodeToMp4];
@@ -133,6 +132,7 @@
         player.shouldAutoplay = NO;
 //        NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
         UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+        img = fileImage;
         NSBubbleData * bdata = [NSBubbleData dataWithImage:fileImage withTime:_time withType:@"video" date:date type:BubbleTypeMine withVidePath:_mp4Path];
         if (_myData)
             bdata.avatar = [UIImage imageWithData:_myData];
@@ -186,7 +186,7 @@
 //    UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
      NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
     [videoData writeToFile:_mp4Path atomically:YES];
-    [self sendVideo:fileImage withData:videoData withVideoTime:_time];
+    [self sendVideo:img withData:videoData withVideoTime:_time];
 }
 
 -(void) sendVideo:(UIImage *)image withData:(NSData *)videoData withVideoTime:(NSString *)time{
@@ -226,13 +226,17 @@
     
     ImageCache *cache = [ImageCache sharedObject];
     NSMutableArray *fileArray = [cache getFileUpload];
-    
+    NSData * imgdata = UIImageJPEGRepresentation(image, 0.5);
     FilesUpload * file = [[FilesUpload alloc]init];
     [file setTime:[NSString stringWithFormat:@"%lld", milliseconds]];
     [file setFilepath:_mp4Path];
     [file setBodyDict:bodyDic];
     [file setUserId:_sendID];
-    
+    [file setType:@"video"];
+    [file setImageData:imgdata];
+    if (time) {
+        [file setDisappearTime:time];
+    }
     if (fileArray!=nil && [fileArray count]!=0) {
         FilesUpload * f =[fileArray objectAtIndex:0];
         long long ftime = [f.time longLongValue];

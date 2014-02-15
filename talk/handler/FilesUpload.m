@@ -14,4 +14,8 @@
 @synthesize filepath;
 @synthesize bodyDict;
 @synthesize userId;
+@synthesize type;
+@synthesize disappearTime;
+@synthesize imageData;
+
 @end
