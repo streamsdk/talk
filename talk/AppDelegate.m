@@ -52,7 +52,7 @@
     [ack initDB];
     DownloadDB * downloadDB = [[DownloadDB alloc]init];
     [downloadDB initDB];
-    //
+    //upload
     UploadDB *uploadDb = [[UploadDB alloc]init];
     [uploadDb initDB];
     
