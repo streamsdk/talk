@@ -10,6 +10,8 @@
 
 @interface PhotoHandler : NSObject
 
+@property (nonatomic,retain) NSString  *type;
+
 @property(nonatomic, strong)UIViewController *controller;
 
 - (void)receiveFile:(NSData *)data withPath:(NSString *)path forBubbleDataArray:(NSMutableArray *)bubbleData withTime:(NSString *)time forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID ;

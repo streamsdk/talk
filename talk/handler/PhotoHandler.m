@@ -19,6 +19,8 @@
 #import "ImageCache.h"
 #import "FilesUpload.h"
 #import "AppDelegate.h"
+#import "UploadDB.h"
+
 @interface PhotoHandler()
 
 @end
@@ -26,7 +28,7 @@
 
 
 @synthesize controller;
-
+@synthesize type;
 -(void)receiveFile:(NSData *)data withPath:(NSString *)path forBubbleDataArray:(NSMutableArray *)bubbleData withTime:(NSString *)time forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
 
@@ -87,6 +89,12 @@
     [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
     [bodyDic setObject:@"photo" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
+    if ([type isEqualToString:@"photo"]) {
+        type = nil;
+    }else{
+        UploadDB * uploadDb = [[UploadDB alloc]init];
+        [uploadDb insertUploadDB:[handler getUserID] filePath:photoPath withTime:time withFrom:sendID withType:@"photo"];
+    }
     
     
     ImageCache * cache = [ImageCache sharedObject];
@@ -124,6 +132,9 @@
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
             [ack insertDB:f.time withUserID:[handler getUserID] fromID:f.userId withContent:bodyJsonData withTime:[dateFormatter stringFromDate:date] withIsMine:0];
+            UploadDB * uploadDb = [[UploadDB alloc]init];
+            [uploadDb deleteUploadDBFromFilepath:f.filepath];
+            
            [con sendFileMessage:f.userId withFileId:[sf fileId] withMessage:bodyJsonData];
         }
         

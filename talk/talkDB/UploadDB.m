@@ -77,7 +77,13 @@
             char *_fromId= (char*)sqlite3_column_text(statement,2);
             char *_type= (char*)sqlite3_column_text(statement,3);
             NSString * filePath= [[NSString alloc]initWithUTF8String:_filePath];
-            NSString * time = [[NSString alloc]initWithUTF8String:_time];
+            NSString * time;
+            if (_time) {
+                time = [[NSString alloc]initWithUTF8String:_time];
+            }else{
+                time = @"nil";
+            }
+           
             NSString *fromId = [[NSString alloc]initWithUTF8String:_fromId];
             NSString *type = [[NSString alloc]initWithUTF8String:_type];
             

@@ -1039,7 +1039,42 @@
     [self sendPhoto:data withTime:time];
 }
 -(void) uploadVideoPath:(NSString *)filePath withTime:(NSString *)time withFrom:(NSString *)fromID withType:(NSString *)type{
+    [self dismissKeyBoard];
+    ImageCache *imageCache = [ImageCache sharedObject];
     
+    HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
+    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[handler getUserID]];
+    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+    myData = [imageCache getImage:pImageId];
+    NSString *sendToID =[imageCache getFriendID];
+    NSMutableArray * dataArray = [[NSMutableArray alloc]init];
+    TalkDB * talk =[[TalkDB alloc]init];
+    dataArray = [talk readInitDB:[handler getUserID] withOtherID:sendToID];
+    bubbleData = dataArray;
+    for (NSBubbleData * data in bubbleData) {
+        data.delegate = self;
+    }
+    if ([time isEqualToString:@"nil"]) {
+        time =nil;
+    }
+    if ([type isEqualToString:@"video"]) {
+        videoPath = [NSURL URLWithString:filePath];
+        
+        [videoHandler setController:self];
+        [videoHandler setVideoPath:videoPath];
+        [videoHandler setType:@"video"];
+        [videoHandler sendVideoforBubbleDataArray:bubbleData withVideoTime:time forBubbleMyData:myData withSendId:fromID];
+        NSBubbleData * last = [bubbleData lastObject];
+        last.delegate = self;
+        videoHandler.delegate = self;
+    }
+    if ([type isEqualToString:@"photo"]) {
+        NSData * data = [NSData dataWithContentsOfFile:filePath];
+        [photoHandler setController:self];
+        [photoHandler sendPhoto:data forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:fromID withTime:time];
+    }
+    [bubbleTableView reloadData];
+    [self scrollBubbleViewToBottomAnimated:YES];
 }
 - (void)didReceiveMemoryWarning 
 {

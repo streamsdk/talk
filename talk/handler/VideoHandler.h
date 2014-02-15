@@ -24,11 +24,12 @@
     NSDate *date;
     UIImage *img;
 
+
 }
 @property(nonatomic, strong)UIViewController *controller;
 @property (nonatomic,strong) NSURL  *videoPath;
 @property (assign)id<reloadTableDeleage>delegate;
-
+@property (nonatomic,retain) NSString  *type;
 
 - (void)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withVideoTime:(NSString *)time withSendId:(NSString *)sendID withFromId:(NSString *)fromID;
 

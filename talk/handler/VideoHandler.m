@@ -19,11 +19,13 @@
 #import <arcstreamsdk/STreamFile.h>
 #import "AppDelegate.h"
 #import "Progress.h"
+#import "UploadDB.h"
 
 @implementation VideoHandler
 
 @synthesize controller,videoPath;
 @synthesize delegate;
+@synthesize type;
 
 - (void)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withVideoTime:(NSString *)time withSendId:(NSString *)sendID withFromId:(NSString *)fromID {
     
@@ -51,7 +53,24 @@
     _myData = myData;
     _sendID = sendID;
     _time = time;
-    [self encodeToMp4];
+    if ([type isEqualToString:@"video"]) {
+        _mp4Path = [videoPath absoluteString];
+        NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
+        
+        date = [NSDate dateWithTimeIntervalSinceNow:0];
+        MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:videoPath];
+        player.shouldAutoplay = NO;
+//        UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+//        NSBubbleData * bdata = [NSBubbleData dataWithImage:fileImage withTime:_time withType:@"video" date:date type:BubbleTypeMine withVidePath:_mp4Path];
+//        if (_myData)
+//            bdata.avatar = [UIImage imageWithData:_myData];
+//        [_bubbleData addObject:bdata];
+        UIImage *fileImage = [UIImage imageNamed:@""];
+        [self sendVideo:fileImage withData:videoData withVideoTime:_time];
+    }else{
+        [self encodeToMp4];
+    }
+    
 }
 - (void)encodeToMp4
 {
@@ -166,6 +185,7 @@
 //    player.shouldAutoplay = NO
 //    UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
      NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
+    [videoData writeToFile:_mp4Path atomically:YES];
     [self sendVideo:fileImage withData:videoData withVideoTime:_time];
 }
 
@@ -195,6 +215,14 @@
     [bodyDic setObject:@"video" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
     [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
+    
+     if ([type isEqualToString:@"video"]) {
+         type = nil;
+     }else{
+         UploadDB * uploadDb = [[UploadDB alloc]init];
+         [uploadDb insertUploadDB:[handler getUserID] filePath:_mp4Path withTime:time withFrom:_sendID withType:@"video"];
+     }
+   
     
     ImageCache *cache = [ImageCache sharedObject];
     NSMutableArray *fileArray = [cache getFileUpload];
@@ -237,6 +265,8 @@
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
             [ack insertDB:f.time withUserID:[handler getUserID] fromID:f.userId withContent:bodyJsonData withTime:[dateFormatter stringFromDate:date] withIsMine:0];
+            UploadDB * upload = [[UploadDB alloc]init];
+            [upload deleteUploadDBFromFilepath:f.filepath];
             
             [con sendFileMessage:f.userId withFileId:[sf fileId] withMessage:bodyJsonData];
         }

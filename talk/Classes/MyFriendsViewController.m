@@ -304,10 +304,10 @@
         }
     }
     
-    /*UploadDB * uploadDB = [[UploadDB alloc]init];
+    UploadDB * uploadDB = [[UploadDB alloc]init];
     NSMutableArray * uploadArray = [uploadDB readUploadDB];
     if (uploadArray != nil && [uploadArray count] != 0) {
-        for (NSMutableArray* array in downloadArray) {
+        for (NSMutableArray* array in uploadArray) {
             NSString * filePath = [array objectAtIndex:0];
             NSString * time= [array objectAtIndex:1];
             NSString * fromId = [array objectAtIndex:2];
@@ -315,7 +315,7 @@
             [uploadProtocol uploadVideoPath:filePath withTime:time withFrom:fromId withType:type];
         }
 
-    }*/
+    }
 }
 
 - (void)didNotAuthenticate:(NSXMLElement *)error{
