@@ -13,11 +13,16 @@
 #import "Progress.h"
 #import <arcstreamsdk/JSONKit.h>
 #import <arcstreamsdk/STreamSession.h>
+#import "TalkDB.h"
+#import "DownloadDB.h"
+#import "HandlerUserIdAndDateFormater.h"
 
 #define BUBBLETABLEVIEWCELL_TAG 1000
 
 @interface UIBubbleTableView ()
-
+{
+    UIActivityIndicatorView *activityIndicatorView ;
+}
 @property (nonatomic, retain) NSMutableArray *bubbleSection;
 
 @end
@@ -230,7 +235,7 @@
     NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
     cell.data = data;
     cell.showAvatar = self.showAvatars;
-    cell.tag = BUBBLETABLEVIEWCELL_TAG;
+    cell.tag =indexPath.row;
     if (cell.data.type == BubbleTypeMine) {
          Progress * p = [[Progress alloc]init];
         if ( cell.data.fileType == FileVideo) {
@@ -255,7 +260,7 @@
             }
         }
         if (cell.data.fileType == FileDisappear) {
-            UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]init];
+            activityIndicatorView = [[UIActivityIndicatorView alloc]init];
             [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
             activityIndicatorView.frame = CGRectMake(60, cell.frame.size.height-15, 20, 20);
             [activityIndicatorView setCenter:CGPointMake(60, cell.frame.size.height-15)];
@@ -307,12 +312,14 @@
                 [downButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
                 [downButton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
                 [cell.contentView addSubview:downButton];
+                downButton .tag = indexPath.row;
                 
-                UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]init];
+                activityIndicatorView = [[UIActivityIndicatorView alloc]init];
                 [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
                 activityIndicatorView.frame = CGRectMake(220, cell.frame.size.height, 20, 20);
                 [activityIndicatorView setCenter:CGPointMake(220, cell.frame.size.height)];
                 [cell.contentView addSubview:activityIndicatorView];
+                activityIndicatorView.tag = indexPath.row;
             }
             
         }
@@ -326,16 +333,48 @@
 }
 
 -(void) downloadvideo:(UIButton *)button{
-   
-    /*UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:BUBBLETABLEVIEWCELL_TAG];
+
+    button.hidden = YES;
+    UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:button.tag];
+//    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [self viewWithTag:button.tag];
+    DownloadDB * download = [[DownloadDB alloc]init];
+    [activityIndicatorView startAnimating];
     NSString * jsonbody = cell.data.jsonBody;
-    NSData *jsonData = [cell.data.jsonBody dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *jsonData = [jsonbody dataUsingEncoding:NSUTF8StringEncoding];
     JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
     NSDictionary *json = [decoder objectWithData:jsonData];
     NSString *fileId = [json objectForKey:@"fileId"];
+    NSString *tid = [json objectForKey:@"tid"];
+    NSString * fromId = [download readDownloadDBFromFileID:fileId];
     NSString *urlString = [STreamSession getFileObjectDownloadUrl:fileId];
-    NSURL *url = [NSURL URLWithString:urlString];*/
-    
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                               if ( !error )
+                               {
+                                   HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+                                   TalkDB * talkDb = [[TalkDB alloc]init];
+                                   NSString * filepath= [[handler getPath] stringByAppendingString:@".mp4"];
+                                   [data writeToFile : filepath atomically: YES ];
+                                   [handler videoPath:filepath];
+                                   NSMutableDictionary * dict = [[NSMutableDictionary alloc]init];
+                                   NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
+                                   [dict setObject:tid forKey:@"tid"];
+                                   [dict setObject:fileId forKey:@"fileId"];
+                                   [dict setObject:filepath forKey:@"filepath"];
+                                   [jsonDic setObject:dict forKey:fromId];
+                                   NSString * json = [jsonDic JSONString];
+                                   [talkDb updateDB:cell.data.date withContent:json];
+                                   cell.data._videoPath = filepath;
+                                   
+                                   [download deleteDownloadDBFromFileID:fileId];
+                                   [activityIndicatorView stopAnimating];
+
+                               } else{
+                               }
+                           }];
     NSLog(@"download");
 }
 #pragma mark - Public interface

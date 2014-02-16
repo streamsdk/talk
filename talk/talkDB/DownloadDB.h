@@ -18,4 +18,5 @@
 
 -(void) deleteDownloadDBFromFileID:(NSString *) fileID;
 
+-(NSString *)readDownloadDBFromFileID:(NSString *) fileID;
 @end

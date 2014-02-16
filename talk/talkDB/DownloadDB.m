@@ -85,6 +85,26 @@
 
     return downloadArray;
 }
+-(NSString *)readDownloadDBFromFileID:(NSString *) fileID{
+    NSString * fromId;
+    sqlite3 *database;
+    
+    if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
+        sqlite3_close(database);
+        NSAssert(0, @"Failed to open database");
+    }
+    
+    NSString *sqlQuery =[NSString stringWithFormat:@"SELECT FROMID FROM DOWNLOAD WHERE FILEID='%@'",fileID];
+    sqlite3_stmt * statement;
+    if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
+        while (sqlite3_step(statement) == SQLITE_ROW) {
+            char *_fromId= (char*)sqlite3_column_text(statement,0);
+            NSString *fId = [[NSString alloc]initWithUTF8String:_fromId];
+            fromId =fId;
+        }
+    }
+    return fromId;
+}
 -(void) deleteDownloadDBFromFileID:(NSString *) fileID{
     sqlite3 *database;
     if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {

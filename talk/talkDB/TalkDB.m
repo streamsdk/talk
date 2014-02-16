@@ -177,6 +177,19 @@
                             if(otherData)
                                 bdata.avatar = [UIImage imageWithData:otherData];
                             [dataArray addObject:bdata];
+                        }if ([key isEqualToString:@"filepath"]) {
+                            NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"filepath"]];
+                            MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
+                            player.shouldAutoplay = NO;
+                            UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+//                            NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"filepath"]];;
+//                            UIImage *fileImage = [UIImage imageWithData:data];
+                            NSString * time = [chatDic objectForKey:@"time"];
+                            NSString * body = [chatDic JSONString];
+                            NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withTime:time  withType:@"video" date:date type:BubbleTypeSomeoneElse withVidePath:[chatDic objectForKey:@"filepath"] withJsonBody:body];
+                            if(otherData)
+                                bdata.avatar = [UIImage imageWithData:otherData];
+                            [dataArray addObject:bdata];
                         }else if ([key isEqualToString:@"photo"]) {
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];
                             NSString * time = [chatDic objectForKey:@"time"];

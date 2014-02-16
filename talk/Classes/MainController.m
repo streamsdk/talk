@@ -982,17 +982,21 @@
 }
 
 -(void) playerVideo:(NSString *)path  withTime:(NSString *)time withDate:(NSDate *)date{
+    if ([path hasSuffix:@".mp4"]) {
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        NSError *err = nil;
+        [audioSession setCategory :AVAudioSessionCategoryPlayback error:&err];
+        DisPlayerViewController * playerVC = [[DisPlayerViewController alloc]init];
+        playerVC.videopath = path;
+        playerVC.time = time;
+        playerVC.date = date;
+        playerVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentViewController:playerVC animated:YES completion:nil];
 
-    return;
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-     NSError *err = nil;
-    [audioSession setCategory :AVAudioSessionCategoryPlayback error:&err];
-    DisPlayerViewController * playerVC = [[DisPlayerViewController alloc]init];
-    playerVC.videopath = path;
-    playerVC.time = time;
-    playerVC.date = date;
-    playerVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentViewController:playerVC animated:YES completion:nil];
+    }else{
+         return;
+    }
+   
 }
 
 -(void)disappearImage:(UIImage *)image withDissapearTime:(NSString *)time withDissapearPath:(NSString *)path withSendOrReceiveTime:(NSDate *)date{

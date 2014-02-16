@@ -258,8 +258,16 @@
             NSString * fileId = [array objectAtIndex:0];
             NSString * body = [array objectAtIndex:1];
             NSString * fromId = [array objectAtIndex:2];
-            [downloadDB deleteDownloadDBFromFileID:fileId];
-            [self didReceiveFile:fileId withBody:body withFrom:fromId];
+            
+            NSData *jsonData = [body dataUsingEncoding:NSUTF8StringEncoding];
+            JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+            NSMutableDictionary *json = [decoder objectWithData:jsonData];
+            NSString *type = [json objectForKey:@"type"];
+            if (![type isEqualToString:@"video"]) {
+                [downloadDB deleteDownloadDBFromFileID:fileId];
+                [self didReceiveFile:fileId withBody:body withFrom:fromId];
+            }
+           
         }
     }
 }
@@ -436,6 +444,9 @@
             path = photoPath;
             jsBody = body;
         }else if ([type isEqualToString:@"video"]){
+            
+            NSString * tid = [json objectForKey:@"tid"];
+            NSString * fileId = [json objectForKey:@"fileId"];
             NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
             NSString *duration = [json objectForKey:@"duration"];
             NSString * tidpath= [[handler getPath] stringByAppendingString:@".png"];
@@ -445,11 +456,12 @@
             if (duration)
                 [friendDict setObject:duration forKey:@"time"];
             [friendDict setObject:tidpath forKey:@"tidpath"];
-            [jsonDic setObject:friendDict forKey:fromUser];
+            [friendDict setObject:tid forKey:@"tid"];
+            [friendDict setObject:fileId forKey:@"fileId"];
+             [jsonDic setObject:friendDict forKey:fromUser];
             path = tidpath;
             
-            NSString * tid = [json objectForKey:@"tid"];
-            NSString * fileId = [json objectForKey:@"fileId"];
+          
             NSMutableDictionary * jsondict = [[NSMutableDictionary alloc]init];
             [jsondict setObject:type forKey:@"type"];
             [jsondict setObject:tidpath forKey:@"tidpath"];
