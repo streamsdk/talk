@@ -44,8 +44,8 @@
         TalkDB * talkDB = [[TalkDB alloc]init];
         NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
         NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-        [friendDict setObject:@"-1" forKey:@"time"];
-        [friendDict setObject:videopath forKey:@"video"];
+        [friendDict setObject:@"-1" forKey:@"duration"];
+        [friendDict setObject:videopath forKey:@"filepath"];
         [jsonDic setObject:friendDict forKey:[cache getFriendID]];
         NSString  *str = [jsonDic JSONString];
         [talkDB updateDB:date withContent:str];

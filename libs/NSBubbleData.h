@@ -48,6 +48,7 @@ typedef enum FileType
 @property (assign,nonatomic) id <PlayerDelegate> delegate;
 @property (nonatomic,retain) NSString * photopath;
 @property (nonatomic,retain) NSString * jsonBody;
+@property (nonatomic,strong) UIButton * videobutton;
 //message
 - (id)initWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type;
 + (id)dataWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type;

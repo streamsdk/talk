@@ -16,6 +16,7 @@
 #import "TalkDB.h"
 #import "DownloadDB.h"
 #import "HandlerUserIdAndDateFormater.h"
+#import "PlayerDelegate.h"
 
 #define BUBBLETABLEVIEWCELL_TAG 1000
 
@@ -24,7 +25,7 @@
     UIActivityIndicatorView *activityIndicatorView ;
 }
 @property (nonatomic, retain) NSMutableArray *bubbleSection;
-
+@property (assign,nonatomic) id <PlayerDelegate> playerDelegate;
 @end
 
 @implementation UIBubbleTableView
@@ -34,7 +35,7 @@
 @synthesize bubbleSection = _bubbleSection;
 @synthesize typingBubble = _typingBubble;
 @synthesize showAvatars = _showAvatars;
-
+@synthesize playerDelegate;
 
 #pragma mark - Initializators
 
@@ -323,6 +324,21 @@
             }
             
         }
+        if (cell.data.fileType == FileDisappear){
+            if (![cell.data._videoPath hasPrefix:@".mp4"]) {
+                if ([cell.data.videobutton.titleLabel.text isEqualToString:@"Download"]) {
+                    cell.data.videobutton.tag = indexPath.row;
+                    [cell.data.videobutton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
+                    activityIndicatorView = [[UIActivityIndicatorView alloc]init];
+                    [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+                    activityIndicatorView.frame = CGRectMake(250, cell.frame.size.height-20, 20, 20);
+                    [activityIndicatorView setCenter:CGPointMake(250, cell.frame.size.height-20)];
+                    [cell.contentView addSubview:activityIndicatorView];
+                    activityIndicatorView.tag = indexPath.row;
+                }
+                
+            }
+        }
     }
     
     return cell;
@@ -333,10 +349,15 @@
 }
 
 -(void) downloadvideo:(UIButton *)button{
-
-    button.hidden = YES;
+   
+   
     UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:button.tag];
 //    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [self viewWithTag:button.tag];
+    if (cell.data.fileType == FileVideo){
+         button.hidden = YES;
+    }else{
+        [cell.data.videobutton setTitle:@"downloading" forState:UIControlStateNormal];
+    }
     DownloadDB * download = [[DownloadDB alloc]init];
     [activityIndicatorView startAnimating];
     NSString * jsonbody = cell.data.jsonBody;
@@ -346,6 +367,7 @@
     NSString *fileId = [json objectForKey:@"fileId"];
     NSString *tid = [json objectForKey:@"tid"];
     NSString * fromId = [download readDownloadDBFromFileID:fileId];
+    NSString *duration = [json objectForKey:@"duration"];
     NSString *urlString = [STreamSession getFileObjectDownloadUrl:fileId];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -354,6 +376,10 @@
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                if ( !error )
                                {
+                                   if (cell.data.fileType == FileDisappear){
+                                       [cell.data.videobutton setTitle:@"Click to view" forState:UIControlStateNormal];
+                                       [cell.data.videobutton addTarget:self action:@selector(playerVideo:) forControlEvents:UIControlEventTouchUpInside];
+                                   }
                                    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
                                    TalkDB * talkDb = [[TalkDB alloc]init];
                                    NSString * filepath= [[handler getPath] stringByAppendingString:@".mp4"];
@@ -364,6 +390,9 @@
                                    [dict setObject:tid forKey:@"tid"];
                                    [dict setObject:fileId forKey:@"fileId"];
                                    [dict setObject:filepath forKey:@"filepath"];
+                                   if (duration) {
+                                       [dict setObject:duration forKey:@"duration"];
+                                   }
                                    [jsonDic setObject:dict forKey:fromId];
                                    NSString * json = [jsonDic JSONString];
                                    [talkDb updateDB:cell.data.date withContent:json];
@@ -376,6 +405,17 @@
                                }
                            }];
     NSLog(@"download");
+}
+
+-(void)playerVideo:(UIButton *)button {
+    UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:button.tag];
+    NSString * jsonbody = cell.data.jsonBody;
+    NSData *jsonData = [jsonbody dataUsingEncoding:NSUTF8StringEncoding];
+    JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+    NSDictionary *json = [decoder objectWithData:jsonData];
+    NSString *duration = [json objectForKey:@"duration"];
+    [playerDelegate playerVideo:cell.data._videoPath withTime:duration withDate:cell.data.date ];
+    
 }
 #pragma mark - Public interface
 

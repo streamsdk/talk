@@ -454,7 +454,7 @@
             [handler videoPath:tidpath];
             
             if (duration)
-                [friendDict setObject:duration forKey:@"time"];
+                [friendDict setObject:duration forKey:@"duration"];
             [friendDict setObject:tidpath forKey:@"tidpath"];
             [friendDict setObject:tid forKey:@"tid"];
             [friendDict setObject:fileId forKey:@"fileId"];
