@@ -309,7 +309,7 @@
         }else if ([type isEqualToString:@"video"]){
 
             [videoHandler setController:self];
-            [videoHandler receiveVideoFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withVideoTime:time withSendId:sendToID withFromId:fromID];
+            [videoHandler receiveVideoFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withVideoTime:time withSendId:sendToID withFromId:fromID withJsonBody:body];
 
            
         }else if ([type isEqualToString:@"voice"]){

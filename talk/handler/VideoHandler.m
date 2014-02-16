@@ -27,7 +27,7 @@
 @synthesize delegate;
 @synthesize type;
 
-- (void)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withVideoTime:(NSString *)time withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
+- (void)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withVideoTime:(NSString *)time withSendId:(NSString *)sendID withFromId:(NSString *)fromID withJsonBody:(NSString *)body{
     
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     
@@ -39,7 +39,7 @@
 //        player.shouldAutoplay = NO;
 //        UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
         UIImage *fileImage = [UIImage imageWithData:data];
-        NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withTime:time withType:@"video" date:[handler getDate] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
+        NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withTime:time withType:@"video" date:[handler getDate] type:BubbleTypeSomeoneElse withVidePath:mp4Path withJsonBody:body];
         if (otherData)
             bdata.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:bdata];
@@ -134,7 +134,7 @@
 //        NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
         UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
         img = fileImage;
-        NSBubbleData * bdata = [NSBubbleData dataWithImage:fileImage withTime:_time withType:@"video" date:date type:BubbleTypeMine withVidePath:_mp4Path];
+        NSBubbleData * bdata = [NSBubbleData dataWithImage:fileImage withTime:_time withType:@"video" date:date type:BubbleTypeMine withVidePath:_mp4Path withJsonBody:@""];
         if (_myData)
             bdata.avatar = [UIImage imageWithData:_myData];
         [_bubbleData addObject:bdata];

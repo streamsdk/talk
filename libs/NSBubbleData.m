@@ -30,6 +30,8 @@
 @synthesize senddate;
 @synthesize fileType;
 @synthesize photopath;
+@synthesize jsonBody;
+
 #pragma mark - Lifecycle
 
 #if !__has_feature(objc_arc)
@@ -230,11 +232,12 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 
 }
 #pragma mark - Custom view video
-- (id)initWithImage:(UIImage *)image withTime:(NSString *)time withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath{
+- (id)initWithImage:(UIImage *)image withTime:(NSString *)time withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath withJsonBody:(NSString *)body{
     _videotime = time;
     _videoPath = videoPath;
     _videodate = date;
     disappearPath = videoPath;
+    jsonBody = body;
     CGSize size = image.size;
     /*if (size.width > 200)
     {
@@ -299,11 +302,11 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
         return [self initWithView:view date:date type:type  withFileType:FileDisappear insets:insets];
     }
 }
-+ (id)dataWithImage:(UIImage *)image  withTime:(NSString *)time withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath{
++ (id)dataWithImage:(UIImage *)image  withTime:(NSString *)time withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath withJsonBody:(NSString *)body{
 #if !__has_feature(objc_arc)
-    return [[[NSBubbleData alloc] initWithImage:image withData:data withTime:time withType:video date:date type:type withVidePath:videoPath] autorelease];
+    return [[[NSBubbleData alloc] initWithImage:image withData:data withTime:time withType:video date:date type:type withVidePath:videoPath withJsonBody:body] autorelease];
 #else
-    return [[NSBubbleData alloc] initWithImage:image  withTime:time withType:video date:date type:type withVidePath:videoPath];
+    return [[NSBubbleData alloc] initWithImage:image  withTime:time withType:video date:date type:type withVidePath:videoPath withJsonBody:body];
 #endif
 }
 #pragma mark - Custom view bubble

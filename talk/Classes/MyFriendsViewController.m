@@ -423,6 +423,7 @@
         NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
         HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
         NSString * path;
+        NSString * jsBody;
         if ([type isEqualToString:@"photo"]) {
             NSString *duration = [json objectForKey:@"duration"];
             NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];
@@ -434,6 +435,7 @@
             [friendDict setObject:photoPath forKey:@"photo"];
             [jsonDic setObject:friendDict forKey:fromUser];
             path = photoPath;
+            jsBody = body;
         }else if ([type isEqualToString:@"video"]){
             NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
             NSString *duration = [json objectForKey:@"duration"];
@@ -443,10 +445,20 @@
             
             if (duration)
                 [friendDict setObject:duration forKey:@"time"];
-            [friendDict setObject:tidpath forKey:@"video"];
+            [friendDict setObject:tidpath forKey:@"tidpath"];
             [jsonDic setObject:friendDict forKey:fromUser];
             path = tidpath;
             
+            NSString * tid = [json objectForKey:@"tid"];
+            NSString * fileId = [json objectForKey:@"fileId"];
+            NSMutableDictionary * jsondict = [[NSMutableDictionary alloc]init];
+            [jsondict setObject:type forKey:@"type"];
+            [jsondict setObject:tidpath forKey:@"tidpath"];
+            if (duration)
+               [jsondict setObject:duration forKey:@"duration"];
+            [jsondict setObject:tid forKey:@"tid"];
+            [jsondict setObject:fileId forKey:@"fileId"];
+            jsBody = [jsondict JSONString];
         }else if ([type isEqualToString:@"voice"]){
             
             NSString *duration = [json objectForKey:@"duration"];
@@ -457,6 +469,7 @@
             [friendsDict setObject:duration forKey:@"time"];
             [friendsDict setObject:recordFilePath forKey:@"audiodata"];
             [jsonDic setObject:friendsDict forKey:fromUser];
+            jsBody = body;
         }
        
         TalkDB * db = [[TalkDB alloc]init];
@@ -467,7 +480,7 @@
         NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
         [handler setDate:date];
         [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
-        [messagesProtocol getFiles:data withFromID:fromUser withBody:body withPath:path];
+        [messagesProtocol getFiles:data withFromID:fromUser withBody:jsBody withPath:path];
         [self.tableView reloadData];
         
     }];

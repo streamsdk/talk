@@ -47,6 +47,7 @@ typedef enum FileType
 @property (nonatomic,retain) NSDate *senddate;
 @property (assign,nonatomic) id <PlayerDelegate> delegate;
 @property (nonatomic,retain) NSString * photopath;
+@property (nonatomic,retain) NSString * jsonBody;
 //message
 - (id)initWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type;
 + (id)dataWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type;
@@ -67,8 +68,9 @@ typedef enum FileType
 
 //video
 //withData:(NSData *)data
-- (id)initWithImage:(UIImage *)image  withTime:(NSString *)time withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath;
-+ (id)dataWithImage:(UIImage *)image  withTime:(NSString *)time withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath;
+- (id)initWithImage:(UIImage *)image  withTime:(NSString *)time withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath withJsonBody:(NSString *)body;
++ (id)dataWithImage:(UIImage *)image  withTime:(NSString *)time withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath
+       withJsonBody:(NSString *)body;
 
 
 - (id)initWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type withFileType:(FileType)filetype insets:(UIEdgeInsets)insets;

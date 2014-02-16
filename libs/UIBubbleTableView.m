@@ -11,6 +11,9 @@
 #import "UIBubbleTypingTableViewCell.h"
 #import "AppDelegate.h"
 #import "Progress.h"
+#import <arcstreamsdk/JSONKit.h>
+#import <arcstreamsdk/STreamSession.h>
+
 #define BUBBLETABLEVIEWCELL_TAG 1000
 
 @interface UIBubbleTableView ()
@@ -290,21 +293,28 @@
         }
     }else{
         if (cell.data.fileType == FileVideo) {
-            UIButton * downButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            [downButton setFrame:CGRectMake(200, cell.frame.size.height, 100, 30)];
-            [downButton setTitle:@"Download" forState:UIControlStateNormal];
-            [[downButton layer] setBorderColor:[[UIColor blueColor] CGColor]];
-            [[downButton layer] setBorderWidth:1];
-            [[downButton layer] setCornerRadius:4];
-            [downButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            [downButton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.contentView addSubview:downButton];
+            NSData *jsonData = [cell.data.jsonBody dataUsingEncoding:NSUTF8StringEncoding];
+            JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+            NSDictionary *json = [decoder objectWithData:jsonData];
+            NSArray * array = [json allKeys];
+            if ([array containsObject:@"tidpath"]) {
+                UIButton * downButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                [downButton setFrame:CGRectMake(200, cell.frame.size.height, 100, 30)];
+                [downButton setTitle:@"Download" forState:UIControlStateNormal];
+                [[downButton layer] setBorderColor:[[UIColor blueColor] CGColor]];
+                [[downButton layer] setBorderWidth:1];
+                [[downButton layer] setCornerRadius:4];
+                [downButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                [downButton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
+                [cell.contentView addSubview:downButton];
+                
+                UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]init];
+                [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+                activityIndicatorView.frame = CGRectMake(220, cell.frame.size.height, 20, 20);
+                [activityIndicatorView setCenter:CGPointMake(220, cell.frame.size.height)];
+                [cell.contentView addSubview:activityIndicatorView];
+            }
             
-            UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]init];
-            [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-            activityIndicatorView.frame = CGRectMake(220, cell.frame.size.height, 20, 20);
-            [activityIndicatorView setCenter:CGPointMake(220, cell.frame.size.height)];
-            [cell.contentView addSubview:activityIndicatorView];
         }
     }
     
@@ -316,6 +326,15 @@
 }
 
 -(void) downloadvideo:(UIButton *)button{
+   
+    /*UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:BUBBLETABLEVIEWCELL_TAG];
+    NSString * jsonbody = cell.data.jsonBody;
+    NSData *jsonData = [cell.data.jsonBody dataUsingEncoding:NSUTF8StringEncoding];
+    JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+    NSDictionary *json = [decoder objectWithData:jsonData];
+    NSString *fileId = [json objectForKey:@"fileId"];
+    NSString *urlString = [STreamSession getFileObjectDownloadUrl:fileId];
+    NSURL *url = [NSURL URLWithString:urlString];*/
     
     NSLog(@"download");
 }
