@@ -195,7 +195,7 @@
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
     if (time)
         [friendDict setObject:time forKey:@"duration"];
-    [friendDict setObject:_mp4Path forKey:@"video"];
+    [friendDict setObject:_mp4Path forKey:@"filepath"];
     //[friendDict setObject:[videoPath absoluteString] forKey:@"video"];
     
     [jsonDic setObject:friendDict forKey:_sendID];
