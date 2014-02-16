@@ -122,7 +122,7 @@
                             [dataArray addObject:data];
                         }else if ([key isEqualToString:@"video"]) {
                             NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"video"]];
-                             NSString * time = [chatDic objectForKey:@"time"];
+                             NSString * time = [chatDic objectForKey:@"duration"];
                             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
                             player.shouldAutoplay = NO;
                             UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];

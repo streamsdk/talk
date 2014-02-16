@@ -16,7 +16,7 @@
 #import "TalkDB.h"
 #import "DownloadDB.h"
 #import "HandlerUserIdAndDateFormater.h"
-#import "PlayerDelegate.h"
+
 
 #define BUBBLETABLEVIEWCELL_TAG 1000
 
@@ -25,7 +25,7 @@
     UIActivityIndicatorView *activityIndicatorView ;
 }
 @property (nonatomic, retain) NSMutableArray *bubbleSection;
-@property (assign,nonatomic) id <PlayerDelegate> playerDelegate;
+
 @end
 
 @implementation UIBubbleTableView
@@ -35,7 +35,6 @@
 @synthesize bubbleSection = _bubbleSection;
 @synthesize typingBubble = _typingBubble;
 @synthesize showAvatars = _showAvatars;
-@synthesize playerDelegate;
 
 #pragma mark - Initializators
 
@@ -378,6 +377,7 @@
                                {
                                    if (cell.data.fileType == FileDisappear){
                                        [cell.data.videobutton setTitle:@"Click to view" forState:UIControlStateNormal];
+                                         [cell.data.videobutton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
                                        [cell.data.videobutton addTarget:self action:@selector(playerVideo:) forControlEvents:UIControlEventTouchUpInside];
                                    }
                                    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
@@ -414,7 +414,7 @@
     JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
     NSDictionary *json = [decoder objectWithData:jsonData];
     NSString *duration = [json objectForKey:@"duration"];
-    [playerDelegate playerVideo:cell.data._videoPath withTime:duration withDate:cell.data.date ];
+    [cell.data.delegate playerVideo:cell.data._videoPath withTime:duration withDate:cell.data.date ];
     
 }
 #pragma mark - Public interface
