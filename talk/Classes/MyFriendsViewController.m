@@ -402,10 +402,9 @@
         NSString *tid= [json objectForKey:@"tid"];
         if (tid){
             fileId = tid;
+            [downloadDB insertDownloadDB:[handler getUserID] fileID:fileId withBody:body withFrom:fromID];
         }
     }
-    [downloadDB insertDownloadDB:[handler getUserID] fileID:fileId withBody:body withFrom:fromID];
-    
     [imageCache saveJsonData:body forFileId:fileId];
 
     
