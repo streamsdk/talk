@@ -235,6 +235,7 @@
     [file setUserId:_sendID];
     [file setType:@"video"];
     [file setImageData:imgdata];
+    [file setChatId:[NSString stringWithFormat:@"%lld", milliseconds]];
     if (time) {
         [file setDisappearTime:time];
     }

@@ -50,7 +50,7 @@
             NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-            [ack insertDB:f.time withUserID:[handler getUserID] fromID:f.userId withContent:bodyJsonData withTime:[dateFormatter stringFromDate:date] withIsMine:0];
+            [ack insertDB:f.chatId withUserID:[handler getUserID] fromID:f.userId withContent:bodyJsonData withTime:[dateFormatter stringFromDate:date] withIsMine:0];
             UploadDB * uploadDb = [[UploadDB alloc]init];
             [uploadDb deleteUploadDBFromFilepath:f.filepath];
             [con sendFileMessage:f.userId withFileId:[sf fileId] withMessage:bodyJsonData];

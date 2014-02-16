@@ -17,5 +17,5 @@
 @synthesize type;
 @synthesize disappearTime;
 @synthesize imageData;
-
+@synthesize chatId;
 @end

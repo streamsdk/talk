@@ -105,6 +105,7 @@
     [file setFilepath:photoPath];
     [file setBodyDict:bodyDic];
     [file setUserId:sendID];
+    [file setChatId:[NSString stringWithFormat:@"%lld", milliseconds]];
     if (fileArray != nil && [fileArray count] != 0) {
         FilesUpload * f =[fileArray objectAtIndex:0];
         long long ftime = [f.time longLongValue];
