@@ -11,6 +11,7 @@
 #import "UIBubbleTypingTableViewCell.h"
 #import "AppDelegate.h"
 #import "Progress.h"
+#define BUBBLETABLEVIEWCELL_TAG 1000
 
 @interface UIBubbleTableView ()
 
@@ -226,6 +227,7 @@
     NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
     cell.data = data;
     cell.showAvatar = self.showAvatars;
+    cell.tag = BUBBLETABLEVIEWCELL_TAG;
     if (cell.data.type == BubbleTypeMine) {
          Progress * p = [[Progress alloc]init];
         if ( cell.data.fileType == FileVideo) {
@@ -287,30 +289,35 @@
            
         }
     }else{
-        if (data._videoPath) {
-           /* UIButton * downButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        if (cell.data.fileType == FileVideo) {
+            UIButton * downButton = [UIButton buttonWithType:UIButtonTypeCustom];
             [downButton setFrame:CGRectMake(200, cell.frame.size.height, 100, 30)];
             [downButton setTitle:@"Download" forState:UIControlStateNormal];
-            [[downButton layer] setBorderColor:[[UIColor blackColor] CGColor]];
+            [[downButton layer] setBorderColor:[[UIColor blueColor] CGColor]];
             [[downButton layer] setBorderWidth:1];
             [[downButton layer] setCornerRadius:4];
             [downButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [downButton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
             [cell.contentView addSubview:downButton];
             
             UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]init];
             [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
             activityIndicatorView.frame = CGRectMake(220, cell.frame.size.height, 20, 20);
             [activityIndicatorView setCenter:CGPointMake(220, cell.frame.size.height)];
-            [cell.contentView addSubview:activityIndicatorView];*/
+            [cell.contentView addSubview:activityIndicatorView];
         }
     }
-
     
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
  
     NSLog(@"row  = %d",indexPath.row);
+}
+
+-(void) downloadvideo:(UIButton *)button{
+    
+    NSLog(@"download");
 }
 #pragma mark - Public interface
 

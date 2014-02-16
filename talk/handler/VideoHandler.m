@@ -27,17 +27,18 @@
 @synthesize delegate;
 @synthesize type;
 
-- (void)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withVideoTime:(NSString *)time withSendId:(NSString *)sendID withFromId:(NSString *)fromID {
+- (void)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withVideoTime:(NSString *)time withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
     
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     
     NSString * mp4Path = [handler getVideopath];
    
     if ([fromID isEqualToString:sendID]) {
-        NSURL *url = [NSURL fileURLWithPath:mp4Path];
-        MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
-        player.shouldAutoplay = NO;
-        UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+//        NSURL *url = [NSURL fileURLWithPath:mp4Path];
+//        MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
+//        player.shouldAutoplay = NO;
+//        UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+        UIImage *fileImage = [UIImage imageWithData:data];
         NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withTime:time withType:@"video" date:[handler getDate] type:BubbleTypeSomeoneElse withVidePath:mp4Path];
         if (otherData)
             bdata.avatar = [UIImage imageWithData:otherData];
