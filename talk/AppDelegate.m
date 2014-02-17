@@ -13,6 +13,7 @@
 #import "MyFriendsViewController.h"
 #import <arcstreamsdk/STreamSession.h>
 #import <arcstreamsdk/STreamUser.h>
+#import <arcstreamsdk/STreamPush.h>
 #import "FileCache.h"
 #import <arcstreamsdk/STreamFile.h>
 #import "TalkDB.h"
@@ -33,10 +34,21 @@
     UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:friends];
     [self.window setRootViewController:nav];
 }
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken{
+    
+    NSString *tokenAsString = [[[newDeviceToken description]
+                                 stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]]
+                                stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    NSLog(@"device token: %@", tokenAsString);
+    [STreamPush storeToken:tokenAsString];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
+   
     
     _progressDict = [[NSMutableDictionary alloc]init];
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:247.0/255.0 green:229.0/255.0 blue:227.0/255.0 alpha:1.0]];
@@ -65,29 +77,30 @@
            //    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
   
-//    [STreamSession setUpServerUrl:@"http://streamsdk.com/print/print/"];
-    [STreamSession setUpServerUrl:@"http://streamsdk.cn/api/"];
+    [STreamSession setUpServerUrl:@"http://streamsdk.com/print/print/"];
+  //  [STreamSession setUpServerUrl:@"http://streamsdk.cn/api/"];
     
-    [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3"
+    /*[STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3"
                       clientKey:@"01D901D6EFBA42145E54F52E465F407B" response:^(BOOL succeed, NSString *response){
                           
                           if (succeed){
 
                           }
                           
-                      }];
+                      }];*/
     
-   /* [STreamSession authenticate:@"7E95CF60694890DCD4CEFBF79BC3BAE4" secretKey:@"73B7C757A511B1574FDF63B3FEB638B7"
+    [STreamSession authenticate:@"7E95CF60694890DCD4CEFBF79BC3BAE4" secretKey:@"73B7C757A511B1574FDF63B3FEB638B7"
                       clientKey:@"4768674EDC06477EC63AEEF8FEAB0CF8" response:^(BOOL succeed, NSString *response){
                           
                           if (succeed){
                               
                           }
                           
-                      }];*/
+                      }];
 
     [NSThread sleepForTimeInterval:5];
     
+     [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound];
     NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
     NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
     NSString *loginName = nil;
@@ -133,9 +146,23 @@
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-
+     [UIApplication sharedApplication].applicationIconBadgeNumber=application.applicationIconBadgeNumber-1;
+    
     return YES;
 }
+
+
+
+
+- (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
+    NSString *str = [NSString stringWithFormat: @"Error: %@", err];
+    NSLog(@"STR: %@", str);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    NSLog(@"str %@", [NSString stringWithFormat:@"%d", [userInfo count]]);
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

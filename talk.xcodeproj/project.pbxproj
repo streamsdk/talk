@@ -11,7 +11,6 @@
 		030D10D0186D344700910292 /* camera_icon150.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10CC186D344700910292 /* camera_icon150.png */; };
 		030D10D1186D344700910292 /* video150.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10CD186D344700910292 /* video150.png */; };
 		0316AE1818A189DE00F3329A /* settings2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0316AE1718A189DE00F3329A /* settings2.png */; };
-		0316AE1A18A1945200F3329A /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0316AE1918A1945200F3329A /* arcstreamsdk.framework */; };
 		03451B8518326C5600030E79 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03451B8418326C5600030E79 /* SignUpViewController.m */; };
 		0345C21A189E9EF6007AB90F /* addf.png in Resources */ = {isa = PBXBuildFile; fileRef = 0345C219189E9EF5007AB90F /* addf.png */; };
 		0345C21C189EA1BB007AB90F /* searchf.png in Resources */ = {isa = PBXBuildFile; fileRef = 0345C21B189EA1BB007AB90F /* searchf.png */; };
@@ -25,9 +24,12 @@
 		0348E5E91882BD89002C7622 /* face512.png in Resources */ = {isa = PBXBuildFile; fileRef = 0348E5E81882BD89002C7622 /* face512.png */; };
 		0348E5EB1882BE2C002C7622 /* keyboard512.png in Resources */ = {isa = PBXBuildFile; fileRef = 0348E5EA1882BE2C002C7622 /* keyboard512.png */; };
 		0348E5ED1882C577002C7622 /* tick512.png in Resources */ = {isa = PBXBuildFile; fileRef = 0348E5EC1882C577002C7622 /* tick512.png */; };
+		0354D0C518B16D5A00351533 /* talk960.png in Resources */ = {isa = PBXBuildFile; fileRef = 0354D0C418B16D5A00351533 /* talk960.png */; };
+		0354D0C718B16E9B00351533 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0354D0C618B16E9B00351533 /* arcstreamsdk.framework */; };
 		03557EAC1883110600CDB252 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 03557EAB1883110600CDB252 /* back.png */; };
 		03557EAE1883134100CDB252 /* forward.png in Resources */ = {isa = PBXBuildFile; fileRef = 03557EAD1883134100CDB252 /* forward.png */; };
 		0355801F18812D940036CC3C /* TwitterConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 0355801E18812D940036CC3C /* TwitterConnect.m */; };
+		0372B58418B1F9F400917EF8 /* b11.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372B57F18B1F9F400917EF8 /* b11.png */; };
 		037D20B418AF560400928647 /* MediaHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D20B318AF560400928647 /* MediaHandler.m */; };
 		037E0431186605A8005ADCEC /* libidn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9C0E018145E510039118F /* libidn.a */; };
 		03D9BEFC18145C080039118F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D9BEFB18145C080039118F /* Foundation.framework */; };
@@ -248,7 +250,6 @@
 		0E8A4F36182B7FE300705C1F /* TalkDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F35182B7FE300705C1F /* TalkDB.m */; };
 		0E8A4F38182B802600705C1F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8A4F37182B802600705C1F /* libsqlite3.dylib */; };
 		0E95515D1887DD94007CD92C /* b1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E95514A1887DD94007CD92C /* b1.png */; };
-		0E95515E1887DD94007CD92C /* b11.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E95514B1887DD94007CD92C /* b11.png */; };
 		0E95515F1887DD94007CD92C /* b11@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E95514C1887DD94007CD92C /* b11@2x.png */; };
 		0E9551601887DD94007CD92C /* b2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E95514D1887DD94007CD92C /* b2.png */; };
 		0E9551611887DD94007CD92C /* b22.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E95514E1887DD94007CD92C /* b22.png */; };
@@ -360,7 +361,6 @@
 		030D10CC186D344700910292 /* camera_icon150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_icon150.png; sourceTree = "<group>"; };
 		030D10CD186D344700910292 /* video150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video150.png; sourceTree = "<group>"; };
 		0316AE1718A189DE00F3329A /* settings2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings2.png; sourceTree = "<group>"; };
-		0316AE1918A1945200F3329A /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
 		03451B8318326C5600030E79 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SignUpViewController.h; path = Classes/SignUpViewController.h; sourceTree = "<group>"; };
 		03451B8418326C5600030E79 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SignUpViewController.m; path = Classes/SignUpViewController.m; sourceTree = "<group>"; };
 		0345C219189E9EF5007AB90F /* addf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addf.png; sourceTree = "<group>"; };
@@ -375,10 +375,13 @@
 		0348E5E81882BD89002C7622 /* face512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = face512.png; sourceTree = "<group>"; };
 		0348E5EA1882BE2C002C7622 /* keyboard512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = keyboard512.png; sourceTree = "<group>"; };
 		0348E5EC1882C577002C7622 /* tick512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tick512.png; sourceTree = "<group>"; };
+		0354D0C418B16D5A00351533 /* talk960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = talk960.png; sourceTree = "<group>"; };
+		0354D0C618B16E9B00351533 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
 		03557EAB1883110600CDB252 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		03557EAD1883134100CDB252 /* forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forward.png; sourceTree = "<group>"; };
 		0355801D18812D940036CC3C /* TwitterConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterConnect.h; sourceTree = "<group>"; };
 		0355801E18812D940036CC3C /* TwitterConnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterConnect.m; sourceTree = "<group>"; };
+		0372B57F18B1F9F400917EF8 /* b11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b11.png; sourceTree = "<group>"; };
 		037D20B218AF560400928647 /* MediaHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MediaHandler.h; path = handler/MediaHandler.h; sourceTree = "<group>"; };
 		037D20B318AF560400928647 /* MediaHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MediaHandler.m; path = handler/MediaHandler.m; sourceTree = "<group>"; };
 		03D9BEF818145C080039118F /* talk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = talk.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -771,7 +774,6 @@
 		0E8A4F35182B7FE300705C1F /* TalkDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TalkDB.m; path = talkDB/TalkDB.m; sourceTree = "<group>"; };
 		0E8A4F37182B802600705C1F /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		0E95514A1887DD94007CD92C /* b1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b1.png; sourceTree = "<group>"; };
-		0E95514B1887DD94007CD92C /* b11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b11.png; sourceTree = "<group>"; };
 		0E95514C1887DD94007CD92C /* b11@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "b11@2x.png"; sourceTree = "<group>"; };
 		0E95514D1887DD94007CD92C /* b2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b2.png; sourceTree = "<group>"; };
 		0E95514E1887DD94007CD92C /* b22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b22.png; sourceTree = "<group>"; };
@@ -916,11 +918,11 @@
 				0E0847361827304400350741 /* AVFoundation.framework in Frameworks */,
 				03D9BF3B18145CC20039118F /* libxml2.dylib in Frameworks */,
 				03D9BF3918145CB80039118F /* libresolv.dylib in Frameworks */,
-				0316AE1A18A1945200F3329A /* arcstreamsdk.framework in Frameworks */,
 				03D9BF3718145CB10039118F /* libz.dylib in Frameworks */,
 				03D9BF3518145C980039118F /* CoreData.framework in Frameworks */,
 				03D9BF3318145C900039118F /* CFNetwork.framework in Frameworks */,
 				03D9BF3118145C890039118F /* CoreLocation.framework in Frameworks */,
+				0354D0C718B16E9B00351533 /* arcstreamsdk.framework in Frameworks */,
 				03D9BF2F18145C810039118F /* SystemConfiguration.framework in Frameworks */,
 				03D9BF2D18145C740039118F /* Security.framework in Frameworks */,
 				03D9BEFE18145C080039118F /* CoreGraphics.framework in Frameworks */,
@@ -987,8 +989,8 @@
 		03D9BEFA18145C080039118F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0354D0C618B16E9B00351533 /* arcstreamsdk.framework */,
 				0E0F82F718A3273C00E81CA5 /* MessageUI.framework */,
-				0316AE1918A1945200F3329A /* arcstreamsdk.framework */,
 				0EF9B63D186EAAA1003DD866 /* QuartzCore.framework */,
 				03F5B04F18339C1500A847A0 /* MediaPlayer.framework */,
 				0E8A4F37182B802600705C1F /* libsqlite3.dylib */,
@@ -1990,8 +1992,8 @@
 		0E9551491887DD94007CD92C /* backgroundforproject */ = {
 			isa = PBXGroup;
 			children = (
+				0372B57F18B1F9F400917EF8 /* b11.png */,
 				0E95514A1887DD94007CD92C /* b1.png */,
-				0E95514B1887DD94007CD92C /* b11.png */,
 				0E95514C1887DD94007CD92C /* b11@2x.png */,
 				0E95514D1887DD94007CD92C /* b2.png */,
 				0E95514E1887DD94007CD92C /* b22.png */,
@@ -2069,6 +2071,7 @@
 		0EE951A1185EA4B9003F4638 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0354D0C418B16D5A00351533 /* talk960.png */,
 				0316AE1718A189DE00F3329A /* settings2.png */,
 				0345C21F189EA4D9007AB90F /* invi.png */,
 				0345C21D189EA20E007AB90F /* mailf.png */,
@@ -2311,6 +2314,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0372B58418B1F9F400917EF8 /* b11.png in Resources */,
 				0E9551691887DD94007CD92C /* b5.png in Resources */,
 				0348E5ED1882C577002C7622 /* tick512.png in Resources */,
 				0E19E80C18711C5A00523232 /* Target.png in Resources */,
@@ -2385,6 +2389,7 @@
 				0E95515D1887DD94007CD92C /* b1.png in Resources */,
 				0E0434D3187A735700A16705 /* separator@2x.png in Resources */,
 				0EE951DC185EA4B9003F4638 /* bubbleMine@2x.png in Resources */,
+				0354D0C518B16D5A00351533 /* talk960.png in Resources */,
 				0E95515F1887DD94007CD92C /* b11@2x.png in Resources */,
 				0345C21E189EA20E007AB90F /* mailf.png in Resources */,
 				0E49F068187E7B8F00749A6D /* redo.png in Resources */,
@@ -2423,7 +2428,6 @@
 				0345C220189EA4D9007AB90F /* invi.png in Resources */,
 				0ED8ECA218288DC400C84741 /* mic_talk_358x358@2x.png in Resources */,
 				0E49F04A187E333700749A6D /* movieEndFullscreen@2x.png in Resources */,
-				0E95515E1887DD94007CD92C /* b11.png in Resources */,
 				0EE951E4185EA4B9003F4638 /* faceDelete@2x.png in Resources */,
 				0E9551651887DD94007CD92C /* b33@2x.png in Resources */,
 				0EE951D9185EA4B9003F4638 /* bg.png in Resources */,
@@ -2697,7 +2701,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: shuai wang (N96W62GJ82)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shuai wang (N96W62GJ82)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2713,7 +2718,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -2736,7 +2741,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: shuai wang (C63799N3QU)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: shuai wang (N96W62GJ82)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shuai wang (N96W62GJ82)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2746,7 +2752,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2758,8 +2764,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: shuai wang (N96W62GJ82)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shuai wang (N96W62GJ82)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/wangshuai/Desktop/talk,
@@ -2788,7 +2794,7 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "FDDF9EB6-01C2-46F1-B896-6A8C14E4DBC1";
 				USER_HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2800,8 +2806,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: shuai wang (N96W62GJ82)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shuai wang (N96W62GJ82)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/wangshuai/Desktop/talk,
@@ -2830,7 +2836,7 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "FDDF9EB6-01C2-46F1-B896-6A8C14E4DBC1";
 				USER_HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				WRAPPER_EXTENSION = app;
 			};
