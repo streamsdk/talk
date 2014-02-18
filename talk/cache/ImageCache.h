@@ -57,4 +57,12 @@
 -(NSMutableDictionary *)getBubbleData;
 
 -(void)removeBubbleData:(NSString *)key;
+
+-(void)addDownloadingFile:(NSString *)fileId withTag:(NSNumber *)tag;
+
+-(BOOL)isFileDownloading:(NSString *)fileId;
+
+-(void)removeDownloadingFile:(NSString *)fileId;
+
+-(NSNumber *)getDownloadingFile:(NSString *)fileId;
 @end

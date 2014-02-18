@@ -5,6 +5,9 @@
 //
 
 #import "NSBubbleData.h"
+#import "ImageCache.h"
+#import <arcstreamsdk/JSONKit.h>
+
 #define BIG_IMG_WIDTH  300.0
 #define BIG_IMG_HEIGHT 300.0
 
@@ -240,6 +243,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     disappearPath = videoPath;
     jsonBody = body;
     CGSize size = image.size;
+    ImageCache * imagecache = [ImageCache sharedObject];
     /*if (size.width > 200)
     {
         image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(100, 100)];
@@ -284,10 +288,19 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
         [view addSubview:label];
         [view addSubview:videobutton];
         if (![videoPath hasSuffix:@".mp4"]){
+            NSData *jsonData = [body dataUsingEncoding:NSUTF8StringEncoding];
+            JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+            NSDictionary *json = [decoder objectWithData:jsonData];
+            NSString *fileId = [json objectForKey:@"fileId"];
+            ImageCache * imagecache = [ImageCache sharedObject];
+             BOOL isTheFileDownloading = [imagecache isFileDownloading:fileId];
             view.userInteractionEnabled = YES;
             [videobutton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-            [videobutton setTitle:@"Download" forState:UIControlStateNormal];
-            //            [videobutton addTarget:self action:@selector(playerVideo) forControlEvents:UIControlEventTouchUpInside];
+            if (isTheFileDownloading) {
+                [videobutton setTitle:@"Downloading" forState:UIControlStateNormal];
+            }else{
+                [videobutton setTitle:@"Download" forState:UIControlStateNormal];
+            }
             UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(playerVideo)];
             [view addGestureRecognizer:tap];
            

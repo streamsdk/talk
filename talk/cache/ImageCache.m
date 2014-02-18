@@ -22,6 +22,7 @@ static NSMutableArray * _twitters;
 static NSMutableDictionary *_jsonData;
 static NSMutableArray *_fileUpload;
 static NSMutableDictionary * dic;
+static NSMutableDictionary*_downloadingFile;
 @implementation ImageCache
 
 
@@ -43,6 +44,7 @@ static NSMutableDictionary * dic;
         _jsonData = [[NSMutableDictionary alloc] init];
         _fileUpload = [[NSMutableArray alloc]init];
         dic = [[NSMutableDictionary alloc]init];
+        _downloadingFile =[[NSMutableDictionary alloc]init];
     });
     
     return sharedInstance;
@@ -165,5 +167,24 @@ static NSMutableDictionary * dic;
 -(void)removeBubbleData:(NSString *)key{
    
     [dic removeObjectForKey:key];
+}
+
+-(void)addDownloadingFile:(NSString *)fileId withTag:(NSNumber *)tag{
+    [_downloadingFile setObject:tag forKey:fileId];
+}
+
+
+-(BOOL)isFileDownloading:(NSString *)fileId{
+    NSArray * keys = [_downloadingFile allKeys];
+    return [keys containsObject:fileId];
+}
+
+-(void)removeDownloadingFile:(NSString *)fileId{
+    [_downloadingFile removeObjectForKey:fileId];
+}
+
+-(NSNumber *)getDownloadingFile:(NSString *)fileId{
+    
+    return [_downloadingFile objectForKey:fileId];
 }
 @end

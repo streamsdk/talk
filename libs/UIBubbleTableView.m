@@ -16,7 +16,7 @@
 #import "TalkDB.h"
 #import "DownloadDB.h"
 #import "HandlerUserIdAndDateFormater.h"
-
+#import "ImageCache.h"
 
 #define BUBBLETABLEVIEWCELL_TAG 1000
 
@@ -301,19 +301,20 @@
             NSData *jsonData = [cell.data.jsonBody dataUsingEncoding:NSUTF8StringEncoding];
             JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
             NSDictionary *json = [decoder objectWithData:jsonData];
+            NSString *fileId = [json objectForKey:@"fileId"];
+            ImageCache * imagecache = [ImageCache sharedObject];
+            BOOL isTheFileDownloading = [imagecache isFileDownloading:fileId];
             NSArray * array = [json allKeys];
             if ([array containsObject:@"tidpath"]) {
                 UIButton * downButton = [UIButton buttonWithType:UIButtonTypeCustom];
                 [downButton setFrame:CGRectMake(200, cell.frame.size.height-5, 100, 35)];
-                [downButton setTitle:@"Download" forState:UIControlStateNormal];
                 [[downButton layer] setBorderColor:[[UIColor lightGrayColor] CGColor]];
                 [[downButton layer] setBorderWidth:1];
                 [[downButton layer] setCornerRadius:4];
                 downButton.titleLabel.font = [UIFont systemFontOfSize:19.0f];
                 [downButton setBackgroundColor:[UIColor colorWithWhite:0.2 alpha:0.2]];
                 [downButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                [downButton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
-                [cell.contentView addSubview:downButton];
+                
                 downButton .tag = indexPath.row;
                 
                 UIActivityIndicatorView * activityIndicatorView = [[UIActivityIndicatorView alloc]init];
@@ -322,20 +323,34 @@
                 [activityIndicatorView setCenter:CGPointMake(220, cell.frame.size.height+20)];
                 [cell.contentView addSubview:activityIndicatorView];
                 activityIndicatorView.tag = indexPath.row+1;
+                if (isTheFileDownloading) {
+                    [activityIndicatorView startAnimating];
+                }else{
+                    [downButton setTitle:@"Download" forState:UIControlStateNormal];
+                    [downButton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
+                    [cell.contentView addSubview:downButton];
+                }
+
             }
             
         }
         if (cell.data.fileType == FileDisappear){
             if (![cell.data._videoPath hasPrefix:@".mp4"]) {
+                UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]init];
+                [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+                activityIndicatorView.frame = CGRectMake(250, cell.frame.size.height-15, 20, 20);
+                [activityIndicatorView setCenter:CGPointMake(250, cell.frame.size.height-15)];
+                [cell.contentView addSubview:activityIndicatorView];
+                activityIndicatorView.tag = indexPath.row+1;
+                
                 if ([cell.data.videobutton.titleLabel.text isEqualToString:@"Download"]) {
                     cell.data.videobutton.tag = indexPath.row;
                     [cell.data.videobutton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
-                    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]init];
-                    [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-                    activityIndicatorView.frame = CGRectMake(250, cell.frame.size.height-20, 20, 20);
-                    [activityIndicatorView setCenter:CGPointMake(250, cell.frame.size.height-20)];
-                    [cell.contentView addSubview:activityIndicatorView];
-                    activityIndicatorView.tag = indexPath.row+1;
+                    
+                }
+                if ([cell.data.videobutton.titleLabel.text isEqualToString:@"Downloading"]){
+                     cell.data.videobutton.tag = indexPath.row;
+                    [activityIndicatorView startAnimating];
                 }
                 
             }
@@ -350,7 +365,6 @@
 }
 
 -(void) downloadvideo:(UIButton *)button{
-   
    
     UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:button.tag];
     UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+1];
@@ -369,6 +383,8 @@
     NSString *tid = [json objectForKey:@"tid"];
     NSString * fromId = [download readDownloadDBFromFileID:fileId];
     NSString *duration = [json objectForKey:@"duration"];
+    ImageCache * cache = [ImageCache sharedObject];
+    [cache addDownloadingFile:fileId withTag:[NSNumber numberWithInt:button.tag]];
     NSString *urlString = [STreamSession getFileObjectDownloadUrl:fileId];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -377,6 +393,12 @@
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                if ( !error )
                                {
+                                   ImageCache * imagecache = [ImageCache sharedObject];
+                                   NSNumber * num = [imagecache getDownloadingFile:fileId];
+                                   NSInteger tag = [num integerValue];
+                                   UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:tag];
+                                   UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+1];
+
                                    if (cell.data.fileType == FileDisappear){
                                        [cell.data.videobutton setTitle:@"Click to view" forState:UIControlStateNormal];
                                          [cell.data.videobutton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
@@ -404,8 +426,9 @@
                                    [download deleteDownloadDBFromFileID:fileId];
                                    [talkDb updateDB:cell.data.date withContent:json];
                                    cell.data._videoPath = filepath;
+                                   
                                    [activityIndicatorView stopAnimating];
-
+                                   [cache removeDownloadingFile:fileId];
                                } else{
                                }
                            }];
