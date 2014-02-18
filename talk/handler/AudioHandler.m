@@ -13,6 +13,8 @@
 #import <arcstreamsdk/JSONKit.h> 
 #import "HandlerUserIdAndDateFormater.h"
 #import "ACKMessageDB.h"
+#import "FilesUpload.h"
+#import "ImageCache.h"
 
 @implementation AudioHandler
 
@@ -60,29 +62,26 @@
     [bodyDic setObject:bodyData forKey:@"duration"];
     [bodyDic setObject:@"voice" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
-//    NSString  *content = [bodyDic JSONString];
-//    ACKMessageDB *ack = [[ACKMessageDB alloc]init];
-//    [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:sendID withContent:content withTime:[dateFormatter stringFromDate:date] withIsMine:0];
-    STreamXMPP *con = [STreamXMPP sharedObject];
-    
-    [con sendFileInBackground:audioData toUser:sendID finished:^(NSString *res) {
-        
-        NSLog(@"%@", res);
-        if ([res isEqualToString:@"ok"]) {
-            NSString *bodyJsonData = [bodyDic JSONString];
-            NSLog(@"body json data: %@", bodyJsonData);
-            ACKMessageDB *ack = [[ACKMessageDB alloc]init];
-            NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-            [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:sendID withContent:bodyJsonData withTime:[dateFormatter stringFromDate:date] withIsMine:0];
+
+    ImageCache * cache = [ImageCache sharedObject];
+    NSMutableArray * fileArray = [cache getFileUpload];
+    FilesUpload * file = [[FilesUpload alloc]init];
+    [file setTime:[NSString stringWithFormat:@"%lld", milliseconds]];
+    [file setFilepath:voice.recordPath];
+    [file setBodyDict:bodyDic];
+    [file setUserId:sendID];
+    [file setChatId:[NSString stringWithFormat:@"%lld", milliseconds]];
+    if (fileArray != nil && [fileArray count] != 0) {
+        FilesUpload * f =[fileArray objectAtIndex:0];
+        long long ftime = [f.time longLongValue];
+        if ((milliseconds/1000.0 - ftime/1000.0)<8) {
+            [cache addFileUpload:file];
+            return;
         }
-        
-    }byteSent:^(float b){
-        
-        NSLog(@"%@", [NSString stringWithFormat:@"%1.6f", b]);
-        
-    }withBodyData:bodyDic];
+    }
+    [cache addFileUpload:file];
+    [super doFileUpload:fileArray];
+
 }
 
 @end

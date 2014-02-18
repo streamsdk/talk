@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "Voice.h"
-@interface AudioHandler : NSObject
+#import "MediaHandler.h"
+
+@interface AudioHandler : MediaHandler
 
 - (void)receiveAudioFile:(NSData *)data withBody:(NSString *)body forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID;
 -(void) sendAudio :(Voice *)voice  forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID;
