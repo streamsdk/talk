@@ -41,7 +41,7 @@
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     
 	
-    self.img = [[NSArray alloc]initWithObjects:@"b11.png",@"b22.png",@"b33.png",@"b44.png",@"b55.png",@"b66.png",@"background.png",nil];
+    self.img = [[NSArray alloc]initWithObjects:@"b1.png",@"b2.png",@"b3.png",@"b4.png",@"b5.png",@"b6.png",@"background.png",nil];
     
     self.scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,50, self.view.frame.size.width, self.view.frame.size.height-50)];
     int line = [self.img count]%COLUMN ? [self.img count]/COLUMN+1 :[self.img count]/COLUMN;
