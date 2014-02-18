@@ -424,8 +424,7 @@
             NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
             NSString *duration = [json objectForKey:@"duration"];
             NSString * tidpath= [[handler getPath] stringByAppendingString:@".png"];
-            UIImage * image = [UIImage imageNamed:@"photog150.png"];
-            NSData *data = UIImageJPEGRepresentation(image, 1.0);
+            NSData *data ;
             [data writeToFile:tidpath atomically:YES];
             [handler videoPath:tidpath];
             

@@ -22,7 +22,7 @@
 
 @interface UIBubbleTableView ()
 {
-    UIActivityIndicatorView *activityIndicatorView ;
+//    UIActivityIndicatorView *activityIndicatorView ;
 }
 @property (nonatomic, retain) NSMutableArray *bubbleSection;
 
@@ -260,7 +260,7 @@
             }
         }
         if (cell.data.fileType == FileDisappear) {
-            activityIndicatorView = [[UIActivityIndicatorView alloc]init];
+           UIActivityIndicatorView * activityIndicatorView = [[UIActivityIndicatorView alloc]init];
             [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
             activityIndicatorView.frame = CGRectMake(60, cell.frame.size.height-15, 20, 20);
             [activityIndicatorView setCenter:CGPointMake(60, cell.frame.size.height-15)];
@@ -304,23 +304,24 @@
             NSArray * array = [json allKeys];
             if ([array containsObject:@"tidpath"]) {
                 UIButton * downButton = [UIButton buttonWithType:UIButtonTypeCustom];
-                [downButton setFrame:CGRectMake(190, cell.frame.size.height-10, 120, 60)];
-//                [downButton setTitle:@"Download" forState:UIControlStateNormal];
-//                [[downButton layer] setBorderColor:[[UIColor blueColor] CGColor]];
-//                [[downButton layer] setBorderWidth:1];
-//                [[downButton layer] setCornerRadius:4];
-//                [downButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-                [downButton setImage:[UIImage imageNamed:@"download.png"] forState:UIControlStateNormal];
+                [downButton setFrame:CGRectMake(200, cell.frame.size.height-5, 100, 35)];
+                [downButton setTitle:@"Download" forState:UIControlStateNormal];
+                [[downButton layer] setBorderColor:[[UIColor lightGrayColor] CGColor]];
+                [[downButton layer] setBorderWidth:1];
+                [[downButton layer] setCornerRadius:4];
+                downButton.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+                [downButton setBackgroundColor:[UIColor colorWithWhite:0.2 alpha:0.2]];
+                [downButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 [downButton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
                 [cell.contentView addSubview:downButton];
                 downButton .tag = indexPath.row;
                 
-                activityIndicatorView = [[UIActivityIndicatorView alloc]init];
+                UIActivityIndicatorView * activityIndicatorView = [[UIActivityIndicatorView alloc]init];
                 [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-                activityIndicatorView.frame = CGRectMake(220, cell.frame.size.height, 20, 20);
-                [activityIndicatorView setCenter:CGPointMake(220, cell.frame.size.height)];
+                activityIndicatorView.frame = CGRectMake(220, cell.frame.size.height+20, 20, 20);
+                [activityIndicatorView setCenter:CGPointMake(220, cell.frame.size.height+20)];
                 [cell.contentView addSubview:activityIndicatorView];
-                activityIndicatorView.tag = indexPath.row;
+                activityIndicatorView.tag = indexPath.row+1;
             }
             
         }
@@ -329,12 +330,12 @@
                 if ([cell.data.videobutton.titleLabel.text isEqualToString:@"Download"]) {
                     cell.data.videobutton.tag = indexPath.row;
                     [cell.data.videobutton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
-                    activityIndicatorView = [[UIActivityIndicatorView alloc]init];
+                    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]init];
                     [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
                     activityIndicatorView.frame = CGRectMake(250, cell.frame.size.height-20, 20, 20);
                     [activityIndicatorView setCenter:CGPointMake(250, cell.frame.size.height-20)];
                     [cell.contentView addSubview:activityIndicatorView];
-                    activityIndicatorView.tag = indexPath.row;
+                    activityIndicatorView.tag = indexPath.row+1;
                 }
                 
             }
@@ -352,7 +353,7 @@
    
    
     UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:button.tag];
-//    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [self viewWithTag:button.tag];
+    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+1];
     if (cell.data.fileType == FileVideo){
          button.hidden = YES;
     }else{
@@ -399,10 +400,10 @@
                                    }
                                    [jsonDic setObject:dict forKey:fromId];
                                    NSString * json = [jsonDic JSONString];
-                                   [talkDb updateDB:cell.data.date withContent:json];
-                                   cell.data._videoPath = filepath;
                                    
                                    [download deleteDownloadDBFromFileID:fileId];
+                                   [talkDb updateDB:cell.data.date withContent:json];
+                                   cell.data._videoPath = filepath;
                                    [activityIndicatorView stopAnimating];
 
                                } else{
