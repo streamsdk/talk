@@ -387,7 +387,10 @@
                                    [handler videoPath:filepath];
                                    NSMutableDictionary * dict = [[NSMutableDictionary alloc]init];
                                    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
-                                   [dict setObject:tid forKey:@"tid"];
+                                   if (tid) {
+                                        [dict setObject:tid forKey:@"tid"];
+                                   }
+                                  
                                    [dict setObject:fileId forKey:@"fileId"];
                                    [dict setObject:filepath forKey:@"filepath"];
                                    if (duration) {

@@ -233,7 +233,9 @@
     [file setFilepath:_mp4Path];
     [file setBodyDict:bodyDic];
     [file setUserId:_sendID];
-    [file setType:@"video"];
+    if (!time) {
+        [file setType:@"video"];
+    }
     [file setImageData:imgdata];
     [file setChatId:[NSString stringWithFormat:@"%lld", milliseconds]];
     if (time) {

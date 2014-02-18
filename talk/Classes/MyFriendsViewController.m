@@ -411,6 +411,50 @@
         if (tid){
             fileId = tid;
             [downloadDB insertDownloadDB:[handler getUserID] fileID:fileId withBody:body withFrom:fromID];
+        }else {
+            [imageCache saveJsonData:body forFileId:fileId];
+            NSString *jsonBody = [imageCache getJsonData:fileId];
+            NSData *jsonData = [jsonBody dataUsingEncoding:NSUTF8StringEncoding];
+            JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+            NSMutableDictionary *json = [decoder objectWithData:jsonData];
+             NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
+            NSString *type = [json objectForKey:@"type"];
+            NSString *fromUser = [json objectForKey:@"from"];
+            NSString * fileId = [json objectForKey:@"fileId"];
+            NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+            NSString *duration = [json objectForKey:@"duration"];
+            NSString * tidpath= [[handler getPath] stringByAppendingString:@".png"];
+            UIImage * image = [UIImage imageNamed:@"photog150.png"];
+            NSData *data = UIImageJPEGRepresentation(image, 1.0);
+            [data writeToFile:tidpath atomically:YES];
+            [handler videoPath:tidpath];
+            
+            if (duration)
+                [friendDict setObject:duration forKey:@"duration"];
+            [friendDict setObject:tidpath forKey:@"tidpath"];
+            [friendDict setObject:fileId forKey:@"fileId"];
+            [jsonDic setObject:friendDict forKey:fromUser];
+
+            NSMutableDictionary * jsondict = [[NSMutableDictionary alloc]init];
+            [jsondict setObject:type forKey:@"type"];
+            [jsondict setObject:tidpath forKey:@"tidpath"];
+            if (duration)
+                [jsondict setObject:duration forKey:@"duration"];
+            [jsondict setObject:fileId forKey:@"fileId"];
+
+            NSString* jsBody = [jsondict JSONString];
+            
+            TalkDB * db = [[TalkDB alloc]init];
+            NSString * userID = [handler getUserID];
+            NSString  *str = [jsonDic JSONString];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+            NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
+            [handler setDate:date];
+            [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
+            [messagesProtocol getFiles:data withFromID:fromUser withBody:jsBody withPath:tidpath];
+            [self.tableView reloadData];
+            return;
         }
     }
     [imageCache saveJsonData:body forFileId:fileId];
