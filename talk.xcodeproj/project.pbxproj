@@ -269,6 +269,7 @@
 		0E95516F1887DD94007CD92C /* headImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0E95515C1887DD94007CD92C /* headImage.jpg */; };
 		0EA16BF918516F28009F2D3A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16BF818516F28009F2D3A /* MBProgressHUD.m */; };
 		0EA16C0018516FC9009F2D3A /* MyFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */; };
+		0ED46E1B18B329CC00312874 /* download.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ED46E1A18B329CC00312874 /* download.png */; };
 		0ED8BC0C185065D7007BD8CA /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED8BC0B185065D7007BD8CA /* RootViewController.m */; };
 		0ED8ECA018288DC400C84741 /* black_bg_ip5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ED8EC9C18288DC400C84741 /* black_bg_ip5@2x.png */; };
 		0ED8ECA118288DC400C84741 /* mic_normal_358x358@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ED8EC9D18288DC400C84741 /* mic_normal_358x358@2x.png */; };
@@ -795,6 +796,7 @@
 		0EA16BF818516F28009F2D3A /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = "Emoji-master/MBProgressHUD.m"; sourceTree = "<group>"; };
 		0EA16BFE18516FC9009F2D3A /* MyFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyFriendsViewController.h; path = Classes/MyFriendsViewController.h; sourceTree = "<group>"; };
 		0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyFriendsViewController.m; path = Classes/MyFriendsViewController.m; sourceTree = "<group>"; };
+		0ED46E1A18B329CC00312874 /* download.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = download.png; sourceTree = "<group>"; };
 		0ED8BC0A185065D7007BD8CA /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = Classes/RootViewController.h; sourceTree = "<group>"; };
 		0ED8BC0B185065D7007BD8CA /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = Classes/RootViewController.m; sourceTree = "<group>"; };
 		0ED8EC9C18288DC400C84741 /* black_bg_ip5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "black_bg_ip5@2x.png"; sourceTree = "<group>"; };
@@ -2071,6 +2073,7 @@
 		0EE951A1185EA4B9003F4638 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0ED46E1A18B329CC00312874 /* download.png */,
 				0354D0C418B16D5A00351533 /* talk960.png */,
 				0316AE1718A189DE00F3329A /* settings2.png */,
 				0345C21F189EA4D9007AB90F /* invi.png */,
@@ -2319,6 +2322,7 @@
 				0348E5ED1882C577002C7622 /* tick512.png in Resources */,
 				0E19E80C18711C5A00523232 /* Target.png in Resources */,
 				0E9551621887DD94007CD92C /* b22@2x.png in Resources */,
+				0ED46E1B18B329CC00312874 /* download.png in Resources */,
 				0345C21C189EA1BB007AB90F /* searchf.png in Resources */,
 				0E49F050187E333700749A6D /* movieFullscreen@2x.png in Resources */,
 				0EE951ED185EA4B9003F4638 /* Text@2x.png in Resources */,

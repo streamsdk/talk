@@ -304,12 +304,13 @@
             NSArray * array = [json allKeys];
             if ([array containsObject:@"tidpath"]) {
                 UIButton * downButton = [UIButton buttonWithType:UIButtonTypeCustom];
-                [downButton setFrame:CGRectMake(200, cell.frame.size.height, 100, 30)];
-                [downButton setTitle:@"Download" forState:UIControlStateNormal];
-                [[downButton layer] setBorderColor:[[UIColor blueColor] CGColor]];
-                [[downButton layer] setBorderWidth:1];
-                [[downButton layer] setCornerRadius:4];
-                [downButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                [downButton setFrame:CGRectMake(190, cell.frame.size.height-10, 120, 60)];
+//                [downButton setTitle:@"Download" forState:UIControlStateNormal];
+//                [[downButton layer] setBorderColor:[[UIColor blueColor] CGColor]];
+//                [[downButton layer] setBorderWidth:1];
+//                [[downButton layer] setCornerRadius:4];
+//                [downButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                [downButton setImage:[UIImage imageNamed:@"download.png"] forState:UIControlStateNormal];
                 [downButton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
                 [cell.contentView addSubview:downButton];
                 downButton .tag = indexPath.row;
