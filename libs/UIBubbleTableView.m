@@ -379,9 +379,6 @@
     JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
     NSDictionary *json = [decoder objectWithData:jsonData];
     NSString *fileId = [json objectForKey:@"fileId"];
-    NSString *tid = [json objectForKey:@"tid"];
-    NSString * fromId = [download readDownloadDBFromFileID:fileId];
-    NSString *duration = [json objectForKey:@"duration"];
     ImageCache * cache = [ImageCache sharedObject];
     [cache addDownloadingFile:fileId withTag:[NSNumber numberWithInt:button.tag]];
     NSString *urlString = [STreamSession getFileObjectDownloadUrl:fileId];
@@ -397,6 +394,14 @@
                                    NSInteger tag = [num integerValue];
                                    UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:tag];
                                    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+100];
+                                   NSString * jsonbody = cell.data.jsonBody;
+                                   NSData *jsonData = [jsonbody dataUsingEncoding:NSUTF8StringEncoding];
+                                   JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+                                   NSDictionary *json = [decoder objectWithData:jsonData];
+                                   NSString *fileId = [json objectForKey:@"fileId"];
+                                   NSString *tid = [json objectForKey:@"tid"];
+                                   NSString * fromId = [download readDownloadDBFromFileID:fileId];
+                                   NSString *duration = [json objectForKey:@"duration"];
 
                                    if (cell.data.fileType == FileDisappear){
                                        [cell.data.videobutton setTitle:@"Click to view" forState:UIControlStateNormal];
@@ -420,12 +425,12 @@
                                        [dict setObject:duration forKey:@"duration"];
                                    }
                                    [jsonDic setObject:dict forKey:fromId];
-                                   NSString * json = [jsonDic JSONString];
+                                   NSString * jsonBody = [jsonDic JSONString];
                                    
                                    [download deleteDownloadDBFromFileID:fileId];
-                                   [talkDb updateDB:cell.data.date withContent:json];
+                                   [talkDb updateDB:cell.data.date withContent:jsonBody];
                                    cell.data._videoPath = filepath;
-                                   cell.data.jsonBody = json;
+                                   cell.data.jsonBody = jsonBody;
                                    [activityIndicatorView stopAnimating];
                                    [cache removeDownloadingFile:fileId];
                                } else{
