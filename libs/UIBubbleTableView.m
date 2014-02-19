@@ -398,6 +398,10 @@
                                    NSData *jsonData = [jsonbody dataUsingEncoding:NSUTF8StringEncoding];
                                    JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
                                    NSDictionary *json = [decoder objectWithData:jsonData];
+                                   if (!json) {
+                                       [activityIndicatorView stopAnimating];
+                                       return ;
+                                   }
                                    NSString *fileId = [json objectForKey:@"fileId"];
                                    NSString *tid = [json objectForKey:@"tid"];
                                    NSString * fromId = [download readDownloadDBFromFileID:fileId];

@@ -191,23 +191,8 @@
 }
 
 -(void) sendVideo:(UIImage *)image withData:(NSData *)videoData withVideoTime:(NSString *)time{
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
-    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-    if (time)
-        [friendDict setObject:time forKey:@"duration"];
-    [friendDict setObject:_mp4Path forKey:@"filepath"];
-    //[friendDict setObject:[videoPath absoluteString] forKey:@"video"];
-    
-    [jsonDic setObject:friendDict forKey:_sendID];
-    NSString  *str = [jsonDic JSONString];
-    
-    TalkDB * db = [[TalkDB alloc]init];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+   
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-
-    [db insertDBUserID:[handler getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
-    
     NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
     long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
     
@@ -220,6 +205,22 @@
      if ([type isEqualToString:@"video"]) {
          type = nil;
      }else{
+         NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+         NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+         if (time)
+             [friendDict setObject:time forKey:@"duration"];
+         [friendDict setObject:_mp4Path forKey:@"filepath"];
+         //[friendDict setObject:[videoPath absoluteString] forKey:@"video"];
+         
+         [jsonDic setObject:friendDict forKey:_sendID];
+         NSString  *str = [jsonDic JSONString];
+         
+         TalkDB * db = [[TalkDB alloc]init];
+         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+         [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+         
+         
+         [db insertDBUserID:[handler getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
          UploadDB * uploadDb = [[UploadDB alloc]init];
          [uploadDb insertUploadDB:[handler getUserID] filePath:_mp4Path withTime:time withFrom:_sendID withType:@"video"];
      }

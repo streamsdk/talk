@@ -1057,6 +1057,8 @@
     if ([type isEqualToString:@"photo"]) {
         NSData * data = [NSData dataWithContentsOfFile:filePath];
         [photoHandler setController:self];
+        [photoHandler setType:@"photo"];
+        [photoHandler setPhotopath:filePath];
         [photoHandler sendPhoto:data forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:fromID withTime:time];
     }
     [bubbleTableView reloadData];
