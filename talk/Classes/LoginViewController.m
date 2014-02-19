@@ -18,7 +18,7 @@
 #import "ImageCache.h"
 #import "FileCache.h"
 #import <arcstreamsdk/STreamFile.h>
-
+#import "DownloadAvatar.h"
 
 @interface LoginViewController ()
 
@@ -109,7 +109,8 @@
     NSString *passWord = password.text;
     NSString *nameFilePath = [self getCacheDirectory];
     NSArray * nameArray = [[NSArray alloc]initWithObjects:userName,passWord, nil];
-    [nameArray writeToFile:nameFilePath atomically:YES];
+    __block NSString * error;
+    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"user does not exist or password error,please sigUp" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
     if (userName && ([userName length] != 0) && passWord &&([passWord length]!= 0)) {
         
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -118,7 +119,9 @@
         [HUD showAnimated:YES whileExecutingBlock:^{
              [user logIn:userName withPassword:passWord];
             NSLog(@"%@",[user errorMessage]);
+            error = [user errorMessage];
             if ([[user errorMessage] length] == 0) {
+                [nameArray writeToFile:nameFilePath atomically:YES];
                 STreamUser *user = [[STreamUser alloc] init];
                 [user loadUserMetadata:userName response:^(BOOL succeed, NSString *error){
                     if ([error isEqualToString:userName]){
@@ -129,14 +132,15 @@
                 }];
       
                 [self loadAvatar:userName];
-            } else {
-                UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"user does not exist or password error,please sigUp" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+            }
+        }completionBlock:^{
+            if ([error length] == 0) {
+                MyFriendsViewController *myFriendVC = [[MyFriendsViewController alloc]init];
+                [self.navigationController pushViewController:myFriendVC animated:YES];
+            }else{
                 [alertView show];
             }
-
-        }completionBlock:^{
-            MyFriendsViewController *myFriendVC = [[MyFriendsViewController alloc]init];
-            [self.navigationController pushViewController:myFriendVC animated:YES];
+           
             [HUD removeFromSuperview];
             HUD = nil;
         }];

@@ -71,6 +71,7 @@
     BOOL isVideoFromGallery;
     BOOL isClearData;
     
+    UIImageView * backgroundView;
 }
 
 @property(nonatomic,retain) Voice * voice;
@@ -151,14 +152,14 @@
     ChatBackGround * chat = [[ChatBackGround alloc]init];
     NSString *path = [chat readChatBackGround:[handler getUserID] withFriendID:[imageCache getFriendID]];
     if (bgImage) {
-        [self.view setBackgroundColor:[UIColor colorWithPatternImage:bgImage]];
+        [backgroundView setImage:bgImage];
 
     }else{
-        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
+        [backgroundView setImage:[UIImage imageNamed:@"bg.png"]];
     }
     if (path) {
         NSData * data = [NSData dataWithContentsOfFile:path];
-        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageWithData:data]]];
+        [backgroundView setImage:[UIImage imageWithData:data]];
     }
     [bubbleTableView reloadData];
     [self dismissKeyBoard];
@@ -214,13 +215,17 @@
     
     self.voice = [[Voice alloc] init];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(SetBackground)];
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStyleDone target:self action:@selector(SetBackground)];
+
+    backgroundView = [[UIImageView alloc]initWithFrame:self.view.frame];
+    backgroundView.userInteractionEnabled = YES;
+    [self.view addSubview:backgroundView];
+    
     UIImageView * backView = [[UIImageView alloc]initWithFrame:self.view.frame];
     backView.userInteractionEnabled = YES;
     UITapGestureRecognizer *singleTouch = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
     [backView addGestureRecognizer:singleTouch];
     [backView setBackgroundColor:[UIColor clearColor]];
-    [self.view addSubview:backView];
+    [backgroundView addSubview:backView];
     //bubbleTableView
     bubbleTableView = [[UIBubbleTableView alloc]initWithFrame:CGRectMake(0, 44, self.view.frame.size.width, self.view.frame.size.height-44-40)];
     bubbleTableView .bubbleDataSource = self;
