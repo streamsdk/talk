@@ -235,7 +235,7 @@
     NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
     cell.data = data;
     cell.showAvatar = self.showAvatars;
-    cell.tag =indexPath.row;
+    cell.tag =indexPath.row+1000*indexPath.section;;
     if (cell.data.type == BubbleTypeMine) {
          Progress * p = [[Progress alloc]init];
         if ( cell.data.fileType == FileVideo) {
@@ -315,14 +315,14 @@
                 [downButton setBackgroundColor:[UIColor colorWithWhite:0.2 alpha:0.2]];
                 [downButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 
-                downButton .tag = indexPath.row;
+                downButton .tag = indexPath.row+1000*indexPath.section;
                 
                 UIActivityIndicatorView * activityIndicatorView = [[UIActivityIndicatorView alloc]init];
                 [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
                 activityIndicatorView.frame = CGRectMake(220, cell.frame.size.height+20, 20, 20);
                 [activityIndicatorView setCenter:CGPointMake(220, cell.frame.size.height+20)];
                 [cell.contentView addSubview:activityIndicatorView];
-                activityIndicatorView.tag = indexPath.row+1;
+                activityIndicatorView.tag = 1000*indexPath.section+indexPath.row+100;
                 if (isTheFileDownloading) {
                     [activityIndicatorView startAnimating];
                 }else{
@@ -341,15 +341,15 @@
                 activityIndicatorView.frame = CGRectMake(250, cell.frame.size.height-15, 20, 20);
                 [activityIndicatorView setCenter:CGPointMake(250, cell.frame.size.height-15)];
                 [cell.contentView addSubview:activityIndicatorView];
-                activityIndicatorView.tag = indexPath.row+1;
+                activityIndicatorView.tag = indexPath.row+100+1000*indexPath.section;
                 
                 if ([cell.data.videobutton.titleLabel.text isEqualToString:@"Download"]) {
-                    cell.data.videobutton.tag = indexPath.row;
+                    cell.data.videobutton.tag = indexPath.row+1000*indexPath.section;
                     [cell.data.videobutton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
                     
                 }
                 if ([cell.data.videobutton.titleLabel.text isEqualToString:@"Downloading"]){
-                     cell.data.videobutton.tag = indexPath.row;
+                     cell.data.videobutton.tag = indexPath.row+1000*indexPath.section;
                     [activityIndicatorView startAnimating];
                 }
                 
@@ -365,9 +365,8 @@
 }
 
 -(void) downloadvideo:(UIButton *)button{
-   
     UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:button.tag];
-    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+1];
+    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+100];
     if (cell.data.fileType == FileVideo){
          button.hidden = YES;
     }else{
@@ -397,7 +396,7 @@
                                    NSNumber * num = [imagecache getDownloadingFile:fileId];
                                    NSInteger tag = [num integerValue];
                                    UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:tag];
-                                   UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+1];
+                                   UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+100];
 
                                    if (cell.data.fileType == FileDisappear){
                                        [cell.data.videobutton setTitle:@"Click to view" forState:UIControlStateNormal];
@@ -426,7 +425,7 @@
                                    [download deleteDownloadDBFromFileID:fileId];
                                    [talkDb updateDB:cell.data.date withContent:json];
                                    cell.data._videoPath = filepath;
-                                   
+                                   cell.data.jsonBody = json;
                                    [activityIndicatorView stopAnimating];
                                    [cache removeDownloadingFile:fileId];
                                } else{
