@@ -19,6 +19,7 @@
 #import "FileCache.h"
 #import <arcstreamsdk/STreamFile.h>
 #import "DownloadAvatar.h"
+#import "DownloadAvatar.h"
 
 @interface LoginViewController ()
 
@@ -110,6 +111,7 @@
     NSString *nameFilePath = [self getCacheDirectory];
     NSArray * nameArray = [[NSArray alloc]initWithObjects:userName,passWord, nil];
     __block NSString * error;
+//    DownloadAvatar *download = [[DownloadAvatar alloc]init];
     UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"user does not exist or password error,please sigUp" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
     if (userName && ([userName length] != 0) && passWord &&([passWord length]!= 0)) {
         
@@ -128,9 +130,10 @@
                         NSMutableDictionary *dic = [user userMetadata];
                         ImageCache *imageCache = [ImageCache sharedObject];
                         [imageCache saveUserMetadata:userName withMetadata:dic];
+//                        [download loadAvatar:userName];
                     }
                 }];
-      
+                
                 [self loadAvatar:userName];
             }
         }completionBlock:^{
