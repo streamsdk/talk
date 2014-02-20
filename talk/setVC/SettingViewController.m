@@ -20,6 +20,7 @@
 #import <MessageUI/MessageUI.h>
 #import<MessageUI/MFMailComposeViewController.h>
 #import "STreamXMPP.h"
+#import "DownloadAvatar.h"
 
 #define IMAGE_TAG 10000
 @interface SettingViewController ()<MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate>
@@ -106,17 +107,20 @@
     myTableView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:myTableView];
 
+    DownloadAvatar * loadavatar = [[DownloadAvatar alloc]init];
+    profileImage = [loadavatar readAvatar:loginName];
+    
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"loading friends...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
-        [self loadAvatar:loginName];
+//        [self loadAvatar:loginName];
     }completionBlock:^{
 //        [myTableView reloadData];
         [HUD removeFromSuperview];
         HUD = nil;
     }];
-
+    [myTableView reloadData];
 }
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
     return 4;
@@ -171,12 +175,11 @@
     if (indexPath.section==0) {
         if (indexPath.row==0) {
             UIImageView * imageview = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - 120)/2, 0, 100, 100)];
-            //    [imageview setImage:[UIImage imageNamed:@"headImage.jpg"]];
             CALayer *l = [imageview layer];
             [l setMasksToBounds:YES];
             [l setCornerRadius:CGRectGetHeight([imageview bounds]) / 2];
             [l setBorderWidth:3];
-            [l setBorderColor:[[UIColor lightGrayColor]CGColor]];
+            [l setBorderColor:[[UIColor lightGrayColor]CGColor]];   
             if (profileImage) {
                 l.contents = (id)[profileImage CGImage];
             }else{
@@ -420,7 +423,7 @@
     HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
     STreamUser * user = [[STreamUser alloc]init];
     STreamFile *file = [[STreamFile alloc] init];
-//    CGSize size = avatarImg.size;
+
     UIImage *sImage = [self imageWithImage:avatarImg scaledToMaxWidth:100 maxHeight:100];
     NSData * data = UIImageJPEGRepresentation(sImage, 0.8);
     [file postData:data];
@@ -437,13 +440,6 @@
 //    [myTableView reloadData];
 }
 
-/*-(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
-    UIGraphicsBeginImageContext(newSize);
-    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
-    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
-}*/
 #pragma mark UITEXTFILED-DELEGATE-
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     NSString * email = [[textField text]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];

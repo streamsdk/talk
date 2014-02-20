@@ -29,6 +29,7 @@
 #import "HandlerFirendsViewController.h"
 #import "DownloadDB.h"
 #import "UploadDB.h"
+#import "DownloadAvatar.h"
 
 #define TABLECELL_TAG 10000
 #define BUTTON_TAG 20000
@@ -574,14 +575,14 @@
         [cell addSubview:button];
         
     }
-    
     if ([self.sortedArrForArrays count] > indexPath.section) {
         NSArray *arr = [sortedArrForArrays objectAtIndex:indexPath.section];
         if ([arr count] > indexPath.row) {
             ChineseString *str = (ChineseString *) [arr objectAtIndex:indexPath.row];
-            UIImage * icon=[UIImage imageNamed:@"headImage.jpg"];
-            cell.imageView.image = icon;
-            [self loadAvatar:str.string withCell:cell];
+            DownloadAvatar * down = [[DownloadAvatar alloc]init];
+            [down loadAvatar:str.string];
+            UIImage * icon = [down readAvatar:str.string];
+             [self setImage:icon withCell:cell];
             CALayer *l = [cell.imageView layer];
             [l setMasksToBounds:YES];
             [l setCornerRadius:8.0];
@@ -597,7 +598,6 @@
               }
             
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
-
         } else {
             NSLog(@"arr out of range");
         }
@@ -685,47 +685,6 @@
     
     [self.tableView reloadData];
     [self.navigationController pushViewController:mainVC animated:YES];
-}
-
--(void) loadAvatar:(NSString *)userID withCell:(UITableViewCell *)cell{
-    ImageCache *imageCache = [ImageCache sharedObject];
-    if ([imageCache getUserMetadata:userID]!=nil) {
-
-        NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
-        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-        if (pImageId!=nil && ![pImageId isEqualToString:@""] &&[imageCache getImage:pImageId]==nil){
-            FileCache *fileCache = [FileCache sharedObject];
-            STreamFile *file = [[STreamFile alloc] init];
-            if (![imageCache getImage:pImageId]){
-                [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
-                    if ([pImageId isEqualToString:oId]){
-                        [imageCache selfImageDownload:imageData withFileId:pImageId];
-                        [fileCache writeFileDoc:pImageId withData:imageData];
-                    }
-                }];
-            }
-        }else{
-            if (pImageId ==nil||[pImageId isEqualToString:@""]){
-                UIImage *icon =[UIImage imageNamed:@"headImage.jpg"];
-                [self setImage:icon withCell:cell];
-            }
-            else{
-                UIImage *icon =[UIImage imageWithData:[imageCache getImage:pImageId]];
-                [self setImage:icon withCell:cell];
-            }
-            
-        }
-    }else{
-        STreamUser *user = [[STreamUser alloc] init];
-        [user loadUserMetadata:userID response:^(BOOL succeed, NSString *error){
-            if ([error isEqualToString:userID]){
-                NSMutableDictionary *dic = [user userMetadata];
-                ImageCache *imageCache = [ImageCache sharedObject];
-                [imageCache saveUserMetadata:userID withMetadata:dic];
-            }
-        }];
-
-    }
 }
 
 -(void)setImage:(UIImage *)icon withCell:(UITableViewCell *)cell{

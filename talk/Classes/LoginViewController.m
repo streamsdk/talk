@@ -111,7 +111,7 @@
     NSString *nameFilePath = [self getCacheDirectory];
     NSArray * nameArray = [[NSArray alloc]initWithObjects:userName,passWord, nil];
     __block NSString * error;
-//    DownloadAvatar *download = [[DownloadAvatar alloc]init];
+    DownloadAvatar *downloadAvatar = [[DownloadAvatar alloc]init];
     UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"user does not exist or password error,please sigUp" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
     if (userName && ([userName length] != 0) && passWord &&([passWord length]!= 0)) {
         
@@ -130,11 +130,10 @@
                         NSMutableDictionary *dic = [user userMetadata];
                         ImageCache *imageCache = [ImageCache sharedObject];
                         [imageCache saveUserMetadata:userName withMetadata:dic];
-//                        [download loadAvatar:userName];
+                        [downloadAvatar loadAvatar:userName];
                     }
                 }];
                 
-                [self loadAvatar:userName];
             }
         }completionBlock:^{
             if ([error length] == 0) {
@@ -154,27 +153,6 @@
         [alertView show];
     }
 
-}
-
--(void) loadAvatar:(NSString *)userID {
-    ImageCache *imageCache = [ImageCache sharedObject];
-    if ([imageCache getUserMetadata:userID]!=nil) {
-        NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
-        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-//        if ([imageCache getImage:pImageId] == nil && pImageId){
-        if (pImageId!=nil && ![pImageId isEqualToString:@""] &&[imageCache getImage:pImageId]==nil){
-            FileCache *fileCache = [FileCache sharedObject];
-            STreamFile *file = [[STreamFile alloc] init];
-            if (![imageCache getImage:pImageId]){
-                [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
-                    if ([pImageId isEqualToString:oId]){
-                        [imageCache selfImageDownload:imageData withFileId:pImageId];
-                        [fileCache writeFileDoc:pImageId withData:imageData];
-                    }
-                }];
-            }
-        }
-    }
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{

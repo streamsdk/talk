@@ -18,6 +18,8 @@
 #import "FileCache.h"
 #import "MyFriendsViewController.h"
 #import "RootViewController.h"
+#import "DownloadAvatar.h"
+
 @interface SignUpViewController ()<UIActionSheetDelegate>
 {
     UIActionSheet* actionSheet;
@@ -105,13 +107,16 @@
         [metaData setValue:pword forKey:@"password"];
         [metaData setValue:@"" forKey:@"profileImageId"];
         
+        DownloadAvatar *downloadAvatar = [[DownloadAvatar alloc]init];
+        __block NSString * error;
+        
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"loading friends...";
         [self.view addSubview:HUD];
         [HUD showAnimated:YES whileExecutingBlock:^{
             [user signUp:username withPassword:pword withMetadata:metaData];
             
-            NSString *error = [user errorMessage];
+            error = [user errorMessage];
             if ([error isEqualToString:@""]){
                 STreamObject * history = [[STreamObject alloc]init];
                 [history setObjectId:[username stringByAppendingString:@"messaginghistory"]];
@@ -142,49 +147,26 @@
                             NSMutableDictionary *dic = [user userMetadata];
                             ImageCache *imageCache = [ImageCache sharedObject];
                             [imageCache saveUserMetadata:username withMetadata:dic];
+                            [downloadAvatar loadAvatar:username];
                         }
                     }];
-                    [self loadAvatar:username];
                 }
                
-            }else{
-                
-                UIAlertView * view  = [[UIAlertView alloc]initWithTitle:@"" message:@"User name or password error" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
-                [view show];
             }
         }completionBlock:^{
-            MyFriendsViewController *myFriendVC = [[MyFriendsViewController alloc]init];
-            [self.navigationController pushViewController:myFriendVC animated:YES];
+            if ([error length] == 0) {
+                MyFriendsViewController *myFriendVC = [[MyFriendsViewController alloc]init];
+                [self.navigationController pushViewController:myFriendVC animated:YES];
+            }
             [HUD removeFromSuperview];
             HUD = nil;
         }];
-
-        
-       
+    }else{
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"User name or password error" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+         [alertView show];
     }
     
         NSLog(@"");
-}
--(void) loadAvatar:(NSString *)userID {
-    ImageCache *imageCache = [ImageCache sharedObject];
-    if ([imageCache getUserMetadata:userID]!=nil) {
-        NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
-        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-//        if ([imageCache getImage:pImageId] == nil && pImageId){
-        if (pImageId!=nil && ![pImageId isEqualToString:@""] &&[imageCache getImage:pImageId]==nil){
-
-            FileCache *fileCache = [FileCache sharedObject];
-            STreamFile *file = [[STreamFile alloc] init];
-            if (![imageCache getImage:pImageId]){
-                [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
-                    if ([pImageId isEqualToString:oId]){
-                        [imageCache selfImageDownload:imageData withFileId:pImageId];
-                        [fileCache writeFileDoc:pImageId withData:imageData];
-                    }
-                }];
-            }
-        }
-    }
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
