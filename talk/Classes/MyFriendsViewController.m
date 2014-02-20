@@ -30,6 +30,7 @@
 #import "DownloadDB.h"
 #import "UploadDB.h"
 #import "DownloadAvatar.h"
+#import "AddDB.h"
 
 #define TABLECELL_TAG 10000
 #define BUTTON_TAG 20000
@@ -315,7 +316,19 @@
             NSString *fileId = [json objectForKey:@"fileId"];
             [self didReceiveFile:fileId withBody:jsonValue withFrom:from];
         }
-        
+        /*if ([type isEqualToString:@"request"]) {
+            NSString * friendname = [json objectForKey:@"friendname"];
+            AddDB * addDb = [[AddDB alloc]init];
+            NSMutableDictionary * dict = [addDb readDB:friendname];
+            if (dict!=nil && [dict count]!= 0) {
+                NSArray *key = [dict allKeys];
+                if ([key containsObject:friendname]) {
+                    
+                }else{
+                    [addDb insertDB:[handle getUserID] withFriendID:friendname withStatus:@"request"];
+                }
+            }
+        }*/
         [removedKeys appendString:key];
         if (index != [keys count] - 1){
             [removedKeys appendString:@"&&"];

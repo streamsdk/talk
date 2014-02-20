@@ -18,6 +18,9 @@
 #import "ImageCache.h"
 #import "FileCache.h"
 #import "MBProgressHUD.h"
+#import "STreamXMPP.h"
+#import <arcstreamsdk/JSONKit.h>
+#import "DownloadAvatar.h"
 
 #define SENDREQUEST_TAG 1000
 #define ADD_TAG  2000
@@ -62,10 +65,10 @@
     if ([friendsAddArray count]!=0 && [array count]!=0) {
         if ([friendsAddArray count]>[array count]) {
             for (int i = 0;i<[friendsAddArray count];i++) {
-                NSString *id = [friendsAddArray objectAtIndex:i];
-                if (![objectID containsObject:id]) {
-                    [friendsAddArray removeObject:id];
-                    [db deleteDB:id];
+                NSString *friendId= [friendsAddArray objectAtIndex:i];
+                if (![objectID containsObject:friendId]) {
+                    [friendsAddArray removeObject:friendId];
+                    [db deleteDB:friendId];
                 }
             }
         }
@@ -295,18 +298,11 @@
 {
     static NSString *cellIdentifier = @"EliteCellIdentifier";
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-//    UIButton * button;
+
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
         [cell setBackgroundColor:[UIColor clearColor]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        //[[button layer] setBorderColor:[[UIColor blueColor] CGColor]];
-        //[[button layer] setBorderWidth:1];
-        //[[button layer] setCornerRadius:4];
-        //[button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        //button.titleLabel.font = [UIFont systemFontOfSize:16.0f];
-        
         CALayer *l = [cell.imageView layer];
         [l setMasksToBounds:YES];
         [l setCornerRadius:8.0];
@@ -320,23 +316,33 @@
         case FriendsAdd:{
             
             if (friendsAddArray && [friendsAddArray count]!=0) {
-                NSString *status = [addDict objectForKey:[friendsAddArray objectAtIndex:indexPath.row]];
+                NSString * userId = [friendsAddArray objectAtIndex:indexPath.row];
+                NSString *status = [addDict objectForKey:userId];
                 if ([status isEqualToString:@"friend"]) {
 
                     [button setBackgroundImage:[UIImage imageNamed:@"friends.png"]  forState:UIControlStateNormal];
                      button.tag = indexPath.row;
                     [button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
                     [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
-                    [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
-                    [self loadAvatar:[friendsAddArray objectAtIndex:indexPath.row] withCell:cell];
+                    
+                    DownloadAvatar * down = [[DownloadAvatar alloc]init];
+                    [down loadAvatar:userId];
+                    UIImage * icon = [down readAvatar:userId];
+                    [self setImage:icon withCell:cell];
+                    
                     cell.textLabel.text = [friendsAddArray objectAtIndex:indexPath.row];
                     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
+                    
                 }else if ([status isEqualToString:@"request"]){
                     [button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
                     button.tag = indexPath.row;
                     [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
-                    [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
-                    [self loadAvatar:[friendsAddArray objectAtIndex:indexPath.row] withCell:cell];
+                    
+                    DownloadAvatar * down = [[DownloadAvatar alloc]init];
+                    [down loadAvatar:userId];
+                    UIImage * icon = [down readAvatar:userId];
+                    [self setImage:icon withCell:cell];
+                    
                     [button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
                     cell.textLabel.text = [friendsAddArray objectAtIndex:indexPath.row];
                     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
@@ -350,12 +356,15 @@
 
             if (friendsSearchArray && [friendsSearchArray count]!=0) {
                 
-                NSString * str = [friendsSearchArray objectAtIndex:indexPath.row];
-                [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
-                [self loadAvatar:[friendsSearchArray objectAtIndex:indexPath.row] withCell:cell];
+                NSString * userId = [friendsSearchArray objectAtIndex:indexPath.row];
+                DownloadAvatar * down = [[DownloadAvatar alloc]init];
+                [down loadAvatar:userId];
+                UIImage * icon = [down readAvatar:userId];
+                [self setImage:icon withCell:cell];
+                
                 NSArray * array = [addDict allKeys];
-                if ([array containsObject:str]) {
-                    NSString * status = [addDict objectForKey:str];
+                if ([array containsObject:userId]) {
+                    NSString * status = [addDict objectForKey:userId];
 
                     if ([status isEqualToString:@"request"]) {
                         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You need to add addFriends page！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
@@ -364,7 +373,7 @@
                     }else {
                         [button setBackgroundImage:[UIImage imageNamed:@"friends.png"] forState:UIControlStateNormal];
                          button.tag = indexPath.row;
-                        cell.textLabel.text = str;
+                        cell.textLabel.text = userId;
                         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20.0f];
                         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You are already friends！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
                         [alert show];
@@ -374,7 +383,7 @@
                     [button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
                      button.tag = indexPath.row;
                     [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
-                    cell.textLabel.text = str;
+                    cell.textLabel.text = userId;
                     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20.0f];
                 }
             }
@@ -384,7 +393,11 @@
             break;
         case FriendsHistory:{
             [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
-            [self loadAvatar:[friendsHistoryArray objectAtIndex:indexPath.row] withCell:cell];
+            DownloadAvatar * down = [[DownloadAvatar alloc]init];
+            [down loadAvatar:[friendsHistoryArray objectAtIndex:indexPath.row]];
+            UIImage * icon = [down readAvatar:[friendsHistoryArray objectAtIndex:indexPath.row]];
+            [self setImage:icon withCell:cell];
+
             [button setBackgroundImage:[UIImage imageNamed:@"invi.png"] forState:UIControlStateNormal];
              button.tag = indexPath.row;
             cell.textLabel.text = [friendsHistoryArray objectAtIndex:indexPath.row];
@@ -402,6 +415,16 @@
     
     return 60;
 }
+-(void)setImage:(UIImage *)icon withCell:(UITableViewCell *)cell{
+    CGSize itemSize = CGSizeMake(50, 50);
+    UIGraphicsBeginImageContextWithOptions(itemSize, NO,0.0);
+    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+    [icon drawInRect:imageRect];
+    
+    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+}
+
 #pragma mark searchBarDelegate
 -(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
@@ -610,7 +633,16 @@
         [db insertDB:[handler getUserID] withFriendID:string];
     }
     
-        // [sender setTitle:@"sendRequest" forState:UIControlStateNormal];
+   /* STreamXMPP *con = [STreamXMPP sharedObject];
+    long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
+    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+    [jsonDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
+    [jsonDic setObject:@"request" forKey:@"type"];
+    [jsonDic setObject:loginName forKey:@"username"];
+    [jsonDic setObject:string forKey:@"friendname"];
+     NSString *jsonSent = [jsonDic JSONString];
+    [con sendMessage:string withMessage:jsonSent];*/
+       
 }
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (isSendRequest) {
@@ -633,57 +665,6 @@
     }
 }
 
--(void) loadAvatar:(NSString *)userID withCell:(UITableViewCell *)cell{
-    ImageCache *imageCache = [ImageCache sharedObject];
-    if ([imageCache getUserMetadata:userID]!=nil) {
-        NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
-        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-        if ([imageCache getImage:pImageId] == nil && pImageId){
-            FileCache *fileCache = [FileCache sharedObject];
-            STreamFile *file = [[STreamFile alloc] init];
-            if (![imageCache getImage:pImageId]){
-                [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
-                    if ([pImageId isEqualToString:oId]){
-                        [imageCache selfImageDownload:imageData withFileId:pImageId];
-                        [fileCache writeFileDoc:pImageId withData:imageData];
-                    }
-                }];
-            }
-        }else{
-            if ([pImageId isEqualToString:@""]){
-                UIImage *icon =[UIImage imageNamed:@"headImage.jpg"];
-                CGSize itemSize = CGSizeMake(50, 50);
-                UIGraphicsBeginImageContextWithOptions(itemSize, NO,0.0);
-                CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-                [icon drawInRect:imageRect];
-                
-                cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-                UIGraphicsEndImageContext();
-            }
-            else{
-                UIImage *icon =[UIImage imageWithData:[imageCache getImage:pImageId]];
-                CGSize itemSize = CGSizeMake(50, 50);
-                UIGraphicsBeginImageContextWithOptions(itemSize, NO,0.0);
-                CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-                [icon drawInRect:imageRect];
-                
-                cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-                UIGraphicsEndImageContext();
-            }
-            
-        }
-    }else {
-        STreamUser *user = [[STreamUser alloc] init];
-        [user loadUserMetadata:userID response:^(BOOL succeed, NSString *error){
-            if ([error isEqualToString:userID]){
-                NSMutableDictionary *dic = [user userMetadata];
-                ImageCache *imageCache = [ImageCache sharedObject];
-                [imageCache saveUserMetadata:userID withMetadata:dic];
-            }
-        }];
-           [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
-    }
-}
 -(void) cancelSelected {
     UISearchBar *searchBar =(UISearchBar *)[self.view viewWithTag:SEARCH_TAG];
     searchBar.text = @"";

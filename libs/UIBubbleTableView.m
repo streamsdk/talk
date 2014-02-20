@@ -396,13 +396,14 @@
                                    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+100];
                                    NSString * jsonbody = cell.data.jsonBody;
                                    NSData *jsonData = [jsonbody dataUsingEncoding:NSUTF8StringEncoding];
-                                   JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
-                                   NSDictionary *json = [decoder objectWithData:jsonData];
-                                   if (!json) {
+                                   if (!jsonData) {
                                        [activityIndicatorView stopAnimating];
                                        return ;
                                    }
-                                   NSString *fileId = [json objectForKey:@"fileId"];
+
+                                   JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+                                   NSDictionary *json = [decoder objectWithData:jsonData];
+                                                                     NSString *fileId = [json objectForKey:@"fileId"];
                                    NSString *tid = [json objectForKey:@"tid"];
                                    NSString * fromId = [download readDownloadDBFromFileID:fileId];
                                    NSString *duration = [json objectForKey:@"duration"];

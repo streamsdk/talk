@@ -15,8 +15,10 @@
 #import "ACKMessageDB.h"
 #import "FilesUpload.h"
 #import "ImageCache.h"
-
+#import "UploadDB.h"
 @implementation AudioHandler
+
+@synthesize isAddUploadDB;
 
 - (void)receiveAudioFile:(NSData *)data withBody:(NSString *)body forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
     HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
@@ -55,6 +57,8 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
     [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     
+//    UploadDB * uploadDb = [[UploadDB alloc]init];
+//    [uploadDb insertUploadDB:[handler getUserID] filePath:voice.recordPath withTime:bodyData withFrom:sendID withType:@"voice"];
     
     NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
     long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);

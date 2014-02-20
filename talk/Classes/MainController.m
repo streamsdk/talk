@@ -1061,6 +1061,13 @@
         [photoHandler setPhotopath:filePath];
         [photoHandler sendPhoto:data forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:fromID withTime:time];
     }
+   /*if ([type isEqualToString:@"voice"]) {
+        Voice * v = [[Voice alloc]init];
+        [v setRecordPath:filePath];
+        [v setRecordTime:[time floatValue]];
+        [audioHandler setIsAddUploadDB:YES];
+        [audioHandler sendAudio:voice forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
+    }*/
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
 }
