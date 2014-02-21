@@ -174,6 +174,7 @@
 		03D9C0EE18145E510039118F /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D9C0DA18145E510039118F /* DDXMLNode.m */; };
 		03D9C0EF18145E510039118F /* build-libidn.sh in Resources */ = {isa = PBXBuildFile; fileRef = 03D9C0DE18145E510039118F /* build-libidn.sh */; };
 		03D9C0F91814623B0039118F /* STreamXMPP.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D9C0F81814623B0039118F /* STreamXMPP.m */; };
+		03EDC79118B7E03200596D32 /* noavatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 03EDC79018B7E03200596D32 /* noavatar.png */; };
 		03F50C6A1867B4EB00E08C22 /* VideoHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F50C691867B4EB00E08C22 /* VideoHandler.m */; };
 		03F50C6D1867B50000E08C22 /* MessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F50C6C1867B50000E08C22 /* MessageHandler.m */; };
 		03F50C701867B54300E08C22 /* AudioHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F50C6F1867B54300E08C22 /* AudioHandler.m */; };
@@ -659,6 +660,7 @@
 		03D9C0F6181462210039118F /* STreamXMPPProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STreamXMPPProtocol.h; path = ../STreamXMPPProtocol.h; sourceTree = "<group>"; };
 		03D9C0F71814623B0039118F /* STreamXMPP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STreamXMPP.h; path = ../STreamXMPP.h; sourceTree = "<group>"; };
 		03D9C0F81814623B0039118F /* STreamXMPP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = STreamXMPP.m; path = ../STreamXMPP.m; sourceTree = "<group>"; };
+		03EDC79018B7E03200596D32 /* noavatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noavatar.png; sourceTree = "<group>"; };
 		03F50C671867A79400E08C22 /* PlayerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerDelegate.h; sourceTree = "<group>"; };
 		03F50C681867B4EB00E08C22 /* VideoHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoHandler.h; path = handler/VideoHandler.h; sourceTree = "<group>"; };
 		03F50C691867B4EB00E08C22 /* VideoHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoHandler.m; path = handler/VideoHandler.m; sourceTree = "<group>"; };
@@ -2036,6 +2038,7 @@
 		0EE951A1185EA4B9003F4638 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				03EDC79018B7E03200596D32 /* noavatar.png */,
 				0EF01EC718B49AFF0012CC3F /* backgroundImages */,
 				0EE951AE185EA4B9003F4638 /* images */,
 				0E0F0EF118B5AC45009E677F /* headImage.jpg */,
@@ -2344,6 +2347,7 @@
 				0E0EDF521877F57E00477C42 /* brush.png in Resources */,
 				0EE951E1185EA4B9003F4638 /* face.png in Resources */,
 				0E2E5EB718726D230044DC4C /* message_count@2x.png in Resources */,
+				03EDC79118B7E03200596D32 /* noavatar.png in Resources */,
 				0EE951FB185EA4B9003F4638 /* video1.png in Resources */,
 				0EE951FA185EA4B9003F4638 /* talkBg.png in Resources */,
 				0E49F04D187E333700749A6D /* movieForwardSelected.png in Resources */,

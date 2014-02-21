@@ -47,7 +47,7 @@
 }
 
 -(UIImage *)readAvatar:(NSString *)userID {
-    UIImage * avatarImg = [UIImage imageNamed:@"headImage.jpg"];
+    UIImage * avatarImg = [UIImage imageNamed:@"noavatar.png"];
     ImageCache *imageCache = [ImageCache sharedObject];
     if ([imageCache getUserMetadata:userID]!=nil) {
         NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
@@ -55,10 +55,10 @@
         if (pImageId!=nil && ![pImageId isEqualToString:@""] &&[imageCache getImage:pImageId]!=nil){
             avatarImg = [UIImage imageWithData: [imageCache getImage:pImageId]];
         }else{
-             avatarImg = [UIImage imageNamed:@"headImage.jpg"];
+             avatarImg = [UIImage imageNamed:@"noavatar.png"];
         }
     }else{
-        avatarImg= [UIImage imageNamed:@"headImage.jpg"];
+        avatarImg= [UIImage imageNamed:@"noavatar.png"];
     }
     return avatarImg;
 }
