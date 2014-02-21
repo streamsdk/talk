@@ -33,32 +33,38 @@
 
 -(void) sendAudio :(Voice *)voice forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID
 {
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
-    NSURL* url = [NSURL fileURLWithPath:voice.recordPath];
-    NSError * err = nil;
-    NSData * audioData = [NSData dataWithContentsOfFile:[url path] options: 0 error:&err];
-    NSString * bodyData = [NSString stringWithFormat:@"%d",(int)voice.recordTime];
-    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
-
-    NSBubbleData *bubble = [NSBubbleData dataWithtimes:bodyData date:date type:BubbleTypeMine withData:audioData];
-    if (myData)
-        bubble.avatar = [UIImage imageWithData:myData];
-    [bubbleData addObject:bubble];
-    
-    NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
-    [friendsDict setObject:bodyData forKey:@"time"];
-    [friendsDict setObject:[url path] forKey:@"audiodata"];
-    [jsonDic setObject:friendsDict forKey:sendID];
-    NSString * str = [jsonDic JSONString];
-    TalkDB * db = [[TalkDB alloc]init];
     HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
+    NSString * bodyData = [NSString stringWithFormat:@"%d",(int)voice.recordTime];
+
+    if (isAddUploadDB) {
+        isAddUploadDB = NO;
+    }else{
+        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+        NSURL* url = [NSURL fileURLWithPath:voice.recordPath];
+        NSError * err = nil;
+        NSData * audioData = [NSData dataWithContentsOfFile:[url path] options: 0 error:&err];
+        NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
+        
+        NSBubbleData *bubble = [NSBubbleData dataWithtimes:bodyData date:date type:BubbleTypeMine withData:audioData];
+        if (myData)
+            bubble.avatar = [UIImage imageWithData:myData];
+        [bubbleData addObject:bubble];
+        
+        NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
+        [friendsDict setObject:bodyData forKey:@"time"];
+        [friendsDict setObject:[url path] forKey:@"audiodata"];
+        [jsonDic setObject:friendsDict forKey:sendID];
+        NSString * str = [jsonDic JSONString];
+        TalkDB * db = [[TalkDB alloc]init];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+        [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
+        
+        UploadDB * uploadDb = [[UploadDB alloc]init];
+        [uploadDb insertUploadDB:[handler getUserID] filePath:voice.recordPath withTime:bodyData withFrom:sendID withType:@"voice"];
+    }
     
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-    [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
-    
-//    UploadDB * uploadDb = [[UploadDB alloc]init];
-//    [uploadDb insertUploadDB:[handler getUserID] filePath:voice.recordPath withTime:bodyData withFrom:sendID withType:@"voice"];
     
     NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
     long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
