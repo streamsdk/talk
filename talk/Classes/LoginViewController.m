@@ -107,6 +107,7 @@
     [userNameText resignFirstResponder];
     STreamUser *user = [[STreamUser alloc]init];
     NSString *userName = userNameText.text;
+    userName = [userName lowercaseString];
     NSString *passWord = password.text;
     NSString *nameFilePath = [self getCacheDirectory];
     NSArray * nameArray = [[NSArray alloc]initWithObjects:userName,passWord, nil];

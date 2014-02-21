@@ -34,8 +34,8 @@
     [super viewDidLoad];
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     userData = [[NSMutableArray alloc]initWithObjects:@"SetChatBackground",@"Clear chat Data", nil];
-    [self.tableView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
-
+//    [self.tableView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
+    [self.tableView setBackgroundColor:[UIColor whiteColor]];
 }
 
 - (void)didReceiveMemoryWarning

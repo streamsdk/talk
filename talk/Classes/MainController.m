@@ -155,7 +155,8 @@
         [backgroundView setImage:bgImage];
 
     }else{
-        [backgroundView setImage:[UIImage imageNamed:@"bg.png"]];
+        [backgroundView setBackgroundColor:[UIColor whiteColor]];
+//        [backgroundView setImage:[UIImage imageNamed:@"bg.png"]];
     }
     if (path) {
         NSData * data = [NSData dataWithContentsOfFile:path];
@@ -236,7 +237,7 @@
     toolBar.tag = TOOLBARTAG;
     toolBar.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin |UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
     [backView addSubview:toolBar];
-    
+    [toolBar setTintColor:[UIColor blackColor]];
     [self initWithToolBar];
     
     bubbleTableView.tag = TABLEVIEWTAG;

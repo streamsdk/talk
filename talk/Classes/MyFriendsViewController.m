@@ -98,10 +98,9 @@
     [super viewDidLoad];
     self.navigationController.navigationItem.hidesBackButton = YES;
     self.navigationController.navigationBarHidden = NO;
-   [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
+//   [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     
-   // UIBarButtonItem * leftItem = [[UIBarButtonItem alloc]initWithTitle:@"设置" style:UIBarButtonItemStyleDone target:self action:@selector(settingClicked)];
-   // self.navigationItem.leftBarButtonItem = leftItem;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"settings2.png"] style:UIBarButtonItemStyleDone target:self action:@selector(settingClicked)];
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addFriends)];
@@ -116,9 +115,9 @@
     [self.view addSubview:_tableView];
     
     //background
-    UIView *backgrdView = [[UIView alloc] initWithFrame:self.tableView.frame];
-    backgrdView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]];
-    self.tableView.backgroundView = backgrdView;
+//    UIView *backgrdView = [[UIView alloc] initWithFrame:self.tableView.frame];
+//    backgrdView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]];
+//    self.tableView.backgroundView = backgrdView;
     
     if (_refreshHeaderView == nil) {
 		
@@ -584,6 +583,24 @@
 {
     return [sectionHeadsKeys objectAtIndex:section];
 }
+-(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
+    if (sectionTitle == nil) {
+        return  nil;
+    }
+    
+    UILabel * label = [[UILabel alloc] init];
+    label.frame = CGRectMake(10, 0, 320, 24);
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font=[UIFont fontWithName:@"Arial" size:22.0f];
+    label.text = sectionTitle;
+    
+    UIView * sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 24)] ;
+    [sectionView setBackgroundColor:[UIColor blackColor]];
+    [sectionView addSubview:label];
+    return sectionView;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
    
     NSString *cellId = @"CellId";
@@ -591,7 +608,7 @@
   
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
-        [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
+//        [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.tag = TABLECELL_TAG;
         button = [UIButton buttonWithType:UIButtonTypeCustom];

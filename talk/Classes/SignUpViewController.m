@@ -97,6 +97,7 @@
 -(void )signUpUser {
     [userName resignFirstResponder];
     NSString *username = userName.text;
+    username = [username lowercaseString];
     NSString *pword = password.text;
     NSString *secondWord = surePassword.text;
     if (username && pword && [secondWord isEqualToString:pword]) {

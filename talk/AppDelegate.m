@@ -51,7 +51,13 @@
    
     
     _progressDict = [[NSMutableDictionary alloc]init];
-    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:247.0/255.0 green:229.0/255.0 blue:227.0/255.0 alpha:1.0]];
+//    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:247.0/255.0 green:229.0/255.0 blue:227.0/255.0 alpha:1.0]];
+    NSMutableDictionary *attributes= [[NSMutableDictionary alloc] init];
+    
+    [attributes setValue:[UIColor whiteColor] forKey:NSForegroundColorAttributeName];
+    [[UINavigationBar appearance]setBarTintColor:[UIColor blackColor]];
+    [[UINavigationBar appearance]setTitleTextAttributes:attributes];
+    
     TalkDB * talkDB = [[TalkDB alloc ]init];
     [talkDB initDB];
     AddDB * addDb = [[AddDB alloc]init];
