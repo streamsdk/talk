@@ -316,19 +316,32 @@
             NSString *fileId = [json objectForKey:@"fileId"];
             [self didReceiveFile:fileId withBody:jsonValue withFrom:from];
         }
-        /*if ([type isEqualToString:@"request"]) {
+        if ([type isEqualToString:@"request"] || [type isEqualToString:@"friend"]) {
             NSString * friendname = [json objectForKey:@"friendname"];
+            NSString * username = [json objectForKey:@"username"];
             AddDB * addDb = [[AddDB alloc]init];
             NSMutableDictionary * dict = [addDb readDB:friendname];
             if (dict!=nil && [dict count]!= 0) {
                 NSArray *key = [dict allKeys];
-                if ([key containsObject:friendname]) {
-                    
+                if ([key containsObject:username]) {
+                    [addDb updateDB:friendname withFriendID:username withStatus:type];
                 }else{
-                    [addDb insertDB:[handle getUserID] withFriendID:friendname withStatus:@"request"];
+                    [addDb insertDB:friendname withFriendID:username withStatus:type];
                 }
             }
-        }*/
+        }
+        if ([type isEqualToString:@"sendRequest"]) {
+            NSString * friendname = [json objectForKey:@"friendname"];
+            NSString * username = [json objectForKey:@"username"];
+            AddDB * addDb = [[AddDB alloc]init];
+            NSMutableDictionary * dict = [addDb readDB:friendname];
+            if (dict!=nil && [dict count]!= 0) {
+                NSArray *key = [dict allKeys];
+                if ([key containsObject:username]) {
+                    [addDb deleteDB:username];
+                }
+            }
+        }
         [removedKeys appendString:key];
         if (index != [keys count] - 1){
             [removedKeys appendString:@"&&"];

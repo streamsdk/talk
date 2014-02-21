@@ -14,6 +14,7 @@
 #import <arcstreamsdk/STreamSession.h>
 #import <CFNetwork/CFNetwork.h>
 #import "ACKMessageDB.h"
+#import "AddDB.h"
 
 #if DEBUG
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;
@@ -331,8 +332,39 @@ static XMPPReconnect *xmppReconnect;
         if (filetransferId && ![filetransferId isEqualToString:@""]){
             [xmppDelegate didReceiveFile:filetransferId withBody:messageBody withFrom:fromID];
         }else{
-            NSString *receivedMessage = [json objectForKey:@"message"];
-            [xmppDelegate didReceiveMessage:receivedMessage withFrom:fromID];
+            if ([type isEqualToString:@"request"] || [type isEqualToString:@"friend"]) {
+                NSString * friendname = [json objectForKey:@"friendname"];
+                NSString * username = [json objectForKey:@"username"];
+                AddDB * addDb = [[AddDB alloc]init];
+                NSMutableDictionary * dict = [addDb readDB:friendname];
+                if (dict!=nil && [dict count]!= 0) {
+                    NSArray *key = [dict allKeys];
+                    if ([key containsObject:username]) {
+                        [addDb updateDB:friendname withFriendID:username withStatus:type];
+                    }else{
+                        [addDb insertDB:friendname withFriendID:username withStatus:type];
+                    }
+                }
+
+            }
+            if ([type isEqualToString:@"sendRequest"]) {
+                NSString * friendname = [json objectForKey:@"friendname"];
+                NSString * username = [json objectForKey:@"username"];
+                AddDB * addDb = [[AddDB alloc]init];
+                NSMutableDictionary * dict = [addDb readDB:friendname];
+                if (dict!=nil && [dict count]!= 0) {
+                    NSArray *key = [dict allKeys];
+                    if ([key containsObject:username]) {
+                        [addDb deleteDB:username];
+                    }
+                }
+            }
+
+            if ([type isEqualToString:@"text"]) {
+                NSString *receivedMessage = [json objectForKey:@"message"];
+                [xmppDelegate didReceiveMessage:receivedMessage withFrom:fromID];
+            }
+           
         }
     }
 }
