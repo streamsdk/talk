@@ -202,30 +202,6 @@
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
     [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
     
-     if ([type isEqualToString:@"video"]) {
-         type = nil;
-     }else{
-         NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
-         NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-         if (time)
-             [friendDict setObject:time forKey:@"duration"];
-         [friendDict setObject:_mp4Path forKey:@"filepath"];
-         //[friendDict setObject:[videoPath absoluteString] forKey:@"video"];
-         
-         [jsonDic setObject:friendDict forKey:_sendID];
-         NSString  *str = [jsonDic JSONString];
-         
-         TalkDB * db = [[TalkDB alloc]init];
-         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-         [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-         
-         
-         [db insertDBUserID:[handler getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
-         UploadDB * uploadDb = [[UploadDB alloc]init];
-         [uploadDb insertUploadDB:[handler getUserID] filePath:_mp4Path withTime:time withFrom:_sendID withType:@"video"];
-     }
-   
-    
     ImageCache *cache = [ImageCache sharedObject];
     NSMutableArray *fileArray = [cache getFileUpload];
     NSData * imgdata = UIImageJPEGRepresentation(image, 0.5);
@@ -242,19 +218,59 @@
     if (time) {
         [file setDisappearTime:time];
     }
-    if (fileArray!=nil && [fileArray count]!=0) {
-        FilesUpload * f =[fileArray objectAtIndex:0];
-        long long ftime = [f.time longLongValue];
-        if ((milliseconds/1000.0 - ftime/1000.0)<8) {   
-            [cache addFileUpload:file];
-            return;
+    
+    if ([type isEqualToString:@"video"]) {
+        type = nil;
+        if (fileArray!=nil && [fileArray count]!=0) {
+            FilesUpload * f =[fileArray objectAtIndex:0];
+            long long ftime = [f.time longLongValue];
+            if ((milliseconds/1000.0 - ftime/1000.0)<8) {
+                return;
+            }
+            
+        }else{
+          [cache addFileUpload:file];  
         }
         
-    }
-    [cache addFileUpload:file];
-    [super doFileUpload:fileArray];
-    [delegate reloadTable];
+        [super doFileUpload:fileArray];
+        [delegate reloadTable];
 
+    }else{
+        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        if (time)
+            [friendDict setObject:time forKey:@"duration"];
+        [friendDict setObject:_mp4Path forKey:@"filepath"];
+        //[friendDict setObject:[videoPath absoluteString] forKey:@"video"];
+        
+        [jsonDic setObject:friendDict forKey:_sendID];
+        NSString  *str = [jsonDic JSONString];
+        
+        TalkDB * db = [[TalkDB alloc]init];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+        
+        
+        [db insertDBUserID:[handler getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
+        UploadDB * uploadDb = [[UploadDB alloc]init];
+        [uploadDb insertUploadDB:[handler getUserID] filePath:_mp4Path withTime:time withFrom:_sendID withType:@"video"];
+        
+        if (fileArray!=nil && [fileArray count]!=0) {
+            FilesUpload * f =[fileArray objectAtIndex:0];
+            long long ftime = [f.time longLongValue];
+            if ((milliseconds/1000.0 - ftime/1000.0)<8) {
+                [cache addFileUpload:file];
+                return;
+            }
+            
+        }
+        [cache addFileUpload:file];
+        [super doFileUpload:fileArray];
+        [delegate reloadTable];
+
+    }
+    
+  
 }
 
 @end

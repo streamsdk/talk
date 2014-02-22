@@ -70,12 +70,30 @@
     
     ImageCache * cache = [ImageCache sharedObject];
     NSMutableArray * fileArray = [cache getFileUpload];
+    FilesUpload * file = [[FilesUpload alloc]init];
+    [file setTime:[NSString stringWithFormat:@"%lld", milliseconds]];
+   
+    [file setBodyDict:bodyDic];
+    [file setUserId:sendID];
+    [file setChatId:[NSString stringWithFormat:@"%lld", milliseconds]];
     
     if ([type isEqualToString:@"photo"]) {
         photoPath = photopath;
+         [file setFilepath:photoPath];
         type = nil;
+        if (fileArray != nil && [fileArray count] != 0) {
+            FilesUpload * f =[fileArray objectAtIndex:0];
+            long long ftime = [f.time longLongValue];
+            if ((milliseconds/1000.0 - ftime/1000.0)<8) {
+                return;
+            }
+        }else{
+             [cache addFileUpload:file];
+        }
+       
+        [super doFileUpload:fileArray];
     }else{
-        
+         [file setFilepath:photoPath];
         NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
         NSBubbleData * bubble;
         if (time)
@@ -104,25 +122,18 @@
         UploadDB * uploadDb = [[UploadDB alloc]init];
         [uploadDb insertUploadDB:[handler getUserID] filePath:photoPath withTime:time withFrom:sendID withType:@"photo"];
         
-    }
-    
-    FilesUpload * file = [[FilesUpload alloc]init];
-    [file setTime:[NSString stringWithFormat:@"%lld", milliseconds]];
-    [file setFilepath:photoPath];
-    [file setBodyDict:bodyDic];
-    [file setUserId:sendID];
-    [file setChatId:[NSString stringWithFormat:@"%lld", milliseconds]];
-    if (fileArray != nil && [fileArray count] != 0) {
-        FilesUpload * f =[fileArray objectAtIndex:0];
-        long long ftime = [f.time longLongValue];
-        if ((milliseconds/1000.0 - ftime/1000.0)<8) {
-            [cache addFileUpload:file];
-            return;
+        if (fileArray != nil && [fileArray count] != 0) {
+            FilesUpload * f =[fileArray objectAtIndex:0];
+            long long ftime = [f.time longLongValue];
+            if ((milliseconds/1000.0 - ftime/1000.0)<8) {
+                [cache addFileUpload:file];
+                return;
+            }
         }
+        [cache addFileUpload:file];
+        
+        [super doFileUpload:fileArray];
     }
-    [cache addFileUpload:file];
-
-    [super doFileUpload:fileArray];
     
 }
 

@@ -36,8 +36,38 @@
     HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * bodyData = [NSString stringWithFormat:@"%d",(int)voice.recordTime];
 
+    NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
+    long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
+    [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
+    [bodyDic setObject:bodyData forKey:@"duration"];
+    [bodyDic setObject:@"voice" forKey:@"type"];
+    [bodyDic setObject:[handler getUserID] forKey:@"from"];
+    
+    ImageCache * cache = [ImageCache sharedObject];
+    NSMutableArray * fileArray = [cache getFileUpload];
+    FilesUpload * file = [[FilesUpload alloc]init];
+    [file setTime:[NSString stringWithFormat:@"%lld", milliseconds]];
+    [file setFilepath:voice.recordPath];
+    [file setBodyDict:bodyDic];
+    [file setUserId:sendID];
+    [file setChatId:[NSString stringWithFormat:@"%lld", milliseconds]];
+    
+    
     if (isAddUploadDB) {
         isAddUploadDB = NO;
+        if (fileArray!=nil && [fileArray count]!=0) {
+            FilesUpload * f =[fileArray objectAtIndex:0];
+            long long ftime = [f.time longLongValue];
+            if ((milliseconds/1000.0 - ftime/1000.0)<8) {
+                return;
+            }
+            
+        }else{
+            [cache addFileUpload:file];
+        }
+        
+        [super doFileUpload:fileArray];
+        
     }else{
         NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
         NSURL* url = [NSURL fileURLWithPath:voice.recordPath];
@@ -63,35 +93,19 @@
         
         UploadDB * uploadDb = [[UploadDB alloc]init];
         [uploadDb insertUploadDB:[handler getUserID] filePath:voice.recordPath withTime:bodyData withFrom:sendID withType:@"voice"];
-    }
-    
-    
-    NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
-    long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
-    [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
-    [bodyDic setObject:bodyData forKey:@"duration"];
-    [bodyDic setObject:@"voice" forKey:@"type"];
-    [bodyDic setObject:[handler getUserID] forKey:@"from"];
-
-    ImageCache * cache = [ImageCache sharedObject];
-    NSMutableArray * fileArray = [cache getFileUpload];
-    FilesUpload * file = [[FilesUpload alloc]init];
-    [file setTime:[NSString stringWithFormat:@"%lld", milliseconds]];
-    [file setFilepath:voice.recordPath];
-    [file setBodyDict:bodyDic];
-    [file setUserId:sendID];
-    [file setChatId:[NSString stringWithFormat:@"%lld", milliseconds]];
-    if (fileArray != nil && [fileArray count] != 0) {
-        FilesUpload * f =[fileArray objectAtIndex:0];
-        long long ftime = [f.time longLongValue];
-        if ((milliseconds/1000.0 - ftime/1000.0)<8) {
-            [cache addFileUpload:file];
-            return;
+        
+        if (fileArray != nil && [fileArray count] != 0) {
+            FilesUpload * f =[fileArray objectAtIndex:0];
+            long long ftime = [f.time longLongValue];
+            if ((milliseconds/1000.0 - ftime/1000.0)<8) {
+                [cache addFileUpload:file];
+                return;
+            }
         }
+        [cache addFileUpload:file];
+        [super doFileUpload:fileArray];
     }
-    [cache addFileUpload:file];
-    [super doFileUpload:fileArray];
-
+    
 }
 
 @end
