@@ -124,7 +124,8 @@
     
     NSString *res = nil;
     for (int i=0; i < 5; i++){
-        [STreamSession setUpServerUrl:@"http://streamsdk.com/print/print/"];
+        //[STreamSession setUpServerUrl:@"http://streamsdk.com/print/print/"];
+        [STreamSession setUpServerUrl:@"http://192.168.1.17:8081/api/"];
         res = [STreamSession authenticate:@"7E95CF60694890DCD4CEFBF79BC3BAE4"  secretKey:@"73B7C757A511B1574FDF63B3FEB638B7" clientKey:@"4768674EDC06477EC63AEEF8FEAB0CF8" ];
         
         //[STreamSession setUpServerUrl:@"http://streamsdk.cn/api/"];

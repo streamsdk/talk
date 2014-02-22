@@ -43,7 +43,13 @@
     [bodyDic setObject:@"voice" forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];
     
-    ImageCache * cache = [ImageCache sharedObject];
+    ImageCache *cache = [ImageCache sharedObject];
+    NSMutableDictionary *userMetadata = [cache getUserMetadata:sendID];
+    if (userMetadata && [userMetadata objectForKey:@"token"]){
+        [bodyDic setObject:[userMetadata objectForKey:@"token"] forKey:@"token"];
+    }
+
+    
     NSMutableArray * fileArray = [cache getFileUpload];
     FilesUpload * file = [[FilesUpload alloc]init];
     [file setTime:[NSString stringWithFormat:@"%lld", milliseconds]];

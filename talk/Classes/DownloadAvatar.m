@@ -28,8 +28,10 @@
                                                queue:[NSOperationQueue mainQueue]
                                    completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
 //                                       NSLog(@"response = %@, error = %@",response,error);
+                                       if (data && [data length] != 0){
                                           [imageCache selfImageDownload:data withFileId:pImageId];
                                           [filecache writeFileDoc:pImageId withData:data];
+                                       }
                                    }];
 
         }

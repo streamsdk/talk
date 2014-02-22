@@ -203,6 +203,11 @@
     [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
     
     ImageCache *cache = [ImageCache sharedObject];
+    NSMutableDictionary *userMetadata = [cache getUserMetadata:_sendID];
+    if (userMetadata && [userMetadata objectForKey:@"token"]){
+        [bodyDic setObject:[userMetadata objectForKey:@"token"] forKey:@"token"];
+    }
+    
     NSMutableArray *fileArray = [cache getFileUpload];
     NSData * imgdata = UIImageJPEGRepresentation(image, 0.5);
     FilesUpload * file = [[FilesUpload alloc]init];

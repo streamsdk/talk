@@ -13,6 +13,7 @@
 #import "STreamXMPP.h"
 #import "HandlerUserIdAndDateFormater.h"
 #import "ACKMessageDB.h"
+#import "ImageCache.h"
 
 @implementation MessageHandler
 
@@ -44,6 +45,14 @@
     [messagesDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
     [messagesDic setObject:@"text" forKey:@"type"];
     [messagesDic setObject:[handler getUserID] forKey:@"from"];
+    
+    ImageCache *cache = [ImageCache sharedObject];
+    NSMutableDictionary *userMetadata = [cache getUserMetadata:sendID];
+    if (userMetadata && [userMetadata objectForKey:@"token"]){
+        [messagesDic setObject:[userMetadata objectForKey:@"token"] forKey:@"token"];
+    }
+        
+        
     NSString *messageSent = [messagesDic JSONString];
 
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];

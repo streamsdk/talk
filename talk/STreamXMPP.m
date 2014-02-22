@@ -60,9 +60,9 @@ static XMPPReconnect *xmppReconnect;
     xmppReconnect = [[XMPPReconnect alloc] init];
     [xmppReconnect activate:xmppStream];
     [xmppStream addDelegate:self delegateQueue:dispatch_get_main_queue()];
-    [xmppStream setHostName:@"streamsdk.com"];
+    //[xmppStream setHostName:@"streamsdk.com"];
     //xmppStream.enableBackgroundingOnSocket = YES;
-    //[xmppStream setHostName:@"192.168.1.15"];
+    [xmppStream setHostName:@"192.168.1.17"];
     
     [xmppStream setHostPort:5222];
     

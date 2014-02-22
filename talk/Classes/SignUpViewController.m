@@ -11,6 +11,7 @@
 #import <arcstreamsdk/STreamObject.h>
 #import <arcstreamsdk/STreamCategoryObject.h>
 #import <arcstreamsdk/STreamUser.h>
+#import <arcstreamsdk/StreamPush.h>
 #import "LoginViewController.h"
 #import "CreateUI.h"
 #import "ImageCache.h"
@@ -19,6 +20,7 @@
 #import "MyFriendsViewController.h"
 #import "RootViewController.h"
 #import "DownloadAvatar.h"
+
 
 @interface SignUpViewController ()<UIActionSheetDelegate>
 {
@@ -108,6 +110,10 @@
         [metaData setValue:username forKey:@"name"];
         [metaData setValue:pword forKey:@"password"];
         [metaData setValue:@"" forKey:@"profileImageId"];
+        NSString *token = [STreamPush getToken];
+        if (token){
+            [metaData setValue:token forKey:@"token"];
+        }
         
         DownloadAvatar *downloadAvatar = [[DownloadAvatar alloc]init];
         __block NSString * error;
