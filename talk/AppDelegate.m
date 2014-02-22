@@ -87,84 +87,111 @@
     [twitter setAccountStore:accountStore];
     [twitter fetchFellowerAndFollowing:@"15Slogn"];*/
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-
-           //    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
-  
-//    [STreamSession setUpServerUrl:@"http://streamsdk.com/print/print/"];
-    [STreamSession setUpServerUrl:@"http://streamsdk.cn/api/"];
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound];
+   
+    [self doAuth];
+    
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    [UIApplication sharedApplication].applicationIconBadgeNumber=application.applicationIconBadgeNumber-1;
+    
+    return YES;
+}
+-(NSString *)auth{
+   
+    /*[STreamSession setUpServerUrl:@"http://streamsdk.cn/api/"];
     
     [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3"
                       clientKey:@"01D901D6EFBA42145E54F52E465F407B" response:^(BOOL succeed, NSString *response){
-                          
-                          if (succeed){
-
-                          }
-                          
-                      }];
-    
-    /*[STreamSession authenticate:@"7E95CF60694890DCD4CEFBF79BC3BAE4" secretKey:@"73B7C757A511B1574FDF63B3FEB638B7"
-                      clientKey:@"4768674EDC06477EC63AEEF8FEAB0CF8" response:^(BOOL succeed, NSString *response){
                           
                           if (succeed){
                               
                           }
                           
                       }];*/
-
-    [NSThread sleepForTimeInterval:5];
     
-     [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound];
-    NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
-    NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
-    NSString *loginName = nil;
-    if (array && [array count]!=0)
-        loginName= [array objectAtIndex:0];
-    if (loginName) {
-        STreamUser *user = [[STreamUser alloc] init];
-        [user loadUserMetadata:loginName response:^(BOOL succeed, NSString *error){
-            if ([error isEqualToString:loginName]){
-                NSMutableDictionary *dic = [user userMetadata];
-                ImageCache *imageCache = [ImageCache sharedObject];
-                [imageCache saveUserMetadata:loginName withMetadata:dic];
-            }
-        }];
+    /*
+    [STreamSession setUpServerUrl:@"http://streamsdk.com/print/print/"];
+     [STreamSession authenticate:@"7E95CF60694890DCD4CEFBF79BC3BAE4" secretKey:@"73B7C757A511B1574FDF63B3FEB638B7"
+     clientKey:@"4768674EDC06477EC63AEEF8FEAB0CF8" response:^(BOOL succeed, NSString *response){
+     
+     if (succeed){
+     
+     }
+     
+     }];*/
+    
+    NSString *res = nil;
+    for (int i=0; i < 5; i++){
+        /*[STreamSession setUpServerUrl:@"http://streamsdk.com/print/print/"];
+        res = [STreamSession authenticate:@"7E95CF60694890DCD4CEFBF79BC3BAE4"  secretKey:@"73B7C757A511B1574FDF63B3FEB638B7" clientKey:@"4768674EDC06477EC63AEEF8FEAB0CF8" ];*/
+        
+        [STreamSession setUpServerUrl:@"http://streamsdk.cn/api/"];
+        res = [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3" clientKey:@"01D901D6EFBA42145E54F52E465F407B" ];
+        if ([res isEqualToString:@"auth ok"]){
+            NSLog(@"%@", res);
+            RootViewController * rootVC = [[RootViewController alloc]init];
+            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:rootVC];
+            [self.window setRootViewController:nav];
+            break;
+        }else{
+            sleep(5);
+        }
+    }
+    
+    return res;
 
-        ImageCache *imageCache = [ImageCache sharedObject];
-        if ([imageCache getUserMetadata:loginName]!=nil) {
-            NSMutableDictionary *userMetaData = [imageCache getUserMetadata:loginName];
-            NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-            if ([imageCache getImage:pImageId] == nil && pImageId){
-                FileCache *fileCache = [FileCache sharedObject];
-                STreamFile *file = [[STreamFile alloc] init];
-                if (![imageCache getImage:pImageId]){
-                    [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
-                        if ([pImageId isEqualToString:oId]){
-                            [imageCache selfImageDownload:imageData withFileId:pImageId];
-                            [fileCache writeFileDoc:pImageId withData:imageData];
-                        }
-                    }];
+}
+-(void)doAuth
+{
+    NSString *res = [self auth];
+    if ([res isEqualToString:@"auth ok"]){
+        NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+        NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
+        NSString *loginName = nil;
+        if (array && [array count]!=0)
+            loginName= [array objectAtIndex:0];
+        if (loginName) {
+            STreamUser *user = [[STreamUser alloc] init];
+            [user loadUserMetadata:loginName response:^(BOOL succeed, NSString *error){
+                if ([error isEqualToString:loginName]){
+                    NSMutableDictionary *dic = [user userMetadata];
+                    ImageCache *imageCache = [ImageCache sharedObject];
+                    [imageCache saveUserMetadata:loginName withMetadata:dic];
+                }
+            }];
+            
+            ImageCache *imageCache = [ImageCache sharedObject];
+            if ([imageCache getUserMetadata:loginName]!=nil) {
+                NSMutableDictionary *userMetaData = [imageCache getUserMetadata:loginName];
+                NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+                if ([imageCache getImage:pImageId] == nil && pImageId){
+                    FileCache *fileCache = [FileCache sharedObject];
+                    STreamFile *file = [[STreamFile alloc] init];
+                    if (![imageCache getImage:pImageId]){
+                        [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
+                            if ([pImageId isEqualToString:oId]){
+                                [imageCache selfImageDownload:imageData withFileId:pImageId];
+                                [fileCache writeFileDoc:pImageId withData:imageData];
+                            }
+                        }];
+                    }
                 }
             }
+            
+            [self showFriendsView];
+        }else{
+            RootViewController * rootVC = [[RootViewController alloc]init];
+            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:rootVC];
+            [self.window setRootViewController:nav];
         }
-
-        [self showFriendsView];
     }else{
-        RootViewController * rootVC = [[RootViewController alloc]init];
-        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:rootVC];
-        [self.window setRootViewController:nav];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"网络错误" message:@"网络没有信号" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
+        [alert show];
     }
-
-   
-
     
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
-     [UIApplication sharedApplication].applicationIconBadgeNumber=application.applicationIconBadgeNumber-1;
-    
-    return YES;
 }
-
 
 
 
