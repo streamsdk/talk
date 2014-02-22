@@ -27,6 +27,12 @@
 #import "UploadDB.h"
 //#import "TwitterConnect.h"
 
+@implementation UINavigationBar (UINavigationBarCategory)
+- (void)drawRect:(CGRect)rect {
+   
+}
+@end
+
 @implementation AppDelegate
 
 -(void) showFriendsView{

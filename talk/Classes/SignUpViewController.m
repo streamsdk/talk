@@ -54,7 +54,7 @@
     self.navigationItem.leftBarButtonItem = leftitem;
     
     UIImageView *bgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,self.view.frame.size.width, self.view.frame.size.height)];
-    [bgView setImage:[UIImage imageNamed:@"bg.png"]];
+//    [bgView setImage:[UIImage imageNamed:@"bg.png"]];
     bgView.userInteractionEnabled = YES;
     [self.view addSubview:bgView];
 

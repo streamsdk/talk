@@ -59,7 +59,7 @@
     UIBarButtonItem * leftitem = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
     self.navigationItem.leftBarButtonItem = leftitem;
     UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,self.view.frame.size.width, self.view.frame.size.height)];
-    [imageview setImage:[UIImage imageNamed:@"bg.png"]];
+//    [imageview setImage:[UIImage imageNamed:@"bg.png"]];
     imageview.userInteractionEnabled = YES;
     [self.view addSubview:imageview];
     CreateUI * createUI = [[CreateUI alloc]init];

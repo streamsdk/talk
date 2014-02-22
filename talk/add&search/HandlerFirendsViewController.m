@@ -229,7 +229,7 @@
 	// Do any additional setup after loading the view.
     isAddFriend= YES;
     isSendRequest = NO;
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
+//    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     friendsAddPoint = CGPointZero;
     friendsSearchPoint = CGPointZero;
     friendsHistoryPoint = CGPointZero;
