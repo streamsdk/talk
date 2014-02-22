@@ -162,20 +162,23 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     UIImageView * view = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, size.width, size.height*2)];
     view.backgroundColor = [UIColor clearColor];
     [view addSubview:label];
-    [view addSubview:button];
     
-    if ([time isEqualToString:@"-1"]) {
-        [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        [button setTitle:@"Viewed" forState:UIControlStateNormal];
-        view.userInteractionEnabled = NO;
+    if (type == BubbleTypeSomeoneElse) {
+        [view addSubview:button];
+        if ([time isEqualToString:@"-1"]) {
+            [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            [button setTitle:@"Viewed" forState:UIControlStateNormal];
+            view.userInteractionEnabled = NO;
+            
+        }else{
+            view.userInteractionEnabled = YES;
+            [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+            [button setTitle:@"Click to view" forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(lookImageClicked) forControlEvents:UIControlEventTouchUpInside];
+        }
 
-    }else{
-        view.userInteractionEnabled = YES;
-        [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        [button setTitle:@"Click to view" forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(lookImageClicked) forControlEvents:UIControlEventTouchUpInside];
     }
-
+   
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(lookImageClicked)];
     [view addGestureRecognizer:tap];
 #if !__has_feature(objc_arc)
@@ -286,40 +289,44 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
         UIImageView * view = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, size.width, size.height*2)];
         view.backgroundColor = [UIColor clearColor];
         [view addSubview:label];
-        [view addSubview:videobutton];
-        if (![videoPath hasSuffix:@".mp4"]){
-            NSData *jsonData = [body dataUsingEncoding:NSUTF8StringEncoding];
-            JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
-            NSDictionary *json = [decoder objectWithData:jsonData];
-            NSString *fileId = [json objectForKey:@"fileId"];
-            ImageCache * imagecache = [ImageCache sharedObject];
-             BOOL isTheFileDownloading = [imagecache isFileDownloading:fileId];
-            view.userInteractionEnabled = YES;
-            [videobutton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-            if (isTheFileDownloading) {
-                [videobutton setTitle:@"Downloading" forState:UIControlStateNormal];
-            }else{
-                [videobutton setTitle:@"Download" forState:UIControlStateNormal];
-            }
-            UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(playerVideo)];
-            [view addGestureRecognizer:tap];
-           
-        }else{
-            if ([time isEqualToString:@"-1"]) {
-                [videobutton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-                [videobutton setTitle:@"Viewed" forState:UIControlStateNormal];
-                view.userInteractionEnabled = NO;
-                
-            }else{
+        if (type ==BubbleTypeSomeoneElse) {
+            [view addSubview:videobutton];
+            if (![videoPath hasSuffix:@".mp4"]){
+                NSData *jsonData = [body dataUsingEncoding:NSUTF8StringEncoding];
+                JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+                NSDictionary *json = [decoder objectWithData:jsonData];
+                NSString *fileId = [json objectForKey:@"fileId"];
+                ImageCache * imagecache = [ImageCache sharedObject];
+                BOOL isTheFileDownloading = [imagecache isFileDownloading:fileId];
                 view.userInteractionEnabled = YES;
                 [videobutton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-                [videobutton setTitle:@"Click to view" forState:UIControlStateNormal];
-                [videobutton addTarget:self action:@selector(playerVideo) forControlEvents:UIControlEventTouchUpInside];
+                if (isTheFileDownloading) {
+                    [videobutton setTitle:@"Downloading" forState:UIControlStateNormal];
+                }else{
+                    [videobutton setTitle:@"Download" forState:UIControlStateNormal];
+                }
                 UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(playerVideo)];
                 [view addGestureRecognizer:tap];
                 
+            }else{
+                if ([time isEqualToString:@"-1"]) {
+                    [videobutton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+                    [videobutton setTitle:@"Viewed" forState:UIControlStateNormal];
+                    view.userInteractionEnabled = NO;
+                    
+                }else{
+                    view.userInteractionEnabled = YES;
+                    [videobutton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+                    [videobutton setTitle:@"Click to view" forState:UIControlStateNormal];
+                    [videobutton addTarget:self action:@selector(playerVideo) forControlEvents:UIControlEventTouchUpInside];
+                    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(playerVideo)];
+                    [view addGestureRecognizer:tap];
+                    
+                }
             }
+
         }
+        
         
       UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
         return [self initWithView:view date:date type:type  withFileType:FileDisappear insets:insets];

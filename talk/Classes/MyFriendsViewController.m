@@ -60,7 +60,13 @@
 
 -(void) addFriends {
     HandlerFirendsViewController * handlerVC = [[HandlerFirendsViewController alloc]init];
-    [self.navigationController pushViewController:handlerVC animated:YES];
+//    [self.navigationController pushViewController:handlerVC animated:YES];
+    [UIView animateWithDuration:0.5
+                     animations:^{
+                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                         [self.navigationController pushViewController:handlerVC animated:NO];
+                         [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.navigationController.view cache:NO];
+                     }];
 }
 -(void) settingClicked {
     SettingViewController *setVC = [[SettingViewController alloc]init];

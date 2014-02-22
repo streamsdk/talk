@@ -223,7 +223,7 @@
         
         cell.backgroundColor = [UIColor redColor];
         UIButton * logOut = [UIButton buttonWithType:UIButtonTypeCustom];
-        [logOut setFrame:CGRectMake(10,0, self.view.bounds.size.width-20, 44)];
+        [logOut setFrame:CGRectMake(10,0, self.view.frame.size.width-20, 44)];
         [logOut setTitle:@"Log Out" forState:UIControlStateNormal];
         logOut.titleLabel.font = [UIFont systemFontOfSize:20.0f];
         [logOut setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -415,7 +415,13 @@
              STreamXMPP * con = [STreamXMPP sharedObject];
              [con disconnect];
              LoginViewController *loginVC = [[LoginViewController alloc]init];
-             [self.navigationController pushViewController:loginVC animated:YES];
+//             [self.navigationController pushViewController:loginVC animated:YES];
+             [UIView animateWithDuration:0.5
+                              animations:^{
+                                  [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                                  [self.navigationController pushViewController:loginVC animated:NO];
+                                  [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.navigationController.view cache:NO];
+                              }];
          }
      }
     
