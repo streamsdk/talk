@@ -41,7 +41,7 @@
 //    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     [self.view setBackgroundColor:[UIColor blackColor]];
 	
-    self.img = [[NSArray alloc]initWithObjects:@"bg1.png",@"bg2.jpg",@"bg3.jpg",@"bg4.png",@"bg5.png",@"bg6.png",@"bg7.png",@"bg8.jpg",@"bg9.png",@"bg10.png",@"bg11.png",nil];
+    self.img = [[NSArray alloc]initWithObjects:@"bg1.png",@"bg2.jpg",@"bg3.jpg",@"bg4.png",@"bg5.png",@"bg6.png",@"bg7.png",@"bg8.jpg",@"bg9.png",@"bg10.png",@"bg11.png",@"bg.png",nil];
     
     self.scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,55, self.view.frame.size.width, self.view.frame.size.height-50)];
     [self.scrollView setBackgroundColor:[UIColor whiteColor]];
@@ -55,6 +55,7 @@
         }
         for (int j = 0; j < column; j++) {
             UIImageView * imageview = [[UIImageView alloc]initWithFrame:CGRectMake(SPACE_WIDTH+(IMAGE_HEIGHT_WIDTH+20)*j, SPACE_WIDTH+(IMAGE_HEIGHT_WIDTH+20)*i, IMAGE_HEIGHT_WIDTH, IMAGE_HEIGHT_WIDTH)];
+            
             [imageview setImage:[UIImage imageNamed:[self.img objectAtIndex:COLUMN*i+j]]];
             imageview.userInteractionEnabled = YES;
             UITapGestureRecognizer *sigleTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(imageSeleted:)];
@@ -95,6 +96,9 @@
     
     UIImageView * img = (UIImageView *)[gestureRecognizer view];
     UIImage *image = img.image;
+    if (img.tag ==111) {
+        image = nil;
+    }
     
    HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
     ImageCache * imagecache = [ImageCache sharedObject];
