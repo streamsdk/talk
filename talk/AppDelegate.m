@@ -124,11 +124,11 @@
     
     NSString *res = nil;
     for (int i=0; i < 5; i++){
-        /*[STreamSession setUpServerUrl:@"http://streamsdk.com/print/print/"];
-        res = [STreamSession authenticate:@"7E95CF60694890DCD4CEFBF79BC3BAE4"  secretKey:@"73B7C757A511B1574FDF63B3FEB638B7" clientKey:@"4768674EDC06477EC63AEEF8FEAB0CF8" ];*/
+        [STreamSession setUpServerUrl:@"http://streamsdk.com/print/print/"];
+        res = [STreamSession authenticate:@"7E95CF60694890DCD4CEFBF79BC3BAE4"  secretKey:@"73B7C757A511B1574FDF63B3FEB638B7" clientKey:@"4768674EDC06477EC63AEEF8FEAB0CF8" ];
         
-        [STreamSession setUpServerUrl:@"http://streamsdk.cn/api/"];
-        res = [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3" clientKey:@"01D901D6EFBA42145E54F52E465F407B" ];
+        //[STreamSession setUpServerUrl:@"http://streamsdk.cn/api/"];
+        //res = [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3" clientKey:@"01D901D6EFBA42145E54F52E465F407B" ];
         if ([res isEqualToString:@"auth ok"]){
             NSLog(@"%@", res);
             RootViewController * rootVC = [[RootViewController alloc]init];

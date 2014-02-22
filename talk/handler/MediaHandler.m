@@ -33,6 +33,7 @@
     STreamFile *sf = [[STreamFile alloc] init];
     STreamXMPP *con = [STreamXMPP sharedObject];
     [sf postData:data finished:^(NSString *res){
+      if ([sf fileId]){
         if ([res isEqualToString:@"ok"]){
             if ([f.type isEqualToString:@"video"]) {
                 STreamFile * sfile = [[STreamFile alloc]init];
@@ -60,6 +61,9 @@
         if (fileArray != nil && [fileArray count] != 0) {
             [self doFileUpload:fileArray];
         }
+      }else{
+          NSLog(@"FILE IS NULL");
+      }
         
     }byteSent:^(float bytes){
         long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);

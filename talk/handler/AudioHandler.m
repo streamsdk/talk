@@ -59,6 +59,7 @@
             FilesUpload * f =[fileArray objectAtIndex:0];
             long long ftime = [f.time longLongValue];
             if ((milliseconds/1000.0 - ftime/1000.0)<8) {
+                [cache addFileUpload:file];
                 return;
             }
             
