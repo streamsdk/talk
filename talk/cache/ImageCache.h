@@ -52,6 +52,8 @@
 
 -(void)removeFileUpload:(FilesUpload *)file;
 
+-(void)removeAllFileUpload;
+
 -(void) saveBubbleData:(NSBubbleData *)bubbledata withKey:(NSString *)key;
 
 -(NSMutableDictionary *)getBubbleData;

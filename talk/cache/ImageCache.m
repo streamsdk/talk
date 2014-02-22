@@ -154,6 +154,11 @@ static NSMutableDictionary*_downloadingFile;
 
     [_fileUpload removeObject:file];
 }
+
+-(void)removeAllFileUpload{
+    
+    [_fileUpload removeAllObjects];
+}
 -(void) saveBubbleData:(NSBubbleData *)bubbledata withKey:(NSString *)key{
     
     [dic setObject:bubbledata forKey:key];

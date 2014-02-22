@@ -15,6 +15,7 @@
 #import <CFNetwork/CFNetwork.h>
 #import "ACKMessageDB.h"
 #import "AddDB.h"
+#import "ImageCache.h"
 
 #if DEBUG
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;
@@ -130,6 +131,9 @@ static XMPPReconnect *xmppReconnect;
 */
 - (void)disconnect
 {
+    ImageCache * imagecache = [ImageCache sharedObject];
+    [imagecache removeAllFileUpload];
+    
     ACKMessageDB * ack = [[ACKMessageDB alloc]init];
     NSMutableArray * ackArray = [ack  readDb];
     [ack deleteDB];

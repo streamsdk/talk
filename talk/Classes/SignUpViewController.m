@@ -47,6 +47,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.title = @"sign up";
     self.navigationController.navigationBarHidden = NO;
     self.navigationController.hidesBottomBarWhenPushed = YES;
     

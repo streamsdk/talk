@@ -277,7 +277,7 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "414734500.673719"
+                  timestampString = "414751784.314995"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
@@ -291,7 +291,7 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "414734500.673908"
+                  timestampString = "414751784.315198"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
@@ -314,22 +314,6 @@
             startingLineNumber = "157"
             endingLineNumber = "157"
             landmarkName = "-application:didFinishLaunchingWithOptions:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "talk/Classes/MyFriendsViewController.m"
-            timestampString = "414670050.275093"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "314"
-            endingLineNumber = "314"
-            landmarkName = "-readHistory"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -385,13 +369,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "talk/Classes/MyFriendsViewController.m"
-            timestampString = "414670050.275093"
+            filePath = "talk/handler/VideoHandler.m"
+            timestampString = "414751867.7429"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "286"
-            endingLineNumber = "286"
-            landmarkName = "-startUpload"
+            startingLineNumber = "235"
+            endingLineNumber = "235"
+            landmarkName = "-sendVideo:withData:withVideoTime:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -402,12 +386,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/handler/VideoHandler.m"
-            timestampString = "414733112.091997"
+            timestampString = "414751931.999033"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "224"
-            endingLineNumber = "224"
+            startingLineNumber = "232"
+            endingLineNumber = "232"
             landmarkName = "-sendVideo:withData:withVideoTime:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "talk/handler/MediaHandler.m"
+            timestampString = "414751975.2803"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
+            landmarkName = "-doFileUpload:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

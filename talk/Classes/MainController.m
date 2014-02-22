@@ -156,7 +156,7 @@
 
     }else{
         [backgroundView setBackgroundColor:[UIColor whiteColor]];
-//        [backgroundView setImage:[UIImage imageNamed:@"bg.png"]];
+        [backgroundView setImage:[UIImage imageNamed:@""]];
     }
     if (path) {
         NSData * data = [NSData dataWithContentsOfFile:path];
@@ -834,7 +834,7 @@
         NSData * data = [NSData dataWithContentsOfURL:videoPath];
         NSInteger size = [data length]/1024/1024;
         if (isVideoFromGallery) {
-            if (size <= 15) {
+            if (size <= 150) {
                 [picker dismissViewControllerAnimated:YES completion:^{
                     UIActionSheet *actionSheet = [[UIActionSheet alloc]
                                                   initWithTitle:nil
