@@ -834,7 +834,7 @@
         NSData * data = [NSData dataWithContentsOfURL:videoPath];
         NSInteger size = [data length]/1024/1024;
         if (isVideoFromGallery) {
-            if (size <= 150) {
+            if (size <= 15) {
                 [picker dismissViewControllerAnimated:YES completion:^{
                     UIActionSheet *actionSheet = [[UIActionSheet alloc]
                                                   initWithTitle:nil
