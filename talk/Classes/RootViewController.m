@@ -18,6 +18,7 @@
 @end
 
 #define TOPHEIGHT 64
+#define IS_IPHONE5 (([[UIScreen mainScreen] bounds].size.height-568)?NO:YES)
 @implementation RootViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -36,7 +37,10 @@
     self.navigationController.navigationBarHidden = YES;
     
     UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,self.view.frame.size.width, self.view.frame.size.height)];
-    [imageview setImage:[UIImage imageNamed:@"talk960.png"]];
+    if (IS_IPHONE5)
+        [imageview setImage:[UIImage imageNamed:@"flash1136.png"]];
+    else
+        [imageview setImage:[UIImage imageNamed:@"flash960.png"]];
     imageview.userInteractionEnabled = YES;
     [self.view addSubview:imageview];
     

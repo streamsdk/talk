@@ -60,9 +60,9 @@ static XMPPReconnect *xmppReconnect;
     xmppReconnect = [[XMPPReconnect alloc] init];
     [xmppReconnect activate:xmppStream];
     [xmppStream addDelegate:self delegateQueue:dispatch_get_main_queue()];
-    //[xmppStream setHostName:@"streamsdk.com"];
+    [xmppStream setHostName:@"streamsdk.com"];
     //xmppStream.enableBackgroundingOnSocket = YES;
-    [xmppStream setHostName:@"192.168.1.17"];
+    //[xmppStream setHostName:@"192.168.1.17"];
     
     [xmppStream setHostPort:5222];
     
@@ -297,6 +297,8 @@ static XMPPReconnect *xmppReconnect;
         array = [[array objectAtIndex:0] componentsSeparatedByString:str];
         if (array && [array count] !=0) {
             fromID = [array objectAtIndex:1];
+            if ([fromID isEqualToString:@"status"])
+                return;
         }
     }
  	if ([message isMessageWithBody])

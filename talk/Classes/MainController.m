@@ -355,8 +355,8 @@
             [bubbleTableView reloadData];
             [self scrollBubbleViewToBottomAnimated:YES];
         }else {
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"please input chat Contents" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
-            [alert show];
+            ///UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"please input chat Contents" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+            //[alert show];
         }
         
     }else{
@@ -482,7 +482,7 @@
     [[recordButton layer] setCornerRadius:4];
     [keyBoardButton addTarget:self action:@selector(recordToKeyboardClicked) forControlEvents:UIControlEventTouchUpInside];
     
-    NSString *title =@"按住说话";
+    NSString *title =@"Hold to Talk";
     CGRect frame2 = CGRectMake(46, 2, toolBar.frame.size.width-60, 36);
     recordButton = [createUI setButtonFrame:frame2 withTitle:title];
     [[recordButton layer] setBorderColor:[[UIColor blackColor] CGColor]];
@@ -841,7 +841,7 @@
                                                   delegate:self
                                                   cancelButtonTitle:nil
                                                   destructiveButtonTitle:nil
-                                                  otherButtonTitles:@"Video disappear after played", @"Keep the video after played",nil];
+                                                  otherButtonTitles:@"Expire after playing", @"Never Expire",nil];
                     actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
                     [actionSheet showInView:self.view];
                 }];

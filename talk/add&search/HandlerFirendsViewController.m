@@ -191,7 +191,7 @@
     UILabel * searchLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-300, self.view.frame.size.width,100)];
     searchLabel .backgroundColor = [UIColor clearColor];
     searchLabel.textColor = [UIColor lightGrayColor];
-    searchLabel.text = @"please search friend";
+    searchLabel.text = @"search friends by user name";
     searchLabel.font = [UIFont systemFontOfSize:20.0f];
     searchLabel.textAlignment = NSTextAlignmentCenter;
     searchLabel.tag =SEARCH_LABEL_TAG;
@@ -206,7 +206,7 @@
     [searchLabel removeFromSuperview];
     [_searchBar removeFromSuperview];
     _friendsType = FriendsHistory;
-    self.title = @"Hostory Friends";
+    self.title = @"Inivitations Sent";
     
     [myTableview removeFromSuperview];
     myTableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 100, self.view.frame.size.width, self.view.frame.size.height-100)];

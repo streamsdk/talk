@@ -53,7 +53,7 @@ static NSMutableArray *colors;
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
     [self.view setBackgroundColor:[UIColor blackColor]];
-    timeArray = [[NSMutableArray alloc]initWithObjects:@"",@"永久保存",@"3s",@"4s",@"5s",@"6s",@"7s",@"8s",@"9s",@"10s", @"11s",@"12s",@"13s",@"14s",@"15s",nil];
+    timeArray = [[NSMutableArray alloc]initWithObjects:@"",@"Never Expire",@"3s",@"4s",@"5s",@"6s",@"7s",@"8s",@"9s",@"10s", @"11s",@"12s",@"13s",@"14s",@"15s",nil];
     
     mainVC = [[MainController alloc]init];
 
@@ -233,7 +233,7 @@ static NSMutableArray *colors;
 }
 -(void) sendImageClicked {
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"loading friends...";
+    HUD.labelText = @"sending photo...";
     [self.view addSubview:HUD];
     data = UIImageJPEGRepresentation(image, 1.0);
     NSInteger t = [data length]/1024;
@@ -298,7 +298,7 @@ static NSMutableArray *colors;
     [button addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
     
     UILabel * lable = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 200, 30)];
-    lable.text = @"设置对方看几秒";
+    lable.text = @"Expire after";
     lable.backgroundColor = [UIColor clearColor];
     [actionSheet  addSubview:lable];
     [actionSheet addSubview:button];

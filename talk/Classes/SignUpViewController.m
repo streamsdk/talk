@@ -97,6 +97,45 @@
     [bgView addSubview:signUpButton];
 
 }
+- (void)addAsFriend:(NSString *)myUserName withFriend:(NSString *)friendUserName{
+    
+    
+    STreamObject *myObject = [[STreamObject alloc] init];
+    [myObject setObjectId:friendUserName];
+    [myObject addStaff:@"status" withObject:@"friend"];
+    [myObject setCategory:myUserName];
+    [myObject updateInBackground];
+    
+    
+    STreamObject *friendObject = [[STreamObject alloc] init];
+    [friendObject setObjectId:myUserName];
+    [friendObject setCategory:friendUserName];
+    [friendObject addStaff:@"status" withObject:@"friend"];
+    [friendObject updateInBackground];
+    
+}
+
+
+- (void)addAsFriendRequest:(NSString *)myUserName withFriend:(NSString *)friendUserName{
+    
+    STreamObject *myObject = [[STreamObject alloc] init];
+    [myObject setObjectId:friendUserName];
+    [myObject addStaff:@"status" withObject:@"request"];
+    [myObject setCategory:myUserName];
+    [myObject updateInBackground];
+    
+    
+    STreamObject *friendObject = [[STreamObject alloc] init];
+    [friendObject setObjectId:myUserName];
+    [friendObject setCategory:friendUserName];
+    [friendObject addStaff:@"status" withObject:@"request"];
+    [friendObject updateInBackground];
+    
+    
+}
+
+
+
 -(void )signUpUser {
     [userName resignFirstResponder];
     NSString *username = userName.text;
@@ -146,6 +185,8 @@
                 NSString *nameFilePath = [self getCacheDirectory];
                 NSArray * nameArray = [[NSArray alloc]initWithObjects:username,pword, nil];
                 [nameArray writeToFile:nameFilePath atomically:YES];
+                
+                //杨蕊 请检查这里为什么要log in, 有必要吗？？？？？
                 [user logIn:username withPassword:pword];
                 
                 if ([[user errorMessage] length] == 0) {
