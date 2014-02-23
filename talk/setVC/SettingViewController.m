@@ -473,19 +473,22 @@
 }
 -(void)displayMailComposerSheet
 {
+    HandlerUserIdAndDateFormater *handle = [HandlerUserIdAndDateFormater sharedObject];
+
     MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
     
     picker.mailComposeDelegate =self;
     [picker setSubject:@"文件分享"];
-    NSString *emailBody =[NSString stringWithFormat:@"我分享了文件给您，地址是"] ;
+    NSString *emailBody =[NSString stringWithFormat:@"I am using CoolChat now. Download CoolChat from apple store or google play store. My user name is %@. Add me as friend",[handle getUserID]] ;
     [picker setMessageBody:emailBody isHTML:NO];
     [self presentViewController:picker animated:YES completion:nil];
 }
 -(void)displaySMSComposerSheet
 {
+    HandlerUserIdAndDateFormater *handle = [HandlerUserIdAndDateFormater sharedObject];
     MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
     picker.messageComposeDelegate =self;
-    NSString *smsBody =[NSString stringWithFormat:@"我分享了文件给您"] ;
+    NSString *smsBody =[NSString stringWithFormat:@"I am using CoolChat now. Download CoolChat from apple store or google play store. My user name is %@. Add me as friend",[handle getUserID]] ;
     picker.body=smsBody;
     [self presentViewController:picker animated:YES completion:nil];
 }

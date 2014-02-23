@@ -308,7 +308,7 @@
         [l setCornerRadius:8.0];
     }
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setFrame:CGRectMake(cell.frame.size.width-100, 10, 40, 40)];
+    [button setFrame:CGRectMake(cell.frame.size.width-80, 10, 40, 40)];
 //    button.tag = CELL_BUTTON_TAG;
     [cell addSubview:button];
 //    UIButton * button = (UIButton *)[cell viewWithTag:CELL_BUTTON_TAG];

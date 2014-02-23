@@ -600,7 +600,7 @@
     label.frame = CGRectMake(10, 0, 320, 24);
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
-    label.font=[UIFont fontWithName:@"Arial" size:22.0f];
+    label.font=[UIFont fontWithName:@"Arial" size:19.0f];
     label.text = sectionTitle;
     
     UIView * sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 24)] ;
