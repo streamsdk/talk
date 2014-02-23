@@ -148,12 +148,14 @@
 {
     NSString *res = [self auth];
     if ([res isEqualToString:@"auth ok"]){
-        NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
+       /* NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
         NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
         NSString *loginName = nil;
         if (array && [array count]!=0)
-            loginName= [array objectAtIndex:0];
-        if (loginName) {
+            loginName= [array objectAtIndex:0];*/
+        NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+        NSString * loginName = [userDefaults objectForKey:@"username"];
+        if (loginName!=nil && ![loginName isEqualToString:@""]) {
             STreamUser *user = [[STreamUser alloc] init];
             [user loadUserMetadata:loginName response:^(BOOL succeed, NSString *error){
                 if ([error isEqualToString:loginName]){

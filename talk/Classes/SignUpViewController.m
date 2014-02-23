@@ -156,7 +156,7 @@
         
         DownloadAvatar *downloadAvatar = [[DownloadAvatar alloc]init];
         __block NSString * error;
-        
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"this user name is existing in your system" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"loading friends...";
         [self.view addSubview:HUD];
@@ -182,30 +182,30 @@
                     else
                         NSLog(@"failed");
                 }];
-                NSString *nameFilePath = [self getCacheDirectory];
-                NSArray * nameArray = [[NSArray alloc]initWithObjects:username,pword, nil];
-                [nameArray writeToFile:nameFilePath atomically:YES];
-                
+//                NSString *nameFilePath = [self getCacheDirectory];
+//                NSArray * nameArray = [[NSArray alloc]initWithObjects:username,pword, nil];
+//                [nameArray writeToFile:nameFilePath atomically:YES];
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                [userDefaults setObject:username forKey:@"username"];
+                [userDefaults setObject:pword forKey:@"password"];
                 //杨蕊 请检查这里为什么要log in, 有必要吗？？？？？
-                [user logIn:username withPassword:pword];
+//                [user logIn:username withPassword:pword];
                 
-                if ([[user errorMessage] length] == 0) {
-                    STreamUser *user = [[STreamUser alloc] init];
-                    [user loadUserMetadata:username response:^(BOOL succeed, NSString *error){
-                        if ([error isEqualToString:username]){
-                            NSMutableDictionary *dic = [user userMetadata];
-                            ImageCache *imageCache = [ImageCache sharedObject];
-                            [imageCache saveUserMetadata:username withMetadata:dic];
-                            [downloadAvatar loadAvatar:username];
-                        }
-                    }];
-                }
-               
+                [user loadUserMetadata:username response:^(BOOL succeed, NSString *error){
+                    if ([error isEqualToString:username]){
+                        NSMutableDictionary *dic = [user userMetadata];
+                        ImageCache *imageCache = [ImageCache sharedObject];
+                        [imageCache saveUserMetadata:username withMetadata:dic];
+                        [downloadAvatar loadAvatar:username];
+                    }
+                }];
             }
         }completionBlock:^{
             if ([error length] == 0) {
                 MyFriendsViewController *myFriendVC = [[MyFriendsViewController alloc]init];
                 [self.navigationController pushViewController:myFriendVC animated:YES];
+            }else{
+                [alertView show];
             }
             [HUD removeFromSuperview];
             HUD = nil;

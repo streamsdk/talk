@@ -110,8 +110,8 @@
     NSString *userName = userNameText.text;
     userName = [userName lowercaseString];
     NSString *passWord = password.text;
-    NSString *nameFilePath = [self getCacheDirectory];
-    NSArray * nameArray = [[NSArray alloc]initWithObjects:userName,passWord, nil];
+//    NSString *nameFilePath = [self getCacheDirectory];
+//    NSArray * nameArray = [[NSArray alloc]initWithObjects:userName,passWord, nil];
     __block NSString * error;
     DownloadAvatar *downloadAvatar = [[DownloadAvatar alloc]init];
     UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"user does not exist or password error,please sigUp" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
@@ -125,7 +125,10 @@
             NSLog(@"%@",[user errorMessage]);
             error = [user errorMessage];
             if ([[user errorMessage] length] == 0) {
-                [nameArray writeToFile:nameFilePath atomically:YES];
+                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                [userDefaults setObject:userName forKey:@"username"];
+                [userDefaults setObject:passWord forKey:@"password"];
+//                [nameArray writeToFile:nameFilePath atomically:YES];
                 STreamUser *user = [[STreamUser alloc] init];
                 [user loadUserMetadata:userName response:^(BOOL succeed, NSString *error){
                     if ([error isEqualToString:userName]){

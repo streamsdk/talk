@@ -27,24 +27,30 @@ static NSDate * _date;
 
 -(NSString *)getUserID{
     
-    NSString * userID =nil;
+    /*NSString * userID =nil;
     NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
     NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
     if (array && [array count]!=0) {
         
         userID = [array objectAtIndex:0];
     }
-    return userID;
+    return userID;*/
+    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString * userId = [userDefaults objectForKey:@"username"];
+    return userId;
 }
 -(NSString *)getUserIDPassword{
     
-    NSString * password =nil;
+    /*NSString * password =nil;
     NSString * filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
     NSArray * array = [[NSArray alloc]initWithContentsOfFile:filePath];
     if (array && [array count]!=0) {
         
         password = [array objectAtIndex:1];
     }
+    return password;*/
+    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString * password = [userDefaults objectForKey:@"password"];
     return password;
 }
 
