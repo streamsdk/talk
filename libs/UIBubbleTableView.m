@@ -450,7 +450,9 @@
     NSData *jsonData = [jsonbody dataUsingEncoding:NSUTF8StringEncoding];
     JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
     NSDictionary *json = [decoder objectWithData:jsonData];
-    NSString *duration = [json objectForKey:@"duration"];
+    NSArray * key = [json allKeys];
+    NSDictionary *dict = [json objectForKey:[key objectAtIndex:0]];
+    NSString *duration = [dict objectForKey:@"duration"];
     [cell.data.delegate playerVideo:cell.data._videoPath withTime:duration withDate:cell.data.date ];
     
 }
