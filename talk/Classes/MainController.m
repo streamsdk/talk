@@ -123,6 +123,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     
+     [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSString *sendToID = [imageCache getFriendID];
     

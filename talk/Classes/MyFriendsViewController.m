@@ -73,7 +73,8 @@
     [self.navigationController pushViewController:setVC animated:NO];
 }
 -(void)viewWillAppear:(BOOL)animated{
-
+ 
+    [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
     if (firstRead) {
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"loading ...";
