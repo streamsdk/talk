@@ -100,7 +100,7 @@
     if (!email) {
         email = @"";
     }
-    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"Email",email,@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"About",@"Log Out", nil];
+    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"Email",email,@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
     myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height) style:UITableViewStyleGrouped];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
@@ -124,7 +124,7 @@
     [myTableView reloadData];
 }
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
-    return 4;
+    return 5;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
@@ -136,9 +136,12 @@
             return 2;
             break;
         case 2:
-            return 3;
+            return 2;
             break;
         case 3:
+            return 1;
+            break;
+        case 4:
             return 1;
             break;
         default:
@@ -157,7 +160,7 @@
             head = @"Invite to Viber";
             break;
         case 2:
-            head = @"Support";
+            head = @"About";
             break;
         default:
             break;
@@ -223,13 +226,26 @@
         
         cell.backgroundColor = [UIColor redColor];
         UIButton * logOut = [UIButton buttonWithType:UIButtonTypeCustom];
-        [logOut setFrame:CGRectMake(10,0, self.view.frame.size.width-20, 44)];
+        [logOut setFrame:CGRectMake(0,0, cell.contentView.frame.size.width-20, 44)];
         [logOut setTitle:@"Log Out" forState:UIControlStateNormal];
         logOut.titleLabel.font = [UIFont systemFontOfSize:20.0f];
         [logOut setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [logOut addTarget:self action:@selector(LogOut) forControlEvents:UIControlEventTouchUpInside];
         [cell addSubview:logOut];
+        
+    }else if(indexPath.section==4){
+        
+        cell.backgroundColor = [UIColor blackColor];
+        UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0,0, cell.contentView.frame.size.width-20, 44)];
+        [label setBackgroundColor:[UIColor blackColor]];
+        label.textAlignment=NSTextAlignmentCenter;
+        label.font=[UIFont fontWithName:@"Arial" size:20.0f];
+        label.textColor = [UIColor whiteColor];
+        label.text= @"CoolChat messenger V1.0";
+        [cell addSubview:label];
+        
     }
+
     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:18.0f];
 
     return cell;

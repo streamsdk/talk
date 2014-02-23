@@ -252,11 +252,11 @@
     segmentedControl.frame = CGRectMake(0, 64.0, self.view.bounds.size.width, 36.0);
     segmentedControl.selectedSegmentIndex = 0;
     
-    segmentedControl.segmentedControlStyle=UISegmentedControlStyleBordered;
+//    segmentedControl.segmentedControlStyle=UISegmentedControlStyleBordered;
     [segmentedControl addTarget:self action:@selector(segmentAction:)forControlEvents:UIControlEventValueChanged];
    //[segmentedControl setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [segmentedControl setBackgroundColor:[UIColor lightGrayColor]];
-    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor blueColor],UITextAttributeTextColor,[UIFont fontWithName:@"DIN Alternate" size:17],UITextAttributeFont ,nil];
+    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor blueColor],[UIFont fontWithName:@"DIN Alternate" size:17],nil];
     [segmentedControl setTitleTextAttributes:dic forState:UIControlStateNormal];
 
     [self.view addSubview:segmentedControl];

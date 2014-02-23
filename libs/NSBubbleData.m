@@ -69,7 +69,8 @@ const UIEdgeInsets textInsetsSomeone = {5, 15, 11, 10};
 - (id)initWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type
 {
     UIFont *font = [UIFont systemFontOfSize:18.0f];
-    CGSize size = [(text ? text : @"") sizeWithFont:font constrainedToSize:CGSizeMake(220, 9999) lineBreakMode:NSLineBreakByWordWrapping];
+//    CGSize size = [(text ? text : @"") sizewi:font constrainedToSize:CGSizeMake(220, 9999) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size = [(text ? text : @"") boundingRectWithSize:CGSizeMake(220, 9999) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil].size;
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
     label.numberOfLines = 0;
     label.lineBreakMode = NSLineBreakByWordWrapping;
@@ -144,7 +145,8 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     
     NSString * text =@"I sent a photo to you";
     UIFont *font = [UIFont systemFontOfSize:16.0f];
-    CGSize size = [(text ? text : @"") sizeWithFont:font constrainedToSize:CGSizeMake(220, 9999) lineBreakMode:NSLineBreakByWordWrapping];
+//    CGSize size = [(text ? text : @"") sizeWithFont:font constrainedToSize:CGSizeMake(220, 9999) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size = [(text ? text : @"") boundingRectWithSize:CGSizeMake(220, 9999) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil].size;
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
     label.numberOfLines = 0;
     label.lineBreakMode = NSLineBreakByWordWrapping;
@@ -246,7 +248,6 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     disappearPath = videoPath;
     jsonBody = body;
     CGSize size = image.size;
-    ImageCache * imagecache = [ImageCache sharedObject];
     /*if (size.width > 200)
     {
         image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(100, 100)];
@@ -271,7 +272,8 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     }else{
         NSString * text =@"I sent a video to you";
         UIFont *font = [UIFont systemFontOfSize:16.0f];
-        CGSize size = [(text ? text : @"") sizeWithFont:font constrainedToSize:CGSizeMake(220, 9999) lineBreakMode:NSLineBreakByWordWrapping];
+//        CGSize size = [(text ? text : @"") sizeWithFont:font constrainedToSize:CGSizeMake(220, 9999) lineBreakMode:NSLineBreakByWordWrapping];
+        CGSize size = [(text ? text : @"") boundingRectWithSize:CGSizeMake(220, 9999) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil].size;
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
         label.numberOfLines = 0;
         label.lineBreakMode = NSLineBreakByWordWrapping;
