@@ -226,6 +226,13 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *username = [userDefaults objectForKey:@"username"];
+    if (!username) {
+        RootViewController * rootVC = [[RootViewController alloc]init];
+        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:rootVC];
+        [self.window setRootViewController:nav];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

@@ -424,9 +424,7 @@
          isaAatarImg=NO;
      }else{
          if (buttonIndex == 1) {
-             NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
-             [userDefaults removeObjectForKey:@"username"];
-             [userDefaults removeObjectForKey:@"password"];
+            
              
              STreamXMPP * con = [STreamXMPP sharedObject];
              [con disconnect];

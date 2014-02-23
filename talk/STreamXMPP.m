@@ -70,6 +70,9 @@ static XMPPReconnect *xmppReconnect;
 
 - (BOOL)connect: (NSString *)userName withPassword:(NSString *)password
 {
+    if (!userName) {
+        return NO;
+    }
     [self setXmppStream];
 	/*if (![xmppStream isDisconnected]) {
 		return YES;
@@ -131,6 +134,11 @@ static XMPPReconnect *xmppReconnect;
 */
 - (void)disconnect
 {
+    
+    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults removeObjectForKey:@"username"];
+    [userDefaults removeObjectForKey:@"password"];
+    
     ImageCache * imagecache = [ImageCache sharedObject];
     [imagecache removeAllFileUpload];
     
