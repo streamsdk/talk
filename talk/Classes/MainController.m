@@ -489,6 +489,7 @@
     [[recordButton layer] setBorderColor:[[UIColor blackColor] CGColor]];
     [[recordButton layer] setBorderWidth:1];
     [[recordButton layer] setCornerRadius:4];
+    [recordButton setBackgroundColor:[UIColor lightGrayColor]];
     [recordButton addTarget:self action:@selector(recordStart) forControlEvents:UIControlEventTouchDown];
     [recordButton addTarget:self action:@selector(recordEnd) forControlEvents:UIControlEventTouchUpInside];
     [recordButton addTarget:self action:@selector(recordCancel) forControlEvents:UIControlEventTouchUpOutside];
