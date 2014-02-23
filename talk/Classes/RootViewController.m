@@ -96,11 +96,11 @@
 -(void) login {
   
     LoginViewController *loginVC = [[LoginViewController alloc]init];
-    [self.navigationController pushViewController:loginVC animated:YES];
+    [self.navigationController pushViewController:loginVC animated:NO];
 }
 -(void) singUp {
     SignUpViewController *signupVC = [[SignUpViewController alloc]init];
-    [self.navigationController pushViewController:signupVC animated:YES];
+    [self.navigationController pushViewController:signupVC animated:NO];
 }
 - (void)didReceiveMemoryWarning
 {

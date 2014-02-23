@@ -429,6 +429,7 @@
 -(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
     NSString *string = searchBar.text;
+    string = [string lowercaseString];
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     STreamUser * user = [[STreamUser alloc]init];
     NSString * loginName = [handler getUserID];

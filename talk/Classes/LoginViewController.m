@@ -71,6 +71,8 @@
     [userNameText becomeFirstResponder];
     userNameText.keyboardType = UIKeyboardTypeAlphabet;
     userNameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    [userNameText setAutocorrectionType:UITextAutocorrectionTypeNo];
+    [userNameText setSpellCheckingType:UITextSpellCheckingTypeYes];
     [imageview addSubview:userNameText];
     
     password = [createUI setTextFrame:CGRectMake(20,150, self.view.frame.size.width-40, 50)];
