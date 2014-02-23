@@ -71,7 +71,7 @@
     
     NSBubbleType type = self.data.type;
     
-    FileType filetype = self.data.fileType;
+//    FileType filetype = self.data.fileType;
 
     CGFloat width = self.data.view.frame.size.width;
     CGFloat height = self.data.view.frame.size.height;

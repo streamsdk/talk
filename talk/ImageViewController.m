@@ -357,16 +357,16 @@ static NSMutableArray *colors;
     
     CGContextDrawImage(cgctx, rect, inImage);
     
-    unsigned char* data = CGBitmapContextGetData (cgctx);
+    unsigned char* _data = CGBitmapContextGetData (cgctx);
     
-    if (data != NULL) {
+    if (_data != NULL) {
         @try {
             int offset = 4*((w*round(point.y))+round(point.x));
             NSLog(@"offset: %d", offset);
-            int alpha =  data[offset];
-            int red = data[offset+1];
-            int green = data[offset+2];
-            int blue = data[offset+3];
+            int alpha =  _data[offset];
+            int red = _data[offset+1];
+            int green = _data[offset+2];
+            int blue = _data[offset+3];
             NSLog(@"offset: %i colors: RGB A %i %i %i  %i",offset,red,green,blue,alpha);
             color  = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
         }
@@ -378,7 +378,7 @@ static NSMutableArray *colors;
         
     }
     CGContextRelease(cgctx);
-    if (data) { free(data); }
+    if (_data) { free(_data); }
     
     UIButton * brush = (UIButton *)[self.view viewWithTag:BRUSH_TAG];
     [colors addObject:color];

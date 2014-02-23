@@ -86,7 +86,7 @@ static NSMutableArray *colors;
     //线条拐角样式，设置为平滑
     CGContextSetLineJoin(context,kCGLineJoinRound);
     //线条开始样式，设置为平滑
-    CGContextSetLineCap(context, kCGLineJoinRound);
+    CGContextSetLineCap(context, kCGLineCapButt);
     //查看lineArray数组里是否有线条，有就将之前画的重绘，没有只画当前线条
     if ([lineArray count]>0) {
         for (int i=0; i<[lineArray count]; i++) {

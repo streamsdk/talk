@@ -101,13 +101,21 @@
         email = @"";
     }
     userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"Email",email,@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
-    myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height) style:UITableViewStyleGrouped];
+    myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height-30) style:UITableViewStyleGrouped];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
     myTableView.dataSource = self;
     myTableView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:myTableView];
 
+    
+    UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0,self.view.bounds.size.height-30, self.view.frame.size.width, 30)];
+    [label setBackgroundColor:[UIColor blackColor]];
+    label.textAlignment=NSTextAlignmentCenter;
+    label.font=[UIFont fontWithName:@"Arial" size:15.0f];
+    label.textColor = [UIColor whiteColor];
+    label.text= @"CoolChat messenger V1.0";
+    [self.view addSubview:label];
     DownloadAvatar * loadavatar = [[DownloadAvatar alloc]init];
     profileImage = [loadavatar readAvatar:loginName];
     
@@ -124,7 +132,7 @@
     [myTableView reloadData];
 }
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
-    return 5;
+    return 4;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
@@ -233,19 +241,7 @@
         [logOut addTarget:self action:@selector(LogOut) forControlEvents:UIControlEventTouchUpInside];
         [cell addSubview:logOut];
         
-    }else if(indexPath.section==4){
-        
-        cell.backgroundColor = [UIColor blackColor];
-        UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0,0, cell.contentView.frame.size.width-20, 44)];
-        [label setBackgroundColor:[UIColor blackColor]];
-        label.textAlignment=NSTextAlignmentCenter;
-        label.font=[UIFont fontWithName:@"Arial" size:20.0f];
-        label.textColor = [UIColor whiteColor];
-        label.text= @"CoolChat messenger V1.0";
-        [cell addSubview:label];
-        
     }
-
     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:18.0f];
 
     return cell;
