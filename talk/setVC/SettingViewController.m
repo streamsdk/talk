@@ -297,14 +297,14 @@
             break;
 
         case 2:{
-          /*if (indexPath.row == 0) {
+          if (indexPath.row == 0) {
                 TearmServiceViewController * tearm = [[TearmServiceViewController alloc]init];
                 [self.navigationController pushViewController:tearm animated:YES];
             }
             if (indexPath.row ==1) {
                 PrivacyPoolicyViewController *privacy = [[PrivacyPoolicyViewController alloc] init];
                 [self.navigationController pushViewController:privacy animated:YES];
-            }*/
+            }
         }
             break;
        

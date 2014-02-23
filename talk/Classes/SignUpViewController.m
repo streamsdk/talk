@@ -20,7 +20,8 @@
 #import "MyFriendsViewController.h"
 #import "RootViewController.h"
 #import "DownloadAvatar.h"
-
+#import "TearmServiceViewController.h"
+#import "PrivacyPoolicyViewController.h"
 
 @interface SignUpViewController ()<UIActionSheetDelegate>
 {
@@ -30,7 +31,7 @@
 
 @implementation SignUpViewController
 
-@synthesize userName,password,surePassword;
+@synthesize userName,password;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -83,21 +84,58 @@
     password.placeholder = @"input password";
     [bgView addSubview:password];
     
-    height = height +password.frame.size.height+10;
-    surePassword = [createUI setTextFrame:CGRectMake(20, height ,viewFrame.size.width-40, 40)];
+    height = height +password.frame.size.height+5;
+    /*surePassword = [createUI setTextFrame:CGRectMake(20, height ,viewFrame.size.width-40, 40)];
     surePassword.keyboardType = UIKeyboardTypeAlphabet;
     [surePassword setSecureTextEntry:YES];
     surePassword.delegate = self;
     surePassword.placeholder = @"input password again";
-    [bgView addSubview:surePassword];
+    [bgView addSubview:surePassword];*/
     
-    height = height +surePassword.frame.size.height+10;
+    UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(20, height ,viewFrame.size.width-100, 20)];
+    [label setBackgroundColor:[UIColor clearColor]];
+    label.font = [UIFont systemFontOfSize:10];
+    label.text = @"By creating an account,you agree to the";
+    [bgView addSubview:label];
+    
+    UIButton * terms = [UIButton buttonWithType:UIButtonTypeCustom];
+    [terms setFrame:CGRectMake(viewFrame.size.width-110, height ,80, 20)];
+    [terms setTitle:@"Terms of Use" forState:UIControlStateNormal];
+    [terms setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    terms.titleLabel.font = [UIFont systemFontOfSize:11.0f];
+    [terms addTarget:self action:@selector(Terms) forControlEvents:UIControlEventTouchUpInside];
+    [bgView addSubview:terms];
+    
+    height = height +label.frame.size.height;
+    UILabel * label2 = [[UILabel alloc]initWithFrame:CGRectMake(20, height ,viewFrame.size.width-100, 20)];
+    [label2 setBackgroundColor:[UIColor clearColor]];
+    label2.font = [UIFont systemFontOfSize:10];
+    label2.text = @"and You acknowledge that you have read the";
+    [bgView addSubview:label2];
+    
+    UIButton * privacy = [UIButton buttonWithType:UIButtonTypeCustom];
+    [privacy setFrame:CGRectMake(viewFrame.size.width-100, height ,100, 20)];
+    [privacy setTitle:@"Privacy Policy." forState:UIControlStateNormal];
+    privacy.titleLabel.font = [UIFont systemFontOfSize:11.0f];
+    [privacy setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [privacy addTarget:self action:@selector(privacy) forControlEvents:UIControlEventTouchUpInside];
+    [bgView addSubview:privacy];
+
+    height = height +label.frame.size.height+10;
     UIButton *signUpButton = [createUI setButtonFrame:CGRectMake(20, height , viewFrame.size.width-40, 50) withTitle:@"SIGN UP"];
     [signUpButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [signUpButton setBackgroundColor:[UIColor greenColor]];
     [signUpButton addTarget:self action:@selector(signUpUser) forControlEvents:UIControlEventTouchUpInside];
     [bgView addSubview:signUpButton];
 
+}
+-(void) Terms {
+    TearmServiceViewController * tearm = [[TearmServiceViewController alloc]init];
+    [self.navigationController pushViewController:tearm animated:NO];
+}
+-(void) privacy{
+    PrivacyPoolicyViewController *privacy = [[PrivacyPoolicyViewController alloc] init];
+    [self.navigationController pushViewController:privacy animated:YES];
 }
 - (void)addAsFriend:(NSString *)myUserName withFriend:(NSString *)friendUserName{
     
@@ -143,8 +181,8 @@
     NSString *username = userName.text;
     username = [username lowercaseString];
     NSString *pword = password.text;
-    NSString *secondWord = surePassword.text;
-    if (username && pword && [secondWord isEqualToString:pword]) {
+//    NSString *secondWord = surePassword.text;
+    if (username!=nil && ![username isEqualToString:@""] && pword!=nil && ![pword  isEqualToString:@""]) {
         
         STreamUser *user = [[STreamUser alloc] init];
         NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];

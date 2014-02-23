@@ -27,9 +27,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.title = @"Terms of Service";
     UIWebView * webView = [[UIWebView alloc]initWithFrame:self.view.frame];
     [self.view addSubview: webView];
-    NSString *urlString = @"";
+    NSString *urlString = @"http://streamsdk.com/coolchat/termsofuse.html";
     NSURL *url =[NSURL URLWithString:urlString];
     NSURLRequest *request =[NSURLRequest requestWithURL:url];
     [webView loadRequest:request];

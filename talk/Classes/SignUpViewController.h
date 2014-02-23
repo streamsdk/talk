@@ -14,5 +14,5 @@
 }
 @property (nonatomic,strong) UITextField *userName;
 @property (nonatomic,strong) UITextField *password;
-@property (nonatomic,strong) UITextField *surePassword;
+//@property (nonatomic,strong) UITextField *surePassword;
 @end
