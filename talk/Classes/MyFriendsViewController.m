@@ -142,7 +142,7 @@
     }
 
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-    label.text =[handle getUserID];
+    label.text =[NSString stringWithFormat:@"%@ (me)", [handle getUserID]];
     label.textColor = [UIColor grayColor];
     label.font = [UIFont fontWithName:@"Arial" size:22.0f];
     self.tableView.tableHeaderView =label;
