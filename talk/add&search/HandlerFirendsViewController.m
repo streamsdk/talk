@@ -437,7 +437,7 @@
     UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"No results found" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Yes", nil];
 
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"loading friends...";
+    HUD.labelText = @"Loading...";
     [self.view addSubview:HUD];
      __block BOOL isUserExist;
     [HUD showAnimated:YES whileExecutingBlock:^{

@@ -135,9 +135,6 @@ static XMPPReconnect *xmppReconnect;
 - (void)disconnect
 {
     
-    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults removeObjectForKey:@"username"];
-    [userDefaults removeObjectForKey:@"password"];
     
     ImageCache * imagecache = [ImageCache sharedObject];
     [imagecache removeAllFileUpload];

@@ -120,7 +120,7 @@
     profileImage = [loadavatar readAvatar:loginName];
     
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"loading friends...";
+    HUD.labelText = @"Loading...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
 //        [self loadAvatar:loginName];
@@ -428,7 +428,9 @@
              
              STreamXMPP * con = [STreamXMPP sharedObject];
              [con disconnect];
-            
+             NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+             [userDefaults removeObjectForKey:@"username"];
+             [userDefaults removeObjectForKey:@"password"];
              LoginViewController *loginVC = [[LoginViewController alloc]init];
 //             [self.navigationController pushViewController:loginVC animated:YES];
              [UIView animateWithDuration:0.5

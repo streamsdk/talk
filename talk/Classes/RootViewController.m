@@ -48,8 +48,8 @@
     [loginBtn setFrame:CGRectMake(0, self.view.frame.size.height -180, self.view.frame.size.width, 60)];
     [loginBtn setTitle:@"LOG IN" forState:UIControlStateNormal];
     loginBtn.titleLabel.font = [UIFont systemFontOfSize:20.0f];
-    [loginBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [loginBtn setBackgroundColor:[UIColor redColor]];
+    [loginBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [loginBtn setBackgroundColor:[UIColor blackColor]];
     [loginBtn addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
     [imageview addSubview:loginBtn];
     
@@ -57,8 +57,8 @@
     [signupBtn setFrame:CGRectMake(0, self.view.frame.size.height -100, self.view.frame.size.width, 60)];
     [signupBtn setTitle:@"SIGN UP" forState:UIControlStateNormal];
     signupBtn.titleLabel.font = [UIFont systemFontOfSize:20.0f];
-    [signupBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [signupBtn setBackgroundColor:[UIColor greenColor]];
+    [signupBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [signupBtn setBackgroundColor:[UIColor blackColor]];
     [signupBtn addTarget:self action:@selector(singUp) forControlEvents:UIControlEventTouchUpInside];
     [imageview addSubview:signupBtn];
     

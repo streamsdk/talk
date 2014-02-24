@@ -53,7 +53,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.title = @"login";
+    self.title = @"Log In";
      self.navigationController.navigationBarHidden = NO;
     
     self .navigationItem.hidesBackButton = YES;
@@ -84,8 +84,8 @@
     
     UIButton *loginButton = [createUI setButtonFrame:CGRectMake(20, 220, self.view.frame.size.width-40, 50) withTitle:@"LOG IN"];
     loginButton.titleLabel.font = [UIFont systemFontOfSize:20.0f];
-    [loginButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [loginButton setBackgroundColor:[UIColor redColor]];
+    [loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [loginButton setBackgroundColor:[UIColor blackColor]];
     [loginButton addTarget:self action:@selector(loginUser) forControlEvents:UIControlEventTouchUpInside];
     [imageview addSubview:loginButton];
     
@@ -120,7 +120,7 @@
     if (userName && ([userName length] != 0) && passWord &&([passWord length]!= 0)) {
         
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        HUD.labelText = @"loading friends...";
+        HUD.labelText = @"log you in, Please wait...";
         [self.view addSubview:HUD];
         [HUD showAnimated:YES whileExecutingBlock:^{
              [user logIn:userName withPassword:passWord];

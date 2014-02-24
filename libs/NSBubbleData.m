@@ -169,7 +169,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
         [view addSubview:button];
         if ([time isEqualToString:@"-1"]) {
             [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-            [button setTitle:@"Viewed" forState:UIControlStateNormal];
+            [button setTitle:@"Deleted" forState:UIControlStateNormal];
             view.userInteractionEnabled = NO;
             
         }else{
@@ -313,7 +313,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
             }else{
                 if ([time isEqualToString:@"-1"]) {
                     [videobutton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-                    [videobutton setTitle:@"Viewed" forState:UIControlStateNormal];
+                    [videobutton setTitle:@"Deleted" forState:UIControlStateNormal];
                     view.userInteractionEnabled = NO;
                     
                 }else{

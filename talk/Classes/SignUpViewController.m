@@ -22,6 +22,7 @@
 #import "DownloadAvatar.h"
 #import "TearmServiceViewController.h"
 #import "PrivacyPoolicyViewController.h"
+#import "AddDB.h"
 
 @interface SignUpViewController ()<UIActionSheetDelegate>
 {
@@ -50,7 +51,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title = @"sign up";
+    self.title = @"Sign Up";
     self.navigationController.navigationBarHidden = NO;
     self.navigationController.hidesBottomBarWhenPushed = YES;
     
@@ -73,7 +74,7 @@
     [userName setSpellCheckingType:UITextSpellCheckingTypeYes];
     userName.delegate = self;
     [userName becomeFirstResponder];
-    userName.placeholder = @"Input User Name";
+    userName.placeholder = @"Enter User Name";
     [bgView addSubview:userName];
     
     height = height+userName.frame.size.height +10;
@@ -81,7 +82,7 @@
     password.keyboardType = UIKeyboardTypeAlphabet;
     [password setSecureTextEntry:YES];
     password.delegate = self;
-    password.placeholder = @"input password";
+    password.placeholder = @"Enter password";
     [bgView addSubview:password];
     
     height = height +password.frame.size.height+5;
@@ -123,8 +124,8 @@
 
     height = height +label.frame.size.height+10;
     UIButton *signUpButton = [createUI setButtonFrame:CGRectMake(20, height , viewFrame.size.width-40, 50) withTitle:@"SIGN UP"];
-    [signUpButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [signUpButton setBackgroundColor:[UIColor greenColor]];
+    [signUpButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [signUpButton setBackgroundColor:[UIColor blackColor]];
     [signUpButton addTarget:self action:@selector(signUpUser) forControlEvents:UIControlEventTouchUpInside];
     [bgView addSubview:signUpButton];
 
@@ -153,6 +154,10 @@
     [friendObject addStaff:@"status" withObject:@"friend"];
     [friendObject updateInBackground];
     
+    AddDB * addDb = [[AddDB alloc]init];
+    [addDb insertDB:myUserName withFriendID:friendUserName withStatus:@"friend"];
+
+    
 }
 
 
@@ -171,7 +176,8 @@
     [friendObject addStaff:@"status" withObject:@"request"];
     [friendObject updateInBackground];
     
-    
+     AddDB * addDb = [[AddDB alloc]init];
+     [addDb insertDB:myUserName withFriendID:friendUserName withStatus:@"request"];
 }
 
 
@@ -198,7 +204,7 @@
         __block NSString * error;
         UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"this user name is existing in your system" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        HUD.labelText = @"loading friends...";
+        HUD.labelText = @"Adding you as a new user, Please wait...";
         [self.view addSubview:HUD];
         [HUD showAnimated:YES whileExecutingBlock:^{
             [user signUp:username withPassword:pword withMetadata:metaData];
@@ -228,6 +234,10 @@
                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                 [userDefaults setObject:username forKey:@"username"];
                 [userDefaults setObject:pword forKey:@"password"];
+                
+                
+                [self addAsFriend:username withFriend:@"apple"];
+                [self addAsFriendRequest:username withFriend:@"viber"];
                 //杨蕊 请检查这里为什么要log in, 有必要吗？？？？？
 //                [user logIn:username withPassword:pword];
                 

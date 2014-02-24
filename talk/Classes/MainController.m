@@ -454,7 +454,7 @@
 -(void) recordCancel
 {
     [self.voice cancelled];
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"Viewed" delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"Deleted" delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
     [alert show];
 }
 
@@ -868,7 +868,7 @@
                                                   delegate:self
                                                   cancelButtonTitle:nil
                                                   destructiveButtonTitle:nil
-                                                  otherButtonTitles:@"Video disappear after played", @"Keep the video after played",nil];
+                                                  otherButtonTitles:@"Expire after playing", @"Never Expire",nil];
                     actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
                     [actionSheet showInView:self.view];
                 }];
