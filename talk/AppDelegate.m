@@ -124,9 +124,12 @@
     
     NSString *res = nil;
     for (int i=0; i < 5; i++){
+        
+        
         [STreamSession setUpServerUrl:@"http://streamsdk.com/print/print/"];
         //[STreamSession setUpServerUrl:@"http://192.168.1.17:8081/api/"];
-        res = [STreamSession authenticate:@"7E95CF60694890DCD4CEFBF79BC3BAE4"  secretKey:@"73B7C757A511B1574FDF63B3FEB638B7" clientKey:@"4768674EDC06477EC63AEEF8FEAB0CF8" ];
+        //res = [STreamSession authenticate:@"7E95CF60694890DCD4CEFBF79BC3BAE4"  secretKey:@"73B7C757A511B1574FDF63B3FEB638B7" clientKey:@"4768674EDC06477EC63AEEF8FEAB0CF8" ];
+        res = [STreamSession authenticate:@"A82C2F6E73F3D911F5E424953A1C8E62"  secretKey:@"A3C7D9386C4A4063CDE1B4A8B3820BD2" clientKey:@"C8BB14A1A961E9D391196D9F411B18D8" ];
         
         //[STreamSession setUpServerUrl:@"http://streamsdk.cn/api/"];
         //res = [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3" clientKey:@"01D901D6EFBA42145E54F52E465F407B" ];

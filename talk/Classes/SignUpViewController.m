@@ -236,10 +236,12 @@
                 [userDefaults setObject:pword forKey:@"password"];
                 
                 
-                [self addAsFriend:username withFriend:@"apple"];
-                [self addAsFriendRequest:username withFriend:@"viber"];
-                //杨蕊 请检查这里为什么要log in, 有必要吗？？？？？
-//                [user logIn:username withPassword:pword];
+                [self addAsFriend:username withFriend:@"coolchat"];
+                [self addAsFriendRequest:username withFriend:@"maria"];
+                
+                STreamObject *myObject = [[STreamObject alloc] init];
+                [myObject setObjectId:username];
+                [myObject createNewObject:^(BOOL succeed, NSString *response){}];
                 
                 [user loadUserMetadata:username response:^(BOOL succeed, NSString *error){
                     if ([error isEqualToString:username]){
