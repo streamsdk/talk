@@ -102,7 +102,7 @@
     UIImageView *imageview = (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
     UIImageWriteToSavedPhotosAlbum([imageview image], nil, nil,nil);
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
-                                                    message:@"You have successfully stored in the photo album"
+                                                    message:@"The photo has been successfully stored in photo album"
                                                    delegate:self
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];

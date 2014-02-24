@@ -468,7 +468,7 @@ static const CGFloat iPhoneScreenPortraitWidth = 320.f;
 }
 - (void)errorVideoCheck:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
-                                                    message:@"You have successfully stored in the photo album"
+                                                    message:@"The video has been successfully stored in photo album"
                                                    delegate:self
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
