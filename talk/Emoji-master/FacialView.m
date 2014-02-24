@@ -52,7 +52,7 @@
 -(void)selected:(UIButton*)bt
 {
     if (bt.tag==10000) {
-        NSLog(@"点击删除");
+        //NSLog(@"点击删除");
         [delegate selectedFacialView:@"删除"];
     }else{
         NSString *str=[faces objectAtIndex:bt.tag];

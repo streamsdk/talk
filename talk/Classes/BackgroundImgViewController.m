@@ -117,7 +117,7 @@
     }
     [self dismissViewControllerAnimated:YES completion:^{
         
-        NSLog(@"back");
+        //NSLog(@"back");
         
     }];
 
@@ -130,14 +130,14 @@
 {
     [self dismissViewControllerAnimated:YES completion:^{
         
-        NSLog(@"back");
+        //NSLog(@"back");
     
     }];
 }
 -(void)doneSelected:(id)sender{
     [self dismissViewControllerAnimated:YES completion:^{
         
-        NSLog(@"back");
+        //NSLog(@"back");
         
     }];
 }

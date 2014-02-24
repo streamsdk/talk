@@ -198,7 +198,7 @@
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * addDB = [[AddDB alloc]init];
     NSMutableDictionary * dict = [addDB readDB:[handle getUserID]];
-    NSLog(@"%d",[dict count]);
+    //NSLog(@"%d",[dict count]);
     NSArray * array = [dict allKeys];
     for (int i = 0;i< [array count];i++) {
         NSString *status = [dict objectForKey:[array objectAtIndex:i]];

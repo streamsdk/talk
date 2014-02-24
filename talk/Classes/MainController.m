@@ -624,7 +624,7 @@
         NSTimeInterval animationDuration;
         [animationDurationValue getValue:&animationDuration];
     
-        NSLog(@"键盘即将出现：%@", NSStringFromCGRect(keyBoardFrame));
+        //NSLog(@"键盘即将出现：%@", NSStringFromCGRect(keyBoardFrame));
         if (toolBar.frame.size.height>40) {
             toolBar.frame = CGRectMake(0, keyBoardFrame.origin.y-20-toolBar.frame.size.height,  self.view.bounds.size.width,toolBar.frame.size.height);
         }else{

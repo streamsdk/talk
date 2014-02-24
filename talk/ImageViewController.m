@@ -362,16 +362,16 @@ static NSMutableArray *colors;
     if (_data != NULL) {
         @try {
             int offset = 4*((w*round(point.y))+round(point.x));
-            NSLog(@"offset: %d", offset);
+            ///NSLog(@"offset: %d", offset);
             int alpha =  _data[offset];
             int red = _data[offset+1];
             int green = _data[offset+2];
             int blue = _data[offset+3];
-            NSLog(@"offset: %i colors: RGB A %i %i %i  %i",offset,red,green,blue,alpha);
+            //NSLog(@"offset: %i colors: RGB A %i %i %i  %i",offset,red,green,blue,alpha);
             color  = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
         }
         @catch (NSException * e) {
-            NSLog(@"%@",[e reason]);
+            //NSLog(@"%@",[e reason]);
         }
         @finally {
         }

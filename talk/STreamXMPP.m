@@ -192,12 +192,12 @@ static XMPPReconnect *xmppReconnect;
 
 - (void)xmppStreamDidSecure:(XMPPStream *)sender
 {
-	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
+	//DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
 }
 
 - (void)xmppStreamDidConnect:(XMPPStream *)sender
 {
-	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
+	//DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
 	
 	isXmppConnected = YES;
 	
@@ -266,7 +266,7 @@ static XMPPReconnect *xmppReconnect;
 
 - (void)xmppStreamDidAuthenticate:(XMPPStream *)sender
 {
-	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
+	//DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
 	
 	[self goOnline];
     [xmppDelegate didAuthenticate];
@@ -275,12 +275,12 @@ static XMPPReconnect *xmppReconnect;
 
 - (void)xmppStream:(XMPPStream *)sender socketDidConnect:(GCDAsyncSocket *)socket
 {
-	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
+	//DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
 }
 
 - (void)xmppStream:(XMPPStream *)sender didNotAuthenticate:(NSXMLElement *)error
 {
-	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
+	//DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
     [xmppDelegate didNotAuthenticate:error];
 }
 
@@ -290,7 +290,7 @@ static XMPPReconnect *xmppReconnect;
 
 - (void)xmppStream:(XMPPStream *)sender didReceiveMessage:(XMPPMessage *)message
 {
-	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
+	//DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
     
     
     NSString *from = [message fromStr];
@@ -427,7 +427,7 @@ static XMPPReconnect *xmppReconnect;
 
 - (void)xmppStream:(XMPPStream *)sender willSecureWithSettings:(NSMutableDictionary *)settings{
     
-    DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
+    //DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
     
     BOOL allowSelfSignedCertificates = YES;
     BOOL	allowSSLHostNameMismatch = NO;

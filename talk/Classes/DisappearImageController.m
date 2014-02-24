@@ -74,7 +74,7 @@
         [timer setFireDate:[NSDate distantFuture]];
         [self dismissViewControllerAnimated:YES completion:^{
         
-        NSLog(@"back");
+        //NSLog(@"back");
         
         }];
     

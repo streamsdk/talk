@@ -46,7 +46,7 @@
             }
             [f.bodyDict setObject:[sf fileId] forKey:@"fileId"];
             NSString *bodyJsonData = [f.bodyDict JSONString];
-            NSLog(@"body json data: %@", bodyJsonData);
+           // NSLog(@"body json data: %@", bodyJsonData);
             ACKMessageDB *ack = [[ACKMessageDB alloc]init];
             NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -84,7 +84,7 @@
             [cache removeFileUpload:f];
         }
         
-        NSLog(@"byteSent:%f", bytes);
+       // NSLog(@"byteSent:%f", bytes);
     }];
  
     

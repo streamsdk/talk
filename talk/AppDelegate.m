@@ -46,7 +46,7 @@
                                  stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]]
                                 stringByReplacingOccurrencesOfString:@" " withString:@""];
     
-    NSLog(@"device token: %@", tokenAsString);
+    //NSLog(@"device token: %@", tokenAsString);
     [STreamPush storeToken:tokenAsString];
 }
 
@@ -134,7 +134,7 @@
         //[STreamSession setUpServerUrl:@"http://streamsdk.cn/api/"];
         //res = [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3" clientKey:@"01D901D6EFBA42145E54F52E465F407B" ];
         if ([res isEqualToString:@"auth ok"]){
-            NSLog(@"%@", res);
+            //NSLog(@"%@", res);
             RootViewController * rootVC = [[RootViewController alloc]init];
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:rootVC];
             [self.window setRootViewController:nav];
@@ -203,11 +203,11 @@
 
 - (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
     NSString *str = [NSString stringWithFormat: @"Error: %@", err];
-    NSLog(@"STR: %@", str);
+    //NSLog(@"STR: %@", str);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    NSLog(@"str %@", [NSString stringWithFormat:@"%d", [userInfo count]]);
+    //NSLog(@"str %@", [NSString stringWithFormat:@"%d", [userInfo count]]);
 }
 
 
