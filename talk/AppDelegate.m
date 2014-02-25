@@ -36,6 +36,7 @@
 @implementation AppDelegate
 
 -(void) showFriendsView{
+    //check in from branch
     MyFriendsViewController * friends = [[MyFriendsViewController alloc]init];
     UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:friends];
     [self.window setRootViewController:nav];
