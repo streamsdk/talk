@@ -17,7 +17,8 @@
 #import "DownloadDB.h"
 #import "HandlerUserIdAndDateFormater.h"
 #import "ImageCache.h"
-
+#import "TalkDB.h"
+static int count =20;
 #define BUBBLETABLEVIEWCELL_TAG 1000
 
 @interface UIBubbleTableView ()
@@ -35,7 +36,7 @@
 @synthesize bubbleSection = _bubbleSection;
 @synthesize typingBubble = _typingBubble;
 @synthesize showAvatars = _showAvatars;
-
+@synthesize isEdit = _isEdit;
 #pragma mark - Initializators
 
 - (void)initializator
@@ -53,6 +54,17 @@
     
     self.snapInterval = 120;
     self.typingBubble = NSBubbleTypingTypeNobody;
+    _reloading = NO;
+    if (_refreshHeaderView == nil) {
+		
+		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.bounds.size.height, self.frame.size.width, self.bounds.size.height)];
+		view.delegate = self;
+		[self addSubview:view];
+		_refreshHeaderView = view;
+		
+	}
+    _refreshHeaderView.delegate = self;
+    [_refreshHeaderView refreshLastUpdatedDate];
 }
 
 - (id)init
@@ -102,7 +114,6 @@
     
     // Cleaning up
 	self.bubbleSection = nil;
-    
     // Loading new data
     int count = 0;
 #if !__has_feature(objc_arc)
@@ -155,7 +166,7 @@
             last = data.date;
         }
     }
-    
+   
     [super reloadData];
 }
 
@@ -235,6 +246,7 @@
     NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
     cell.data = data;
     cell.showAvatar = self.showAvatars;
+    cell.isEdit = self.isEdit;
     cell.tag =indexPath.row+1000*indexPath.section;;
     if (cell.data.type == BubbleTypeMine) {
          Progress * p = [[Progress alloc]init];
@@ -307,7 +319,6 @@
             NSArray * array = [json allKeys];
             if ([array containsObject:@"tidpath"]) {
                 UIButton * downButton = [UIButton buttonWithType:UIButtonTypeCustom];
-                [downButton setFrame:CGRectMake(200, cell.frame.size.height-5, 100, 35)];
                 [[downButton layer] setBorderColor:[[UIColor lightGrayColor] CGColor]];
                 [[downButton layer] setBorderWidth:1];
                 [[downButton layer] setCornerRadius:4];
@@ -319,8 +330,7 @@
                 
                 UIActivityIndicatorView * activityIndicatorView = [[UIActivityIndicatorView alloc]init];
                 [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-                activityIndicatorView.frame = CGRectMake(220, cell.frame.size.height+20, 20, 20);
-                [activityIndicatorView setCenter:CGPointMake(220, cell.frame.size.height+20)];
+                
                 [cell.contentView addSubview:activityIndicatorView];
                 activityIndicatorView.tag = 1000*indexPath.section+indexPath.row+100;
                 if (isTheFileDownloading) {
@@ -330,6 +340,15 @@
                     [downButton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
                     [cell.contentView addSubview:downButton];
                 }
+                if (self.isEdit) {
+                    [downButton setFrame:CGRectMake(216, cell.frame.size.height-5, 100, 35)];
+                    activityIndicatorView.frame = CGRectMake(236, cell.frame.size.height+20, 20, 20);
+                    [activityIndicatorView setCenter:CGPointMake(236, cell.frame.size.height+20)];
+                }else{
+                    [downButton setFrame:CGRectMake(200, cell.frame.size.height-5, 100, 35)];
+                    activityIndicatorView.frame = CGRectMake(220, cell.frame.size.height+20, 20, 20);
+                    [activityIndicatorView setCenter:CGPointMake(220, cell.frame.size.height+20)];
+                }
 
             }
             
@@ -338,10 +357,11 @@
             if (![cell.data._videoPath hasPrefix:@".mp4"]) {
                 UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]init];
                 [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-                activityIndicatorView.frame = CGRectMake(250, cell.frame.size.height-15, 20, 20);
-                [activityIndicatorView setCenter:CGPointMake(250, cell.frame.size.height-15)];
+                activityIndicatorView.frame = CGRectMake(268, cell.frame.size.height-15, 20, 20);
+                [activityIndicatorView setCenter:CGPointMake(268, cell.frame.size.height-15)];
                 [cell.contentView addSubview:activityIndicatorView];
                 activityIndicatorView.tag = indexPath.row+100+1000*indexPath.section;
+                
                 
                 if ([cell.data.videobutton.titleLabel.text isEqualToString:@"Download"]) {
                     cell.data.videobutton.tag = indexPath.row+1000*indexPath.section;
@@ -359,10 +379,7 @@
     
     return cell;
 }
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
- 
-    NSLog(@"row  = %d",indexPath.row);
-}
+
 
 -(void) downloadvideo:(UIButton *)button{
     UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:button.tag];
@@ -456,6 +473,86 @@
     [cell.data.delegate playerVideo:cell.data._videoPath withTime:duration withDate:cell.data.date ];
     
 }
+
+#pragma mark egoRefreshScrollViewDidScroll delegate
+
+- (void)reloadTableViewDataSource{
+    _reloading = YES;
+    [NSThread detachNewThreadSelector:@selector(doInBackground) toTarget:self withObject:nil];
+}
+
+- (void)doneLoadingTableViewData{
+    NSLog(@"doneLoadingTableViewData");
+    
+    _reloading = NO;
+    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self];
+    //刷新表格内容
+//    [super reloadData];
+}
+
+#pragma mark -
+#pragma mark Background operation
+-(void)doInBackground
+{
+    NSLog(@"doInBackground");
+    ImageCache * imageCache =  [ImageCache sharedObject];
+    NSString *sendToID = [imageCache getFriendID];
+    
+    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+    NSString * userID = [handler getUserID];
+    
+    NSMutableArray *bubbleData = [[NSMutableArray alloc]init];
+    TalkDB * talk =[[TalkDB alloc]init];
+    bubbleData = [talk readInitDB:userID withOtherID:sendToID withCount:count];
+    
+    count= count+10;
+    
+    [NSThread sleepForTimeInterval:2];
+    [self.bubbleDataSource reloadBubbleView:bubbleData];
+    [self performSelectorOnMainThread:@selector(doneLoadingTableViewData) withObject:nil waitUntilDone:YES];
+    
+}
+
+
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+
+	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+	
+	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+	
+}
+
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+	
+	[self reloadTableViewDataSource];
+	[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
+	
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+	
+    _reloading = NO;
+	return _reloading; // should return if data source model is reloading
+	
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+	
+	return [NSDate date]; // should return date data source was last changed
+	
+}
+
 #pragma mark - Public interface
 
 - (void) scrollBubbleViewToBottomAnimated:(BOOL)animated

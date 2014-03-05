@@ -30,7 +30,7 @@
     if (!self.typingImageView)
     {
         self.typingImageView = [[UIImageView alloc] init];
-        [self addSubview:self.typingImageView];
+        [self.contentView addSubview:self.typingImageView];
     }
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -41,7 +41,7 @@
     if (value == NSBubbleTypingTypeMe)
     {
         bubbleImage = [UIImage imageNamed:@"typingMine.png"]; 
-        x = self.frame.size.width - bubbleImage.size.width;
+        x = self.contentView.frame.size.width - bubbleImage.size.width;
     }else{
         
         bubbleImage = [UIImage imageNamed:@"typingSomeone.png"]; 

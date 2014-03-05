@@ -65,7 +65,7 @@
 
 }
 
--(NSMutableArray *) readInitDB :(NSString *) _userID withOtherID:(NSString *)_friendID{
+-(NSMutableArray *) readInitDB :(NSString *) _userID withOtherID:(NSString *)_friendID withCount:(int)count{
     
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSMutableDictionary *userMetaData = [imageCache getUserMetadata:_userID];
@@ -83,8 +83,15 @@
         sqlite3_close(database);
         NSAssert(0, @"Failed to open database");
     }
-    
-    NSString *sqlQuery = @"SELECT * FROM FILEID";
+   /* sqlite3_stmt * st;
+    NSString * str =@"select count(*) from FILEID";
+    if (sqlite3_prepare_v2(database, [str UTF8String], -1, &st, nil) == SQLITE_OK) {
+        
+        NSLog(@"");
+    }
+    NSString * sqlQuery =@"SELECT * FROM FILEID ORDER BY TIME DESC LIMIT 10 OFFSET 10";*/
+    NSString * sqlQuery = [NSString stringWithFormat:@"SELECT * FROM FILEID WHERE USERID='%@' and FROMID='%@' ORDER BY TIME DESC LIMIT %d OFFSET 0",_userID,_friendID,count];
+//    NSString *sqlQuery = @"SELECT * FROM FILEID";
     sqlite3_stmt * statement;
     
     if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
@@ -102,12 +109,6 @@
             NSDictionary *ret = [jsonstring objectFromJSONString];
             NSDictionary * chatDic = [ret objectForKey:friendID];
         
-             NSString *nameFilePath = [self getCacheDirectory];
-            NSArray *array = [[NSArray alloc]initWithContentsOfFile:nameFilePath];
-            NSString * _uesrID = nil;
-            if (array && [array count]!= 0) {
-                _uesrID = [array objectAtIndex:0];
-            }
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
             NSDate *date = [dateFormatter dateFromString:time2];
@@ -267,10 +268,29 @@
             NSLog(@"");
         }
     }
-
     sqlite3_step(statement);
     sqlite3_finalize(statement);
     sqlite3_close(database);
+}
+
+-(void) deleteDB :(NSString *)time{
+    sqlite3 *database;
+    if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
+        sqlite3_close(database);
+        NSAssert(0, @"Failed to open database");
+    }
+    NSString * delete = [NSString stringWithFormat:@"DELETE FROM FILEID  WHERE TIME='%@'",time];
+    sqlite3_stmt * statement;
+    
+    if (sqlite3_prepare_v2(database, [delete UTF8String], -1, &statement, nil) == SQLITE_OK) {
+        while (sqlite3_step(statement) == SQLITE_ROW) {
+            NSLog(@"");
+        }
+    }
+    sqlite3_step(statement);
+    sqlite3_finalize(statement);
+    sqlite3_close(database);
+
 }
 -(NSString*)getCacheDirectory
 {

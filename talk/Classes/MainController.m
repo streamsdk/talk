@@ -82,6 +82,10 @@
 
 @synthesize bubbleTableView,toolBar,messageText,iconButton ,recordButton,recordOrKeyboardButton,keyBoardButton,faceButton;
 @synthesize voice;
+@synthesize deleteButton = _deleteButton;
+@synthesize cancelButton = _cancelButton;
+@synthesize deleteBackview = _deleteBackview;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -98,6 +102,7 @@
     keyboardIsShow=NO;
     isFace = NO;
     isVideoFromGallery = NO;
+    
     recordOrKeyboardButton = [createUI setButtonFrame:CGRectMake(0, 5, 30, 30) withTitle:(@"nil")];
     [recordOrKeyboardButton setImage:[UIImage imageNamed:@"microphonefat.png"] forState:UIControlStateNormal];
     [recordOrKeyboardButton addTarget:self action:@selector(KeyboardTorecordClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -134,7 +139,7 @@
     
     bubbleData = [[NSMutableArray alloc]init];
     TalkDB * talk =[[TalkDB alloc]init];
-    bubbleData = [talk readInitDB:userID withOtherID:sendToID];
+    bubbleData = [talk readInitDB:userID withOtherID:sendToID withCount:rowCount];
     for (NSBubbleData * data in bubbleData) {
         data.delegate = self;
     }
@@ -169,6 +174,7 @@
 }
 -(void)SetBackground{
     
+    [self dismissKeyBoard];
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
                                   initWithTitle:nil
                                   delegate:self
@@ -198,13 +204,17 @@
             
         }else if (buttonIndex ==1){
             isClearData = YES;
-            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"Are you sure clear data?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
-            view .delegate = self;
-            [view show];
+            bubbleTableView.isEdit = YES;
+            _deleteBackview.hidden = NO;
+            [bubbleTableView reloadData];
+//            [bubbleTableView setEditing:YES];
+//            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:@"Are you sure clear data?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
+//            view .delegate = self;
+//            [view show];
         }
     }
    
-}
+}	
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -212,9 +222,11 @@
     
     isVideo=NO;
     isClearData = NO;
-    
+    rowCount = 10;
+    isEmoji = NO;
     createUI = [[CreateUI alloc]init];
-    
+    deleteDic = [[NSMutableDictionary alloc] init];
+
     self.voice = [[Voice alloc] init];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(SetBackground)];
 
@@ -244,7 +256,8 @@
     bubbleTableView.tag = TABLEVIEWTAG;
     bubbleTableView.snapInterval = 120;
     bubbleTableView.showAvatars = YES;
-    //给键盘注册通知
+    
+        //给键盘注册通知
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -257,9 +270,59 @@
     messageHandler = [[MessageHandler alloc] init];
     
     audioHandler = [[AudioHandler alloc]init];
-
+    
+    _deleteBackview = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-50, self.view.frame.size.width, 50)];
+    _deleteBackview.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
+    [self.view addSubview:_deleteBackview];
+    _deleteBackview.hidden = YES;
+    
+    _cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _cancelButton.frame = CGRectMake(0, 0, self.view.frame.size.width/2-10, 50);
+    [_cancelButton setBackgroundColor:[UIColor redColor]];
+    [_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [_cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
+    
+    _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _deleteButton.frame = CGRectMake(self.view.frame.size.width/2+10, 0, self.view.frame.size.width/2-10, 50);
+    [_deleteButton setBackgroundColor:[UIColor redColor]];
+    [_deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
+    [_deleteButton addTarget:self action:@selector(delete) forControlEvents:UIControlEventTouchUpInside];
+    
+    [_deleteBackview addSubview:_cancelButton];
+    [_deleteBackview addSubview:_deleteButton];
+    [bubbleTableView reloadData];
+    
 }
-
+-(void)cancel {
+    NSLog(@"cancel");
+    bubbleTableView.isEdit = NO;
+    _deleteBackview.hidden = YES;
+    [APPDELEGATE.deleteArray removeAllObjects];
+    NSMutableArray * array = [[NSMutableArray alloc]init];
+    APPDELEGATE.deleteArray = array;
+    [bubbleTableView reloadData];
+}
+-(void)delete{
+    NSLog(@"delete");
+    TalkDB * talkDb  = [[TalkDB alloc]init];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+    for (NSDate *date in APPDELEGATE.deleteArray) {
+        NSString *deleteDate = [dateFormatter stringFromDate:date];
+        for (NSBubbleData * data in bubbleData) {
+            NSString * d = [dateFormatter stringFromDate:data.date];
+            if ([deleteDate isEqualToString:d]) {
+                [bubbleData removeObject:data];
+                [talkDb deleteDB:deleteDate];
+                break;
+            }
+        }
+    }
+    [APPDELEGATE.deleteArray removeAllObjects];
+    NSMutableArray * array = [[NSMutableArray alloc]init];
+    APPDELEGATE.deleteArray = array;
+    [bubbleTableView reloadData];
+}
 #pragma mark - UIBubbleTableViewDataSource implementation
 
 - (NSInteger)rowsForBubbleTable:(UIBubbleTableView *)tableView
@@ -269,6 +332,9 @@
 
 - (NSBubbleData *)bubbleTableView:(UIBubbleTableView *)tableView dataForRow:(NSInteger)row
 {
+    NSString *title = [NSString stringWithFormat:@"%d",[APPDELEGATE.deleteArray count]];
+    if (![title isEqualToString:@"0"])
+        [_deleteButton setTitle:[NSString stringWithFormat:@"Delete(%@)",title] forState:UIControlStateNormal];
     ImageCache *imageCache = [ImageCache sharedObject];
     HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
     NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[handler getUserID]];
@@ -280,7 +346,13 @@
     otherData = [imageCache getImage:pImageId2];
     return [bubbleData objectAtIndex:row];
 }
-
+-(void)reloadBubbleView:(NSMutableArray *)array{
+    bubbleData = array;
+    for (NSBubbleData * data in bubbleData) {
+        data.delegate = self;
+    }
+    [bubbleTableView reloadData];
+}
 -(void)getFiles:(NSData *)data withFromID:(NSString *)fromID withBody:(NSString *)body withPath:(NSString *)path{
     
     ImageCache *imageCache = [ImageCache sharedObject];
@@ -389,13 +461,11 @@
     NSString *sendToID =[imageCache getFriendID];
     NSMutableArray * dataArray = [[NSMutableArray alloc]init];
     TalkDB * talk =[[TalkDB alloc]init];
-    dataArray = [talk readInitDB:[handler getUserID] withOtherID:sendToID];
+    dataArray = [talk readInitDB:[handler getUserID] withOtherID:sendToID withCount:10];
     bubbleData = dataArray;
     for (NSBubbleData * data in bubbleData) {
         data.delegate = self;
     }
-    /*ImageCache *imageCache = [ImageCache sharedObject];
-    NSString *sendToID =[imageCache getFriendID];*/
     if (sendToID) {
         [photoHandler setController:self];
         [photoHandler sendPhoto:data forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID withTime:time];
@@ -587,6 +657,7 @@
 
 -(void)dismissKeyBoard{
     
+    isEmoji = NO;
     //键盘显示的时候，toolbar需要还原到正常位置，并显示表情
     [UIView animateWithDuration:Time animations:^{
         toolBar.frame = CGRectMake(0, self.view.frame.size.height-toolBar.frame.size.height,  self.view.bounds.size.width,toolBar.frame.size.height);
@@ -734,11 +805,13 @@
     [sendButton addTarget:self action:@selector(sendClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:sendButton];
     [self disFaceKeyboard];
+    isEmoji = YES;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)sender {
     int page = scrollView.contentOffset.x / 320;//通过滚动的偏移量来判断目前页面所对应的小白点
     pageControl.currentPage = page;//pagecontroll响应值的变化
+    
 }
 //pagecontroll的委托方法
 
@@ -908,9 +981,9 @@
         if (buttonIndex == 1) {
             [talk deleteDB:[handler getUserID] withOtherID:[imagecache getFriendID]];
         }
-        bubbleData = [[NSMutableArray alloc]init];
-        bubbleData = [talk readInitDB:[handler getUserID] withOtherID:[imagecache getFriendID]];
-        [bubbleTableView reloadData];
+//        bubbleData = [[NSMutableArray alloc]init];
+//        bubbleData = [talk readInitDB:[handler getUserID] withOtherID:[imagecache getFriendID]];
+//        [bubbleTableView reloadData];
         isClearData = NO;
     }
 }
@@ -1038,7 +1111,7 @@
     NSString *sendToID =[imageCache getFriendID];
     NSMutableArray * dataArray = [[NSMutableArray alloc]init];
     TalkDB * talk =[[TalkDB alloc]init];
-    dataArray = [talk readInitDB:[handler getUserID] withOtherID:sendToID];
+    dataArray = [talk readInitDB:[handler getUserID] withOtherID:sendToID withCount:10];
     bubbleData = dataArray;
     for (NSBubbleData * data in bubbleData) {
         data.delegate = self;
@@ -1079,5 +1152,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(void)doInBackground
+{
+}
 @end

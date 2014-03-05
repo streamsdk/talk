@@ -28,9 +28,10 @@
 @synthesize bubbleImage = _bubbleImage;
 @synthesize showAvatar = _showAvatar;
 @synthesize avatarImage = _avatarImage;
-@synthesize progressView;
-@synthesize activityIndicatorView;
-@synthesize label;
+@synthesize isEdit = _isEdit;
+@synthesize selectButton = _selectButton;
+@synthesize isClicked = _isClicked;
+@synthesize deleteArray = _deleteArray;
 
 - (void)setFrame:(CGRect)frame
 {
@@ -58,7 +59,21 @@
 - (void) setupInternalData
 {
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+    _deleteArray = [[NSMutableArray alloc]init];
+    _selectButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.contentView addSubview:_selectButton];
+    [_selectButton addTarget:self action:@selector(selectData) forControlEvents:UIControlEventTouchUpInside];
+    _selectButton.hidden = YES;
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+    NSString *time = [dateFormatter stringFromDate:self.data.date];
+    [_selectButton setImage:[UIImage imageNamed:@"Unselected.png"] forState:UIControlStateNormal];
+    for (NSDate *date in APPDELEGATE.deleteArray) {
+        NSString *deleteTime = [dateFormatter stringFromDate:date];
+        if ([deleteTime isEqualToString:time]) {
+            [_selectButton setImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
+        }
+    }
     if (!self.bubbleImage)
     {
 #if !__has_feature(objc_arc)
@@ -68,7 +83,7 @@
 #endif
         [self addSubview:self.bubbleImage];
     }
-    
+    self.bubbleImage.userInteractionEnabled = YES;
     NSBubbleType type = self.data.type;
     
 //    FileType filetype = self.data.fileType;
@@ -95,9 +110,22 @@
         
         CGFloat avatarX = (type == BubbleTypeSomeoneElse) ? 2 : self.frame.size.width - 52;
         CGFloat avatarY = self.frame.size.height - 50;
-        
-        self.avatarImage.frame = CGRectMake(avatarX, avatarY, 46, 46);
-        [self addSubview:self.avatarImage];
+        if (self.isEdit) {
+            self.selectButton.hidden =NO;
+            if (type == BubbleTypeSomeoneElse)
+            {
+                self.avatarImage.frame = CGRectMake(avatarX+30, avatarY, 46, 46);
+            }else{
+               self.avatarImage.frame = CGRectMake(avatarX, avatarY, 46, 46);
+            }
+            
+        }else{
+            self.selectButton.hidden = YES;
+           self.avatarImage.frame = CGRectMake(avatarX, avatarY, 46, 46);
+        }
+
+        self.selectButton.frame= CGRectMake(3, avatarY+8, 28, 28);
+        [self.contentView addSubview:self.avatarImage];
         
         CGFloat delta = self.frame.size.height - (self.data.insets.top + self.data.insets.bottom + self.data.view.frame.size.height);
         if (delta > 0) y = delta;
@@ -108,8 +136,20 @@
 
     [self.customView removeFromSuperview];
     self.customView = self.data.view;
-    self.customView.frame = CGRectMake(x + self.data.insets.left, y + self.data.insets.top, width, height);
-    [self.contentView addSubview:self.customView];
+    
+    if (self.isEdit) {
+        if (type == BubbleTypeSomeoneElse)
+        {
+            self.customView.frame = CGRectMake(x+30+self.data.insets.left,y+self.data.insets.top, width, height);
+        }else{
+           self.customView.frame = CGRectMake(x+self.data.insets.left,y+self.data.insets.top, width, height);
+        }
+        
+    }else{
+        self.customView.frame = CGRectMake(x+self.data.insets.left,y+self.data.insets.top, width, height);
+    }
+
+    [self addSubview:self.customView];
 
     if (type == BubbleTypeSomeoneElse)
     {
@@ -120,57 +160,31 @@
         self.bubbleImage.image = [[UIImage imageNamed:@"bubbleMine.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:14];
     }
 
-    self.bubbleImage.frame = CGRectMake(x, y, width + self.data.insets.left + self.data.insets.right, height + self.data.insets.top + self.data.insets.bottom);
-   /* progressView = [[UIProgressView alloc]init];
-    progressView.progress =0.0f;
-    activityIndicatorView = [[UIActivityIndicatorView alloc]init];
-    [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-    label = [[UILabel alloc]init];
-    [label setBackgroundColor:[UIColor clearColor]];
-    [label setFont:[UIFont systemFontOfSize:10.0f]];
-  
-//    activityIndicatorView.hidden = YES;
-    if (type == BubbleTypeMine) {
-        if (filetype == FileImage) {
-            progressView .frame = CGRectMake(24, self.contentView.frame.size.height, 90, 8);
-            CGAffineTransform transform =CGAffineTransformMakeScale(1.0f,2.0f);
-            progressView.transform = transform;
-            progressView.hidden = YES;
-            [self.contentView addSubview:progressView];
-            label.frame = CGRectMake(0, self.contentView.frame.size.height, 60, 30);
-            label.hidden = YES;
-            [self.contentView addSubview:label];
-        }
-        if ( filetype == FileVideo) {
-            progressView .frame = CGRectMake(24, self.contentView.frame.size.height+25, 90, 8);
-            CGAffineTransform transform =CGAffineTransformMakeScale(1.0f,2.0f);
-            progressView.transform = transform;
-            progressView.hidden = YES;
-            label.frame = CGRectMake(0, self.contentView.frame.size.height+10, 60, 30);
-            label.hidden = YES;
-            [self.contentView addSubview:progressView];
-            [self.contentView addSubview:label];
-            
-        }
-        if (filetype == FileDisappear) {
-            activityIndicatorView.frame = CGRectMake(60, self.contentView.frame.size.height-10, 20, 20);
-            [activityIndicatorView setCenter:CGPointMake(60, self.contentView.frame.size.height-10)];
-//            [activityIndicatorView startAnimating];
-            [self.contentView addSubview:activityIndicatorView];
-            
-        }
-        if (filetype == FileVoice) {
-            activityIndicatorView.frame = CGRectMake(130, self.contentView.frame.size.height-10, 20, 20);
-            [activityIndicatorView setCenter:CGPointMake(130, self.contentView.frame.size.height-10)];
-//            [activityIndicatorView startAnimating];
-            [self.contentView addSubview:activityIndicatorView];
+    if (self.isEdit) {
+        if (type == BubbleTypeSomeoneElse)
+        {
+            self.bubbleImage.frame = CGRectMake(x+30, y, width + self.data.insets.left + self.data.insets.right, height + self.data.insets.top + self.data.insets.bottom);
+        }else{
+             self.bubbleImage.frame = CGRectMake(x, y, width + self.data.insets.left + self.data.insets.right, height + self.data.insets.top + self.data.insets.bottom);
         }
 
-        APPDELEGATE.label = label;
-        APPDELEGATE.progressView = progressView;
-        APPDELEGATE.activityIndicatorView = activityIndicatorView;
+    }else{
+        self.bubbleImage.frame = CGRectMake(x, y, width + self.data.insets.left + self.data.insets.right, height + self.data.insets.top + self.data.insets.bottom);
 
-    }*/
+    }
+
+    
 }
-
+-(void)selectData{
+    if (YES == _isClicked) {
+        [_selectButton setImage:[UIImage imageNamed:@"Unselected.png"] forState:UIControlStateNormal];
+        [APPDELEGATE.deleteArray removeObject:self.data.date];
+        _isClicked = NO;
+    }else{
+        [_selectButton setImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
+        [APPDELEGATE.deleteArray addObject:self.data.date];
+        _isClicked = YES;
+    }
+    NSLog(@"selectbutton");
+}
 @end

@@ -30,7 +30,9 @@
 @interface MainController : UIViewController<UIBubbleTableViewDataSource,facialViewDelegate,UIVideoEditorControllerDelegate,UITextFieldDelegate,IconViewDelegate,UIAlertViewDelegate,GetAllMessagesProtocol,ImageSendProtocol,UIActionSheetDelegate,UploadProtocol>
 {
     NSURL  *videoPath;
-    
+    NSMutableDictionary *deleteDic;
+    int  rowCount;
+     BOOL isEmoji;
 }
 
 
@@ -50,4 +52,9 @@
 
 @property (nonatomic,strong) UITextField *messageText;
 
+@property (nonatomic,strong) UIButton * deleteButton;
+
+@property (nonatomic,strong) UIButton * cancelButton;
+
+@property (nonatomic,strong) UIView * deleteBackview;
 @end

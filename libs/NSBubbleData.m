@@ -68,6 +68,7 @@ const UIEdgeInsets textInsetsSomeone = {5, 15, 11, 10};
 
 - (id)initWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type
 {
+    _date = date;
     UIFont *font = [UIFont systemFontOfSize:18.0f];
 //    CGSize size = [(text ? text : @"") sizewi:font constrainedToSize:CGSizeMake(220, 9999) lineBreakMode:NSLineBreakByWordWrapping];
     CGSize size = [(text ? text : @"") boundingRectWithSize:CGSizeMake(220, 9999) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil].size;
@@ -104,6 +105,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 
 - (id)initWithImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type path:(NSString *)path
 {
+    _date = date;
 
     photopath =path;
     _image = image;
@@ -142,7 +144,8 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     disappearTime = time;
     disappearPath = path;
     senddate = date;
-    
+    _date = date;
+
     NSString * text =@"I sent a photo to you";
     UIFont *font = [UIFont systemFontOfSize:16.0f];
 //    CGSize size = [(text ? text : @"") sizeWithFont:font constrainedToSize:CGSizeMake(220, 9999) lineBreakMode:NSLineBreakByWordWrapping];
@@ -242,6 +245,8 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 }
 #pragma mark - Custom view video
 - (id)initWithImage:(UIImage *)image withTime:(NSString *)time withType:(NSString *)video date:(NSDate *)date type:(NSBubbleType)type withVidePath:(NSString *)videoPath withJsonBody:(NSString *)body{
+    _date = date;
+
     _videotime = time;
     _videoPath = videoPath;
     _videodate = date;
@@ -367,6 +372,8 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
         _type = type;
         _insets = insets;
         fileType = filetype;
+        _date = date;
+
     }
     return self;
 }

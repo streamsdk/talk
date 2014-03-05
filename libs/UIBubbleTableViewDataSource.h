@@ -12,7 +12,7 @@
 @protocol UIBubbleTableViewDataSource <NSObject>
 
 @optional
-
+-(void)reloadBubbleView:(NSMutableArray * )array;
 @required
 
 - (NSInteger)rowsForBubbleTable:(UIBubbleTableView *)tableView;

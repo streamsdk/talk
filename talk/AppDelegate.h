@@ -19,7 +19,7 @@
 @property (nonatomic,strong) UILabel * label;
 @property (nonatomic,retain) NSMutableDictionary *progressDict;
 @property (nonatomic,retain) NSString * path;
-
+@property (nonatomic,retain) NSMutableArray *deleteArray;
 -(void)showFriendsView;
 
 @end
