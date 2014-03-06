@@ -67,4 +67,10 @@
 -(void)removeDownloadingFile:(NSString *)fileId;
 
 -(NSNumber *)getDownloadingFile:(NSString *)fileId;
+
+-(void) saveRaedCount:(NSNumber *)count withuserID:(NSString *)userId ;
+
+-(NSInteger)getReadCount:(NSString *)userId;
+
+-(void) removeCountUserId:(NSString *)userId;
 @end

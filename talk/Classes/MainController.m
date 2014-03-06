@@ -139,6 +139,9 @@
     
     bubbleData = [[NSMutableArray alloc]init];
     TalkDB * talk =[[TalkDB alloc]init];
+    if ([imageCache getReadCount:sendToID]>10)
+        rowCount = 20;
+    [imageCache saveRaedCount:[NSNumber numberWithInt:rowCount] withuserID:sendToID];
     bubbleData = [talk readInitDB:userID withOtherID:sendToID withCount:rowCount];
     for (NSBubbleData * data in bubbleData) {
         data.delegate = self;
@@ -325,10 +328,8 @@
             }
         }
     }
-    [APPDELEGATE.deleteArray removeAllObjects];
-    NSMutableArray * array = [[NSMutableArray alloc]init];
-    APPDELEGATE.deleteArray = array;
-    [bubbleTableView reloadData];
+    [self cancel];
+    
 }
 #pragma mark - UIBubbleTableViewDataSource implementation
 
@@ -339,8 +340,8 @@
 
 - (NSBubbleData *)bubbleTableView:(UIBubbleTableView *)tableView dataForRow:(NSInteger)row
 {
-    NSString *title = [NSString stringWithFormat:@"%d",[APPDELEGATE.deleteArray count]];
-    [_deleteButton setTitle:[NSString stringWithFormat:@"Delete(%@)",title] forState:UIControlStateNormal];
+//    NSString *title = [NSString stringWithFormat:@"%d",[APPDELEGATE.deleteArray count]];
+//    [_deleteButton setTitle:[NSString stringWithFormat:@"Delete(%@)",title] forState:UIControlStateNormal];
     ImageCache *imageCache = [ImageCache sharedObject];
     HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
     NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[handler getUserID]];
@@ -468,6 +469,7 @@
     NSMutableArray * dataArray = [[NSMutableArray alloc]init];
     TalkDB * talk =[[TalkDB alloc]init];
     dataArray = [talk readInitDB:[handler getUserID] withOtherID:sendToID withCount:10];
+    [imageCache saveRaedCount:[NSNumber numberWithInt:11] withuserID:sendToID];
     bubbleData = dataArray;
     for (NSBubbleData * data in bubbleData) {
         data.delegate = self;

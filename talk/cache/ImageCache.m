@@ -23,6 +23,8 @@ static NSMutableDictionary *_jsonData;
 static NSMutableArray *_fileUpload;
 static NSMutableDictionary * dic;
 static NSMutableDictionary*_downloadingFile;
+static NSMutableDictionary*_countDict;
+
 @implementation ImageCache
 
 
@@ -45,6 +47,7 @@ static NSMutableDictionary*_downloadingFile;
         _fileUpload = [[NSMutableArray alloc]init];
         dic = [[NSMutableDictionary alloc]init];
         _downloadingFile =[[NSMutableDictionary alloc]init];
+        _countDict = [[NSMutableDictionary alloc]init];
     });
     
     return sharedInstance;
@@ -191,5 +194,18 @@ static NSMutableDictionary*_downloadingFile;
 -(NSNumber *)getDownloadingFile:(NSString *)fileId{
     
     return [_downloadingFile objectForKey:fileId];
+}
+
+-(void) saveRaedCount:(NSNumber *)count withuserID:(NSString *)userId{
+    [_countDict setObject:count forKey:userId];
+}
+
+-(NSInteger)getReadCount:(NSString *)userId{
+
+    return [[_countDict objectForKey:userId]intValue];
+}
+
+-(void) removeCoun{
+    [_countDict removeAllObjects];
 }
 @end

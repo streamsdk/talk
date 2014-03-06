@@ -18,7 +18,7 @@
 #import "HandlerUserIdAndDateFormater.h"
 #import "ImageCache.h"
 #import "TalkDB.h"
-static int count =20;
+//static int count =20;
 #define BUBBLETABLEVIEWCELL_TAG 1000
 
 @interface UIBubbleTableView ()
@@ -494,7 +494,7 @@ static int count =20;
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     // 下拉到最底部时显示更多数据
-    if(!_reloading && scrollView.contentOffset.y < 0)
+    if(!_reloading && scrollView.contentOffset.y < 20)
     {
         [self loadDataBegin];
     }
@@ -518,18 +518,6 @@ static int count =20;
 // 加载数据中
 - (void) loadDataing
 {
-    ImageCache * imageCache =  [ImageCache sharedObject];
-    NSString *sendToID = [imageCache getFriendID];
-    
-    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-    NSString * userID = [handler getUserID];
-    
-    NSMutableArray *bubbleData = [[NSMutableArray alloc]init];
-    TalkDB * talk =[[TalkDB alloc]init];
-    bubbleData = [talk readInitDB:userID withOtherID:sendToID withCount:count];
-    
-    count= count+10;
-    [self.bubbleDataSource reloadBubbleView:bubbleData];
     [self performSelector:@selector(loadDataEnd) withObject:nil afterDelay:1.0];
 }
 
@@ -538,6 +526,18 @@ static int count =20;
 {
     _reloading = NO;
     [activity stopAnimating];
+    ImageCache * imageCache =  [ImageCache sharedObject];
+    NSString *sendToID = [imageCache getFriendID];
+    
+    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+    NSString * userID = [handler getUserID];
+    int count = [imageCache getReadCount:sendToID];
+    count= count+10;
+    NSMutableArray *bubbleData = [[NSMutableArray alloc]init];
+    TalkDB * talk =[[TalkDB alloc]init];
+    bubbleData = [talk readInitDB:userID withOtherID:sendToID withCount:count];
+    [imageCache saveRaedCount:[NSNumber numberWithInt:count] withuserID:sendToID];
+    [self.bubbleDataSource reloadBubbleView:bubbleData];
 //    [super reloadData];
 }
 
