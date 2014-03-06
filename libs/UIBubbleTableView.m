@@ -55,16 +55,16 @@ static int count =20;
     self.snapInterval = 120;
     self.typingBubble = NSBubbleTypingTypeNobody;
     _reloading = NO;
-    if (_refreshHeaderView == nil) {
-		
-		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.bounds.size.height, self.frame.size.width, self.bounds.size.height)];
-		view.delegate = self;
-		[self addSubview:view];
-		_refreshHeaderView = view;
-		
-	}
-    _refreshHeaderView.delegate = self;
-    [_refreshHeaderView refreshLastUpdatedDate];
+//    if (_refreshHeaderView == nil) {
+//		
+//		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.bounds.size.height, self.frame.size.width, self.bounds.size.height)];
+//		view.delegate = self;
+//		[self addSubview:view];
+//		_refreshHeaderView = view;
+//		
+//	}
+//    _refreshHeaderView.delegate = self;
+//    [_refreshHeaderView refreshLastUpdatedDate];
 }
 
 - (id)init
@@ -476,7 +476,7 @@ static int count =20;
 
 #pragma mark egoRefreshScrollViewDidScroll delegate
 
-- (void)reloadTableViewDataSource{
+/*- (void)reloadTableViewDataSource{
     _reloading = YES;
     [NSThread detachNewThreadSelector:@selector(doInBackground) toTarget:self withObject:nil];
 }
@@ -551,7 +551,85 @@ static int count =20;
 	
 	return [NSDate date]; // should return date data source was last changed
 	
+}*/
+
+/*- (BOOL)tableView:(UITableView *)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
 }
+
+- (BOOL)tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
+    if (action == @selector(copy:)) {
+         return  YES;
+    }
+    return NO;
+}
+
+- (void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
+    if (action == @selector(copy:)) {
+        if (indexPath.row !=0) {
+            NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+            NSString *string = [dateFormatter stringFromDate:data.date];
+            UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
+            [pasteBoard setString:string];
+        }
+       
+    }
+
+}*/
+#pragma mark -
+#pragma mark Data Source Loading / Reloading Methods
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    // 下拉到最底部时显示更多数据
+    if(!_reloading && scrollView.contentOffset.y < 0)
+    {
+        [self loadDataBegin];
+    }
+}
+
+// 开始加载数据
+- (void) loadDataBegin
+{
+    if (_reloading == NO)
+    {
+        _reloading = YES;
+        UIActivityIndicatorView *tableFooterActivityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
+        [tableFooterActivityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+        activity = tableFooterActivityIndicator;
+        [activity startAnimating];
+        self.tableHeaderView = activity;
+        [self loadDataing];
+    }
+}
+
+// 加载数据中
+- (void) loadDataing
+{
+    ImageCache * imageCache =  [ImageCache sharedObject];
+    NSString *sendToID = [imageCache getFriendID];
+    
+    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+    NSString * userID = [handler getUserID];
+    
+    NSMutableArray *bubbleData = [[NSMutableArray alloc]init];
+    TalkDB * talk =[[TalkDB alloc]init];
+    bubbleData = [talk readInitDB:userID withOtherID:sendToID withCount:count];
+    
+    count= count+10;
+    [self.bubbleDataSource reloadBubbleView:bubbleData];
+    [self performSelector:@selector(loadDataEnd) withObject:nil afterDelay:1.0];
+}
+
+// 加载数据完毕
+- (void) loadDataEnd
+{
+    _reloading = NO;
+    [activity stopAnimating];
+//    [super reloadData];
+}
+
 
 #pragma mark - Public interface
 

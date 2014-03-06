@@ -271,23 +271,30 @@
     
     audioHandler = [[AudioHandler alloc]init];
     
-    _deleteBackview = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-50, self.view.frame.size.width, 50)];
-    _deleteBackview.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
+    _deleteBackview = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-40, self.view.frame.size.width,40)];
+    _deleteBackview.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_deleteBackview];
     _deleteBackview.hidden = YES;
     
     _cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _cancelButton.frame = CGRectMake(0, 0, self.view.frame.size.width/2-10, 50);
-    [_cancelButton setBackgroundColor:[UIColor redColor]];
+    _cancelButton.frame = CGRectMake(20, 2, self.view.frame.size.width/2-30, 36);
+    [[_cancelButton layer] setBorderColor:[[UIColor blackColor] CGColor]];
+    [[_cancelButton layer] setBorderWidth:1];
+    [[_cancelButton layer] setCornerRadius:4];
     [_cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [_cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
+     [_cancelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
     _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _deleteButton.frame = CGRectMake(self.view.frame.size.width/2+10, 0, self.view.frame.size.width/2-10, 50);
-    [_deleteButton setBackgroundColor:[UIColor redColor]];
+    [[_deleteButton layer] setBorderColor:[[UIColor blackColor] CGColor]];
+    [[_deleteButton layer] setBorderWidth:1];
+    [[_deleteButton layer] setCornerRadius:4];
+    _deleteButton.frame = CGRectMake(self.view.frame.size.width/2+10, 2, self.view.frame.size.width/2-30, 36);
     [_deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
     [_deleteButton addTarget:self action:@selector(delete) forControlEvents:UIControlEventTouchUpInside];
+     [_deleteButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
+    APPDELEGATE.button = _deleteButton;
     [_deleteBackview addSubview:_cancelButton];
     [_deleteBackview addSubview:_deleteButton];
     [bubbleTableView reloadData];
@@ -333,8 +340,7 @@
 - (NSBubbleData *)bubbleTableView:(UIBubbleTableView *)tableView dataForRow:(NSInteger)row
 {
     NSString *title = [NSString stringWithFormat:@"%d",[APPDELEGATE.deleteArray count]];
-    if (![title isEqualToString:@"0"])
-        [_deleteButton setTitle:[NSString stringWithFormat:@"Delete(%@)",title] forState:UIControlStateNormal];
+    [_deleteButton setTitle:[NSString stringWithFormat:@"Delete(%@)",title] forState:UIControlStateNormal];
     ImageCache *imageCache = [ImageCache sharedObject];
     HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
     NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[handler getUserID]];

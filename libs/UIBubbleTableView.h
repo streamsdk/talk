@@ -16,10 +16,12 @@ typedef enum _NSBubbleTypingType
     NSBubbleTypingTypeSomebody = 2
 } NSBubbleTypingType;
 
-@interface UIBubbleTableView : UITableView <UITableViewDelegate, UITableViewDataSource,EGORefreshTableHeaderDelegate>
+@interface UIBubbleTableView : UITableView <UITableViewDelegate, UITableViewDataSource>
 {
     EGORefreshTableHeaderView *_refreshHeaderView;
     BOOL _reloading;
+    
+    UIActivityIndicatorView *activity;
 
 }
 @property (nonatomic, assign) id<UIBubbleTableViewDataSource> bubbleDataSource;

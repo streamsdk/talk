@@ -9,6 +9,8 @@
 #import "UIBubbleTableViewCell.h"
 #import "NSBubbleData.h"
 #import "AppDelegate.h"
+#import "TalkDB.h"
+
 
 @interface UIBubbleTableViewCell ()
 
@@ -58,6 +60,7 @@
 
 - (void) setupInternalData
 {
+    
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     _deleteArray = [[NSMutableArray alloc]init];
     _selectButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -176,13 +179,20 @@
     
 }
 -(void)selectData{
+    
     if (YES == _isClicked) {
         [_selectButton setImage:[UIImage imageNamed:@"Unselected.png"] forState:UIControlStateNormal];
         [APPDELEGATE.deleteArray removeObject:self.data.date];
+        NSString *title = [NSString stringWithFormat:@"%d",[APPDELEGATE.deleteArray count]];
+        if (![title isEqualToString:@"0"])
+            [APPDELEGATE.button setTitle:[NSString stringWithFormat:@"Delete(%@)",title] forState:UIControlStateNormal];
         _isClicked = NO;
     }else{
         [_selectButton setImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
         [APPDELEGATE.deleteArray addObject:self.data.date];
+        NSString *title = [NSString stringWithFormat:@"%d",[APPDELEGATE.deleteArray count]];
+        if (![title isEqualToString:@"0"])
+             [APPDELEGATE.button setTitle:[NSString stringWithFormat:@"Delete(%@)",title] forState:UIControlStateNormal];
         _isClicked = YES;
     }
     NSLog(@"selectbutton");

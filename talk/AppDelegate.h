@@ -20,6 +20,7 @@
 @property (nonatomic,retain) NSMutableDictionary *progressDict;
 @property (nonatomic,retain) NSString * path;
 @property (nonatomic,retain) NSMutableArray *deleteArray;
+@property (nonatomic,strong) UIButton * button;
 -(void)showFriendsView;
 
 @end
