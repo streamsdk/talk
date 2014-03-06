@@ -8,7 +8,6 @@
 #import <UIKit/UIKit.h>
 #import "UIBubbleTableViewDataSource.h"
 #import "UIBubbleTableViewCell.h"
-#import "EGORefreshTableHeaderView.h"
 typedef enum _NSBubbleTypingType
 {
     NSBubbleTypingTypeNobody = 0,
@@ -18,7 +17,7 @@ typedef enum _NSBubbleTypingType
 
 @interface UIBubbleTableView : UITableView <UITableViewDelegate, UITableViewDataSource>
 {
-    EGORefreshTableHeaderView *_refreshHeaderView;
+  
     BOOL _reloading;
     
     UIActivityIndicatorView *activity;
