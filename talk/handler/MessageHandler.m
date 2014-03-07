@@ -95,6 +95,11 @@
         return;
     UIImage *image = [UIImage imageWithData:data];
     NSString * fileId =[json objectForKey:@"fileId"];
+    if (fileId==nil || [fileId isEqualToString:@""]) {
+        UIAlertView * view = [[UIAlertView alloc]initWithTitle:nil message:@"send Error" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [view show];
+        return;
+    }
     NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
     
     
