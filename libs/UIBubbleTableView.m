@@ -520,11 +520,16 @@
 #pragma mark Data Source Loading / Reloading Methods
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    // 下拉到最底部时显示更多数据
-    if(!_reloading && scrollView.contentOffset.y < 20)
-    {
-        [self loadDataBegin];
+    ImageCache * imageCache =  [ImageCache sharedObject];
+    NSString *sendToID = [imageCache getFriendID];
+    int count = [imageCache getReadCount:sendToID];
+    if (count>=10) {
+        if(!_reloading && scrollView.contentOffset.y < 20)
+        {
+            [self loadDataBegin];
+        }
     }
+    
 }
 
 // 开始加载数据
@@ -552,7 +557,7 @@
 - (void) loadDataEnd
 {
     _reloading = NO;
-    [activity stopAnimating];
+    
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSString *sendToID = [imageCache getFriendID];
     
@@ -565,6 +570,7 @@
     bubbleData = [talk readInitDB:userID withOtherID:sendToID withCount:count];
     [imageCache saveRaedCount:[NSNumber numberWithInt:count] withuserID:sendToID];
     [self.bubbleDataSource reloadBubbleView:bubbleData];
+    [activity stopAnimating];
 //    [super reloadData];
 }
 

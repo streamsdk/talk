@@ -141,8 +141,12 @@
     TalkDB * talk =[[TalkDB alloc]init];
     if ([imageCache getReadCount:sendToID]>10)
         rowCount = 20;
-    [imageCache saveRaedCount:[NSNumber numberWithInt:rowCount] withuserID:sendToID];
     bubbleData = [talk readInitDB:userID withOtherID:sendToID withCount:rowCount];
+    if ([bubbleData count]>=10) {
+        [imageCache saveRaedCount:[NSNumber numberWithInt:rowCount] withuserID:sendToID];
+    }else {
+         [imageCache saveRaedCount:[NSNumber numberWithInt:0] withuserID:sendToID];
+    }
     for (NSBubbleData * data in bubbleData) {
         data.delegate = self;
     }
