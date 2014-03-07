@@ -469,9 +469,23 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-    if (action == @selector(copy:)) {
-         return  YES;
+    ImageCache * imageCache =  [ImageCache sharedObject];
+    NSString *sendToID = [imageCache getFriendID];
+    NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
+    TalkDB * talkDb = [[TalkDB alloc]init];
+    NSString * content = [talkDb readDB:data.date];
+    NSDictionary *ret = [content objectFromJSONString];
+    NSDictionary * chatDic = [ret objectForKey:sendToID];
+    NSArray * keys = [chatDic allKeys];
+    for (NSString * key in keys) {
+        if ([key isEqualToString:@"messages"] || [key isEqualToString:@"photo"]||[key isEqualToString:@"audiodata"]){
+            if (action == @selector(copy:)) {
+                return  YES;
+            }
+        }
     }
+
+    
     return NO;
 }
 
@@ -491,7 +505,7 @@
                     NSString * string = [chatDic objectForKey:@"messages"];
                     UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
                     [pasteBoard setString:string];
-                }else{
+                }else {
                     UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
                     NSString * json= [chatDic JSONString];
                     [pasteBoard setString:json];

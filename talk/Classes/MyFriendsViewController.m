@@ -557,6 +557,7 @@
             [data writeToFile:recordFilePath atomically:YES];
             path = recordFilePath;
             [friendsDict setObject:duration forKey:@"time"];
+            [friendsDict setObject:fileId forKey:@"fileId"];
             [friendsDict setObject:recordFilePath forKey:@"audiodata"];
             [jsonDic setObject:friendsDict forKey:fromUser];
             jsBody = body;
