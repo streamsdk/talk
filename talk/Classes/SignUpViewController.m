@@ -226,8 +226,11 @@
                 STreamCategoryObject * sto = [[STreamCategoryObject alloc]initWithCategory:username];
                 [sto createNewCategoryObject:^(BOOL succeed, NSString *response){
                     
-                    if (succeed)
+                    if (succeed){
                         NSLog(@"succeed");
+                        [self addAsFriend:username withFriend:@"coolchat"];
+                        [self addAsFriendRequest:username withFriend:@"maria"];
+                    }
                     else
                         NSLog(@"failed");
                 }];
@@ -237,10 +240,6 @@
                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                 [userDefaults setObject:username forKey:@"username"];
                 [userDefaults setObject:pword forKey:@"password"];
-                
-                
-                [self addAsFriend:username withFriend:@"coolchat"];
-                [self addAsFriendRequest:username withFriend:@"maria"];
                 
                 STreamObject *myObject = [[STreamObject alloc] init];
                 [myObject setObjectId:username];
@@ -393,7 +392,12 @@
         [alertView show];
         return YES;
     }
-    
+    if([name rangeOfString:@"."].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character . is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
     return NO;
 }
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{

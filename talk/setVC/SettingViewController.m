@@ -114,7 +114,7 @@
     label.textAlignment=NSTextAlignmentCenter;
     label.font=[UIFont fontWithName:@"Arial" size:15.0f];
     label.textColor = [UIColor whiteColor];
-    label.text= @"CoolChat messenger V1.0";
+    label.text= @"CoolChat messenger V1.0.1";
     [self.view addSubview:label];
     DownloadAvatar * loadavatar = [[DownloadAvatar alloc]init];
     profileImage = [loadavatar readAvatar:loginName];
