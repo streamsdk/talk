@@ -491,6 +491,10 @@
                     NSString * string = [chatDic objectForKey:@"messages"];
                     UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
                     [pasteBoard setString:string];
+                }else{
+                    UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
+                    NSString * json= [chatDic JSONString];
+                    [pasteBoard setString:json];
                 }
             }
         }

@@ -18,4 +18,6 @@
 @property (nonatomic,retain) NSString * type;
 @property (nonatomic,retain) NSString * disappearTime;
 @property (nonatomic,retain) NSData *imageData;
+@property (nonatomic,retain) NSDate * date;
+@property (nonatomic,retain) NSMutableDictionary * jsonDict;
 @end

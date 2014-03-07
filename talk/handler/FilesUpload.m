@@ -18,4 +18,6 @@
 @synthesize disappearTime;
 @synthesize imageData;
 @synthesize chatId;
+@synthesize date;
+@synthesize jsonDict;
 @end

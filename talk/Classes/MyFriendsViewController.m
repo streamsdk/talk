@@ -511,11 +511,13 @@
         if ([type isEqualToString:@"photo"]) {
             NSString *duration = [json objectForKey:@"duration"];
             NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];
+            NSString * fileId = [json objectForKey:@"fileId"];
             [data writeToFile:photoPath atomically:YES];
             NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
             if (duration) {
                 [friendDict setObject:duration forKey:@"time"];
             }
+            [friendDict setObject:fileId forKey:@"fileId"];
             [friendDict setObject:photoPath forKey:@"photo"];
             [jsonDic setObject:friendDict forKey:fromUser];
             path = photoPath;
