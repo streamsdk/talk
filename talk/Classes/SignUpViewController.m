@@ -188,6 +188,9 @@
     username = [username lowercaseString];
     NSString *pword = password.text;
 //    NSString *secondWord = surePassword.text;
+    if ([self findchar:username]) {
+        return;
+    }
     if (username!=nil && ![username isEqualToString:@""] && pword!=nil && ![pword  isEqualToString:@""]) {
         
         STreamUser *user = [[STreamUser alloc] init];
@@ -269,7 +272,125 @@
     
         NSLog(@"");
 }
-
+-(BOOL)findchar:(NSString * )name{
+    //!*'();:@&=+$,/?%#[]"
+    
+    if([name rangeOfString:@"!"].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"! characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    if([name rangeOfString:@"*"].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"* characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    if([name rangeOfString:@"'"].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"' characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    if([name rangeOfString:@"("].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"( characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    if([name rangeOfString:@")"].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@") characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    } if([name rangeOfString:@";"].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"; characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    if([name rangeOfString:@":"].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@": characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    if([name rangeOfString:@"@"].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"@ characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    if([name rangeOfString:@"&"].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"& characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    if([name rangeOfString:@"="].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"= characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    if([name rangeOfString:@"+"].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"+ characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    if([name rangeOfString:@"$"].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"$ characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    if([name rangeOfString:@","].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@", characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    if([name rangeOfString:@"/"].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"/ characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    if([name rangeOfString:@"/"].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"/ characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    if([name rangeOfString:@"%"].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"% characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    if([name rangeOfString:@"#"].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"# characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    if([name rangeOfString:@"["].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"[ characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    if([name rangeOfString:@"]"].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"] characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
+    
+    return NO;
+}
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
     return YES;
