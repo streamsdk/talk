@@ -316,6 +316,9 @@ static XMPPReconnect *xmppReconnect;
         NSString *type = [json objectForKey:@"type"];
         NSString *chatId = [json objectForKey:@"id"];
         NSString *fromID = [json objectForKey:@"from"];
+        if (fromID==nil) {
+            fromID = [json objectForKey:@"username"];
+        }
         if ([type isEqualToString:@"ack"]){
             ACKMessageDB *ack = [[ACKMessageDB alloc]init];
             [ack deleteDB:chatId];
