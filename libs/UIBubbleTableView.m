@@ -464,58 +464,6 @@
     
 }
 
-- (BOOL)tableView:(UITableView *)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-    ImageCache * imageCache =  [ImageCache sharedObject];
-    NSString *sendToID = [imageCache getFriendID];
-    NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
-    TalkDB * talkDb = [[TalkDB alloc]init];
-    NSString * content = [talkDb readDB:data.date];
-    NSDictionary *ret = [content objectFromJSONString];
-    NSDictionary * chatDic = [ret objectForKey:sendToID];
-    NSArray * keys = [chatDic allKeys];
-    for (NSString * key in keys) {
-        if ([key isEqualToString:@"messages"] || [key isEqualToString:@"photo"]||[key isEqualToString:@"audiodata"]){
-            if (action == @selector(copy:)) {
-                return  YES;
-            }
-        }
-    }
-
-    
-    return NO;
-}
-
-- (void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-    if (action == @selector(copy:)) {
-        if (indexPath.row !=0) {
-            ImageCache * imageCache =  [ImageCache sharedObject];
-            NSString *sendToID = [imageCache getFriendID];
-            NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
-            TalkDB * talkDb = [[TalkDB alloc]init];
-            NSString * content = [talkDb readDB:data.date];
-            NSDictionary *ret = [content objectFromJSONString];
-            NSDictionary * chatDic = [ret objectForKey:sendToID];
-            NSArray * keys = [chatDic allKeys];
-            for (NSString * key in keys) {
-                if ([key isEqualToString:@"messages"]) {
-                    NSString * string = [chatDic objectForKey:@"messages"];
-                    UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
-                    [pasteBoard setString:string];
-                }else {
-                    UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
-                    NSString * json= [chatDic JSONString];
-                    [pasteBoard setString:json];
-                }
-            }
-        }
-       
-    }
-
-}
 #pragma mark -
 #pragma mark Data Source Loading / Reloading Methods
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate

@@ -274,117 +274,122 @@
 }
 -(BOOL)findchar:(NSString * )name{
     //!*'();:@&=+$,/?%#[]"
-    
+    if([name rangeOfString:@" "].location !=NSNotFound)
+    {
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character  is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alertView show];
+        return YES;
+    }
     if([name rangeOfString:@"!"].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"! characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character ! is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }
     if([name rangeOfString:@"*"].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"* characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character * is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }
     if([name rangeOfString:@"'"].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"' characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character ' is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }
     if([name rangeOfString:@"("].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"( characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character ( is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }
     if([name rangeOfString:@")"].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@") characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character ) is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     } if([name rangeOfString:@";"].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"; characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character ; is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }
     if([name rangeOfString:@":"].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@": characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character : is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }
     if([name rangeOfString:@"@"].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"@ characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character @ is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }
     if([name rangeOfString:@"&"].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"& characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character & is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }
     if([name rangeOfString:@"="].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"= characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character = is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }
     if([name rangeOfString:@"+"].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"+ characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character + is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }
     if([name rangeOfString:@"$"].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"$ characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character $ is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }
     if([name rangeOfString:@","].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@", characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character , is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }
     if([name rangeOfString:@"/"].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"/ characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character / is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }
-    if([name rangeOfString:@"/"].location !=NSNotFound)
+    if([name rangeOfString:@"?"].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"/ characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character ? is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }
     if([name rangeOfString:@"%"].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"% characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character % is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }
     if([name rangeOfString:@"#"].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"# characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character # is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }
     if([name rangeOfString:@"["].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"[ characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character [ is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }
     if([name rangeOfString:@"]"].location !=NSNotFound)
     {
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"] characters do not meet the requirements" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"character ] is not allowed to use as user name" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alertView show];
         return YES;
     }

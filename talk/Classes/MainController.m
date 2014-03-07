@@ -437,20 +437,6 @@
     if (sendToID) {
         messageHandler.delegate = self;
         NSString * messages = messageText.text;
-        NSData *jsonData = [messages dataUsingEncoding:NSUTF8StringEncoding];
-        JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
-        NSDictionary *json = [decoder objectWithData:jsonData];
-        if (json!=nil && [json count]!=0){
-            [messageHandler sendFile:messages forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
-            messageText.text = @"";
-            [self dismissKeyBoard];
-            [messageText resignFirstResponder];
-            [bubbleTableView reloadData];
-            [self scrollBubbleViewToBottomAnimated:YES];
-            [self dismissKeyBoard];
-            return;
-        }
-            
         if ([messages length]!=0) {
             [messageHandler sendMessage:messages forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
             messageText.text = @"";
