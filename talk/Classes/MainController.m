@@ -45,7 +45,7 @@
 #define BIG_IMG_WIDTH  300.0
 #define BIG_IMG_HEIGHT 340.0
 
-@interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate,reloadTableDeleage>
+@interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate,reloadTableDeleage,reloadCellDeleage>
 {
     NSMutableArray *bubbleData;
     CreateUI * createUI;
@@ -423,13 +423,19 @@
 
 }
 #pragma mark - Actions
-
+-(void)reloadTableCell{
+    for (NSBubbleData * data in bubbleData) {
+        data.delegate = self;
+    }
+    [bubbleTableView reloadData];
+    [self scrollBubbleViewToBottomAnimated:YES];
+}
 #pragma mark send  message
 -(void)sendMessages {
     ImageCache *imageCache = [ImageCache sharedObject];
     NSString *sendToID =[imageCache getFriendID];
     if (sendToID) {
-        
+        messageHandler.delegate = self;
         NSString * messages = messageText.text;
         NSData *jsonData = [messages dataUsingEncoding:NSUTF8StringEncoding];
         JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];

@@ -17,6 +17,7 @@
 
 @implementation MessageHandler
 
+@synthesize delegate;
 - ( void)receiveMessage:(NSString *)receiveMessage forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
     if ([fromID isEqualToString:sendID]) {
         NSBubbleData *sendBubble = [NSBubbleData dataWithText:receiveMessage date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
@@ -29,7 +30,8 @@
 
 -(void) sendMessage :(NSString *)messages forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID{
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
-    NSBubbleData *sendBubble = [NSBubbleData dataWithText:messages date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine];
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
+    NSBubbleData *sendBubble = [NSBubbleData dataWithText:messages date:date type:BubbleTypeMine];
     if (myData)
         sendBubble.avatar = [UIImage imageWithData:myData];
     [bubbleData addObject:sendBubble];
@@ -67,9 +69,10 @@
     ACKMessageDB *ack = [[ACKMessageDB alloc]init];
     [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:sendID withContent:messageSent withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
     
-     [con sendMessage:sendID withMessage:messageSent];
+    [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     
-    [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+    [delegate reloadTableCell];
+     [con sendMessage:sendID withMessage:messageSent];
     
    
 }
@@ -127,7 +130,7 @@
     NSMutableDictionary * dict = [[NSMutableDictionary alloc]init];
     [dict setObject:json forKey:sendID];
     NSString * jsonbody = [dict JSONString];
-    [db insertDBUserID:[handler getUserID] fromID:sendID withContent:jsonbody withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+    [db insertDBUserID:[handler getUserID] fromID:sendID withContent:jsonbody withTime:[dateFormatter stringFromDate:date] withIsMine:0];
     
     [con sendFileMessage:sendID withFileId:fileId withMessage:body];
 
@@ -149,6 +152,5 @@
         [bubbleData addObject:bubble];
 
     }
-    
 }
 @end

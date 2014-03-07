@@ -8,7 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol reloadCellDeleage <NSObject>
+
+-(void)reloadTableCell;
+
+@end
 @interface MessageHandler : NSObject
+
+@property (assign)id<reloadCellDeleage>delegate;
 
 - (void)receiveMessage:(NSString *)receiveMessage forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID;
 
