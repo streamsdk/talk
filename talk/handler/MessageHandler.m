@@ -97,15 +97,6 @@
     NSString * fileId =[json objectForKey:@"fileId"];
     NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
     
-    NSBubbleData * bubble;
-    if (time)
-        bubble = [NSBubbleData dataWithImage:image withImageTime:time withPath:path date:date withType:BubbleTypeMine];
-    else
-        bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine path:path];
-    if (myData) {
-        bubble.avatar = [UIImage imageWithData:myData];
-    }
-    [bubbleData addObject:bubble];
     
     HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
     
@@ -135,12 +126,23 @@
     
     [con sendFileMessage:sendID withFileId:fileId withMessage:body];
 
-    
     if ([json objectForKey:@"audiodata"]) {
         NSBubbleData *bubble = [NSBubbleData dataWithtimes:time date:date type:BubbleTypeMine withData:data];
         if (myData)
             bubble.avatar = [UIImage imageWithData:myData];
         [bubbleData addObject:bubble];
+    }
+    if ([json objectForKey:@"photo"]) {
+        NSBubbleData * bubble;
+        if (time)
+            bubble = [NSBubbleData dataWithImage:image withImageTime:time withPath:path date:date withType:BubbleTypeMine];
+        else
+            bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine path:path];
+        if (myData) {
+            bubble.avatar = [UIImage imageWithData:myData];
+        }
+        [bubbleData addObject:bubble];
+
     }
     
 }
