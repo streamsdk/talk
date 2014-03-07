@@ -48,7 +48,6 @@
     if (userMetadata && [userMetadata objectForKey:@"token"]){
         [bodyDic setObject:[userMetadata objectForKey:@"token"] forKey:@"token"];
     }
-
     
     NSMutableArray * fileArray = [cache getFileUpload];
     FilesUpload * file = [[FilesUpload alloc]init];
@@ -57,8 +56,7 @@
     [file setBodyDict:bodyDic];
     [file setUserId:sendID];
     [file setChatId:[NSString stringWithFormat:@"%lld", milliseconds]];
-    
-    
+    [file setType:@"voice"];
     if (isAddUploadDB) {
         isAddUploadDB = NO;
         if (fileArray!=nil && [fileArray count]!=0) {
@@ -97,7 +95,8 @@
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
         [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
-        
+        [file setDate:date];
+        [file setJsonDict:friendsDict];
         UploadDB * uploadDb = [[UploadDB alloc]init];
         [uploadDb insertUploadDB:[handler getUserID] filePath:voice.recordPath withTime:bodyData withFrom:sendID withType:@"voice"];
         

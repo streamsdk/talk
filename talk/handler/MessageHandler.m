@@ -77,55 +77,70 @@
     NSData *jsonData = [messages dataUsingEncoding:NSUTF8StringEncoding];
     JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
     NSDictionary *json = [decoder objectWithData:jsonData];
-   
-    if ([json objectForKey:@"photo"]) {
-         NSData *data = [NSData dataWithContentsOfFile:[json objectForKey:@"photo"]];
-        NSString * photoPath =[json objectForKey:@"photo"];
-        NSString *time =[json objectForKey:@"time"];
-        if ([time isEqualToString:@"-1"])
-            return;
-        UIImage *image = [UIImage imageWithData:data];
-        NSString * fileId =[json objectForKey:@"fileId"];
-        NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
-        
-        NSBubbleData * bubble;
-        if (time)
-            bubble = [NSBubbleData dataWithImage:image withImageTime:time withPath:photoPath date:date withType:BubbleTypeMine];
-        else
-            bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine path:photoPath];
-        if (myData) {
-            bubble.avatar = [UIImage imageWithData:myData];
-        }
-        [bubbleData addObject:bubble];
+    NSString * path =nil;
+    NSString * type =nil;
     
-        HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
-        
-        STreamXMPP *con = [STreamXMPP sharedObject];
-        
-        TalkDB * db = [[TalkDB alloc]init];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-        long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
-        
-        NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
-        if (time)
-            [bodyDic setObject:time forKey:@"duration"];
-        [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
-        [bodyDic setObject:@"photo" forKey:@"type"];
-        [bodyDic setObject:[handler getUserID] forKey:@"from"];
-        [bodyDic setObject:fileId forKey:@"fileId"];
-        NSString * body = [bodyDic JSONString];
-        ACKMessageDB *ack = [[ACKMessageDB alloc]init];
-        
-        [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:sendID withContent:body withTime:[dateFormatter stringFromDate:date] withIsMine:0];
-        
-        NSMutableDictionary * dict = [[NSMutableDictionary alloc]init];
-        [dict setObject:json forKey:sendID];
-        NSString * jsonbody = [dict JSONString];
-        [db insertDBUserID:[handler getUserID] fromID:sendID withContent:jsonbody withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
-        
-        [con sendFileMessage:sendID withFileId:fileId withMessage:body];
+    if ([json objectForKey:@"photo"]) {
+        path =[json objectForKey:@"photo"];
+        type = @"photo";
+    }else if ([json objectForKey:@"audiodata"]) {
+        path =[json objectForKey:@"audiodata"];
+        type = @"voice";
+    }else{
+        return;
+    }
+    NSData * data = [NSData dataWithContentsOfFile:path];
+    NSString *time =[json objectForKey:@"time"];
+    if ([time isEqualToString:@"-1"])
+        return;
+    UIImage *image = [UIImage imageWithData:data];
+    NSString * fileId =[json objectForKey:@"fileId"];
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
+    
+    NSBubbleData * bubble;
+    if (time)
+        bubble = [NSBubbleData dataWithImage:image withImageTime:time withPath:path date:date withType:BubbleTypeMine];
+    else
+        bubble = [NSBubbleData dataWithImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine path:path];
+    if (myData) {
+        bubble.avatar = [UIImage imageWithData:myData];
+    }
+    [bubbleData addObject:bubble];
+    
+    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
+    
+    STreamXMPP *con = [STreamXMPP sharedObject];
+    
+    TalkDB * db = [[TalkDB alloc]init];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+    long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
+    
+    NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
+    if (time)
+        [bodyDic setObject:time forKey:@"duration"];
+    [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
+    [bodyDic setObject:type forKey:@"type"];
+    [bodyDic setObject:[handler getUserID] forKey:@"from"];
+    [bodyDic setObject:fileId forKey:@"fileId"];
+    NSString * body = [bodyDic JSONString];
+    ACKMessageDB *ack = [[ACKMessageDB alloc]init];
+    
+    [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:sendID withContent:body withTime:[dateFormatter stringFromDate:date] withIsMine:0];
+    
+    NSMutableDictionary * dict = [[NSMutableDictionary alloc]init];
+    [dict setObject:json forKey:sendID];
+    NSString * jsonbody = [dict JSONString];
+    [db insertDBUserID:[handler getUserID] fromID:sendID withContent:jsonbody withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
+    
+    [con sendFileMessage:sendID withFileId:fileId withMessage:body];
 
+    
+    if ([json objectForKey:@"audiodata"]) {
+        NSBubbleData *bubble = [NSBubbleData dataWithtimes:time date:date type:BubbleTypeMine withData:data];
+        if (myData)
+            bubble.avatar = [UIImage imageWithData:myData];
+        [bubbleData addObject:bubble];
     }
     
 }

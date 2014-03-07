@@ -81,7 +81,7 @@
     [file setBodyDict:bodyDic];
     [file setUserId:sendID];
     [file setChatId:[NSString stringWithFormat:@"%lld", milliseconds]];
-    
+    [file setType:@"photo"];
     if ([type isEqualToString:@"photo"]) {
         photoPath = photopath;
          [file setFilepath:photoPath];

@@ -54,7 +54,7 @@
             [ack insertDB:f.chatId withUserID:[handler getUserID] fromID:f.userId withContent:bodyJsonData withTime:[dateFormatter stringFromDate:date] withIsMine:0];
             UploadDB * uploadDb = [[UploadDB alloc]init];
             [uploadDb deleteUploadDBFromFilepath:f.filepath];
-            if ([f.type isEqualToString:@"Photo"]){
+            if ([f.type isEqualToString:@"photo"]||[f.type isEqualToString:@"voice"]){
                 TalkDB * talkDB = [[TalkDB alloc]init];
                 [f.jsonDict setObject:[sf fileId] forKey:@"fileId"];
                 NSMutableDictionary *dict =[[NSMutableDictionary alloc]init];
