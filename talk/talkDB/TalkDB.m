@@ -292,6 +292,30 @@
     sqlite3_close(database);
 
 }
+-(NSString *) readDB:(NSDate *)date{
+    NSString *content = nil;
+    sqlite3 *database;
+    if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
+        sqlite3_close(database);
+        NSAssert(0, @"Failed to open database");
+    }
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+    NSString * time = [dateFormatter stringFromDate:date];
+    NSString * sqlQuery = [NSString stringWithFormat:@"SELECT CONTENT FROM FILEID WHERE TIME='%@'",time];
+    //    NSString *sqlQuery = @"SELECT * FROM FILEID";
+    sqlite3_stmt * statement;
+    
+    if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
+        while (sqlite3_step(statement) == SQLITE_ROW) {
+            char * _content  = (char*)sqlite3_column_text(statement,0);
+            NSString * contents =[[NSString alloc]initWithUTF8String:_content];
+            content = contents;
+        }
+    }
+    return content;
+    
+}
 -(NSString*)getCacheDirectory
 {
     return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];

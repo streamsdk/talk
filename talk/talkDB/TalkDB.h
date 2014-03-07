@@ -24,4 +24,7 @@
 -(void) deleteDB :(NSString *) _userID withOtherID:(NSString *)_friendID;
 
 -(void) deleteDB :(NSString *)time;
+
+-(NSString *) readDB:(NSDate *)date;
+
 @end

@@ -464,7 +464,7 @@
     
 }
 
-/*- (BOOL)tableView:(UITableView *)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL)tableView:(UITableView *)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath {
     return YES;
 }
 
@@ -478,17 +478,26 @@
 - (void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
     if (action == @selector(copy:)) {
         if (indexPath.row !=0) {
+            ImageCache * imageCache =  [ImageCache sharedObject];
+            NSString *sendToID = [imageCache getFriendID];
             NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-            NSString *string = [dateFormatter stringFromDate:data.date];
-            UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
-            [pasteBoard setString:string];
+            TalkDB * talkDb = [[TalkDB alloc]init];
+            NSString * content = [talkDb readDB:data.date];
+            NSDictionary *ret = [content objectFromJSONString];
+            NSDictionary * chatDic = [ret objectForKey:sendToID];
+            NSArray * keys = [chatDic allKeys];
+            for (NSString * key in keys) {
+                if ([key isEqualToString:@"messages"]) {
+                    NSString * string = [chatDic objectForKey:@"messages"];
+                    UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
+                    [pasteBoard setString:string];
+                }
+            }
         }
        
     }
 
-}*/
+}
 #pragma mark -
 #pragma mark Data Source Loading / Reloading Methods
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
