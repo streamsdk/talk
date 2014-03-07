@@ -547,7 +547,6 @@
         [jsonDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
         [jsonDic setObject:@"request" forKey:@"type"];
         [jsonDic setObject:[handle getUserID]forKey:@"username"];
-        [jsonDic setObject:[handle getUserID]forKey:@"from"];
         [jsonDic setObject:[friendsAddArray objectAtIndex:_button.tag] forKey:@"friendname"];
         NSString *jsonSent = [jsonDic JSONString];
         [con sendMessage:[friendsAddArray objectAtIndex:_button.tag] withMessage:jsonSent];
@@ -574,7 +573,6 @@
         [jsonDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
         [jsonDic setObject:@"sendRequest" forKey:@"type"];
         [jsonDic setObject:[handle getUserID] forKey:@"username"];
-        [jsonDic setObject:[handle getUserID]forKey:@"from"];
         [jsonDic setObject:[friendsAddArray objectAtIndex:_button.tag] forKey:@"friendname"];
         NSString *jsonSent = [jsonDic JSONString];
         [con sendMessage:[friendsAddArray objectAtIndex:_button.tag] withMessage:jsonSent];
@@ -628,7 +626,6 @@
     [jsonDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
     [jsonDic setObject:@"friend" forKey:@"type"];
     [jsonDic setObject:[handle getUserID] forKey:@"username"];
-    [jsonDic setObject:[handle getUserID]forKey:@"from"];
     [jsonDic setObject:[friendsAddArray objectAtIndex:_button.tag] forKey:@"friendname"];
     NSString *jsonSent = [jsonDic JSONString];
     [con sendMessage:[friendsAddArray objectAtIndex:_button.tag] withMessage:jsonSent];
@@ -674,7 +671,6 @@
     [jsonDic setObject:@"request" forKey:@"type"];
     [jsonDic setObject:loginName forKey:@"username"];
     [jsonDic setObject:string forKey:@"friendname"];
-    [jsonDic setObject:loginName forKey:@"from"];
      NSString *jsonSent = [jsonDic JSONString];
     [con sendMessage:string withMessage:jsonSent];
        

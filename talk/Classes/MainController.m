@@ -181,7 +181,7 @@
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
                                   initWithTitle:nil
                                   delegate:self
-                                  cancelButtonTitle:@"取消"
+                                  cancelButtonTitle:@"Cancel"
                                   destructiveButtonTitle:nil
                                   otherButtonTitles:@"set chat background", @"clear history data",nil];
     actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;

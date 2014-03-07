@@ -96,7 +96,7 @@
     UIImage *image = [UIImage imageWithData:data];
     NSString * fileId =[json objectForKey:@"fileId"];
     if (fileId==nil || [fileId isEqualToString:@""]) {
-        UIAlertView * view = [[UIAlertView alloc]initWithTitle:nil message:@"send Error" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * view = [[UIAlertView alloc]initWithTitle:nil message:@"the file is uploading, please wait" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [view show];
         return;
     }

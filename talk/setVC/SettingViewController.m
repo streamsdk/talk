@@ -165,7 +165,7 @@
            head = @"Basic user info";
             break;
         case 1:
-            head = @"Invite to Viber";
+            head = @"Invite to CoolChat";
             break;
         case 2:
             head = @"About";
@@ -348,7 +348,7 @@
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
                                   initWithTitle:nil
                                   delegate:self
-                                  cancelButtonTitle:@"取消"
+                                  cancelButtonTitle:@"Cancel"
                                   destructiveButtonTitle:nil
                                   otherButtonTitles:@"Camera", @"Local Photo",nil];
     actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
