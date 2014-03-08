@@ -1043,11 +1043,9 @@
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
     [self scrollBubbleViewToBottomAnimated:YES];
 }
-
 -(void) dismissKeyboard:(UITapGestureRecognizer *)estureRecognizer {
     [self dismissKeyBoard];
 }
-
 #pragma mark show bubbleview  lastrow
 - (void) scrollBubbleViewToBottomAnimated:(BOOL)animated
 {
@@ -1172,6 +1170,54 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+#pragma mark -
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+    
+    if (action == @selector(handleCopyImage:))
+        return YES;
+    return NO;
+}
+
+-(void)copyImage:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview{
+    copyDate = date;
+    copyImage = image;
+    CGRect frame = CGRectMake(imageview.frame.origin.x/2, imageview.frame.origin.y/3, imageview.frame.size.width/2, imageview.frame.size.height/2);
+    UIMenuItem *itCopy = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(handleCopyImage:)];
+    UIMenuController *menu = [UIMenuController sharedMenuController];
+    [menu setMenuItems:[NSArray arrayWithObjects:itCopy,nil]];
+    [menu setTargetRect:frame inView:imageview];
+    [menu setMenuVisible:YES animated:YES];
+}
+-(void) handleCopyImage:(id)sender {
+    CustomAlertView * alertView = [[CustomAlertView alloc]init];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300,200)];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((view.frame.size.width-200)/2, 10, 200, 180)];
+    [imageView setImage:copyImage];
+    [view addSubview:imageView];
+    [alertView setContainerView:view];
+    [alertView setButtonTitles:[NSMutableArray arrayWithObjects:@"Cancel", @"Send", nil]];
+    [alertView setDelegate:self];
+    
+    [alertView setOnButtonTouchUpInside:^(CustomAlertView *alertView, int buttonIndex) {
+        [alertView close];
+    }];
+    [alertView setUseMotionEffects:true];
+    
+    [alertView show];
+
+    NSLog(@"hand copy");
+}
+
+- (void)customButtonTouchUpInside:(id)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSLog(@"buttonIndex =%d",buttonIndex);
+    [alertView close];
 }
 -(void)doInBackground
 {

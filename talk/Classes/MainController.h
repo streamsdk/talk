@@ -27,12 +27,17 @@
 #define facialViewHeight 170
 #define  buttonWh 34
 #define  ICONHEIGHT 80
-@interface MainController : UIViewController<UIBubbleTableViewDataSource,facialViewDelegate,UIVideoEditorControllerDelegate,UITextFieldDelegate,IconViewDelegate,UIAlertViewDelegate,GetAllMessagesProtocol,ImageSendProtocol,UIActionSheetDelegate,UploadProtocol>
+#import "CustomAlertView.h"
+@interface MainController : UIViewController<UIBubbleTableViewDataSource,facialViewDelegate,UIVideoEditorControllerDelegate,UITextFieldDelegate,IconViewDelegate,UIAlertViewDelegate,GetAllMessagesProtocol,ImageSendProtocol,UIActionSheetDelegate,UploadProtocol,CustomAlertViewDelegate>
 {
     NSURL  *videoPath;
     NSMutableDictionary *deleteDic;
     int  rowCount;
      BOOL isEmoji;
+    
+    UIImage * copyImage;
+    NSDate * copyDate;
+    NSString * copyMessage;
 }
 
 
