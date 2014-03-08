@@ -370,6 +370,40 @@
     return cell;
 }
 
+-(BOOL)tableView:(UITableView *)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return YES;
+}
+-(BOOL)tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender{
+    if (indexPath.row !=0) {
+        NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
+        if (data.fileType == FileMessage) {
+            if (action == @selector(copy:)) {
+                return YES;
+            }
+        }
+        
+    }
+    
+    return NO;
+}
+-(void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender{
+    if (indexPath.row !=0) {
+        ImageCache * imagecache = [ImageCache sharedObject];
+         NSBubbleData *data = [[self.bubbleSection objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
+        if (action==@selector(copy:)) {
+            TalkDB * talk = [[TalkDB alloc]init];
+            NSString *contents = [talk readDB:data.date];
+            NSDictionary *ret = [contents objectFromJSONString];
+            NSDictionary * chatDic = [ret objectForKey:[imagecache getFriendID]];
+            NSString *message =[chatDic objectForKey:@"messages"];
+            NSLog(@"message = %@",message);
+            UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
+            [pasteBoard setString:message];
+            
+        }
+    }
+    
+}
 
 -(void) downloadvideo:(UIButton *)button{
     UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:button.tag];

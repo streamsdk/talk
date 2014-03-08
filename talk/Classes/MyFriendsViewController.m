@@ -412,7 +412,7 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
     NSDate * date =[NSDate dateWithTimeIntervalSinceNow:0];
     NSString * str2 = [dateFormatter stringFromDate:date];
-    
+    [handler setDate:date];
      TalkDB * db = [[TalkDB alloc]init];
     [db insertDBUserID:userID fromID:fromID withContent:str withTime:str2 withIsMine:1];
     
