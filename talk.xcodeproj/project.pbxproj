@@ -201,6 +201,7 @@
 		0E0F82FE18A3549400E81CA5 /* MyToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F82FD18A3549400E81CA5 /* MyToolbar.m */; };
 		0E0F830118A37D4100E81CA5 /* ACKMessageDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F830018A37D4100E81CA5 /* ACKMessageDB.m */; };
 		0E1060D118CAEA3100DFBA3A /* CustomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1060D018CAEA3100DFBA3A /* CustomAlertView.m */; };
+		0E1060D418CB0F0300DFBA3A /* CopyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1060D318CB0F0300DFBA3A /* CopyHandler.m */; };
 		0E10614818AB8109000564C7 /* Progress.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E10614718AB8109000564C7 /* Progress.m */; };
 		0E19E80C18711C5A00523232 /* Target.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E19E80B18711C5A00523232 /* Target.png */; };
 		0E19E83318716AA100523232 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E19E82918716AA100523232 /* EGORefreshTableHeaderView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -706,6 +707,8 @@
 		0E0F830018A37D4100E81CA5 /* ACKMessageDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ACKMessageDB.m; path = talkDB/ACKMessageDB.m; sourceTree = "<group>"; };
 		0E1060CF18CAEA3100DFBA3A /* CustomAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomAlertView.h; path = CustomAlertView/CustomAlertView.h; sourceTree = "<group>"; };
 		0E1060D018CAEA3100DFBA3A /* CustomAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomAlertView.m; path = CustomAlertView/CustomAlertView.m; sourceTree = "<group>"; };
+		0E1060D218CB0F0300DFBA3A /* CopyHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CopyHandler.h; path = handler/CopyHandler.h; sourceTree = "<group>"; };
+		0E1060D318CB0F0300DFBA3A /* CopyHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CopyHandler.m; path = handler/CopyHandler.m; sourceTree = "<group>"; };
 		0E10614618AB8109000564C7 /* Progress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Progress.h; path = handler/Progress.h; sourceTree = "<group>"; };
 		0E10614718AB8109000564C7 /* Progress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Progress.m; path = handler/Progress.m; sourceTree = "<group>"; };
 		0E178C4C186C1F8000E16F71 /* GetAllMessagesProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GetAllMessagesProtocol.h; path = Classes/GetAllMessagesProtocol.h; sourceTree = "<group>"; };
@@ -1799,6 +1802,8 @@
 				03F50C6C1867B50000E08C22 /* MessageHandler.m */,
 				03F50C6E1867B54300E08C22 /* AudioHandler.h */,
 				03F50C6F1867B54300E08C22 /* AudioHandler.m */,
+				0E1060D218CB0F0300DFBA3A /* CopyHandler.h */,
+				0E1060D318CB0F0300DFBA3A /* CopyHandler.m */,
 				0EFAD95918682AF2001F0DED /* HandlerUserIdAndDateFormater.h */,
 				0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */,
 				0E1B052F18A623A7001715C6 /* FilesUpload.h */,
@@ -2464,6 +2469,7 @@
 				03D9C08B18145E410039118F /* XMPPDateTimeProfiles.m in Sources */,
 				03D9C07618145E410039118F /* XMPPvCard.xcdatamodeld in Sources */,
 				0E3A74F218740C9D00A9020D /* HandlerFirendsViewController.m in Sources */,
+				0E1060D418CB0F0300DFBA3A /* CopyHandler.m in Sources */,
 				0E49F06C187E7BA200749A6D /* MyView.m in Sources */,
 				03D9BF5E18145E2F0039118F /* NSNumber+XMPP.m in Sources */,
 				0E19E83318716AA100523232 /* EGORefreshTableHeaderView.m in Sources */,
