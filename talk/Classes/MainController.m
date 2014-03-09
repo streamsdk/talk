@@ -1122,7 +1122,7 @@
 -(void)sendImages:(NSData *)data withTime:(NSString *)time{
     [self sendPhoto:data withTime:time];
 }
--(void) uploadVideoPath:(NSString *)filePath withTime:(NSString *)time withFrom:(NSString *)fromID withType:(NSString *)type{
+-(void) uploadVideoPath:(NSString *)filePath withTime:(NSString *)time withFrom:(NSString *)fromID withType:(NSString *)type withDate:(NSDate *)date{
     [self dismissKeyBoard];
     ImageCache *imageCache = [ImageCache sharedObject];
     
@@ -1146,6 +1146,7 @@
         
         [videoHandler setController:self];
         [videoHandler setVideoPath:_videoPath];
+        [videoHandler setUploadDate:date];
         [videoHandler setType:@"video"];
         [videoHandler sendVideoforBubbleDataArray:bubbleData withVideoTime:time forBubbleMyData:myData withSendId:fromID];
         NSBubbleData * last = [bubbleData lastObject];
@@ -1156,6 +1157,7 @@
         NSData * data = [NSData dataWithContentsOfFile:filePath];
         [photoHandler setController:self];
         [photoHandler setType:@"photo"];
+        [photoHandler setUploadDate:date];
         [photoHandler setPhotopath:filePath];
         [photoHandler sendPhoto:data forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:fromID withTime:time];
     }
@@ -1164,6 +1166,7 @@
         [v setRecordPath:filePath];
         [v setRecordTime:[time floatValue]];
         [audioHandler setIsAddUploadDB:YES];
+        [audioHandler setUploadDate:date];
         [audioHandler sendAudio:v forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:fromID];
     }
     [bubbleTableView reloadData];

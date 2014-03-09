@@ -21,7 +21,6 @@
 #import "AppDelegate.h"
 #import "UploadDB.h"
 #import "Progress.h"
-
 @interface PhotoHandler()
 
 @end
@@ -31,6 +30,7 @@
 @synthesize controller;
 @synthesize type;
 @synthesize photopath;
+@synthesize uploadDate;
 
 -(void)receiveFile:(NSData *)data withPath:(NSString *)path forBubbleDataArray:(NSMutableArray *)bubbleData withTime:(NSString *)time forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
@@ -127,7 +127,7 @@
         [file setDate:date];
         [file setJsonDict:friendDict];
         UploadDB * uploadDb = [[UploadDB alloc]init];
-        [uploadDb insertUploadDB:[handler getUserID] filePath:photoPath withTime:time withFrom:sendID withType:@"photo"];
+        [uploadDb insertUploadDB:[handler getUserID] filePath:photoPath withTime:time withFrom:sendID withType:@"photo" withDate:[dateFormatter stringFromDate:date]];
         
         if (fileArray != nil && [fileArray count] != 0) {
             FilesUpload * f =[fileArray objectAtIndex:0];

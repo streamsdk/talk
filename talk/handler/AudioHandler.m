@@ -20,6 +20,8 @@
 
 @synthesize isAddUploadDB;
 
+@synthesize uploadDate;
+
 - (void)receiveAudioFile:(NSData *)data withBody:(NSString *)body forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
     HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
        if ([fromID isEqualToString:sendID]) {
@@ -98,7 +100,7 @@
         [file setDate:date];
         [file setJsonDict:friendsDict];
         UploadDB * uploadDb = [[UploadDB alloc]init];
-        [uploadDb insertUploadDB:[handler getUserID] filePath:voice.recordPath withTime:bodyData withFrom:sendID withType:@"voice"];
+        [uploadDb insertUploadDB:[handler getUserID] filePath:voice.recordPath withTime:bodyData withFrom:sendID withType:@"voice" withDate:[dateFormatter stringFromDate:date]];
         
         if (fileArray != nil && [fileArray count] != 0) {
             FilesUpload * f =[fileArray objectAtIndex:0];

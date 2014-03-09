@@ -26,6 +26,7 @@
 @synthesize controller,videoPath;
 @synthesize delegate;
 @synthesize type;
+@synthesize uploadDate;
 
 - (void)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withVideoTime:(NSString *)time withSendId:(NSString *)sendID withFromId:(NSString *)fromID withJsonBody:(NSString *)body{
     
@@ -259,7 +260,7 @@
         
         [db insertDBUserID:[handler getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
         UploadDB * uploadDb = [[UploadDB alloc]init];
-        [uploadDb insertUploadDB:[handler getUserID] filePath:_mp4Path withTime:time withFrom:_sendID withType:@"video"];
+        [uploadDb insertUploadDB:[handler getUserID] filePath:_mp4Path withTime:time withFrom:_sendID withType:@"video" withDate:[dateFormatter stringFromDate:date]];
         
         if (fileArray!=nil && [fileArray count]!=0) {
             FilesUpload * f =[fileArray objectAtIndex:0];

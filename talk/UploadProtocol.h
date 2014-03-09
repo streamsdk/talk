@@ -10,6 +10,6 @@
 
 @protocol UploadProtocol <NSObject>
 
--(void) uploadVideoPath:(NSString *)filePath withTime:(NSString *)time withFrom:(NSString *)fromID withType:(NSString *)type;
+-(void) uploadVideoPath:(NSString *)filePath withTime:(NSString *)time withFrom:(NSString *)fromID withType:(NSString *)type withDate:(NSDate *)date;
 
 @end
