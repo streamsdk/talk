@@ -37,7 +37,7 @@
 #import "DisappearImageController.h"
 #import "ChatSettingViewController.h"
 #import "BackgroundImgViewController.h"
-#import "CopyHandler.h"
+#import "CopyPhotoHandler.h"
 #import "ChatBackGround.h"
 #define BUTTON_TAG 20000
 #define TOOLBARTAG		200
@@ -64,7 +64,7 @@
     VideoHandler *videoHandler;
     MessageHandler *messageHandler;
     AudioHandler *audioHandler;
-    CopyHandler * copyHandler;
+    CopyPhotoHandler * copyPhotoHandler;
     UIImage * sendImage;
     
     BOOL isVideo;
@@ -278,7 +278,7 @@
     
     audioHandler = [[AudioHandler alloc]init];
     
-    copyHandler = [[CopyHandler alloc]init];
+    copyPhotoHandler = [[CopyPhotoHandler alloc]init];
     
     _deleteBackview = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-40, self.view.frame.size.width,40)];
     _deleteBackview.backgroundColor = [UIColor whiteColor];
@@ -1245,7 +1245,7 @@
         for (NSBubbleData * data in bubbleData) {
             data.delegate = self;
         }
-        [copyHandler sendPhoto:copyImage withdate:copyDate forBubbleDataArray:bubbleData forBubbleMyData:myData];
+        [copyPhotoHandler sendPhoto:copyImage withdate:copyDate forBubbleDataArray:bubbleData forBubbleMyData:myData];
     }
     NSBubbleData * data = [bubbleData lastObject];
     data.delegate = self;
@@ -1254,16 +1254,23 @@
    [alertView close];
 }
 -(void)copyVideo:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview withPath:(NSString *)path{
-    CGRect frame = CGRectMake(imageview.frame.origin.x/2, imageview.frame.origin.y/3, imageview.frame.size.width/2, imageview.frame.size.height/2);
-    copyImage = image;
-    UIMenuItem *itCopy = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(handleCopyVideo:)];
-    UIMenuController *menu = [UIMenuController sharedMenuController];
-    [menu setMenuItems:[NSArray arrayWithObjects:itCopy,nil]];
-    [menu setTargetRect:frame inView:imageview];
-    [menu setMenuVisible:YES animated:YES];
-    [self showAlertview];
+    if ([path hasSuffix:@".mp4"]) {
+        CGRect frame = CGRectMake(imageview.frame.origin.x/2, imageview.frame.origin.y/3, imageview.frame.size.width/2, imageview.frame.size.height/2);
+        copyImage = image;
+        UIMenuItem *itCopy = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(handleCopyVideo:)];
+        UIMenuController *menu = [UIMenuController sharedMenuController];
+        [menu setMenuItems:[NSArray arrayWithObjects:itCopy,nil]];
+        [menu setTargetRect:frame inView:imageview];
+        [menu setMenuVisible:YES animated:YES];
+    }else{
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"This video does not download" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    
+
 }
 -(void)handleCopyVideo :(id)sender {
+   [self showAlertview];
     NSLog(@"video copy");
 }
 -(void) sendPhoto{

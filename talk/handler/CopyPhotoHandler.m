@@ -6,7 +6,7 @@
 //  Copyright (c) 2014年 wangshuai. All rights reserved.
 //
 
-#import "CopyHandler.h"
+#import "CopyPhotoHandler.h"
 #import "ImageCache.h"
 #import "HandlerUserIdAndDateFormater.h"
 #import "TalkDB.h"
@@ -14,7 +14,7 @@
 #import "NSBubbleData.h"
 #import "STreamXMPP.h"
 
-@implementation CopyHandler
+@implementation CopyPhotoHandler
 
 
 -(void) sendPhoto:(UIImage *)image withdate:(NSDate *)date forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData{
@@ -35,7 +35,6 @@
         bubble.avatar = [UIImage imageWithData:myData];
     }
     [bubbleData addObject:bubble];
-    NSString * time = [dateFormatter stringFromDate:nowdate];
     [talk insertDBUserID:[handler getUserID] fromID:[imagecache getFriendID] withContent:contents withTime:[dateFormatter stringFromDate:nowdate] withIsMine:0];
     
     long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);

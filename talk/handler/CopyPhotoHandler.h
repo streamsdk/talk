@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CopyHandler : NSObject
+@interface CopyPhotoHandler : NSObject
 
 -(void) sendPhoto:(UIImage *)image withdate:(NSDate *)date forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData;
 
