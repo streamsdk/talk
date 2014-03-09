@@ -70,10 +70,9 @@
             NSMutableDictionary *dict =[[NSMutableDictionary alloc]init];
             [dict setObject:f.jsonDict  forKey:f.userId];
             NSString * json = [dict JSONString];
-            [[cache getLock] tryLock];
-            [talkDB updateDB:f.date withContent:json];
-            [[cache getLock] unlock];
-            
+            @synchronized(self) {
+              [talkDB updateDB:f.date withContent:json];
+            }
             [con sendFileMessage:f.userId withFileId:[sf fileId] withMessage:bodyJsonData];
         }
         
