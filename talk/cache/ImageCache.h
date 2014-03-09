@@ -14,6 +14,8 @@
 
 +(ImageCache *)sharedObject;
 
+-(NSLock *)getLock;
+
 -(void)selfImageDownload:(NSData *)file withFileId:(NSString *)fileId;
 
 -(NSData *)getImage:(NSString *)fileId;

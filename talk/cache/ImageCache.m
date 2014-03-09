@@ -24,7 +24,7 @@ static NSMutableArray *_fileUpload;
 static NSMutableDictionary * dic;
 static NSMutableDictionary*_downloadingFile;
 static NSMutableDictionary*_countDict;
-
+static NSLock *_theLock;
 @implementation ImageCache
 
 
@@ -48,10 +48,16 @@ static NSMutableDictionary*_countDict;
         dic = [[NSMutableDictionary alloc]init];
         _downloadingFile =[[NSMutableDictionary alloc]init];
         _countDict = [[NSMutableDictionary alloc]init];
+        _theLock = [[NSLock alloc] init];
+
     });
     
     return sharedInstance;
 
+}
+
+- (NSLock *)getLock{
+    return _theLock;
 }
 
 -(void)saveJsonData:(NSString *)jd forFileId:(NSString *)fileId{
