@@ -54,14 +54,26 @@
             [ack insertDB:f.chatId withUserID:[handler getUserID] fromID:f.userId withContent:bodyJsonData withTime:[dateFormatter stringFromDate:date] withIsMine:0];
             UploadDB * uploadDb = [[UploadDB alloc]init];
             [uploadDb deleteUploadDBFromFilepath:f.filepath];
-            if ([f.type isEqualToString:@"photo"]||[f.type isEqualToString:@"voice"]){
+            /*if ([f.type isEqualToString:@"photo"]||[f.type isEqualToString:@"voice"]){
                 TalkDB * talkDB = [[TalkDB alloc]init];
                 [f.jsonDict setObject:[sf fileId] forKey:@"fileId"];
                 NSMutableDictionary *dict =[[NSMutableDictionary alloc]init];
                 [dict setObject:f.jsonDict  forKey:f.userId];
                 NSString * json = [dict JSONString];
+                NSLock *theLock = [[NSLock alloc] init];
+                [theLock tryLock];
                 [talkDB updateDB:f.date withContent:json];
-            }
+                [theLock unlock];
+            }*/
+            TalkDB * talkDB = [[TalkDB alloc]init];
+            [f.jsonDict setObject:[sf fileId] forKey:@"fileId"];
+            NSMutableDictionary *dict =[[NSMutableDictionary alloc]init];
+            [dict setObject:f.jsonDict  forKey:f.userId];
+            NSString * json = [dict JSONString];
+            NSLock *theLock = [[NSLock alloc] init];
+            [theLock tryLock];
+            [talkDB updateDB:f.date withContent:json];
+            [theLock unlock];
             
             [con sendFileMessage:f.userId withFileId:[sf fileId] withMessage:bodyJsonData];
         }

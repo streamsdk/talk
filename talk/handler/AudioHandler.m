@@ -61,6 +61,13 @@
     [file setType:@"voice"];
     if (isAddUploadDB) {
         isAddUploadDB = NO;
+        NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
+        [friendsDict setObject:bodyData forKey:@"time"];
+        [friendsDict setObject:voice.recordPath forKey:@"audiodata"];
+        
+        [file setDate:uploadDate];
+        [file setJsonDict:friendsDict];
+        
         if (fileArray!=nil && [fileArray count]!=0) {
             FilesUpload * f =[fileArray objectAtIndex:0];
             long long ftime = [f.time longLongValue];

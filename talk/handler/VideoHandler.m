@@ -227,6 +227,13 @@
     
     if ([type isEqualToString:@"video"]) {
         type = nil;
+        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        if (time)
+            [friendDict setObject:time forKey:@"duration"];
+        [friendDict setObject:_mp4Path forKey:@"filepath"];
+        [file setDate:uploadDate];
+        [file setJsonDict:friendDict];
+        
         if (fileArray!=nil && [fileArray count]!=0) {
             FilesUpload * f =[fileArray objectAtIndex:0];
             long long ftime = [f.time longLongValue];
@@ -257,6 +264,8 @@
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
         
+        [file setDate:date];
+        [file setJsonDict:friendDict];
         
         [db insertDBUserID:[handler getUserID] fromID:_sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
         UploadDB * uploadDb = [[UploadDB alloc]init];

@@ -85,6 +85,12 @@
     if ([type isEqualToString:@"photo"]) {
         photoPath = photopath;
          [file setFilepath:photoPath];
+        [file setDate:uploadDate];
+        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        if (time)
+            [friendDict setObject:time forKey:@"time"];
+        [friendDict setObject:photoPath forKey:@"photo"];
+        [file setJsonDict:friendDict];
         type = nil;
         if (fileArray != nil && [fileArray count] != 0) {
             FilesUpload * f =[fileArray objectAtIndex:0];
