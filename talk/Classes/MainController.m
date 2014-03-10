@@ -1213,17 +1213,6 @@
     copyDate = date;
     copyImage = image;
     APPDELEGATE.date = date;
-    ImageCache *imageCache = [ImageCache sharedObject];
-    
-    HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
-    NSString *sendToID =[imageCache getFriendID];
-    NSMutableArray * dataArray = [[NSMutableArray alloc]init];
-    TalkDB * talk =[[TalkDB alloc]init];
-    dataArray = [talk readInitDB:[handler getUserID] withOtherID:sendToID withCount:10];
-    bubbleData = dataArray;
-    for (NSBubbleData * data in bubbleData) {
-        data.delegate = self;
-    }
     APPDELEGATE.array = bubbleData;
     CGRect frame = CGRectMake(imageview.frame.origin.x/2, imageview.frame.origin.y/3, imageview.frame.size.width/2, imageview.frame.size.height/2);
     UIMenuItem *itCopy = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(handleCopyImage:)];
@@ -1234,11 +1223,14 @@
 
 }
 -(void) handleCopyImage:(id)sender {
+    [self readContents];
+}
+-(void) readContents{
     TalkDB * talk = [[TalkDB alloc]init];
     NSString * contents =[talk readDB:copyDate];
     NSDictionary *ret = [contents objectFromJSONString];
     ImageCache *imageCache = [ImageCache sharedObject];
-     NSDictionary * chatDic = [ret objectForKey:[imageCache getFriendID]];
+    NSDictionary * chatDic = [ret objectForKey:[imageCache getFriendID]];
     contents = [chatDic JSONString];
     [[UIPasteboard generalPasteboard] setString:contents];
 }
@@ -1247,8 +1239,10 @@
     if ([path hasSuffix:@".mp4"]) {
         copyDate = date;
         copyImage = image;
+        APPDELEGATE.date = date;
+        APPDELEGATE.image = image;
+        APPDELEGATE.array = bubbleData;
         CGRect frame = CGRectMake(imageview.frame.origin.x/2, imageview.frame.origin.y/3, imageview.frame.size.width/2, imageview.frame.size.height/2);
-        copyImage = image;
         UIMenuItem *itCopy = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(handleCopyVideo:)];
         UIMenuController *menu = [UIMenuController sharedMenuController];
         [menu setMenuItems:[NSArray arrayWithObjects:itCopy,nil]];
@@ -1258,10 +1252,9 @@
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"This video does not download" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         [alert show];
     }
-    
-
 }
 -(void)handleCopyVideo :(id)sender {
+    [self readContents];
     NSLog(@"video copy");
 }
 -(void) refreshTable{

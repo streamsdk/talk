@@ -10,6 +10,6 @@
 
 @interface CopyPhotoHandler : NSObject
 
--(void) sendPhoto:(UIImage *)image withdate:(NSDate *)date forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData;
+-(void) sendPhoto:(UIImage *)image withdate:(NSDate *)date forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withFileType:(NSString *)type;
 
 @end

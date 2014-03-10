@@ -63,9 +63,13 @@
     JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
     NSDictionary *chatDic = [decoder objectWithData:jsonData];
     NSString *photopath=[chatDic objectForKey:@"photo"];
-//    NSString * videopath = [chatDic objectForKey:@"filepath"];
-    if (photopath!=nil) {
-        UIImage *copyImage = [UIImage imageWithData:[NSData dataWithContentsOfFile:photopath]];
+    NSString * videopath = [chatDic objectForKey:@"filepath"];
+    UIImage *copyImage;
+    if (photopath!=nil || videopath!= nil) {
+        if (photopath)
+            copyImage = [UIImage imageWithData:[NSData dataWithContentsOfFile:photopath]];
+        if (videopath)
+            copyImage = APPDELEGATE.image;
         CustomAlertView * alertView = [[CustomAlertView alloc]init];
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300,200)];
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((view.frame.size.width-120)/2, 10, 120, 160)];
@@ -93,20 +97,30 @@
     NSLog(@"buttonIndex =%d",buttonIndex);
     CopyPhotoHandler * cHandler =[[CopyPhotoHandler alloc]init];
     if (buttonIndex == 1) {
-        
+        [alertView close];
         NSString * contents =[[UIPasteboard generalPasteboard] string];
         NSData *jsonData = [contents dataUsingEncoding:NSUTF8StringEncoding];
         JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
         NSDictionary *chatDic = [decoder objectWithData:jsonData];
         NSString *photopath=[chatDic objectForKey:@"photo"];
-        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfFile:photopath]];
-         ImageCache * imageCache = [ImageCache sharedObject];
+        NSString * videopath = [chatDic objectForKey:@"filepath"];
+        UIImage *image;
+        NSString * type;
+        if (photopath){
+            type = @"photo";
+            image = [UIImage imageWithData:[NSData dataWithContentsOfFile:photopath]];
+        }
+        if (videopath){
+            type = @"video";
+            image = APPDELEGATE.image;
+        }
+        ImageCache * imageCache = [ImageCache sharedObject];
         HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
         NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[handler getUserID]];
         NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
         NSData *myData = [imageCache getImage:pImageId];
-        [cHandler sendPhoto:image withdate:APPDELEGATE.date forBubbleDataArray:APPDELEGATE.array forBubbleMyData:myData];
+        [cHandler sendPhoto:image withdate:APPDELEGATE.date forBubbleDataArray:APPDELEGATE.array forBubbleMyData:myData withFileType:type];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"send" object:nil];
     }
-      [[NSNotificationCenter defaultCenter] postNotificationName:@"send" object:nil];
-    [alertView close];
+    
 }@end

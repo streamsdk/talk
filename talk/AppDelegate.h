@@ -22,8 +22,8 @@
 @property (nonatomic,retain) NSMutableArray *deleteArray;
 @property (nonatomic,strong) UIButton * button;
 @property (nonatomic,retain) NSMutableArray *array;
-@property (nonatomic,retain) NSDate *date;
-
+@property (nonatomic,strong) NSDate *date;
+@property (nonatomic,retain) UIImage *image;
 -(void)showFriendsView;
 
 @end

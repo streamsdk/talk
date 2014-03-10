@@ -875,8 +875,6 @@
 		0EF9B63D186EAAA1003DD866 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0EFAD95918682AF2001F0DED /* HandlerUserIdAndDateFormater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HandlerUserIdAndDateFormater.h; path = cache/HandlerUserIdAndDateFormater.h; sourceTree = "<group>"; };
 		0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HandlerUserIdAndDateFormater.m; path = cache/HandlerUserIdAndDateFormater.m; sourceTree = "<group>"; };
-		0EFADB9E18CC8B6A007724A6 /* CopyVideoHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CopyVideoHandler.h; path = handler/CopyVideoHandler.h; sourceTree = "<group>"; };
-		0EFADB9F18CC8B6A007724A6 /* CopyVideoHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CopyVideoHandler.m; path = handler/CopyVideoHandler.m; sourceTree = "<group>"; };
 		0EFADBA118CC9014007724A6 /* CustomTextFiled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomTextFiled.h; path = Classes/CustomTextFiled.h; sourceTree = "<group>"; };
 		0EFADBA218CC9014007724A6 /* CustomTextFiled.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomTextFiled.m; path = Classes/CustomTextFiled.m; sourceTree = "<group>"; };
 		0EFC8CB318ADE0B900EF09D8 /* DownloadDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DownloadDB.h; path = talkDB/DownloadDB.h; sourceTree = "<group>"; };
@@ -1809,8 +1807,6 @@
 				03F50C6F1867B54300E08C22 /* AudioHandler.m */,
 				0E1060D218CB0F0300DFBA3A /* CopyPhotoHandler.h */,
 				0E1060D318CB0F0300DFBA3A /* CopyPhotoHandler.m */,
-				0EFADB9E18CC8B6A007724A6 /* CopyVideoHandler.h */,
-				0EFADB9F18CC8B6A007724A6 /* CopyVideoHandler.m */,
 				0EFAD95918682AF2001F0DED /* HandlerUserIdAndDateFormater.h */,
 				0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */,
 				0E1B052F18A623A7001715C6 /* FilesUpload.h */,
