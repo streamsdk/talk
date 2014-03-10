@@ -16,7 +16,7 @@
 
 -(void) disappearImage:(UIImage *)image withDissapearTime:(NSString *)time withDissapearPath:(NSString *)path withSendOrReceiveTime:(NSDate *)date;
 
--(void)copyImage:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview;
+-(void)copyImage:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview withBubbleType:(BOOL)isMine;
 
--(void)copyVideo:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview withPath:(NSString *)path;
+-(void)copyVideo:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview withPath:(NSString *)path withBubbleType:(BOOL)isMine;
 @end

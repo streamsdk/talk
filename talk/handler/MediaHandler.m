@@ -19,7 +19,7 @@
 #import "AppDelegate.h"
 #import "Progress.h"
 #import "UploadDB.h"
-
+#import "CopyDB.h"
 
 @implementation MediaHandler
 
@@ -64,7 +64,7 @@
                 [theLock tryLock];
                 [talkDB updateDB:f.date withContent:json];
                 [theLock unlock];
-            }*/
+            }
             TalkDB * talkDB = [[TalkDB alloc]init];
             [f.jsonDict setObject:[sf fileId] forKey:@"fileId"];
             NSMutableDictionary *dict =[[NSMutableDictionary alloc]init];
@@ -72,8 +72,13 @@
             NSString * json = [dict JSONString];
             @synchronized(self) {
               [talkDB updateDB:f.date withContent:json];
-            }
+            }*/
+            [f.jsonDict setObject:[sf fileId] forKey:@"fileId"];
+            NSString *json = [f.jsonDict JSONString];
+            CopyDB *db = [[CopyDB alloc]init];
+            [db insertContent:json withTime:[dateFormatter stringFromDate:f.date]];
             [con sendFileMessage:f.userId withFileId:[sf fileId] withMessage:bodyJsonData];
+//            [db readContentCopyDB:[dateFormatter stringFromDate:f.date]];    
         }
         
         NSMutableArray * fileArray = [cache getFileUpload];

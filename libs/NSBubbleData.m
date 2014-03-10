@@ -420,7 +420,12 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 - (void)imageLongPress:(UIGestureRecognizer *)recognizer{
     if (recognizer.state == UIGestureRecognizerStateBegan) {
          UIImageView *imageview= (UIImageView *)recognizer.view;
-         [self.delegate copyImage:_image withdate:_date withView:imageview];
+        if (_type == BubbleTypeMine ) {
+            [self.delegate copyImage:_image withdate:_date withView:imageview withBubbleType:YES];
+        }else{
+            [self.delegate copyImage:_image withdate:_date withView:imageview withBubbleType:NO];
+        }
+        
     }
    
 }

@@ -26,7 +26,7 @@
 #import "DownloadDB.h"
 #import "UploadDB.h"
 //#import "TwitterConnect.h"
-
+#import "CopyDB.h"
 @implementation UINavigationBar (UINavigationBarCategory)
 - (void)drawRect:(CGRect)rect {
    
@@ -84,6 +84,9 @@
     //upload
     UploadDB *uploadDb = [[UploadDB alloc]init];
     [uploadDb initDB];
+    
+    CopyDB * db = [[CopyDB alloc]init];
+    [db initDB];
     
     /*TwitterConnect * twitter = [[TwitterConnect alloc]init];
     ACAccountStore  *accountStore = [[ACAccountStore alloc] init];
@@ -227,6 +230,8 @@
             [xmpp disconnect];
         }];
     }*/
+   UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
+    [pasteBoard setString:@""];
    STreamXMPP *xmpp = [STreamXMPP sharedObject];
    [xmpp disconnect];
 }

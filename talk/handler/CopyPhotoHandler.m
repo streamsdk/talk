@@ -13,7 +13,7 @@
 #import <arcstreamsdk/JSONKit.h>
 #import "NSBubbleData.h"
 #import "STreamXMPP.h"
-
+#import "CopyDB.h"
 @implementation CopyPhotoHandler
 
 
@@ -51,7 +51,8 @@
     [dict setObject:chatDic forKey:[imagecache getFriendID]];
     NSString *content = [dict JSONString];
     [talk insertDBUserID:[handler getUserID] fromID:[imagecache getFriendID] withContent:content withTime:[dateFormatter stringFromDate:nowdate] withIsMine:0];
-    
+    CopyDB *db = [[CopyDB alloc]init];
+    [db insertContent:contents withTime:[dateFormatter stringFromDate:nowdate]];
     long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
     
     NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];

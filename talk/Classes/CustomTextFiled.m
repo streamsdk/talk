@@ -59,6 +59,8 @@
 
 - (void)paste:(id)sender{
     NSString * contents =[[UIPasteboard generalPasteboard] string];
+    if (!contents) return;
+        
     NSData *jsonData = [contents dataUsingEncoding:NSUTF8StringEncoding];
     JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
     NSDictionary *chatDic = [decoder objectWithData:jsonData];

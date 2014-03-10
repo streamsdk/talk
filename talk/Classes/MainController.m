@@ -39,6 +39,8 @@
 #import "BackgroundImgViewController.h"
 #import "CopyPhotoHandler.h"
 #import "ChatBackGround.h"
+#import "CopyDB.h"
+
 #define BUTTON_TAG 20000
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
@@ -1208,10 +1210,11 @@
     }
     
 }
--(void)copyImage:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview{
+-(void)copyImage:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview withBubbleType:(BOOL)isMine{
     
     copyDate = date;
     copyImage = image;
+    _isMine = isMine;
     APPDELEGATE.date = date;
     APPDELEGATE.array = bubbleData;
     CGRect frame = CGRectMake(imageview.frame.origin.x/2, imageview.frame.origin.y/3, imageview.frame.size.width/2, imageview.frame.size.height/2);
@@ -1226,13 +1229,21 @@
     [self readContents];
 }
 -(void) readContents{
+    CopyDB * db = [[CopyDB alloc]init];
     TalkDB * talk = [[TalkDB alloc]init];
-    NSString * contents =[talk readDB:copyDate];
-    NSDictionary *ret = [contents objectFromJSONString];
-    ImageCache *imageCache = [ImageCache sharedObject];
-    NSDictionary * chatDic = [ret objectForKey:[imageCache getFriendID]];
-    contents = [chatDic JSONString];
-    [[UIPasteboard generalPasteboard] setString:contents];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+    NSString * contents =nil;
+    if (_isMine) {
+        contents =[db readContentCopyDB:[dateFormatter stringFromDate:copyDate]];
+    }else{
+        contents = [talk readDB:copyDate];
+        NSDictionary *ret = [contents objectFromJSONString];
+        ImageCache *imageCache = [ImageCache sharedObject];
+        NSDictionary * chatDic = [ret objectForKey:[imageCache getFriendID]];
+        contents = [chatDic JSONString];
+    }
+       [[UIPasteboard generalPasteboard] setString:contents];
 }
 -(void)copyVideo:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview withPath:(NSString *)path{
     
