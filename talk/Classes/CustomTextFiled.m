@@ -66,15 +66,18 @@
     NSDictionary *chatDic = [decoder objectWithData:jsonData];
     NSString *photopath=[chatDic objectForKey:@"photo"];
     NSString * videopath = [chatDic objectForKey:@"filepath"];
+    NSString *audiopath = [chatDic objectForKey:@"audiodata"];
     UIImage *copyImage;
-    if (photopath!=nil || videopath!= nil) {
+    if (photopath!=nil || videopath!= nil || audiopath != nil) {
         if (photopath)
             copyImage = [UIImage imageWithData:[NSData dataWithContentsOfFile:photopath]];
         if (videopath)
             copyImage = APPDELEGATE.image;
+        if (audiopath)
+            copyImage = [UIImage imageNamed:@"mic_talk_358x358@2x.png"];
         CustomAlertView * alertView = [[CustomAlertView alloc]init];
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300,200)];
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((view.frame.size.width-120)/2, 10, 120, 160)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300,140)];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((view.frame.size.width-100)/2, 20, 100, 100)];
         [imageView setImage:copyImage];
         [view addSubview:imageView];
         [alertView setContainerView:view];
@@ -98,14 +101,16 @@
 - (void)customButtonTouchUpInside:(id)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSLog(@"buttonIndex =%d",buttonIndex);
     CopyPhotoHandler * cHandler =[[CopyPhotoHandler alloc]init];
+    [alertView close];
     if (buttonIndex == 1) {
-        [alertView close];
+       
         NSString * contents =[[UIPasteboard generalPasteboard] string];
         NSData *jsonData = [contents dataUsingEncoding:NSUTF8StringEncoding];
         JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
         NSDictionary *chatDic = [decoder objectWithData:jsonData];
         NSString *photopath=[chatDic objectForKey:@"photo"];
         NSString * videopath = [chatDic objectForKey:@"filepath"];
+        NSString *audiopath = [chatDic objectForKey:@"audiodata"];
         UIImage *image;
         NSString * type;
         if (photopath){
@@ -115,6 +120,10 @@
         if (videopath){
             type = @"video";
             image = APPDELEGATE.image;
+        }
+        if (audiopath) {
+            type = @"voice";
+            image = [UIImage imageNamed:@"mic_talk_358x358@2x.png"];
         }
         ImageCache * imageCache = [ImageCache sharedObject];
         HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];

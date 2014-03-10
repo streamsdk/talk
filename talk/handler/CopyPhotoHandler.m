@@ -29,7 +29,8 @@
     NSString *path ;
     NSDate * nowdate =[NSDate dateWithTimeIntervalSinceNow:0];
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];;
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+    NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
     if (fileId==nil) return;
     if ([type isEqualToString:@"photo"]) {
         path=[chatDic objectForKey:@"pboto"];
@@ -46,6 +47,17 @@
         [bubbleData addObject:bdata];
 
     }
+    if ([type isEqualToString:@"voice"]) {
+        path = [chatDic objectForKey:@"audiodata"];
+        NSString * audiotime = [chatDic objectForKey:@"time"];
+        [bodyDic setObject:audiotime forKey:@"duration"];
+        NSData *data =[NSData dataWithContentsOfFile:path];
+        NSBubbleData *bubble = [NSBubbleData dataWithtimes:audiotime date:date type:BubbleTypeSomeoneElse withData:data];
+        if (myData)
+            bubble.avatar = [UIImage imageWithData:myData];
+        [bubbleData addObject:bubble];
+
+    }
     
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     [dict setObject:chatDic forKey:[imagecache getFriendID]];
@@ -55,7 +67,6 @@
     [db insertContent:contents withTime:[dateFormatter stringFromDate:nowdate]];
     long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
     
-    NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
     [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
     [bodyDic setObject:type forKey:@"type"];
     [bodyDic setObject:[handler getUserID] forKey:@"from"];

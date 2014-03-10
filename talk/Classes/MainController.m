@@ -528,6 +528,8 @@
     NSString *sendToID =[imageCache getFriendID];
     if (self.voice.recordTime >= 0.5f) {
         [audioHandler sendAudio:voice forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
+        NSBubbleData * data = [bubbleData lastObject];
+        data.delegate = self;
         [bubbleTableView reloadData];
         [self scrollBubbleViewToBottomAnimated:YES];
         
@@ -1206,6 +1208,9 @@
         if (action == @selector(handleCopyVideo:)) {
             return YES;
         }
+        if (action == @selector(handleCopyAudio:)) {
+            return YES;
+        }
         return [super canPerformAction:action withSender:sender];
     }
     
@@ -1217,11 +1222,10 @@
     _isMine = isMine;
     APPDELEGATE.date = date;
     APPDELEGATE.array = bubbleData;
-    CGRect frame = CGRectMake(imageview.frame.origin.x/2, imageview.frame.origin.y/3, imageview.frame.size.width/2, imageview.frame.size.height/2);
     UIMenuItem *itCopy = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(handleCopyImage:)];
     UIMenuController *menu = [UIMenuController sharedMenuController];
     [menu setMenuItems:[NSArray arrayWithObjects:itCopy,nil]];
-    [menu setTargetRect:frame inView:imageview];
+    [menu setTargetRect:imageview.bounds inView:imageview];
     [menu setMenuVisible:YES animated:YES];
 
 }
@@ -1253,11 +1257,10 @@
         APPDELEGATE.date = date;
         APPDELEGATE.image = image;
         APPDELEGATE.array = bubbleData;
-        CGRect frame = CGRectMake(imageview.frame.origin.x/2, imageview.frame.origin.y/3, imageview.frame.size.width/2, imageview.frame.size.height/2);
         UIMenuItem *itCopy = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(handleCopyVideo:)];
         UIMenuController *menu = [UIMenuController sharedMenuController];
         [menu setMenuItems:[NSArray arrayWithObjects:itCopy,nil]];
-        [menu setTargetRect:frame inView:imageview];
+        [menu setTargetRect:imageview.bounds inView:imageview];
         [menu setMenuVisible:YES animated:YES];
     }else{
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"This video does not download" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
@@ -1267,6 +1270,18 @@
 -(void)handleCopyVideo :(id)sender {
     [self readContents];
     NSLog(@"video copy");
+}
+-(void)copyAudiodate:(NSDate *)date withView:(UIImageView *)imageview withAudioTime:(NSString *)time withBubbleType:(BOOL)isMine{
+    copyDate = date;
+    APPDELEGATE.date = date;
+    APPDELEGATE.array = bubbleData;
+    _isMine = isMine;
+    UIMenuItem *itCopy = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(handleCopyAudio:)];
+    UIMenuController *menu = [UIMenuController sharedMenuController];
+    [menu setMenuItems:[NSArray arrayWithObjects:itCopy,nil]];
+    [menu setTargetRect:imageview.bounds inView:imageview];
+    [menu setMenuVisible:YES animated:YES];
+
 }
 -(void) refreshTable{
     ImageCache * imageCache = [ImageCache sharedObject];
@@ -1283,6 +1298,9 @@
     }
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
+}
+-(void)handleCopyAudio:(id)sender{
+    [self readContents];
 }
 -(void)doInBackground
 {

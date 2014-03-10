@@ -35,6 +35,7 @@
 @synthesize photopath;
 @synthesize jsonBody;
 @synthesize videobutton;
+@synthesize audioTime;
 
 #pragma mark - Lifecycle
 
@@ -209,7 +210,9 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 
 #pragma mark - Custom view audio
 - (id)initWithTimes:(NSString *)times date:(NSDate *)date type:(NSBubbleType)type withData:(NSData *)data {
+    _date = date;
     audioData = data;
+    audioTime = times;
     UIImage *image = [UIImage imageNamed:@"video.png"];
     CGSize size = image.size;
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width+35, size.height)];
@@ -229,6 +232,9 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     label.font = font;
     label.backgroundColor = [UIColor clearColor];
     [imageView addSubview:label];
+    
+    UILongPressGestureRecognizer * longPressGesture = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(audioLongPress:)];
+    [imageView addGestureRecognizer:longPressGesture];
 #if !__has_feature(objc_arc)
     [button autorelease];
     [imageview autorelease];
@@ -429,13 +435,24 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     }
    
 }
+- (void)audioLongPress:(UIGestureRecognizer *)recognizer{
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        UIImageView *imageview= (UIImageView *)recognizer.view;
+        if (_type == BubbleTypeMine ) {
+            [self.delegate copyAudiodate:_date withView:imageview withAudioTime:audioTime withBubbleType:YES];
+        }else{
+            [self.delegate copyAudiodate:_date withView:imageview withAudioTime:audioTime withBubbleType:NO];
+        }
+        
+    }
+    
+}
 -(void)videoLongPress:(UIGestureRecognizer *)recognizer{
     /*if (recognizer.state == UIGestureRecognizerStateBegan) {
         UIImageView *imageview= (UIImageView *)recognizer.view;
         [self.delegate copyVideo:_image withdate:_date withView:imageview withPath:_videoPath];
     }*/
 }
-
 #pragma mark scaled image
 -(UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size {
     if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
