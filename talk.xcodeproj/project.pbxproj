@@ -330,7 +330,6 @@
 		0EF79E1218584CAF00EB8A64 /* BackData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF79E1118584CAF00EB8A64 /* BackData.m */; };
 		0EF9B63E186EAAA1003DD866 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF9B63D186EAAA1003DD866 /* QuartzCore.framework */; };
 		0EFAD95B18682AF2001F0DED /* HandlerUserIdAndDateFormater.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */; };
-		0EFADBA018CC8B6A007724A6 /* CopyVideoHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFADB9F18CC8B6A007724A6 /* CopyVideoHandler.m */; };
 		0EFADBA318CC9014007724A6 /* CustomTextFiled.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFADBA218CC9014007724A6 /* CustomTextFiled.m */; };
 		0EFC8CB518ADE0B900EF09D8 /* DownloadDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC8CB418ADE0B900EF09D8 /* DownloadDB.m */; };
 		0EFC8CB818AE167500EF09D8 /* UploadDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC8CB718AE167500EF09D8 /* UploadDB.m */; };
@@ -2608,7 +2607,6 @@
 				0E4B13D8187CF15F0070752B /* DisappearImageController.m in Sources */,
 				0E8A4F33182B7F8000705C1F /* CreateUI.m in Sources */,
 				0E49F042187E333700749A6D /* ALMoviePlayerController.m in Sources */,
-				0EFADBA018CC8B6A007724A6 /* CopyVideoHandler.m in Sources */,
 				03D9C0A618145E410039118F /* XMPPMessage+XEP_0308.m in Sources */,
 				03D9C0EB18145E510039118F /* NSString+DDXML.m in Sources */,
 				03D9C07518145E410039118F /* XMPPRoom.m in Sources */,
