@@ -330,6 +330,8 @@
 		0EF79E1218584CAF00EB8A64 /* BackData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF79E1118584CAF00EB8A64 /* BackData.m */; };
 		0EF9B63E186EAAA1003DD866 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF9B63D186EAAA1003DD866 /* QuartzCore.framework */; };
 		0EFAD95B18682AF2001F0DED /* HandlerUserIdAndDateFormater.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */; };
+		0EFADBA018CC8B6A007724A6 /* CopyVideoHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFADB9F18CC8B6A007724A6 /* CopyVideoHandler.m */; };
+		0EFADBA318CC9014007724A6 /* CustomTextFiled.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFADBA218CC9014007724A6 /* CustomTextFiled.m */; };
 		0EFC8CB518ADE0B900EF09D8 /* DownloadDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC8CB418ADE0B900EF09D8 /* DownloadDB.m */; };
 		0EFC8CB818AE167500EF09D8 /* UploadDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC8CB718AE167500EF09D8 /* UploadDB.m */; };
 		4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4413D0A0182FA98E00B01C14 /* LoginViewController.m */; };
@@ -874,6 +876,10 @@
 		0EF9B63D186EAAA1003DD866 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0EFAD95918682AF2001F0DED /* HandlerUserIdAndDateFormater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HandlerUserIdAndDateFormater.h; path = cache/HandlerUserIdAndDateFormater.h; sourceTree = "<group>"; };
 		0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HandlerUserIdAndDateFormater.m; path = cache/HandlerUserIdAndDateFormater.m; sourceTree = "<group>"; };
+		0EFADB9E18CC8B6A007724A6 /* CopyVideoHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CopyVideoHandler.h; path = handler/CopyVideoHandler.h; sourceTree = "<group>"; };
+		0EFADB9F18CC8B6A007724A6 /* CopyVideoHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CopyVideoHandler.m; path = handler/CopyVideoHandler.m; sourceTree = "<group>"; };
+		0EFADBA118CC9014007724A6 /* CustomTextFiled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomTextFiled.h; path = Classes/CustomTextFiled.h; sourceTree = "<group>"; };
+		0EFADBA218CC9014007724A6 /* CustomTextFiled.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomTextFiled.m; path = Classes/CustomTextFiled.m; sourceTree = "<group>"; };
 		0EFC8CB318ADE0B900EF09D8 /* DownloadDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DownloadDB.h; path = talkDB/DownloadDB.h; sourceTree = "<group>"; };
 		0EFC8CB418ADE0B900EF09D8 /* DownloadDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DownloadDB.m; path = talkDB/DownloadDB.m; sourceTree = "<group>"; };
 		0EFC8CB618AE167500EF09D8 /* UploadDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UploadDB.h; path = talkDB/UploadDB.h; sourceTree = "<group>"; };
@@ -1804,6 +1810,8 @@
 				03F50C6F1867B54300E08C22 /* AudioHandler.m */,
 				0E1060D218CB0F0300DFBA3A /* CopyPhotoHandler.h */,
 				0E1060D318CB0F0300DFBA3A /* CopyPhotoHandler.m */,
+				0EFADB9E18CC8B6A007724A6 /* CopyVideoHandler.h */,
+				0EFADB9F18CC8B6A007724A6 /* CopyVideoHandler.m */,
 				0EFAD95918682AF2001F0DED /* HandlerUserIdAndDateFormater.h */,
 				0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */,
 				0E1B052F18A623A7001715C6 /* FilesUpload.h */,
@@ -1895,6 +1903,8 @@
 				0EA16BFE18516FC9009F2D3A /* MyFriendsViewController.h */,
 				0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */,
 				0E178C4C186C1F8000E16F71 /* GetAllMessagesProtocol.h */,
+				0EFADBA118CC9014007724A6 /* CustomTextFiled.h */,
+				0EFADBA218CC9014007724A6 /* CustomTextFiled.m */,
 			);
 			name = friendsSort;
 			sourceTree = "<group>";
@@ -2472,6 +2482,7 @@
 				0E1060D418CB0F0300DFBA3A /* CopyPhotoHandler.m in Sources */,
 				0E49F06C187E7BA200749A6D /* MyView.m in Sources */,
 				03D9BF5E18145E2F0039118F /* NSNumber+XMPP.m in Sources */,
+				0EFADBA318CC9014007724A6 /* CustomTextFiled.m in Sources */,
 				0E19E83318716AA100523232 /* EGORefreshTableHeaderView.m in Sources */,
 				03D9C0B418145E480039118F /* DDList.m in Sources */,
 				03D9C0E518145E510039118F /* DDFileLogger.m in Sources */,
@@ -2597,6 +2608,7 @@
 				0E4B13D8187CF15F0070752B /* DisappearImageController.m in Sources */,
 				0E8A4F33182B7F8000705C1F /* CreateUI.m in Sources */,
 				0E49F042187E333700749A6D /* ALMoviePlayerController.m in Sources */,
+				0EFADBA018CC8B6A007724A6 /* CopyVideoHandler.m in Sources */,
 				03D9C0A618145E410039118F /* XMPPMessage+XEP_0308.m in Sources */,
 				03D9C0EB18145E510039118F /* NSString+DDXML.m in Sources */,
 				03D9C07518145E410039118F /* XMPPRoom.m in Sources */,

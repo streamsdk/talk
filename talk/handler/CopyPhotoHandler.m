@@ -20,10 +20,11 @@
 -(void) sendPhoto:(UIImage *)image withdate:(NSDate *)date forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData{
     ImageCache * imagecache = [ImageCache sharedObject];
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-    TalkDB * talk = [[TalkDB alloc]init];
-    NSString * contents =[talk readDB:date];
-    NSDictionary *ret = [contents objectFromJSONString];
-    NSDictionary * chatDic = [ret objectForKey:[imagecache getFriendID]];
+    TalkDB *talk = [[TalkDB alloc]init];
+    NSString * contents =[[UIPasteboard generalPasteboard] string];
+    NSData *jsonData = [contents dataUsingEncoding:NSUTF8StringEncoding];
+    JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+    NSDictionary *chatDic = [decoder objectWithData:jsonData];
     NSString *fileId=[chatDic objectForKey:@"fileId"];
     NSString *path =[chatDic objectForKey:@"photo"];
     NSDate * nowdate =[NSDate dateWithTimeIntervalSinceNow:0];
@@ -35,7 +36,10 @@
         bubble.avatar = [UIImage imageWithData:myData];
     }
     [bubbleData addObject:bubble];
-    [talk insertDBUserID:[handler getUserID] fromID:[imagecache getFriendID] withContent:contents withTime:[dateFormatter stringFromDate:nowdate] withIsMine:0];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    [dict setObject:chatDic forKey:[imagecache getFriendID]];
+    NSString *content = [dict JSONString];
+    [talk insertDBUserID:[handler getUserID] fromID:[imagecache getFriendID] withContent:content withTime:[dateFormatter stringFromDate:nowdate] withIsMine:0];
     
     long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
     

@@ -111,8 +111,13 @@
     [iconButton setImage:[UIImage imageNamed:@"plus256.png"] forState:UIControlStateNormal];
     [iconButton addTarget:self action:@selector(photoClicked) forControlEvents:UIControlEventTouchUpInside];
     
-    messageText = [createUI setTextFrame:CGRectMake(60, 3, toolBar.frame.size.width-95, 34)];
+    messageText = [[CustomTextFiled alloc]initWithFrame:CGRectMake(60, 3, toolBar.frame.size.width-95, 34)];
+    messageText.borderStyle = UITextBorderStyleRoundedRect;
+    messageText.backgroundColor = [UIColor clearColor];
     messageText.delegate = self;
+    [[messageText layer] setBorderColor:[[UIColor blackColor] CGColor]];
+    [[messageText layer] setBorderWidth:1];
+    [[messageText layer] setCornerRadius:4];
     messageText.returnKeyType = UIReturnKeySend;
     messageText.autocapitalizationType = UITextAutocapitalizationTypeNone;
     faceButton = [createUI setButtonFrame:CGRectMake(toolBar.frame.size.width-33, 3,30, 34) withTitle:@"nil"];
@@ -268,6 +273,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+     [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(refreshTable) name:@"send" object:nil];
     
     //handler
     photoHandler = [[PhotoHandler alloc] init];
@@ -741,6 +747,7 @@
     [pageControl setHidden:NO];
     keyboardIsShow=NO;
     [messageText resignFirstResponder];
+    [self dismissKeyBoard];
 }
 
 #pragma mark -
@@ -1043,7 +1050,11 @@
 
 }
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
+    isTextEdit = YES;
     [self scrollBubbleViewToBottomAnimated:YES];
+}
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    isTextEdit = NO;
 }
 -(void) dismissKeyboard:(UITapGestureRecognizer *)estureRecognizer {
     [self dismissKeyBoard];
@@ -1185,18 +1196,35 @@
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-    
-    if (action == @selector(handleCopyImage:))
-        return YES;
-    if (action == @selector(handleCopyVideo:)) {
-        return YES;
+    if (isTextEdit) {
+        return NO;
+    }else{
+        if (action == @selector(handleCopyImage:))
+            return YES;
+        if (action == @selector(handleCopyVideo:)) {
+            return YES;
+        }
+        return [super canPerformAction:action withSender:sender];
     }
-    return [super canPerformAction:action withSender:sender];
+    
 }
-
 -(void)copyImage:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview{
+    
     copyDate = date;
     copyImage = image;
+    APPDELEGATE.date = date;
+    ImageCache *imageCache = [ImageCache sharedObject];
+    
+    HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
+    NSString *sendToID =[imageCache getFriendID];
+    NSMutableArray * dataArray = [[NSMutableArray alloc]init];
+    TalkDB * talk =[[TalkDB alloc]init];
+    dataArray = [talk readInitDB:[handler getUserID] withOtherID:sendToID withCount:10];
+    bubbleData = dataArray;
+    for (NSBubbleData * data in bubbleData) {
+        data.delegate = self;
+    }
+    APPDELEGATE.array = bubbleData;
     CGRect frame = CGRectMake(imageview.frame.origin.x/2, imageview.frame.origin.y/3, imageview.frame.size.width/2, imageview.frame.size.height/2);
     UIMenuItem *itCopy = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(handleCopyImage:)];
     UIMenuController *menu = [UIMenuController sharedMenuController];
@@ -1206,58 +1234,19 @@
 
 }
 -(void) handleCopyImage:(id)sender {
-    ImageCache * imagecache = [ImageCache sharedObject];
     TalkDB * talk = [[TalkDB alloc]init];
     NSString * contents =[talk readDB:copyDate];
     NSDictionary *ret = [contents objectFromJSONString];
-    NSDictionary * chatDic = [ret objectForKey:[imagecache getFriendID]];
-    NSString *fileId=[chatDic objectForKey:@"fileId"];
-    if (fileId==nil) return;
-    UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
-    [pasteBoard setString:fileId];
-    copyMessage = fileId;
-    [self showAlertview];
-    NSLog(@"hand copy");
-}
--(void) showAlertview {
-    CustomAlertView * alertView = [[CustomAlertView alloc]init];
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300,200)];
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((view.frame.size.width-120)/2, 10, 120, 160)];
-    [imageView setImage:copyImage];
-    [view addSubview:imageView];
-    [alertView setContainerView:view];
-    [alertView setButtonTitles:[NSMutableArray arrayWithObjects:@"Cancel", @"Send", nil]];
-    [alertView setDelegate:self];
-    [alertView setUseMotionEffects:true];
-    
-    [alertView show];
-}
-- (void)customButtonTouchUpInside:(id)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    NSLog(@"buttonIndex =%d",buttonIndex);
-    
-    if (buttonIndex == 1) {
-        ImageCache *imageCache = [ImageCache sharedObject];
-        
-        HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
-        NSString *sendToID =[imageCache getFriendID];
-        NSMutableArray * dataArray = [[NSMutableArray alloc]init];
-        TalkDB * talk =[[TalkDB alloc]init];
-        dataArray = [talk readInitDB:[handler getUserID] withOtherID:sendToID withCount:10];
-        [imageCache saveRaedCount:[NSNumber numberWithInt:11] withuserID:sendToID];
-        bubbleData = dataArray;
-        for (NSBubbleData * data in bubbleData) {
-            data.delegate = self;
-        }
-        [copyPhotoHandler sendPhoto:copyImage withdate:copyDate forBubbleDataArray:bubbleData forBubbleMyData:myData];
-    }
-    NSBubbleData * data = [bubbleData lastObject];
-    data.delegate = self;
-    [bubbleTableView reloadData];
-    [self scrollBubbleViewToBottomAnimated:YES];
-   [alertView close];
+    ImageCache *imageCache = [ImageCache sharedObject];
+     NSDictionary * chatDic = [ret objectForKey:[imageCache getFriendID]];
+    contents = [chatDic JSONString];
+    [[UIPasteboard generalPasteboard] setString:contents];
 }
 -(void)copyVideo:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview withPath:(NSString *)path{
+    
     if ([path hasSuffix:@".mp4"]) {
+        copyDate = date;
+        copyImage = image;
         CGRect frame = CGRectMake(imageview.frame.origin.x/2, imageview.frame.origin.y/3, imageview.frame.size.width/2, imageview.frame.size.height/2);
         copyImage = image;
         UIMenuItem *itCopy = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(handleCopyVideo:)];
@@ -1273,41 +1262,24 @@
 
 }
 -(void)handleCopyVideo :(id)sender {
-   [self showAlertview];
     NSLog(@"video copy");
 }
--(void) sendPhoto{
-    ImageCache * imagecache = [ImageCache sharedObject];
+-(void) refreshTable{
+    ImageCache * imageCache = [ImageCache sharedObject];
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-    TalkDB * talk = [[TalkDB alloc]init];
-    NSString * contents =[talk readDB:copyDate];
-    NSDictionary *ret = [contents objectFromJSONString];
-    NSDictionary * chatDic = [ret objectForKey:[imagecache getFriendID]];
-    NSString *fileId=[chatDic objectForKey:@"fileId"];
-    NSString *path =[chatDic objectForKey:@"photo"];
-    NSDate * nowdate =[NSDate dateWithTimeIntervalSinceNow:0];
-    NSDateFormatter* formater = [[NSDateFormatter alloc] init];
-    [formater setDateFormat:@"yyyy-MM-dd-HH:mm:ss.SSS"];
-    if (fileId==nil) return;
-    NSBubbleData *bubble = [NSBubbleData dataWithImage:copyImage date:nowdate type:BubbleTypeMine path:path];
-    if (myData) {
-        bubble.avatar = [UIImage imageWithData:myData];
+    NSString * sendID= [imageCache getFriendID];
+    bubbleData = [[NSMutableArray alloc]init];
+    TalkDB * talk =[[TalkDB alloc]init];
+    int count = [imageCache getReadCount:sendID];
+    if (count <10)
+        count = 10;
+    bubbleData = [talk readInitDB:[handler getUserID] withOtherID:sendID withCount:count];
+    for (NSBubbleData * data in bubbleData) {
+        data.delegate = self;
     }
-    [bubbleData addObject:bubble];
-    [talk insertDBUserID:[handler getUserID] fromID:[imagecache getFriendID] withContent:contents withTime:[formater stringFromDate:nowdate] withIsMine:0];
-    
-    long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
-    
-    NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
-    [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
-    [bodyDic setObject:@"photo" forKey:@"type"];
-    [bodyDic setObject:[handler getUserID] forKey:@"from"];
-    [bodyDic setObject:fileId forKey:@"fileId"];
-    NSString *body =[bodyDic JSONString];
-    STreamXMPP * con = [STreamXMPP sharedObject];
-    [con sendFileMessage:[imagecache getFriendID] withFileId:fileId withMessage:body];
+    [bubbleTableView reloadData];
+    [self scrollBubbleViewToBottomAnimated:YES];
 }
-
 -(void)doInBackground
 {
 }

@@ -74,5 +74,5 @@
 
 -(NSInteger)getReadCount:(NSString *)userId;
 
--(void) removeCountUserId:(NSString *)userId;
+-(void) removeCoun;
 @end

@@ -58,6 +58,8 @@
     
     _progressDict = [[NSMutableDictionary alloc]init];
     _deleteArray = [[NSMutableArray alloc]init];
+    _array = [[NSMutableArray alloc]init];
+    _date = [[NSDate alloc]init];
 //    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:247.0/255.0 green:229.0/255.0 blue:227.0/255.0 alpha:1.0]];
     NSMutableDictionary *attributes= [[NSMutableDictionary alloc] init];
     
