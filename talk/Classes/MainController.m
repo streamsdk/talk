@@ -1249,14 +1249,14 @@
     }
        [[UIPasteboard generalPasteboard] setString:contents];
 }
--(void)copyVideo:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview withPath:(NSString *)path{
-    
+-(void)copyVideo:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview withPath:(NSString *)path withBubbleType:(BOOL)isMine{
     if ([path hasSuffix:@".mp4"]) {
         copyDate = date;
         copyImage = image;
         APPDELEGATE.date = date;
         APPDELEGATE.image = image;
         APPDELEGATE.array = bubbleData;
+        _isMine = isMine;
         UIMenuItem *itCopy = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(handleCopyVideo:)];
         UIMenuController *menu = [UIMenuController sharedMenuController];
         [menu setMenuItems:[NSArray arrayWithObjects:itCopy,nil]];

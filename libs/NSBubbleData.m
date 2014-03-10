@@ -448,10 +448,14 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     
 }
 -(void)videoLongPress:(UIGestureRecognizer *)recognizer{
-    /*if (recognizer.state == UIGestureRecognizerStateBegan) {
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
         UIImageView *imageview= (UIImageView *)recognizer.view;
-        [self.delegate copyVideo:_image withdate:_date withView:imageview withPath:_videoPath];
-    }*/
+        if (_type == BubbleTypeMine ) {
+            [self.delegate copyVideo:_image withdate:_date withView:imageview withPath:_videoPath withBubbleType:YES];
+        }else{
+            [self.delegate copyVideo:_image withdate:_date withView:imageview withPath:_videoPath withBubbleType:NO];
+        }
+    }
 }
 #pragma mark scaled image
 -(UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size {

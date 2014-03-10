@@ -41,6 +41,8 @@
     }
     if ([type isEqualToString:@"video"]) {
         path = [chatDic objectForKey:@"filepath"];
+        NSString * tid = [chatDic objectForKey:@"tid"];
+        [bodyDic setObject:tid forKey:@"tid"];
         NSBubbleData * bdata = [NSBubbleData dataWithImage:image withTime:nil withType:@"video" date:date type:BubbleTypeMine withVidePath:path withJsonBody:@""];
         if (myData)
             bdata.avatar = [UIImage imageWithData:myData];

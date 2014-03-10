@@ -432,9 +432,12 @@
     if (![friendId isEqualToString:fromID]) {
         [imageCache setMessagesCount:fromID];
     }
-
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+    NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
+    [handler setDate:date];
     DownloadDB * downloadDB = [[DownloadDB alloc]init];
-    [downloadDB insertDownloadDB:[handler getUserID] fileID:fileId withBody:body withFrom:fromID];
+    [downloadDB insertDownloadDB:[handler getUserID] fileID:fileId withBody:body withFrom:fromID withTime:[dateFormatter stringFromDate:date]];
     
     STreamFile *sf = [[STreamFile alloc] init];
     NSData *jsonData = [body dataUsingEncoding:NSUTF8StringEncoding];
@@ -448,7 +451,7 @@
         NSString *tid= [json objectForKey:@"tid"];
         if (tid){
             fileId = tid;
-            [downloadDB insertDownloadDB:[handler getUserID] fileID:fileId withBody:body withFrom:fromID];
+            [downloadDB insertDownloadDB:[handler getUserID] fileID:fileId withBody:body withFrom:fromID withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]]];
         }else {
             [imageCache saveJsonData:body forFileId:fileId];
             NSString *jsonBody = [imageCache getJsonData:fileId];
@@ -484,10 +487,6 @@
             TalkDB * db = [[TalkDB alloc]init];
             NSString * userID = [handler getUserID];
             NSString  *str = [jsonDic JSONString];
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-            NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
-            [handler setDate:date];
             [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
             [messagesProtocol getFiles:data withFromID:fromUser withBody:jsBody withPath:tidpath];
             [self.tableView reloadData];
@@ -570,10 +569,7 @@
         TalkDB * db = [[TalkDB alloc]init];
         NSString * userID = [handler getUserID];
         NSString  *str = [jsonDic JSONString];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-        NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
-        [handler setDate:date];
+
         [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
         [messagesProtocol getFiles:data withFromID:fromUser withBody:jsBody withPath:path];
         [self.tableView reloadData];

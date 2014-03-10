@@ -436,6 +436,9 @@
                                    UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:tag];
                                    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+100];
                                    NSString * jsonbody = cell.data.jsonBody;
+                                   NSDate * date = cell.data.date;
+                                   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                                   [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
                                    NSData *jsonData = [jsonbody dataUsingEncoding:NSUTF8StringEncoding];
                                    if (!jsonData) {
                                        [activityIndicatorView stopAnimating];
@@ -444,9 +447,9 @@
 
                                    JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
                                    NSDictionary *json = [decoder objectWithData:jsonData];
-                                                                     NSString *fileId = [json objectForKey:@"fileId"];
+                                   NSString *fileId = [json objectForKey:@"fileId"];
                                    NSString *tid = [json objectForKey:@"tid"];
-                                   NSString * fromId = [download readDownloadDBFromFileID:fileId];
+                                   NSString * fromId = [download readDownloadDBFileID:[dateFormatter stringFromDate:date]];
                                    NSString *duration = [json objectForKey:@"duration"];
 
                                    if (cell.data.fileType == FileDisappear){
@@ -473,7 +476,7 @@
                                    [jsonDic setObject:dict forKey:fromId];
                                    NSString * jsonBody = [jsonDic JSONString];
                                    
-                                   [download deleteDownloadDBFromFileID:fileId];
+                                   [download deleteDownloadDBFileID:[dateFormatter stringFromDate:date]];
                                    [talkDb updateDB:cell.data.date withContent:jsonBody];
                                    cell.data._videoPath = filepath;
                                    cell.data.jsonBody = jsonBody;
