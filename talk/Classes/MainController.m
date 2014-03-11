@@ -1247,6 +1247,7 @@
         NSDictionary * chatDic = [ret objectForKey:[imageCache getFriendID]];
         contents = [chatDic JSONString];
     }
+    if(contents)
        [[UIPasteboard generalPasteboard] setString:contents];
 }
 -(void)copyVideo:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview withPath:(NSString *)path withBubbleType:(BOOL)isMine{
