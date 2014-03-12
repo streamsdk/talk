@@ -94,6 +94,7 @@
 - (void)drawRect:(CGRect)rect
 {
     UITapGestureRecognizer *copyGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showMenu:)];
+    copyGesture.numberOfTapsRequired = 2;
     [self addGestureRecognizer:copyGesture];
 } 
 -(void) showAlertview {
