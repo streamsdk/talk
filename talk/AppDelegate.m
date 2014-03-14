@@ -27,7 +27,6 @@
 #import "UploadDB.h"
 //#import "TwitterConnect.h"
 #import "CopyDB.h"
-#import "ViewController.h"
 @implementation UINavigationBar (UINavigationBarCategory)
 - (void)drawRect:(CGRect)rect {
    
@@ -99,9 +98,6 @@
    
     [self doAuth];
     
-//    self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
-//    UINavigationController * nav =[[UINavigationController alloc]initWithRootViewController:self.viewController];
-//    self.window.rootViewController = nav;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     [UIApplication sharedApplication].applicationIconBadgeNumber=application.applicationIconBadgeNumber-1;

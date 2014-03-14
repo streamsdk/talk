@@ -250,13 +250,6 @@
 		0E49F069187E7B8F00749A6D /* undo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E49F067187E7B8F00749A6D /* undo.png */; };
 		0E49F06C187E7BA200749A6D /* MyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E49F06B187E7BA200749A6D /* MyView.m */; };
 		0E4B13D8187CF15F0070752B /* DisappearImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4B13D7187CF15F0070752B /* DisappearImageController.m */; };
-		0E8915E418D2AB19006430FE /* libZXingObjC-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8915DB18D2AAF9006430FE /* libZXingObjC-iOS.a */; };
-		0E8915E618D2AB28006430FE /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8915E518D2AB28006430FE /* CoreMedia.framework */; };
-		0E8915F018D2ABE4006430FE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8915EB18D2ABE4006430FE /* ViewController.m */; };
-		0E8915F118D2ABE4006430FE /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E8915EC18D2ABE4006430FE /* ViewController.xib */; };
-		0E8915F218D2ABE4006430FE /* ScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8915EE18D2ABE4006430FE /* ScannerViewController.m */; };
-		0E8915F318D2ABE4006430FE /* ScannerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E8915EF18D2ABE4006430FE /* ScannerViewController.xib */; };
-		0E8915F618D2AD12006430FE /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8915F518D2AD12006430FE /* ImageIO.framework */; };
 		0E8A4F33182B7F8000705C1F /* CreateUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F32182B7F8000705C1F /* CreateUI.m */; };
 		0E8A4F36182B7FE300705C1F /* TalkDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F35182B7FE300705C1F /* TalkDB.m */; };
 		0E8A4F38182B802600705C1F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8A4F37182B802600705C1F /* libsqlite3.dylib */; };
@@ -359,27 +352,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 03D9BEF718145C080039118F;
 			remoteInfo = talk;
-		};
-		0E8915DA18D2AAF9006430FE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0E8915D218D2AAF8006430FE /* ZXingObjC.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 25403CB3166A96FA00E13304;
-			remoteInfo = "ZXingObjC-iOS";
-		};
-		0E8915DC18D2AAF9006430FE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0E8915D218D2AAF8006430FE /* ZXingObjC.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 25403CC4166A96FA00E13304;
-			remoteInfo = "Unit Tests iOS";
-		};
-		0E8915E718D2AB7C006430FE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0E8915D218D2AAF8006430FE /* ZXingObjC.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 25403CB2166A96FA00E13304;
-			remoteInfo = "ZXingObjC-iOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -801,15 +773,6 @@
 		0E49F06B187E7BA200749A6D /* MyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyView.m; sourceTree = "<group>"; };
 		0E4B13D6187CF15F0070752B /* DisappearImageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DisappearImageController.h; path = Classes/DisappearImageController.h; sourceTree = "<group>"; };
 		0E4B13D7187CF15F0070752B /* DisappearImageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DisappearImageController.m; path = Classes/DisappearImageController.m; sourceTree = "<group>"; };
-		0E8915D218D2AAF8006430FE /* ZXingObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZXingObjC.xcodeproj; path = ZXingObjC/ZXingObjC.xcodeproj; sourceTree = "<group>"; };
-		0E8915E518D2AB28006430FE /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		0E8915EA18D2ABE4006430FE /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		0E8915EB18D2ABE4006430FE /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		0E8915EC18D2ABE4006430FE /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
-		0E8915ED18D2ABE4006430FE /* ScannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScannerViewController.h; sourceTree = "<group>"; };
-		0E8915EE18D2ABE4006430FE /* ScannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScannerViewController.m; sourceTree = "<group>"; };
-		0E8915EF18D2ABE4006430FE /* ScannerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScannerViewController.xib; sourceTree = "<group>"; };
-		0E8915F518D2AD12006430FE /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		0E8A4F31182B7F7100705C1F /* CreateUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreateUI.h; path = createUI/CreateUI.h; sourceTree = "<group>"; };
 		0E8A4F32182B7F8000705C1F /* CreateUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CreateUI.m; path = createUI/CreateUI.m; sourceTree = "<group>"; };
 		0E8A4F34182B7FE300705C1F /* TalkDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TalkDB.h; path = talkDB/TalkDB.h; sourceTree = "<group>"; };
@@ -947,9 +910,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0E8915F618D2AD12006430FE /* ImageIO.framework in Frameworks */,
-				0E8915E618D2AB28006430FE /* CoreMedia.framework in Frameworks */,
-				0E8915E418D2AB19006430FE /* libZXingObjC-iOS.a in Frameworks */,
 				0E0F82F818A3273C00E81CA5 /* MessageUI.framework in Frameworks */,
 				0EF9B63E186EAAA1003DD866 /* QuartzCore.framework in Frameworks */,
 				037E0431186605A8005ADCEC /* libidn.a in Frameworks */,
@@ -1016,8 +976,7 @@
 				03D9BF0118145C080039118F /* talk */,
 				03D9BF1A18145C090039118F /* talkTests */,
 				03D9BEFA18145C080039118F /* Frameworks */,
-				0E8915E918D2ABCF006430FE /* QRCode */,
-				0E8915D218D2AAF8006430FE /* ZXingObjC.xcodeproj */,
+				03D9BEF918145C080039118F /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1033,8 +992,6 @@
 		03D9BEFA18145C080039118F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0E8915F518D2AD12006430FE /* ImageIO.framework */,
-				0E8915E518D2AB28006430FE /* CoreMedia.framework */,
 				0325C67518BBF24A0089C182 /* arcstreamsdk.framework */,
 				0E0F82F718A3273C00E81CA5 /* MessageUI.framework */,
 				0EF9B63D186EAAA1003DD866 /* QuartzCore.framework */,
@@ -2027,29 +1984,6 @@
 			name = imageContoller;
 			sourceTree = "<group>";
 		};
-		0E8915D318D2AAF8006430FE /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0E8915DB18D2AAF9006430FE /* libZXingObjC-iOS.a */,
-				0E8915DD18D2AAF9006430FE /* Unit Tests iOS.octest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		0E8915E918D2ABCF006430FE /* QRCode */ = {
-			isa = PBXGroup;
-			children = (
-				0E8915EA18D2ABE4006430FE /* ViewController.h */,
-				0E8915EB18D2ABE4006430FE /* ViewController.m */,
-				0E8915EC18D2ABE4006430FE /* ViewController.xib */,
-				0E8915ED18D2ABE4006430FE /* ScannerViewController.h */,
-				0E8915EE18D2ABE4006430FE /* ScannerViewController.m */,
-				0E8915EF18D2ABE4006430FE /* ScannerViewController.xib */,
-				03D9BEF918145C080039118F /* Products */,
-			);
-			name = QRCode;
-			sourceTree = "<group>";
-		};
 		0E8A4F30182B7EE300705C1F /* talkDB */ = {
 			isa = PBXGroup;
 			children = (
@@ -2326,7 +2260,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				0E8915E818D2AB7C006430FE /* PBXTargetDependency */,
 			);
 			name = talk;
 			productName = talk;
@@ -2383,12 +2316,6 @@
 			mainGroup = 03D9BEEF18145C080039118F;
 			productRefGroup = 03D9BEF918145C080039118F /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 0E8915D318D2AAF8006430FE /* Products */;
-					ProjectRef = 0E8915D218D2AAF8006430FE /* ZXingObjC.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				03D9BEF718145C080039118F /* talk */,
@@ -2396,23 +2323,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		0E8915DB18D2AAF9006430FE /* libZXingObjC-iOS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libZXingObjC-iOS.a";
-			remoteRef = 0E8915DA18D2AAF9006430FE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0E8915DD18D2AAF9006430FE /* Unit Tests iOS.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Unit Tests iOS.octest";
-			remoteRef = 0E8915DC18D2AAF9006430FE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		03D9BEF618145C080039118F /* Resources */ = {
@@ -2429,7 +2339,6 @@
 				0EE951ED185EA4B9003F4638 /* Text@2x.png in Resources */,
 				0E423AE018C6D8B7009D884E /* Selected.png in Resources */,
 				0EF01ED618B49AFF0012CC3F /* bg2.jpg in Resources */,
-				0E8915F118D2ABE4006430FE /* ViewController.xib in Resources */,
 				0EF01ED518B49AFF0012CC3F /* bg11.png in Resources */,
 				0EF01EDC18B49AFF0012CC3F /* bg8.jpg in Resources */,
 				0E19E83518716AA100523232 /* blackArrow@2x.png in Resources */,
@@ -2522,7 +2431,6 @@
 				030D10D0186D344700910292 /* camera_icon150.png in Resources */,
 				0E3C3C9A188A1632003D43EB /* selectcolors.png in Resources */,
 				0EF01ED418B49AFF0012CC3F /* bg10.png in Resources */,
-				0E8915F318D2ABE4006430FE /* ScannerViewController.xib in Resources */,
 				0EE951F8185EA4B9003F4638 /* selectAdd.png in Resources */,
 				0EF01EDA18B49AFF0012CC3F /* bg6.png in Resources */,
 				0E49F046187E333700749A6D /* movieBackward@2x.png in Resources */,
@@ -2600,7 +2508,6 @@
 				03D9BF0C18145C080039118F /* AppDelegate.m in Sources */,
 				03D9C0A318145E410039118F /* XMPPAttentionModule.m in Sources */,
 				03D9C0B518145E480039118F /* GCDMulticastDelegate.m in Sources */,
-				0E8915F018D2ABE4006430FE /* ViewController.m in Sources */,
 				03D9C08D18145E410039118F /* XMPPTransports.m in Sources */,
 				03D9C07218145E410039118F /* XMPPRoomOccupantMemoryStorageObject.m in Sources */,
 				03D9C08618145E410039118F /* XMPPPubSub.m in Sources */,
@@ -2661,7 +2568,6 @@
 				0E0F830118A37D4100E81CA5 /* ACKMessageDB.m in Sources */,
 				03D9C0B618145E480039118F /* LibIDN.m in Sources */,
 				0EFAD95B18682AF2001F0DED /* HandlerUserIdAndDateFormater.m in Sources */,
-				0E8915F218D2ABE4006430FE /* ScannerViewController.m in Sources */,
 				0EF6EB3D1884ED5300AE64AA /* TwitterViewController.m in Sources */,
 				03D9C06118145E410039118F /* XMPPSystemInputActivityMonitor.m in Sources */,
 				03D9C06A18145E410039118F /* XMPPRoomMessageCoreDataStorageObject.m in Sources */,
@@ -2769,11 +2675,6 @@
 			isa = PBXTargetDependency;
 			target = 03D9BEF718145C080039118F /* talk */;
 			targetProxy = 03D9BF1818145C090039118F /* PBXContainerItemProxy */;
-		};
-		0E8915E818D2AB7C006430FE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "ZXingObjC-iOS";
-			targetProxy = 0E8915E718D2AB7C006430FE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2894,10 +2795,6 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "talk/talk-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../../**",
-				);
 				INFOPLIST_FILE = "talk/talk-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
@@ -2940,10 +2837,6 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "talk/talk-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../../**",
-				);
 				INFOPLIST_FILE = "talk/talk-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
