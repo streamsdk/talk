@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+@class ViewController;
 #define APPDELEGATE ((AppDelegate *)[[UIApplication sharedApplication] delegate])
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 {
     
 }
+@property (nonatomic, strong) ViewController *viewController;
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic,strong) UIActivityIndicatorView *activityIndicatorView;
 @property (nonatomic,strong) UIProgressView * progressView;
