@@ -655,48 +655,50 @@
 -(void)add {
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * db = [[AddDB alloc]init];
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"connecting ...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [db updateDB:[handle getUserID] withFriendID:[friendsAddArray objectAtIndex:_button.tag] withStatus:@"friend"];
+        STreamObject * so = [[STreamObject alloc]init];
+        [so setCategory:[handle getUserID]];
+        [so setObjectId:[friendsAddArray objectAtIndex:_button.tag]];
+        [so addStaff:@"status" withObject:@"friend"];
+        [so updateInBackground];
+        
+        STreamObject *my = [[STreamObject alloc]init];
+        [my setCategory:[friendsAddArray objectAtIndex:_button.tag]];
+        [my setObjectId:[handle getUserID]];
+        [my addStaff:@"status" withObject:@"friend"];
+        [my updateInBackground];
+       
+        [_button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
+        [addDict setObject:@"friend" forKey:[friendsAddArray objectAtIndex:_button.tag]];
+        [requestArray removeObject:[friendsAddArray objectAtIndex:_button.tag]];
+        [friendArray insertObject:[friendsAddArray objectAtIndex:_button.tag] atIndex:0];
+        [friendsAddArray removeAllObjects];
+        for (NSString * user in requestArray) {
+            [friendsAddArray addObject:user];
+        }
+        for (NSString * user in friendArray) {
+            [friendsAddArray addObject:user];
+        }
+        
+        STreamXMPP *con = [STreamXMPP sharedObject];
+        long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
+        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+        [jsonDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
+        [jsonDic setObject:@"friend" forKey:@"type"];
+        [jsonDic setObject:[handle getUserID] forKey:@"username"];
+        [jsonDic setObject:[friendsAddArray objectAtIndex:_button.tag] forKey:@"friendname"];
+        NSString *jsonSent = [jsonDic JSONString];
+        [con sendMessage:[friendsAddArray objectAtIndex:_button.tag] withMessage:jsonSent];
+    }completionBlock:^{
+        [myTableview reloadData];
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
     
-    [db updateDB:[handle getUserID] withFriendID:[friendsAddArray objectAtIndex:_button.tag] withStatus:@"friend"];
-    STreamObject * so = [[STreamObject alloc]init];
-    [so setCategory:[handle getUserID]];
-    [so setObjectId:[friendsAddArray objectAtIndex:_button.tag]];
-    [so addStaff:@"status" withObject:@"friend"];
-    [so updateInBackground];
-    
-    STreamObject *my = [[STreamObject alloc]init];
-    [my setCategory:[friendsAddArray objectAtIndex:_button.tag]];
-    [my setObjectId:[handle getUserID]];
-    [my addStaff:@"status" withObject:@"friend"];
-    [my updateInBackground];
-    /*addDict = [db readDB:[handle getUserID]];
-    friendsAddArray = [[NSMutableArray alloc]init];
-    for (NSString * key in [addDict allKeys]) {
-        [friendsAddArray addObject:key];
-    }*/
-   //addfriend.png
-    [_button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
-    [addDict setObject:@"friend" forKey:[friendsAddArray objectAtIndex:_button.tag]];
-    [requestArray removeObject:[friendsAddArray objectAtIndex:_button.tag]];
-    [friendArray insertObject:[friendsAddArray objectAtIndex:_button.tag] atIndex:0];
-    [friendsAddArray removeAllObjects];
-    for (NSString * user in requestArray) {
-        [friendsAddArray addObject:user];
-    }
-    for (NSString * user in friendArray) {
-        [friendsAddArray addObject:user];
-    }
-
-    [myTableview reloadData];
-    
-    STreamXMPP *con = [STreamXMPP sharedObject];
-    long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
-    [jsonDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
-    [jsonDic setObject:@"friend" forKey:@"type"];
-    [jsonDic setObject:[handle getUserID] forKey:@"username"];
-    [jsonDic setObject:[friendsAddArray objectAtIndex:_button.tag] forKey:@"friendname"];
-    NSString *jsonSent = [jsonDic JSONString];
-    [con sendMessage:[friendsAddArray objectAtIndex:_button.tag] withMessage:jsonSent];
 }
 -(void) addFriendSendRequest:(UIButton *) sender {
     _button = (UIButton *)sender;
