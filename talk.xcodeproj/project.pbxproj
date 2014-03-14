@@ -466,6 +466,7 @@
 		0E891B4E18D2DF86006430FE /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E891B4D18D2DF86006430FE /* ImageIO.framework */; };
 		0E891B5318D2DFF8006430FE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E891B5118D2DFF8006430FE /* ViewController.m */; };
 		0E891B5418D2DFF8006430FE /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E891B5218D2DFF8006430FE /* ViewController.xib */; };
+		0E891B5818D300BF006430FE /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E891B5718D300BF006430FE /* cancel.png */; };
 		0E8A4F33182B7F8000705C1F /* CreateUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F32182B7F8000705C1F /* CreateUI.m */; };
 		0E8A4F36182B7FE300705C1F /* TalkDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F35182B7FE300705C1F /* TalkDB.m */; };
 		0E8A4F38182B802600705C1F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8A4F37182B802600705C1F /* libsqlite3.dylib */; };
@@ -1430,6 +1431,7 @@
 		0E891B5018D2DFF8006430FE /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		0E891B5118D2DFF8006430FE /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		0E891B5218D2DFF8006430FE /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
+		0E891B5718D300BF006430FE /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel.png; sourceTree = "<group>"; };
 		0E8A4F31182B7F7100705C1F /* CreateUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreateUI.h; path = createUI/CreateUI.h; sourceTree = "<group>"; };
 		0E8A4F32182B7F8000705C1F /* CreateUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CreateUI.m; path = createUI/CreateUI.m; sourceTree = "<group>"; };
 		0E8A4F34182B7FE300705C1F /* TalkDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TalkDB.h; path = talkDB/TalkDB.h; sourceTree = "<group>"; };
@@ -3420,6 +3422,7 @@
 		0EE951A1185EA4B9003F4638 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0E891B5718D300BF006430FE /* cancel.png */,
 				0E423ADE18C6D8B7009D884E /* Selected.png */,
 				0E423ADF18C6D8B7009D884E /* Unselected.png */,
 				037D871A18B91B8A004B86E1 /* flash1136.png */,
@@ -3744,6 +3747,7 @@
 				0EF01ED318B49AFF0012CC3F /* bg1.png in Resources */,
 				0EE951E0185EA4B9003F4638 /* camera_button_take@2x.png in Resources */,
 				0E0434D2187A735700A16705 /* separator.png in Resources */,
+				0E891B5818D300BF006430FE /* cancel.png in Resources */,
 				03D9C0EA18145E510039118F /* README.txt in Resources */,
 				0ED8ECA318288DC400C84741 /* wave70x117@2x.png in Resources */,
 				0E49F04F187E333700749A6D /* movieFullscreen.png in Resources */,
