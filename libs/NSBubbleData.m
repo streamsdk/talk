@@ -130,6 +130,10 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     UITapGestureRecognizer *tappressGesutre=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(bigToImage)];
     tappressGesutre.numberOfTouchesRequired=1;
     [imageView addGestureRecognizer:tappressGesutre];
+    
+    UILongPressGestureRecognizer * longPressGesture = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(imageLongPress:)];
+    [imageView addGestureRecognizer:longPressGesture];
+    
 #if !__has_feature(objc_arc)
     [imageView autorelease];
 #endif
@@ -406,6 +410,21 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 }
 -(void)  lookImageClicked{
     [delegate  disappearImage:disappearImage withDissapearTime:disappearTime withDissapearPath:disappearPath withSendOrReceiveTime:senddate];
+}
+
+#pragma mark  LongPress
+
+- (void)imageLongPress:(UIGestureRecognizer *)recognizer{
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        UIImageView *imageview= (UIImageView *)recognizer.view;
+        if (_type == BubbleTypeMine ) {
+            [self.delegate copyImage:_image withdate:_date withView:imageview withBubbleType:YES];
+        }else{
+            [self.delegate copyImage:_image withdate:_date withView:imageview withBubbleType:NO];
+        }
+        
+    }
+    
 }
 #pragma mark scaled image
 -(UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size {

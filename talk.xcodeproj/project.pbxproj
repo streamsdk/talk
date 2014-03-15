@@ -332,6 +332,8 @@
 		0EFC8CB818AE167500EF09D8 /* UploadDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC8CB718AE167500EF09D8 /* UploadDB.m */; };
 		0EFD8C0C18D40443005A93B0 /* CopyDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFD8C0B18D40443005A93B0 /* CopyDB.m */; };
 		0EFD8C1118D40941005A93B0 /* CustomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFD8C1018D40941005A93B0 /* CustomAlertView.m */; };
+		0EFD8C1418D41710005A93B0 /* CopyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFD8C1318D41710005A93B0 /* CopyHandler.m */; };
+		0EFD8C1B18D41AA9005A93B0 /* CustomTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFD8C1A18D41AA9005A93B0 /* CustomTextField.m */; };
 		4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4413D0A0182FA98E00B01C14 /* LoginViewController.m */; };
 		44A80EAC183129E2006069DE /* Emoji.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A80E9B183129E2006069DE /* Emoji.m */; };
 		44A80EAD183129E2006069DE /* EmojiEmoticons.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A80E9D183129E2006069DE /* EmojiEmoticons.m */; };
@@ -879,6 +881,10 @@
 		0EFD8C0B18D40443005A93B0 /* CopyDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CopyDB.m; path = talkDB/CopyDB.m; sourceTree = "<group>"; };
 		0EFD8C0F18D40941005A93B0 /* CustomAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomAlertView.h; path = customAlertview/CustomAlertView.h; sourceTree = "<group>"; };
 		0EFD8C1018D40941005A93B0 /* CustomAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomAlertView.m; path = customAlertview/CustomAlertView.m; sourceTree = "<group>"; };
+		0EFD8C1218D41710005A93B0 /* CopyHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CopyHandler.h; path = handler/CopyHandler.h; sourceTree = "<group>"; };
+		0EFD8C1318D41710005A93B0 /* CopyHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CopyHandler.m; path = handler/CopyHandler.m; sourceTree = "<group>"; };
+		0EFD8C1918D41AA9005A93B0 /* CustomTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomTextField.h; path = customTextField/CustomTextField.h; sourceTree = "<group>"; };
+		0EFD8C1A18D41AA9005A93B0 /* CustomTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomTextField.m; path = customTextField/CustomTextField.m; sourceTree = "<group>"; };
 		4413D09F182FA98E00B01C14 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Classes/LoginViewController.h; sourceTree = "<group>"; };
 		4413D0A0182FA98E00B01C14 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Classes/LoginViewController.m; sourceTree = "<group>"; };
 		44A80E9A183129E2006069DE /* Emoji.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Emoji.h; sourceTree = "<group>"; };
@@ -1029,6 +1035,7 @@
 				0EF79DF018580D0E00EB8A64 /* IconSort */,
 				0E4B13D9187CF1650070752B /* imageContoller */,
 				0EFD8C0E18D40910005A93B0 /* customAlertview */,
+				0EFD8C1818D417E2005A93B0 /* customTextField */,
 				0E2918D11859579000AA21B2 /* friendsSort */,
 				0EE95194185EA47D003F4638 /* search */,
 				0E3A74EF18740C2300A9020D /* add&searchFriends */,
@@ -1802,6 +1809,8 @@
 				03F50C6C1867B50000E08C22 /* MessageHandler.m */,
 				03F50C6E1867B54300E08C22 /* AudioHandler.h */,
 				03F50C6F1867B54300E08C22 /* AudioHandler.m */,
+				0EFD8C1218D41710005A93B0 /* CopyHandler.h */,
+				0EFD8C1318D41710005A93B0 /* CopyHandler.m */,
 				0EFAD95918682AF2001F0DED /* HandlerUserIdAndDateFormater.h */,
 				0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */,
 				0E1B052F18A623A7001715C6 /* FilesUpload.h */,
@@ -2213,6 +2222,15 @@
 			name = customAlertview;
 			sourceTree = "<group>";
 		};
+		0EFD8C1818D417E2005A93B0 /* customTextField */ = {
+			isa = PBXGroup;
+			children = (
+				0EFD8C1918D41AA9005A93B0 /* CustomTextField.h */,
+				0EFD8C1A18D41AA9005A93B0 /* CustomTextField.m */,
+			);
+			name = customTextField;
+			sourceTree = "<group>";
+		};
 		44A80E99183129E2006069DE /* Emoji-master */ = {
 			isa = PBXGroup;
 			children = (
@@ -2568,6 +2586,7 @@
 				44A80EB0183129E2006069DE /* EmojiTransport.m in Sources */,
 				03D9C0ED18145E510039118F /* DDXMLElement.m in Sources */,
 				03D9C09818145E410039118F /* XMPPvCardAvatarModule.m in Sources */,
+				0EFD8C1B18D41AA9005A93B0 /* CustomTextField.m in Sources */,
 				03D9C07F18145E410039118F /* XMPPvCardTempEmail.m in Sources */,
 				0E49F041187E333700749A6D /* ALButton.m in Sources */,
 				03D9C08C18145E410039118F /* XMPPMessage+XEP_0085.m in Sources */,
@@ -2619,6 +2638,7 @@
 				0E49F040187E333700749A6D /* ALAirplayView.m in Sources */,
 				03D9C08818145E410039118F /* XMPPIQ+XEP_0066.m in Sources */,
 				03D9BF5518145E270039118F /* XMPPXFacebookPlatformAuthentication.m in Sources */,
+				0EFD8C1418D41710005A93B0 /* CopyHandler.m in Sources */,
 				03D9C07018145E410039118F /* XMPPRoomMemoryStorage.m in Sources */,
 				0EF01EBD18B4889D0012CC3F /* DownloadAvatar.m in Sources */,
 				0E084794182736BC00350741 /* UIBubbleTypingTableViewCell.m in Sources */,

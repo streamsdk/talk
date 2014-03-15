@@ -37,8 +37,10 @@
 #import "DisappearImageController.h"
 #import "ChatSettingViewController.h"
 #import "BackgroundImgViewController.h"
-
 #import "ChatBackGround.h"
+#import "CustomTextField.h"
+#import "CopyDB.h"
+
 #define BUTTON_TAG 20000
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
@@ -111,7 +113,12 @@
     [iconButton setImage:[UIImage imageNamed:@"plus256.png"] forState:UIControlStateNormal];
     [iconButton addTarget:self action:@selector(photoClicked) forControlEvents:UIControlEventTouchUpInside];
     
-    messageText = [createUI setTextFrame:CGRectMake(60, 3, toolBar.frame.size.width-95, 34)];
+    messageText =   [[CustomTextField alloc]initWithFrame:CGRectMake(60, 3, toolBar.frame.size.width-95, 34)];
+    messageText.borderStyle = UITextBorderStyleRoundedRect;
+    messageText.backgroundColor = [UIColor clearColor];
+    [[messageText layer] setBorderColor:[[UIColor blackColor] CGColor]];
+    [[messageText layer] setBorderWidth:1];
+    [[messageText layer] setCornerRadius:4];
     messageText.delegate = self;
     messageText.returnKeyType = UIReturnKeySend;
     messageText.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -268,6 +275,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+     [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(refreshTable) name:@"send" object:nil];
     
     //handler
     photoHandler = [[PhotoHandler alloc] init];
@@ -739,6 +747,7 @@
     [pageControl setHidden:NO];
     keyboardIsShow=NO;
     [messageText resignFirstResponder];
+    [self dismissKeyBoard];
 }
 
 #pragma mark -
@@ -1041,9 +1050,12 @@
 
 }
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
+    isTextEdit = YES;
     [self scrollBubbleViewToBottomAnimated:YES];
 }
-
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    isTextEdit = NO;
+}
 -(void) dismissKeyboard:(UITapGestureRecognizer *)estureRecognizer {
     [self dismissKeyBoard];
 }
@@ -1173,6 +1185,81 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+#pragma mark -
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+    if (isTextEdit) {
+        return NO;
+    }else{
+        if (action == @selector(handleCopyImage:))
+            return YES;
+        /*if (action == @selector(handleCopyVideo:)) {
+            return YES;
+        }
+        if (action == @selector(handleCopyAudio:)) {
+            return YES;
+        }*/
+        return [super canPerformAction:action withSender:sender];
+    }
+    
+}
+-(void)copyImage:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview withBubbleType:(BOOL)isMine{
+    
+    copyDate = date;
+    copyImage = image;
+    _isMine = isMine;
+    APPDELEGATE.date = date;
+    APPDELEGATE.array = bubbleData;
+    UIMenuItem *itCopy = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(handleCopyImage:)];
+    UIMenuController *menu = [UIMenuController sharedMenuController];
+    [menu setMenuItems:[NSArray arrayWithObjects:itCopy,nil]];
+    [menu setTargetRect:imageview.bounds inView:imageview];
+    [menu setMenuVisible:YES animated:YES];
+    
+}
+-(void) handleCopyImage:(id)sender {
+    [self readContents];
+}
+-(void) readContents{
+    CopyDB * db = [[CopyDB alloc]init];
+    TalkDB * talk = [[TalkDB alloc]init];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+    NSString * contents =nil;
+    if (_isMine) {
+        contents =[db readContentCopyDB:[dateFormatter stringFromDate:copyDate]];
+    }else{
+        contents = [talk readDB:copyDate];
+        NSDictionary *ret = [contents objectFromJSONString];
+        ImageCache *imageCache = [ImageCache sharedObject];
+        NSDictionary * chatDic = [ret objectForKey:[imageCache getFriendID]];
+        contents = [chatDic JSONString];
+    }
+    if(contents)
+        [[UIPasteboard generalPasteboard] setString:contents];
+}
+-(void) refreshTable{
+    ImageCache * imageCache = [ImageCache sharedObject];
+    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+    NSString * sendID= [imageCache getFriendID];
+    bubbleData = [[NSMutableArray alloc]init];
+    TalkDB * talk =[[TalkDB alloc]init];
+    int count = [imageCache getReadCount:sendID];
+    if (count <10)
+        count = 10;
+    bubbleData = [talk readInitDB:[handler getUserID] withOtherID:sendID withCount:count];
+    for (NSBubbleData * data in bubbleData) {
+        data.delegate = self;
+    }
+    [bubbleTableView reloadData];
+    [self scrollBubbleViewToBottomAnimated:YES];
+}
+
 -(void)doInBackground
 {
 }

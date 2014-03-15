@@ -33,6 +33,11 @@
     NSMutableDictionary *deleteDic;
     int  rowCount;
      BOOL isEmoji;
+    
+    UIImage * copyImage;
+    NSDate * copyDate;
+    BOOL _isMine;
+    BOOL isTextEdit;
 }
 
 

@@ -25,6 +25,7 @@
 #import "STreamXMPP.h"
 #import "DownloadDB.h"
 #import "UploadDB.h"
+#import "CopyDB.h"
 //#import "TwitterConnect.h"
 
 @implementation UINavigationBar (UINavigationBarCategory)
@@ -58,6 +59,8 @@
     
     _progressDict = [[NSMutableDictionary alloc]init];
     _deleteArray = [[NSMutableArray alloc]init];
+    _array = [[NSMutableArray alloc]init];
+    _date = [[NSDate alloc]init];
 //    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:247.0/255.0 green:229.0/255.0 blue:227.0/255.0 alpha:1.0]];
     NSMutableDictionary *attributes= [[NSMutableDictionary alloc] init];
     
@@ -83,6 +86,8 @@
     UploadDB *uploadDb = [[UploadDB alloc]init];
     [uploadDb initDB];
     
+    CopyDB * db = [[CopyDB alloc]init];
+    [db initDB];
     /*TwitterConnect * twitter = [[TwitterConnect alloc]init];
     ACAccountStore  *accountStore = [[ACAccountStore alloc] init];
     [twitter setAccountStore:accountStore];
