@@ -257,6 +257,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     disappearPath = videoPath;
     jsonBody = body;
     CGSize size = image.size;
+    _image =image;
     /*if (size.width > 200)
     {
         image = [self imageWithImageSimple:image scaledToSize:CGSizeMake(100, 100)];
@@ -271,6 +272,10 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
         imageView.userInteractionEnabled = YES;
         UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(playerVideo)];
         [imageView addGestureRecognizer:tap];
+        
+        
+        UILongPressGestureRecognizer * longPressGesture = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(videoLongPress:)];
+        [imageView addGestureRecognizer:longPressGesture];
         
         UIImageView * imagevideo = [[UIImageView alloc]initWithFrame:CGRectMake(70, 70,30, 30)];
         [imagevideo setImage:[UIImage imageNamed:@"video1.png"]];
@@ -426,6 +431,17 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     }
     
 }
+-(void)videoLongPress:(UIGestureRecognizer *)recognizer{
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        UIImageView *imageview= (UIImageView *)recognizer.view;
+        if (_type == BubbleTypeMine ) {
+            [self.delegate copyVideo:_image withdate:_date withView:imageview withPath:_videoPath withBubbleType:YES];
+        }else{
+            [self.delegate copyVideo:_image withdate:_date withView:imageview withPath:_videoPath withBubbleType:NO];
+        }
+    }
+}
+
 #pragma mark scaled image
 -(UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size {
     if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {

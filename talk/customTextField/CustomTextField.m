@@ -112,7 +112,7 @@
         JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
         NSDictionary *chatDic = [decoder objectWithData:jsonData];
         NSString *photopath=[chatDic objectForKey:@"photo"];
-//        NSString * videopath = [chatDic objectForKey:@"filepath"];
+        NSString * videopath = [chatDic objectForKey:@"filepath"];
 //        NSString *audiopath = [chatDic objectForKey:@"audiodata"];
         UIImage *image;
         NSString * type;
@@ -120,11 +120,11 @@
             type = @"photo";
             image = [UIImage imageWithData:[NSData dataWithContentsOfFile:photopath]];
         }
-       /* if (videopath){
+        if (videopath){
             type = @"video";
             image = APPDELEGATE.image;
         }
-        if (audiopath) {
+        /*if (audiopath) {
             type = @"voice";
             image = [UIImage imageNamed:@"mic_talk_358x358@2x.png"];
         }*/

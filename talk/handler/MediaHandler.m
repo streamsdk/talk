@@ -42,6 +42,7 @@
                 NSString * tid  = [sfile fileId];
                 if (tid) {
                     [f.bodyDict setObject:tid forKey:@"tid"];
+                    [f.jsonDict setObject:tid forKey:@"tid"];
                 }
             }
             [f.bodyDict setObject:[sf fileId] forKey:@"fileId"];

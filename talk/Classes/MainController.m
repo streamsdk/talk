@@ -1198,16 +1198,17 @@
     }else{
         if (action == @selector(handleCopyImage:))
             return YES;
-        /*if (action == @selector(handleCopyVideo:)) {
+        if (action == @selector(handleCopyVideo:)) {
             return YES;
         }
-        if (action == @selector(handleCopyAudio:)) {
+        /*if (action == @selector(handleCopyAudio:)) {
             return YES;
         }*/
         return [super canPerformAction:action withSender:sender];
     }
     
 }
+#pragma mark -- copy image
 -(void)copyImage:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview withBubbleType:(BOOL)isMine{
     
     copyDate = date;
@@ -1225,6 +1226,29 @@
 -(void) handleCopyImage:(id)sender {
     [self readContents];
 }
+#pragma mark -- copy video 
+-(void)copyVideo:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview withPath:(NSString *)path withBubbleType:(BOOL)isMine{
+    if ([path hasSuffix:@".mp4"]) {
+        copyDate = date;
+        copyImage = image;
+        APPDELEGATE.date = date;
+        APPDELEGATE.image = image;
+        APPDELEGATE.array = bubbleData;
+        _isMine = isMine;
+        UIMenuItem *itCopy = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(handleCopyVideo:)];
+        UIMenuController *menu = [UIMenuController sharedMenuController];
+        [menu setMenuItems:[NSArray arrayWithObjects:itCopy,nil]];
+        [menu setTargetRect:imageview.bounds inView:imageview];
+        [menu setMenuVisible:YES animated:YES];
+    }else{
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"This video does not download" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+}
+-(void)handleCopyVideo :(id)sender {
+    [self readContents];
+}
+
 -(void) readContents{
     CopyDB * db = [[CopyDB alloc]init];
     TalkDB * talk = [[TalkDB alloc]init];

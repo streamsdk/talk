@@ -205,7 +205,4 @@ static NSMutableDictionary*_countDict;
     return [[_countDict objectForKey:userId]intValue];
 }
 
--(void) removeCoun{
-    [_countDict removeAllObjects];
-}
 @end

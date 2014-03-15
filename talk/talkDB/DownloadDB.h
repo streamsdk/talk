@@ -12,11 +12,15 @@
 
 -(void) initDB;
 
--(void) insertDownloadDB:(NSString *)userId fileID:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID;
+-(void) insertDownloadDB:(NSString *)userId fileID:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID withTime:(NSString *)time;
 
 -(NSMutableArray *) readDownloadDB;
 
 -(void) deleteDownloadDBFromFileID:(NSString *) fileID;
 
 -(NSString *)readDownloadDBFromFileID:(NSString *) fileID;
+
+-(void) deleteDownloadDBFileID:(NSString *) time;
+
+-(NSString *)readDownloadDBFileID:(NSString *) time;
 @end

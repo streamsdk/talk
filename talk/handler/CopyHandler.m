@@ -40,7 +40,7 @@
             bubble.avatar = [UIImage imageWithData:myData];
         [bubbleData addObject:bubble];
     }
-    /*if ([type isEqualToString:@"video"]) {
+    if ([type isEqualToString:@"video"]) {
         path = [chatDic objectForKey:@"filepath"];
         NSString * tid = [chatDic objectForKey:@"tid"];
         [bodyDic setObject:tid forKey:@"tid"];
@@ -50,7 +50,7 @@
         [bubbleData addObject:bdata];
         
     }
-    if ([type isEqualToString:@"voice"]) {
+    /*if ([type isEqualToString:@"voice"]) {
         path = [chatDic objectForKey:@"audiodata"];
         NSString * audiotime = [chatDic objectForKey:@"time"];
         [bodyDic setObject:audiotime forKey:@"duration"];
