@@ -330,6 +330,7 @@
 		0EFAD95B18682AF2001F0DED /* HandlerUserIdAndDateFormater.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */; };
 		0EFC8CB518ADE0B900EF09D8 /* DownloadDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC8CB418ADE0B900EF09D8 /* DownloadDB.m */; };
 		0EFC8CB818AE167500EF09D8 /* UploadDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC8CB718AE167500EF09D8 /* UploadDB.m */; };
+		0EFD8C0C18D40443005A93B0 /* CopyDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFD8C0B18D40443005A93B0 /* CopyDB.m */; };
 		4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4413D0A0182FA98E00B01C14 /* LoginViewController.m */; };
 		44A80EAC183129E2006069DE /* Emoji.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A80E9B183129E2006069DE /* Emoji.m */; };
 		44A80EAD183129E2006069DE /* EmojiEmoticons.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A80E9D183129E2006069DE /* EmojiEmoticons.m */; };
@@ -873,6 +874,8 @@
 		0EFC8CB618AE167500EF09D8 /* UploadDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UploadDB.h; path = talkDB/UploadDB.h; sourceTree = "<group>"; };
 		0EFC8CB718AE167500EF09D8 /* UploadDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UploadDB.m; path = talkDB/UploadDB.m; sourceTree = "<group>"; };
 		0EFC8CB918AE2BD200EF09D8 /* UploadProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadProtocol.h; sourceTree = "<group>"; };
+		0EFD8C0A18D40443005A93B0 /* CopyDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CopyDB.h; path = talkDB/CopyDB.h; sourceTree = "<group>"; };
+		0EFD8C0B18D40443005A93B0 /* CopyDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CopyDB.m; path = talkDB/CopyDB.m; sourceTree = "<group>"; };
 		4413D09F182FA98E00B01C14 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Classes/LoginViewController.h; sourceTree = "<group>"; };
 		4413D0A0182FA98E00B01C14 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Classes/LoginViewController.m; sourceTree = "<group>"; };
 		44A80E9A183129E2006069DE /* Emoji.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Emoji.h; sourceTree = "<group>"; };
@@ -1963,6 +1966,8 @@
 			children = (
 				0E8A4F34182B7FE300705C1F /* TalkDB.h */,
 				0E8A4F35182B7FE300705C1F /* TalkDB.m */,
+				0EFD8C0A18D40443005A93B0 /* CopyDB.h */,
+				0EFD8C0B18D40443005A93B0 /* CopyDB.m */,
 				0E0F82FF18A37D4100E81CA5 /* ACKMessageDB.h */,
 				0E0F830018A37D4100E81CA5 /* ACKMessageDB.m */,
 				0E03AB0718811D6A00F7BDC7 /* ChatBackGround.h */,
@@ -2562,6 +2567,7 @@
 				0EE9518A185EA3EF003F4638 /* FileCache.m in Sources */,
 				0E084792182736BC00350741 /* UIBubbleTableView.m in Sources */,
 				0EFC8CB818AE167500EF09D8 /* UploadDB.m in Sources */,
+				0EFD8C0C18D40443005A93B0 /* CopyDB.m in Sources */,
 				03D9BF5418145E270039118F /* XMPPPlainAuthentication.m in Sources */,
 				0EF79DFF18583ACF00EB8A64 /* SettingViewController.m in Sources */,
 				03D9C06F18145E410039118F /* XMPPRoomOccupantHybridMemoryStorageObject.m in Sources */,
