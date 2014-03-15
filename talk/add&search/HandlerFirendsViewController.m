@@ -681,6 +681,16 @@
         [my addStaff:@"status" withObject:@"friend"];
         [my updateInBackground];
        
+        STreamXMPP *con = [STreamXMPP sharedObject];
+        long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
+        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+        [jsonDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
+        [jsonDic setObject:@"friend" forKey:@"type"];
+        [jsonDic setObject:[handle getUserID] forKey:@"username"];
+        [jsonDic setObject:[friendsAddArray objectAtIndex:_button.tag] forKey:@"friendname"];
+        NSString *jsonSent = [jsonDic JSONString];
+        [con sendMessage:[friendsAddArray objectAtIndex:_button.tag] withMessage:jsonSent];
+        
         [_button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
         [addDict setObject:@"friend" forKey:[friendsAddArray objectAtIndex:_button.tag]];
         [requestArray removeObject:[friendsAddArray objectAtIndex:_button.tag]];
@@ -692,16 +702,7 @@
         for (NSString * user in friendArray) {
             [friendsAddArray addObject:user];
         }
-        
-        STreamXMPP *con = [STreamXMPP sharedObject];
-        long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
-        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
-        [jsonDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
-        [jsonDic setObject:@"friend" forKey:@"type"];
-        [jsonDic setObject:[handle getUserID] forKey:@"username"];
-        [jsonDic setObject:[friendsAddArray objectAtIndex:_button.tag] forKey:@"friendname"];
-        NSString *jsonSent = [jsonDic JSONString];
-        [con sendMessage:[friendsAddArray objectAtIndex:_button.tag] withMessage:jsonSent];
+
     }completionBlock:^{
         [myTableview reloadData];
         [HUD removeFromSuperview];

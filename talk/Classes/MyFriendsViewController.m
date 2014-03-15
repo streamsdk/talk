@@ -185,7 +185,7 @@
     toolBar.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
     UIBarButtonItem * item = [[UIBarButtonItem alloc] initWithCustomView:requestButton];
     UIButton * cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [cancelButton setFrame:CGRectMake(self.view.frame.size.width-60, 5, 30, 30)];
+    [cancelButton setFrame:CGRectMake(self.view.frame.size.width-60, 10,20, 20)];
     [cancelButton setImage:[UIImage imageNamed:@"cancel.png"] forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(requestCancel) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *fiexibleSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
