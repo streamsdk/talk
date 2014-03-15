@@ -36,6 +36,8 @@
     BOOL isAddFriend;
     BOOL isSendRequest;
     UIButton * _button ;
+    NSMutableArray * requestArray;
+    NSMutableArray * friendArray;
 }
 @end
 
@@ -67,6 +69,10 @@
             for (int i = 0;i<[friendsAddArray count];i++) {
                 NSString *friendId= [friendsAddArray objectAtIndex:i];
                 if (![objectID containsObject:friendId]) {
+                    NSString * status = [addDict objectForKey:friendId];
+                    if ([status isEqualToString:@"request"]) {
+                        [requestArray removeObject:friendId];
+                    }
                     [friendsAddArray removeObject:friendId];
                     [db deleteDB:friendId];
                 }
@@ -79,16 +85,37 @@
                 if (![[addDict objectForKey:[so objectId]] isEqualToString:[so getValue:@"status"]]) {
                     [db updateDB:[handler getUserID] withFriendID:[so objectId] withStatus:[so getValue:@"status"]];
                     [addDict removeObjectForKey:[so objectId]];
+                    NSString * status = [addDict objectForKey:[so objectId]];
+                    if ([status isEqualToString:@"request"]) {
+                        [requestArray removeObject:[so objectId]];
+                        [friendArray insertObject:[so objectId] atIndex:0];
+                    }else{
+                        [requestArray insertObject:[so objectId] atIndex:0];
+                        [friendArray removeObject:[so objectId]];
+                    }
+
                     [addDict setObject:[so getValue:@"status"] forKey:[so objectId]];
                 }
             }else{
                 [db insertDB:[handler getUserID] withFriendID:[so objectId] withStatus:[so getValue:@"status"]];
-                [friendsAddArray addObject:[so objectId]];
+                if ([[so getValue:@"status"] isEqualToString:@"request"]) {
+                    [requestArray insertObject:[so objectId] atIndex:0];
+                }else{
+                    [friendArray insertObject:[so objectId] atIndex:0];
+                }
+
                 [addDict setObject:[so getValue:@"status"] forKey:[so objectId]];
             }
             
         }
 
+    }
+    [friendsAddArray removeAllObjects];
+    for (NSString * user in requestArray) {
+        [friendsAddArray addObject:user];
+    }
+    for (NSString * user in friendArray) {
+        [friendsAddArray addObject:user];
     }
    
 }
@@ -164,11 +191,30 @@
     NSArray * array = [addDict allKeys];
     for (int i = 0; i<[array count]; i++) {
         NSString *status = [addDict objectForKey:[array objectAtIndex:i]];
-        if (![status isEqualToString:@"sendRequest"]) {
+        /*if (![status isEqualToString:@"sendRequest"]) {
             if (![friendsAddArray containsObject:[array objectAtIndex:i]]) {
                 [friendsAddArray addObject:[array objectAtIndex:i]];
             }
+        }*/
+        if ([status isEqualToString:@"request"]) {
+            if (![friendsAddArray containsObject:[array objectAtIndex:i]]) {
+                [requestArray insertObject:[array objectAtIndex:i] atIndex:0];
+                [friendsAddArray insertObject:[array objectAtIndex:i] atIndex:0];
+            }
         }
+        if ([status isEqualToString:@"friend"]) {
+            if (![friendsAddArray containsObject:[array objectAtIndex:i]]) {
+                [friendArray insertObject:[array objectAtIndex:i] atIndex:0];
+            }
+        }
+
+    }
+    [friendsAddArray removeAllObjects];
+    for (NSString * user in requestArray) {
+        [friendsAddArray addObject:user];
+    }
+    for (NSString * user in friendArray) {
+        [friendsAddArray addObject:user];
     }
     refreshitem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
     self.navigationItem.rightBarButtonItem = refreshitem;
@@ -233,7 +279,8 @@
     friendsAddPoint = CGPointZero;
     friendsSearchPoint = CGPointZero;
     friendsHistoryPoint = CGPointZero;
-    
+    requestArray  =[[NSMutableArray alloc]init];
+    friendArray  =[[NSMutableArray alloc]init];
     friendsAddArray = [[NSMutableArray alloc]init];
     friendsSearchArray = [[NSMutableArray alloc]init];
     friendsHistoryArray = [[NSMutableArray alloc]init];
@@ -551,6 +598,9 @@
         NSString *jsonSent = [jsonDic JSONString];
         [con sendMessage:[friendsAddArray objectAtIndex:_button.tag] withMessage:jsonSent];
 
+        [friendArray removeObject:[friendsAddArray objectAtIndex:_button.tag]];
+        [addDict removeObjectForKey:[friendsAddArray objectAtIndex:_button.tag]];
+        [friendsAddArray removeObject:[friendsAddArray objectAtIndex:_button.tag]];
     }else{
         [db updateDB:[handle getUserID] withFriendID:[friendsAddArray objectAtIndex:_button.tag] withStatus:@"request"];
         STreamObject * so = [[STreamObject alloc]init];
@@ -576,19 +626,24 @@
         [jsonDic setObject:[friendsAddArray objectAtIndex:_button.tag] forKey:@"friendname"];
         NSString *jsonSent = [jsonDic JSONString];
         [con sendMessage:[friendsAddArray objectAtIndex:_button.tag] withMessage:jsonSent];
+       
+        [addDict setObject:@"request" forKey:[friendsAddArray objectAtIndex:_button.tag]];
+        [requestArray insertObject:[friendsAddArray objectAtIndex:_button.tag] atIndex:0];
+        [friendArray removeObject:[friendsAddArray objectAtIndex:_button.tag]];
+        [friendsAddArray removeAllObjects];
+        for (NSString * user in requestArray) {
+            [friendsAddArray addObject:user];
+        }
+        for (NSString * user in friendArray) {
+            [friendsAddArray addObject:user];
+        }
+
     }
-    
-    addDict = [db readDB:[handle getUserID]];
-    friendsAddArray = [[NSMutableArray alloc]init];
-    for (NSString * key in [addDict allKeys]) {
-        [friendsAddArray addObject:key];
-    }
-//    [_button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
     [myTableview reloadData];
 }
 
 -(void)addFriends:(UIButton *)sender {
-    
+    isAddFriend = YES;
     _button = (UIButton *)sender;
         NSString * str = [NSString stringWithFormat:@"Do you want to add %@ as a friend?",[friendsAddArray objectAtIndex:sender.tag]];
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
@@ -611,14 +666,8 @@
     [my setObjectId:[handle getUserID]];
     [my addStaff:@"status" withObject:@"friend"];
     [my updateInBackground];
-    addDict = [db readDB:[handle getUserID]];
-    friendsAddArray = [[NSMutableArray alloc]init];
-    for (NSString * key in [addDict allKeys]) {
-        [friendsAddArray addObject:key];
-    }
     [_button setBackgroundImage:[UIImage imageNamed:@"friends.png"] forState:UIControlStateNormal];
-    [myTableview reloadData];
-//    [_button addTarget:self action:@selector(deleteFriends:) forControlEvents:UIControlEventTouchUpInside];
+    
     
     STreamXMPP *con = [STreamXMPP sharedObject];
     long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
@@ -629,6 +678,18 @@
     [jsonDic setObject:[friendsAddArray objectAtIndex:_button.tag] forKey:@"friendname"];
     NSString *jsonSent = [jsonDic JSONString];
     [con sendMessage:[friendsAddArray objectAtIndex:_button.tag] withMessage:jsonSent];
+    
+    [addDict setObject:@"friend" forKey:[friendsAddArray objectAtIndex:_button.tag]];
+    [requestArray removeObject:[friendsAddArray objectAtIndex:_button.tag]];
+    [friendArray insertObject:[friendsAddArray objectAtIndex:_button.tag] atIndex:0];
+    [friendsAddArray removeAllObjects];
+    for (NSString * user in requestArray) {
+        [friendsAddArray addObject:user];
+    }
+    for (NSString * user in friendArray) {
+        [friendsAddArray addObject:user];
+    }
+    [myTableview reloadData];
 }
 -(void) addFriendSendRequest:(UIButton *) sender {
     _button = (UIButton *)sender;
@@ -686,12 +747,17 @@
             if (buttonIndex==1) {
                 [self add];
                 isAddFriend = NO;
+            }else{
+                isAddFriend = NO;
             }
         }else{
             if (buttonIndex==1) {
                 [self delete];
                 isAddFriend = YES;
+            }else{
+                isAddFriend = YES;
             }
+
         }
     }
 }
