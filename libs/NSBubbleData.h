@@ -49,6 +49,7 @@ typedef enum FileType
 @property (nonatomic,retain) NSString * photopath;
 @property (nonatomic,retain) NSString * jsonBody;
 @property (nonatomic,strong) UIButton * videobutton;
+@property (nonatomic,retain) NSString * audioTime;
 //message
 - (id)initWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type;
 + (id)dataWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type;

@@ -17,6 +17,8 @@
 
 @property(nonatomic, strong)UIViewController *controller;
 
+@property (nonatomic,retain) NSDate * uploadDate;
+
 - (void)receiveFile:(NSData *)data withPath:(NSString *)path forBubbleDataArray:(NSMutableArray *)bubbleData withTime:(NSString *)time forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID ;
 
 -(void) sendPhoto :(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID withTime:(NSString *)time;

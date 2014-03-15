@@ -31,6 +31,7 @@
 @synthesize controller;
 @synthesize type;
 @synthesize photopath;
+@synthesize uploadDate;
 
 -(void)receiveFile:(NSData *)data withPath:(NSString *)path forBubbleDataArray:(NSMutableArray *)bubbleData withTime:(NSString *)time forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
@@ -85,6 +86,12 @@
     if ([type isEqualToString:@"photo"]) {
         photoPath = photopath;
          [file setFilepath:photoPath];
+        [file setDate:uploadDate];
+        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        if (time)
+            [friendDict setObject:time forKey:@"time"];
+        [friendDict setObject:photoPath forKey:@"photo"];
+        [file setJsonDict:friendDict];
         type = nil;
         if (fileArray != nil && [fileArray count] != 0) {
             FilesUpload * f =[fileArray objectAtIndex:0];
@@ -127,7 +134,7 @@
         [file setDate:date];
         [file setJsonDict:friendDict];
         UploadDB * uploadDb = [[UploadDB alloc]init];
-        [uploadDb insertUploadDB:[handler getUserID] filePath:photoPath withTime:time withFrom:sendID withType:@"photo"];
+        [uploadDb insertUploadDB:[handler getUserID] filePath:photoPath withTime:time withFrom:sendID withType:@"photo" withDate:[dateFormatter stringFromDate:date]];
         
         if (fileArray != nil && [fileArray count] != 0) {
             FilesUpload * f =[fileArray objectAtIndex:0];

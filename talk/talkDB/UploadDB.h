@@ -13,7 +13,7 @@
 
 -(void) initDB;
 
--(void) insertUploadDB:(NSString *)userId filePath:(NSString *)filepath withTime:(NSString *)time withFrom:(NSString *)fromID withType:(NSString *)type;
+-(void) insertUploadDB:(NSString *)userId filePath:(NSString *)filepath withTime:(NSString *)time withFrom:(NSString *)fromID withType:(NSString *)type withDate:(NSString *)date;
 
 -(NSMutableArray *) readUploadDB;
 

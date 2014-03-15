@@ -290,7 +290,11 @@
             NSString * time= [array objectAtIndex:1];
             NSString * fromId = [array objectAtIndex:2];
             NSString * type = [array objectAtIndex:3];
-            [uploadProtocol uploadVideoPath:filePath withTime:time withFrom:fromId withType:type];
+            NSString * date = [array objectAtIndex:4];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+            NSDate * _date = [dateFormatter dateFromString:date];
+            [uploadProtocol uploadVideoPath:filePath withTime:time withFrom:fromId withType:type withDate:_date];
         }
     }
 }

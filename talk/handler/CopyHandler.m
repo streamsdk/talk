@@ -50,7 +50,7 @@
         [bubbleData addObject:bdata];
         
     }
-    /*if ([type isEqualToString:@"voice"]) {
+    if ([type isEqualToString:@"voice"]) {
         path = [chatDic objectForKey:@"audiodata"];
         NSString * audiotime = [chatDic objectForKey:@"time"];
         [bodyDic setObject:audiotime forKey:@"duration"];
@@ -60,7 +60,7 @@
             bubble.avatar = [UIImage imageWithData:myData];
         [bubbleData addObject:bubble];
         
-    }*/
+    }
     
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     [dict setObject:chatDic forKey:[imagecache getFriendID]];

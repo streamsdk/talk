@@ -113,7 +113,7 @@
         NSDictionary *chatDic = [decoder objectWithData:jsonData];
         NSString *photopath=[chatDic objectForKey:@"photo"];
         NSString * videopath = [chatDic objectForKey:@"filepath"];
-//        NSString *audiopath = [chatDic objectForKey:@"audiodata"];
+        NSString *audiopath = [chatDic objectForKey:@"audiodata"];
         UIImage *image;
         NSString * type;
         if (photopath){
@@ -124,10 +124,10 @@
             type = @"video";
             image = APPDELEGATE.image;
         }
-        /*if (audiopath) {
+        if (audiopath) {
             type = @"voice";
             image = [UIImage imageNamed:@"mic_talk_358x358@2x.png"];
-        }*/
+        }
         
         ImageCache * imageCache = [ImageCache sharedObject];
         HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];

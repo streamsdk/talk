@@ -527,6 +527,9 @@
     if (self.voice.recordTime >= 0.5f) {
         [audioHandler sendAudio:voice forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID];
         [bubbleTableView reloadData];
+        NSBubbleData * data = [bubbleData lastObject];
+        data.delegate = self;
+        [bubbleTableView reloadData];
         [self scrollBubbleViewToBottomAnimated:YES];
         
     }else {
@@ -1133,7 +1136,7 @@
 -(void)sendImages:(NSData *)data withTime:(NSString *)time{
     [self sendPhoto:data withTime:time];
 }
--(void) uploadVideoPath:(NSString *)filePath withTime:(NSString *)time withFrom:(NSString *)fromID withType:(NSString *)type{
+-(void) uploadVideoPath:(NSString *)filePath withTime:(NSString *)time withFrom:(NSString *)fromID withType:(NSString *)type withDate:(NSDate *)date{
     [self dismissKeyBoard];
     ImageCache *imageCache = [ImageCache sharedObject];
     
@@ -1157,6 +1160,7 @@
         
         [videoHandler setController:self];
         [videoHandler setVideoPath:_videoPath];
+        [videoHandler setUploadDate:date];
         [videoHandler setType:@"video"];
         [videoHandler sendVideoforBubbleDataArray:bubbleData withVideoTime:time forBubbleMyData:myData withSendId:fromID];
         NSBubbleData * last = [bubbleData lastObject];
@@ -1168,6 +1172,7 @@
         [photoHandler setController:self];
         [photoHandler setType:@"photo"];
         [photoHandler setPhotopath:filePath];
+        [photoHandler setUploadDate:date];
         [photoHandler sendPhoto:data forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:fromID withTime:time];
     }
     if ([type isEqualToString:@"voice"]) {
@@ -1175,6 +1180,7 @@
         [v setRecordPath:filePath];
         [v setRecordTime:[time floatValue]];
         [audioHandler setIsAddUploadDB:YES];
+        [audioHandler setUploadDate:date];
         [audioHandler sendAudio:v forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:fromID];
     }
     [bubbleTableView reloadData];
@@ -1201,9 +1207,9 @@
         if (action == @selector(handleCopyVideo:)) {
             return YES;
         }
-        /*if (action == @selector(handleCopyAudio:)) {
+        if (action == @selector(handleCopyAudio:)) {
             return YES;
-        }*/
+        }
         return [super canPerformAction:action withSender:sender];
     }
     
@@ -1248,7 +1254,21 @@
 -(void)handleCopyVideo :(id)sender {
     [self readContents];
 }
-
+-(void)copyAudiodate:(NSDate *)date withView:(UIImageView *)imageview withAudioTime:(NSString *)time withBubbleType:(BOOL)isMine{
+    copyDate = date;
+    APPDELEGATE.date = date;
+    APPDELEGATE.array = bubbleData;
+    _isMine = isMine;
+    UIMenuItem *itCopy = [[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(handleCopyAudio:)];
+    UIMenuController *menu = [UIMenuController sharedMenuController];
+    [menu setMenuItems:[NSArray arrayWithObjects:itCopy,nil]];
+    [menu setTargetRect:imageview.bounds inView:imageview];
+    [menu setMenuVisible:YES animated:YES];
+    
+}
+-(void)handleCopyAudio:(id)sender{
+    [self readContents];
+}
 -(void) readContents{
     CopyDB * db = [[CopyDB alloc]init];
     TalkDB * talk = [[TalkDB alloc]init];

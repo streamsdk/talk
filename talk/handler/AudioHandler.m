@@ -19,6 +19,7 @@
 @implementation AudioHandler
 
 @synthesize isAddUploadDB;
+@synthesize uploadDate;
 
 - (void)receiveAudioFile:(NSData *)data withBody:(NSString *)body forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
     HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
@@ -59,6 +60,12 @@
     [file setType:@"voice"];
     if (isAddUploadDB) {
         isAddUploadDB = NO;
+        NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
+        [friendsDict setObject:bodyData forKey:@"time"];
+        [friendsDict setObject:voice.recordPath forKey:@"audiodata"];
+        
+        [file setDate:uploadDate];
+        [file setJsonDict:friendsDict];
         if (fileArray!=nil && [fileArray count]!=0) {
             FilesUpload * f =[fileArray objectAtIndex:0];
             long long ftime = [f.time longLongValue];
@@ -98,7 +105,7 @@
         [file setDate:date];
         [file setJsonDict:friendsDict];
         UploadDB * uploadDb = [[UploadDB alloc]init];
-        [uploadDb insertUploadDB:[handler getUserID] filePath:voice.recordPath withTime:bodyData withFrom:sendID withType:@"voice"];
+        [uploadDb insertUploadDB:[handler getUserID] filePath:voice.recordPath withTime:bodyData withFrom:sendID withType:@"voice" withDate:[dateFormatter stringFromDate:date]];
         
         if (fileArray != nil && [fileArray count] != 0) {
             FilesUpload * f =[fileArray objectAtIndex:0];
