@@ -19,8 +19,10 @@
 
 @synthesize delegate;
 - ( void)receiveMessage:(NSString *)receiveMessage forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
+    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
+
     if ([fromID isEqualToString:sendID]) {
-        NSBubbleData *sendBubble = [NSBubbleData dataWithText:receiveMessage date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeSomeoneElse];
+        NSBubbleData *sendBubble = [NSBubbleData dataWithText:receiveMessage date:[handler getDate] type:BubbleTypeSomeoneElse];
         if (otherData)
             sendBubble.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:sendBubble];
