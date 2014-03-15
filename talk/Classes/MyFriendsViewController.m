@@ -531,6 +531,10 @@
             TalkDB * db = [[TalkDB alloc]init];
             NSString * userID = [handler getUserID];
             NSString  *str = [jsonDic JSONString];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+            NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
+            [handler setDate:date];
             [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
             [messagesProtocol getFiles:data withFromID:fromUser withBody:jsBody withPath:tidpath];
             [self.tableView reloadData];
@@ -613,7 +617,10 @@
         TalkDB * db = [[TalkDB alloc]init];
         NSString * userID = [handler getUserID];
         NSString  *str = [jsonDic JSONString];
-
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+        NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
+        [handler setDate:date];
         [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
         [messagesProtocol getFiles:data withFromID:fromUser withBody:jsBody withPath:path];
         [self.tableView reloadData];
