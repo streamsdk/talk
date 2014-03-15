@@ -27,4 +27,6 @@ typedef void (^FinishCall)(NSString *);
 
 - (void)didReceiveFile:(NSString *)fileId withBody:(NSString *)body withFrom:(NSString *)fromID;
 
+- (void)didReceiveRequest:(NSDictionary *)json;
+
 @end

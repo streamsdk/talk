@@ -23,6 +23,8 @@
 @property(nonatomic,strong) UITableView * tableView;
 @property(nonatomic,strong) UIButton * button;
 @property (assign,nonatomic) id<UploadProtocol> uploadProtocol;
+@property(nonatomic,strong) UIToolbar *toolBar;
+
 -(void)reloadTableViewDataSource;
 -(void)doneLoadingTableViewData;
 

@@ -45,7 +45,7 @@
 
 @implementation MyFriendsViewController
 
-@synthesize userData,sortedArrForArrays,sectionHeadsKeys,messagesProtocol;
+@synthesize userData,sortedArrForArrays,sectionHeadsKeys,messagesProtocol,toolBar;
 @synthesize button;
 @synthesize uploadProtocol;
 
@@ -59,6 +59,7 @@
 }
 
 -(void) addFriends {
+    toolBar.hidden = YES;
     HandlerFirendsViewController * handlerVC = [[HandlerFirendsViewController alloc]init];
 //    [self.navigationController pushViewController:handlerVC animated:YES];
     [UIView animateWithDuration:0.5
@@ -177,8 +178,31 @@
                                              selector:@selector(appHasBackInForeground)
                                                  name:UIApplicationWillEnterForegroundNotification
                                                object:nil];
-}
+    UIButton  * requestButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [requestButton setFrame:CGRectMake(10, 5, 200, 30)];
+    [requestButton setTitle:@"You have new friend requests!" forState:UIControlStateNormal];
+    requestButton.backgroundColor = [UIColor clearColor];
+    [requestButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    requestButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    [requestButton addTarget:self action:@selector(addFriends) forControlEvents:UIControlEventTouchUpInside];
+    toolBar=[[UIToolbar alloc]initWithFrame:CGRectMake(0,0,self.view.frame.size.width,40)];
+    toolBar.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
+    UIBarButtonItem * item = [[UIBarButtonItem alloc] initWithCustomView:requestButton];
+    UIButton * cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [cancelButton setFrame:CGRectMake(self.view.frame.size.width-60, 10, 20, 20)];
+    [cancelButton setImage:[UIImage imageNamed:@"cancel.png"] forState:UIControlStateNormal];
+    [cancelButton addTarget:self action:@selector(requestCancel) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *fiexibleSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc]initWithCustomView:cancelButton];
+    NSArray *array =[[NSArray alloc]initWithObjects:item,fiexibleSpace,cancelItem,nil];
+    toolBar.items =array;
+    toolBar.hidden = YES;
+    [self.view addSubview:toolBar];
 
+}
+-(void)requestCancel {
+    toolBar.hidden = YES;
+}
 
 - (void)appHasBackInForeground{
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -327,7 +351,7 @@
             [self didReceiveFile:fileId withBody:jsonValue withFrom:from];
         }
         if ([type isEqualToString:@"request"] || [type isEqualToString:@"friend"]) {
-            NSString * friendname = [json objectForKey:@"friendname"];
+           /* NSString * friendname = [json objectForKey:@"friendname"];
             NSString * username = [json objectForKey:@"username"];
             AddDB * addDb = [[AddDB alloc]init];
             NSMutableDictionary * dict = [addDb readDB:friendname];
@@ -338,7 +362,8 @@
                 }else{
                     [addDb insertDB:friendname withFriendID:username withStatus:type];
                 }
-            }
+            }*/
+             [self didReceiveRequest:json];
         }
         if ([type isEqualToString:@"sendRequest"]) {
             NSString * friendname = [json objectForKey:@"friendname"];
@@ -396,6 +421,30 @@
     }
 
 }
+-(void) didReceiveRequest:(NSDictionary *)json{
+    NSString *type = [json objectForKey:@"type"];
+    if ([type isEqualToString:@"request"] || [type isEqualToString:@"friend"]) {
+        if ([type isEqualToString:@"request"]) {
+            toolBar.hidden = NO;
+        }
+        NSString * friendname = [json objectForKey:@"friendname"];
+        NSString * username = [json objectForKey:@"username"];
+        AddDB * addDb = [[AddDB alloc]init];
+        NSMutableDictionary * dict = [addDb readDB:friendname];
+        if (dict!=nil && [dict count]!= 0) {
+            NSArray *key = [dict allKeys];
+            if ([key containsObject:username]) {
+                [addDb updateDB:friendname withFriendID:username withStatus:type];
+            }else{
+                [addDb insertDB:friendname withFriendID:username withStatus:type];
+            }
+        }
+        
+    }
+    
+    
+}
+
 - (void)didReceiveMessage:(NSString *)message withFrom:(NSString *)fromID{
     ImageCache *imageCache = [ImageCache sharedObject];
     NSString *friendId = [imageCache getFriendID];
@@ -483,7 +532,10 @@
             [jsondict setObject:fileId forKey:@"fileId"];
 
             NSString* jsBody = [jsondict JSONString];
-            
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+            NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
+            [handler setDate:date];
             TalkDB * db = [[TalkDB alloc]init];
             NSString * userID = [handler getUserID];
             NSString  *str = [jsonDic JSONString];
@@ -566,6 +618,10 @@
             jsBody = body;
         }
        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+        NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
+        [handler setDate:date];
         TalkDB * db = [[TalkDB alloc]init];
         NSString * userID = [handler getUserID];
         NSString  *str = [jsonDic JSONString];

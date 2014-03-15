@@ -348,7 +348,7 @@ static XMPPReconnect *xmppReconnect;
             [xmppDelegate didReceiveFile:filetransferId withBody:messageBody withFrom:fromID];
         }else{
             if ([type isEqualToString:@"request"] || [type isEqualToString:@"friend"]) {
-                NSString * friendname = [json objectForKey:@"friendname"];
+               /* NSString * friendname = [json objectForKey:@"friendname"];
                 NSString * username = [json objectForKey:@"username"];
                 AddDB * addDb = [[AddDB alloc]init];
                 NSMutableDictionary * dict = [addDb readDB:friendname];
@@ -359,7 +359,8 @@ static XMPPReconnect *xmppReconnect;
                     }else{
                         [addDb insertDB:friendname withFriendID:username withStatus:type];
                     }
-                }
+                }*/
+                 [xmppDelegate didReceiveRequest:json];
 
             }
             if ([type isEqualToString:@"sendRequest"]) {
