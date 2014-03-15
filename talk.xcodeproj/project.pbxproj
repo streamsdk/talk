@@ -331,6 +331,7 @@
 		0EFC8CB518ADE0B900EF09D8 /* DownloadDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC8CB418ADE0B900EF09D8 /* DownloadDB.m */; };
 		0EFC8CB818AE167500EF09D8 /* UploadDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC8CB718AE167500EF09D8 /* UploadDB.m */; };
 		0EFD8C0C18D40443005A93B0 /* CopyDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFD8C0B18D40443005A93B0 /* CopyDB.m */; };
+		0EFD8C1118D40941005A93B0 /* CustomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFD8C1018D40941005A93B0 /* CustomAlertView.m */; };
 		4413D0A1182FA98E00B01C14 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4413D0A0182FA98E00B01C14 /* LoginViewController.m */; };
 		44A80EAC183129E2006069DE /* Emoji.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A80E9B183129E2006069DE /* Emoji.m */; };
 		44A80EAD183129E2006069DE /* EmojiEmoticons.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A80E9D183129E2006069DE /* EmojiEmoticons.m */; };
@@ -876,6 +877,8 @@
 		0EFC8CB918AE2BD200EF09D8 /* UploadProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadProtocol.h; sourceTree = "<group>"; };
 		0EFD8C0A18D40443005A93B0 /* CopyDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CopyDB.h; path = talkDB/CopyDB.h; sourceTree = "<group>"; };
 		0EFD8C0B18D40443005A93B0 /* CopyDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CopyDB.m; path = talkDB/CopyDB.m; sourceTree = "<group>"; };
+		0EFD8C0F18D40941005A93B0 /* CustomAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomAlertView.h; path = customAlertview/CustomAlertView.h; sourceTree = "<group>"; };
+		0EFD8C1018D40941005A93B0 /* CustomAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomAlertView.m; path = customAlertview/CustomAlertView.m; sourceTree = "<group>"; };
 		4413D09F182FA98E00B01C14 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Classes/LoginViewController.h; sourceTree = "<group>"; };
 		4413D0A0182FA98E00B01C14 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Classes/LoginViewController.m; sourceTree = "<group>"; };
 		44A80E9A183129E2006069DE /* Emoji.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Emoji.h; sourceTree = "<group>"; };
@@ -1025,6 +1028,7 @@
 				0EF79DFC18583A9E00EB8A64 /* setVC */,
 				0EF79DF018580D0E00EB8A64 /* IconSort */,
 				0E4B13D9187CF1650070752B /* imageContoller */,
+				0EFD8C0E18D40910005A93B0 /* customAlertview */,
 				0E2918D11859579000AA21B2 /* friendsSort */,
 				0EE95194185EA47D003F4638 /* search */,
 				0E3A74EF18740C2300A9020D /* add&searchFriends */,
@@ -2200,6 +2204,15 @@
 			name = setVC;
 			sourceTree = "<group>";
 		};
+		0EFD8C0E18D40910005A93B0 /* customAlertview */ = {
+			isa = PBXGroup;
+			children = (
+				0EFD8C0F18D40941005A93B0 /* CustomAlertView.h */,
+				0EFD8C1018D40941005A93B0 /* CustomAlertView.m */,
+			);
+			name = customAlertview;
+			sourceTree = "<group>";
+		};
 		44A80E99183129E2006069DE /* Emoji-master */ = {
 			isa = PBXGroup;
 			children = (
@@ -2476,6 +2489,7 @@
 				03D9C09918145E410039118F /* XMPPMessage+XEP_0172.m in Sources */,
 				0EE9519E185EA47D003F4638 /* pinyin.c in Sources */,
 				03D9C06718145E410039118F /* XMPPPrivacy.m in Sources */,
+				0EFD8C1118D40941005A93B0 /* CustomAlertView.m in Sources */,
 				0E2A5142185C6A6600D93C9B /* ImageCache.m in Sources */,
 				0ED8ECA618288DF500C84741 /* Voice.m in Sources */,
 				03D9C0E618145E510039118F /* DDLog.m in Sources */,
