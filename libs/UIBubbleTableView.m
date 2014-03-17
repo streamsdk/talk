@@ -303,7 +303,7 @@
             NSData *jsonData = [cell.data.jsonBody dataUsingEncoding:NSUTF8StringEncoding];
             JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
             NSDictionary *json = [decoder objectWithData:jsonData];
-            NSString *fileId = [json objectForKey:@"fileId"];
+            NSString *fileId = [json objectForKey:@"id"];
             ImageCache * imagecache = [ImageCache sharedObject];
             BOOL isTheFileDownloading = [imagecache isFileDownloading:fileId];
             NSArray * array = [json allKeys];
@@ -352,17 +352,27 @@
                 [cell.contentView addSubview:activityIndicatorView];
                 activityIndicatorView.tag = indexPath.row+100+1000*indexPath.section;
                 
-                
-                if ([cell.data.videobutton.titleLabel.text isEqualToString:@"Download"]) {
-                    cell.data.videobutton.tag = indexPath.row+1000*indexPath.section;
-                    [cell.data.videobutton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
-                    
-                }
-                if ([cell.data.videobutton.titleLabel.text isEqualToString:@"Downloading"]){
-                     cell.data.videobutton.tag = indexPath.row+1000*indexPath.section;
+                NSData *jsonData = [cell.data.jsonBody dataUsingEncoding:NSUTF8StringEncoding];
+                JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+                NSDictionary *json = [decoder objectWithData:jsonData];
+                NSString *fileId = [json objectForKey:@"id"];
+                ImageCache * imagecache = [ImageCache sharedObject];
+                BOOL isTheFileDownloading = [imagecache isFileDownloading:fileId];
+                if (isTheFileDownloading) {
                     [activityIndicatorView startAnimating];
+                    cell.data.videobutton.titleLabel.text =@"Downloading";
+                }else {
+                    if ([cell.data.videobutton.titleLabel.text isEqualToString:@"Download"]) {
+                        cell.data.videobutton.tag = indexPath.row+1000*indexPath.section;
+                        [cell.data.videobutton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
+                        
+                    }
+                    if ([cell.data.videobutton.titleLabel.text isEqualToString:@"Downloading"]){
+                        cell.data.videobutton.tag = indexPath.row+1000*indexPath.section;
+                        [activityIndicatorView startAnimating];
+                    }
+
                 }
-                
             }
         }
     }
@@ -420,8 +430,9 @@
     JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
     NSDictionary *json = [decoder objectWithData:jsonData];
     NSString *fileId = [json objectForKey:@"fileId"];
+    NSString *timeId = [json objectForKey:@"id"];
     ImageCache * cache = [ImageCache sharedObject];
-    [cache addDownloadingFile:fileId withTag:[NSNumber numberWithInt:button.tag]];
+    [cache addDownloadingFile:timeId withTag:[NSNumber numberWithInt:button.tag]];
     NSString *urlString = [STreamSession getFileObjectDownloadUrl:fileId];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -431,7 +442,7 @@
                                if ( !error )
                                {
                                    ImageCache * imagecache = [ImageCache sharedObject];
-                                   NSNumber * num = [imagecache getDownloadingFile:fileId];
+                                   NSNumber * num = [imagecache getDownloadingFile:timeId];
                                    NSInteger tag = [num integerValue];
                                    UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:tag];
                                    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+100];
@@ -483,7 +494,7 @@
                                    cell.data._videoPath = filepath;
                                    cell.data.jsonBody = jsonBody;
                                    [activityIndicatorView stopAnimating];
-//                                   [cache removeDownloadingFile:fileId];
+                                   [cache removeDownloadingFile:fileId];
                                } else{
                                }
                            }];

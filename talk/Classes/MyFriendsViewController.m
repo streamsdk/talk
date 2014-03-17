@@ -506,6 +506,7 @@
             NSString *type = [json objectForKey:@"type"];
             NSString *fromUser = [json objectForKey:@"from"];
             NSString * fileId = [json objectForKey:@"fileId"];
+            NSString * timeId = [json objectForKey:@"id"];
             NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
             NSString *duration = [json objectForKey:@"duration"];
             NSString * tidpath= [[handler getPath] stringByAppendingString:@".png"];
@@ -518,6 +519,7 @@
             [friendDict setObject:tidpath forKey:@"tidpath"];
             [friendDict setObject:fileId forKey:@"fileId"];
             [friendDict setObject:fromUser forKey:@"fromId"];
+            [friendDict setObject:timeId forKey:@"id"];
             [jsonDic setObject:friendDict forKey:fromUser];
 
             NSMutableDictionary * jsondict = [[NSMutableDictionary alloc]init];
@@ -527,6 +529,7 @@
                 [jsondict setObject:duration forKey:@"duration"];
             [jsondict setObject:fileId forKey:@"fileId"];
             [jsondict setObject:fromUser forKey:@"fromId"];
+            [jsondict setObject:timeId forKey:@"id"];
             NSString* jsBody = [jsondict JSONString];
             
             TalkDB * db = [[TalkDB alloc]init];
@@ -575,7 +578,7 @@
             path = photoPath;
             jsBody = body;
         }else if ([type isEqualToString:@"video"]){
-            
+            NSString * timeId = [json objectForKey:@"id"];
             NSString * tid = [json objectForKey:@"tid"];
             NSString * fileId = [json objectForKey:@"fileId"];
             NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
@@ -590,6 +593,7 @@
             [friendDict setObject:tid forKey:@"tid"];
             [friendDict setObject:fileId forKey:@"fileId"];
             [friendDict setObject:fromUser forKey:@"fromId"];
+            [friendDict setObject:timeId forKey:@"id"];
              [jsonDic setObject:friendDict forKey:fromUser];
             path = tidpath;
             
@@ -602,6 +606,7 @@
             [jsondict setObject:tid forKey:@"tid"];
             [jsondict setObject:fileId forKey:@"fileId"];
             [jsondict setObject:fromUser forKey:@"fromId"];
+            [jsondict setObject:timeId forKey:@"id"];
             jsBody = [jsondict JSONString];
         }else if ([type isEqualToString:@"voice"]){
             
