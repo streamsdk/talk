@@ -229,7 +229,7 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "416720862.291134"
+                  timestampString = "416738486.219603"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
@@ -243,7 +243,7 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "416720862.291489"
+                  timestampString = "416738486.219924"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
@@ -307,13 +307,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "talk/talkDB/DownloadDB.m"
-            timestampString = "416715165.127418"
+            filePath = "libs/UIBubbleTableView.m"
+            timestampString = "416734764.60854"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
-            landmarkName = "-deleteDownloadDBFromFileID:"
+            startingLineNumber = "453"
+            endingLineNumber = "453"
+            landmarkName = "-downloadvideo:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -323,29 +323,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ZXingObjC/qrcode/ZXQRCodeWriter.m"
-            timestampString = "416720469.199964"
+            filePath = "libs/UIBubbleTableView.m"
+            timestampString = "416736081.532972"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "91"
-            endingLineNumber = "91"
-            landmarkName = "-renderResult:width:height:quietZone:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ZXingObjC/qrcode/ZXQRCodeWriter.m"
-            timestampString = "416720617.606852"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
-            landmarkName = "-renderResult:width:height:quietZone:"
+            startingLineNumber = "431"
+            endingLineNumber = "431"
+            landmarkName = "-downloadvideo:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

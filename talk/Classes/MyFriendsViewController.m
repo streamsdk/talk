@@ -517,6 +517,7 @@
                 [friendDict setObject:duration forKey:@"duration"];
             [friendDict setObject:tidpath forKey:@"tidpath"];
             [friendDict setObject:fileId forKey:@"fileId"];
+            [friendDict setObject:fromUser forKey:@"fromId"];
             [jsonDic setObject:friendDict forKey:fromUser];
 
             NSMutableDictionary * jsondict = [[NSMutableDictionary alloc]init];
@@ -525,7 +526,7 @@
             if (duration)
                 [jsondict setObject:duration forKey:@"duration"];
             [jsondict setObject:fileId forKey:@"fileId"];
-
+            [jsondict setObject:fromUser forKey:@"fromId"];
             NSString* jsBody = [jsondict JSONString];
             
             TalkDB * db = [[TalkDB alloc]init];
@@ -588,6 +589,7 @@
             [friendDict setObject:tidpath forKey:@"tidpath"];
             [friendDict setObject:tid forKey:@"tid"];
             [friendDict setObject:fileId forKey:@"fileId"];
+            [friendDict setObject:fromUser forKey:@"fromId"];
              [jsonDic setObject:friendDict forKey:fromUser];
             path = tidpath;
             
@@ -599,6 +601,7 @@
                [jsondict setObject:duration forKey:@"duration"];
             [jsondict setObject:tid forKey:@"tid"];
             [jsondict setObject:fileId forKey:@"fileId"];
+            [jsondict setObject:fromUser forKey:@"fromId"];
             jsBody = [jsondict JSONString];
         }else if ([type isEqualToString:@"voice"]){
             

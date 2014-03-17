@@ -27,7 +27,6 @@
 {
     [super viewDidLoad];
 	self.title = @"My QRCode";
-//    [self.view setBackgroundColor:[UIColor colorWithHue:78/255 saturation:155/255 brightness:168/255 alpha:1.0]];
      UIImageView * imageview = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - 280)/2, 80,280, 280)];
     [self.view addSubview:imageview];
     NSString * text = @"对方只需要CoolChat的二维码阅读器扫瞄此二维码，便可以将您添加为好友。";

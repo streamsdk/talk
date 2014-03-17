@@ -23,4 +23,5 @@
 
 -(void) updateDB:(NSString *)userID withFriendID:(NSString *)friendID withStatus:(NSString *)status;
 
+-(NSString *) readFriendID:(NSString *)friendId;
 @end

@@ -450,7 +450,8 @@
                                    NSString *fileId = [json objectForKey:@"fileId"];
                                    NSString *tid = [json objectForKey:@"tid"];
 //                                   NSString * fromId = [download readDownloadDBFileID:[dateFormatter stringFromDate:date]];
-                                    NSString * fromId = [download readDownloadDBFromFileID:fileId];
+//                                    NSString * fromId1 = [download readDownloadDBFromFileID:fileId];
+                                   NSString * fromId =[json objectForKey:@"fromId"];
                                    NSString *duration = [json objectForKey:@"duration"];
 
                                    if (cell.data.fileType == FileDisappear){
@@ -482,7 +483,7 @@
                                    cell.data._videoPath = filepath;
                                    cell.data.jsonBody = jsonBody;
                                    [activityIndicatorView stopAnimating];
-                                   [cache removeDownloadingFile:fileId];
+//                                   [cache removeDownloadingFile:fileId];
                                } else{
                                }
                            }];

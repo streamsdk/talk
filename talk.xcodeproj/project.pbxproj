@@ -471,6 +471,8 @@
 		0E8A4F36182B7FE300705C1F /* TalkDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F35182B7FE300705C1F /* TalkDB.m */; };
 		0E8A4F38182B802600705C1F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8A4F37182B802600705C1F /* libsqlite3.dylib */; };
 		0E960BF818D69B6D00ECDB96 /* MyQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E960BF718D69B6D00ECDB96 /* MyQRCodeViewController.m */; };
+		0E960BFE18D6A9BE00ECDB96 /* ScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E960BFD18D6A9BE00ECDB96 /* ScannerViewController.m */; };
+		0E960C0118D6B17D00ECDB96 /* ScannerAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E960C0018D6B17D00ECDB96 /* ScannerAddViewController.m */; };
 		0E9B4B1118CD9F96007E56BB /* CopyDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9B4B1018CD9F96007E56BB /* CopyDB.m */; };
 		0EA16BF918516F28009F2D3A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16BF818516F28009F2D3A /* MBProgressHUD.m */; };
 		0EA16C0018516FC9009F2D3A /* MyFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */; };
@@ -1440,6 +1442,10 @@
 		0E8A4F37182B802600705C1F /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		0E960BF618D69B6D00ECDB96 /* MyQRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyQRCodeViewController.h; path = setVC/MyQRCodeViewController.h; sourceTree = "<group>"; };
 		0E960BF718D69B6D00ECDB96 /* MyQRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyQRCodeViewController.m; path = setVC/MyQRCodeViewController.m; sourceTree = "<group>"; };
+		0E960BFC18D6A9BE00ECDB96 /* ScannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScannerViewController.h; path = setVC/ScannerViewController.h; sourceTree = "<group>"; };
+		0E960BFD18D6A9BE00ECDB96 /* ScannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScannerViewController.m; path = setVC/ScannerViewController.m; sourceTree = "<group>"; };
+		0E960BFF18D6B17D00ECDB96 /* ScannerAddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScannerAddViewController.h; path = setVC/ScannerAddViewController.h; sourceTree = "<group>"; };
+		0E960C0018D6B17D00ECDB96 /* ScannerAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScannerAddViewController.m; path = setVC/ScannerAddViewController.m; sourceTree = "<group>"; };
 		0E9B4B0F18CD9F96007E56BB /* CopyDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CopyDB.h; path = talkDB/CopyDB.h; sourceTree = "<group>"; };
 		0E9B4B1018CD9F96007E56BB /* CopyDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CopyDB.m; path = talkDB/CopyDB.m; sourceTree = "<group>"; };
 		0EA16BF718516F28009F2D3A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = "Emoji-master/MBProgressHUD.h"; sourceTree = "<group>"; };
@@ -3577,6 +3583,10 @@
 				0EF79DFE18583ACF00EB8A64 /* SettingViewController.m */,
 				0E960BF618D69B6D00ECDB96 /* MyQRCodeViewController.h */,
 				0E960BF718D69B6D00ECDB96 /* MyQRCodeViewController.m */,
+				0E960BFC18D6A9BE00ECDB96 /* ScannerViewController.h */,
+				0E960BFD18D6A9BE00ECDB96 /* ScannerViewController.m */,
+				0E960BFF18D6B17D00ECDB96 /* ScannerAddViewController.h */,
+				0E960C0018D6B17D00ECDB96 /* ScannerAddViewController.m */,
 				0EEFAE4C1895295500F44745 /* TearmServiceViewController.h */,
 				0EEFAE4D1895295500F44745 /* TearmServiceViewController.m */,
 				0EEFAE4F1895299500F44745 /* PrivacyPoolicyViewController.h */,
@@ -3839,6 +3849,7 @@
 				0E891A8B18D2DF57006430FE /* ZXGeoResultParser.m in Sources */,
 				0E891AA718D2DF57006430FE /* ZXGenericGF.m in Sources */,
 				0E891ADA18D2DF57006430FE /* ZXAI01393xDecoder.m in Sources */,
+				0E960C0118D6B17D00ECDB96 /* ScannerAddViewController.m in Sources */,
 				0E891ACE18D2DF57006430FE /* ZXMaxiCodeDecodedBitStreamParser.m in Sources */,
 				0E891B2C18D2DF57006430FE /* ZXQRCodeDecodedBitStreamParser.m in Sources */,
 				03D9C0EE18145E510039118F /* DDXMLNode.m in Sources */,
@@ -3995,6 +4006,7 @@
 				0E891AFC18D2DF57006430FE /* ZXEAN8Reader.m in Sources */,
 				03D9C0B818145E480039118F /* XMPPIDTracker.m in Sources */,
 				0E891AB618D2DF57006430FE /* ZXPerspectiveTransform.m in Sources */,
+				0E960BFE18D6A9BE00ECDB96 /* ScannerViewController.m in Sources */,
 				03D9BF5F18145E2F0039118F /* NSXMLElement+XMPP.m in Sources */,
 				03D9C0B918145E480039118F /* XMPPSRVResolver.m in Sources */,
 				03D9C07E18145E410039118F /* XMPPvCardTempBase.m in Sources */,

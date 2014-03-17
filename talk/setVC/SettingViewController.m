@@ -22,6 +22,7 @@
 #import "STreamXMPP.h"
 #import "DownloadAvatar.h"
 #import "MyQRCodeViewController.h"
+#import "ScannerViewController.h"
 
 #define IMAGE_TAG 10000
 @interface SettingViewController ()<MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate>
@@ -88,7 +89,7 @@
     [self.view setBackgroundColor:[UIColor lightGrayColor]];
 
 	// Do any additional setup after loading the view.
-    
+//    self.navigationController.navigationItem.hidesBackButton = YES;
     isaAatarImg = NO;
     
     /*UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveClicked)];
@@ -101,7 +102,7 @@
     if (!email) {
         email = @"";
     }
-    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"Email",email,@"My QRCode",@"Scan QRCode",@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
+    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"Email",email,@"My QRCode",@"Scanner QRCode",@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
     myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height-30) style:UITableViewStyleGrouped];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
@@ -282,7 +283,14 @@
         case 1:{
             if (indexPath.row == 0) {
                 MyQRCodeViewController *myQRCodeView = [[MyQRCodeViewController alloc]init];
-                [self.navigationController pushViewController:myQRCodeView animated:YES];
+                [self.navigationController pushViewController:myQRCodeView animated:NO];
+                
+            }
+            if (indexPath.row == 1) {
+                ScannerViewController *scannerView = [[ScannerViewController alloc]init];
+//                scannerView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+//                [self presentViewController:scannerView animated:NO completion:nil];
+                [self.navigationController pushViewController:scannerView animated:NO];
                 
             }
         }
