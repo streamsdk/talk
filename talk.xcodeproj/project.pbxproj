@@ -470,6 +470,7 @@
 		0E8A4F33182B7F8000705C1F /* CreateUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F32182B7F8000705C1F /* CreateUI.m */; };
 		0E8A4F36182B7FE300705C1F /* TalkDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F35182B7FE300705C1F /* TalkDB.m */; };
 		0E8A4F38182B802600705C1F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8A4F37182B802600705C1F /* libsqlite3.dylib */; };
+		0E960BF818D69B6D00ECDB96 /* MyQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E960BF718D69B6D00ECDB96 /* MyQRCodeViewController.m */; };
 		0E9B4B1118CD9F96007E56BB /* CopyDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9B4B1018CD9F96007E56BB /* CopyDB.m */; };
 		0EA16BF918516F28009F2D3A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16BF818516F28009F2D3A /* MBProgressHUD.m */; };
 		0EA16C0018516FC9009F2D3A /* MyFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA16BFF18516FC9009F2D3A /* MyFriendsViewController.m */; };
@@ -1437,6 +1438,8 @@
 		0E8A4F34182B7FE300705C1F /* TalkDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TalkDB.h; path = talkDB/TalkDB.h; sourceTree = "<group>"; };
 		0E8A4F35182B7FE300705C1F /* TalkDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TalkDB.m; path = talkDB/TalkDB.m; sourceTree = "<group>"; };
 		0E8A4F37182B802600705C1F /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		0E960BF618D69B6D00ECDB96 /* MyQRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyQRCodeViewController.h; path = setVC/MyQRCodeViewController.h; sourceTree = "<group>"; };
+		0E960BF718D69B6D00ECDB96 /* MyQRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyQRCodeViewController.m; path = setVC/MyQRCodeViewController.m; sourceTree = "<group>"; };
 		0E9B4B0F18CD9F96007E56BB /* CopyDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CopyDB.h; path = talkDB/CopyDB.h; sourceTree = "<group>"; };
 		0E9B4B1018CD9F96007E56BB /* CopyDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CopyDB.m; path = talkDB/CopyDB.m; sourceTree = "<group>"; };
 		0EA16BF718516F28009F2D3A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = "Emoji-master/MBProgressHUD.h"; sourceTree = "<group>"; };
@@ -3572,6 +3575,8 @@
 				0EE9518C185EA40D003F4638 /* BackgroundImgViewController.m */,
 				0EF79DFD18583ACF00EB8A64 /* SettingViewController.h */,
 				0EF79DFE18583ACF00EB8A64 /* SettingViewController.m */,
+				0E960BF618D69B6D00ECDB96 /* MyQRCodeViewController.h */,
+				0E960BF718D69B6D00ECDB96 /* MyQRCodeViewController.m */,
 				0EEFAE4C1895295500F44745 /* TearmServiceViewController.h */,
 				0EEFAE4D1895295500F44745 /* TearmServiceViewController.m */,
 				0EEFAE4F1895299500F44745 /* PrivacyPoolicyViewController.h */,
@@ -3938,6 +3943,7 @@
 				0E891AA518D2DF57006430FE /* ZXMonochromeRectangleDetector.m in Sources */,
 				44A80EAF183129E2006069DE /* EmojiPictographs.m in Sources */,
 				0E891AAE18D2DF57006430FE /* ZXCharacterSetECI.m in Sources */,
+				0E960BF818D69B6D00ECDB96 /* MyQRCodeViewController.m in Sources */,
 				03D9C08218145E410039118F /* XMPPvCardTempTel.m in Sources */,
 				03D9C08518145E410039118F /* XMPPIQ+XEP_0060.m in Sources */,
 				03D9C0E718145E510039118F /* DDTTYLogger.m in Sources */,

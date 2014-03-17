@@ -21,6 +21,7 @@
 #import<MessageUI/MFMailComposeViewController.h>
 #import "STreamXMPP.h"
 #import "DownloadAvatar.h"
+#import "MyQRCodeViewController.h"
 
 #define IMAGE_TAG 10000
 @interface SettingViewController ()<MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate>
@@ -100,7 +101,7 @@
     if (!email) {
         email = @"";
     }
-    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"Email",email,@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
+    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"Email",email,@"My QRCode",@"Scan QRCode",@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
     myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height-30) style:UITableViewStyleGrouped];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
@@ -132,7 +133,7 @@
     [myTableView reloadData];
 }
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
-    return 4;
+    return 5;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
@@ -147,9 +148,12 @@
             return 2;
             break;
         case 3:
-            return 1;
+            return 2;
             break;
         case 4:
+            return 1;
+            break;
+        case 5:
             return 1;
             break;
         default:
@@ -165,9 +169,12 @@
            head = @"Basic user info";
             break;
         case 1:
-            head = @"Invite to CoolChat";
+            head = @"QR Code";
             break;
         case 2:
+            head = @"Invite to CoolChat";
+            break;
+        case 3:
             head = @"About";
             break;
         default:
@@ -231,6 +238,10 @@
         
         cell .textLabel.text = [userData objectAtIndex:indexPath.row+6];
     }else if(indexPath.section==3){
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        cell .textLabel.text = [userData objectAtIndex:indexPath.row+8];
+    }else if(indexPath.section==4){
         
         cell.backgroundColor = [UIColor redColor];
         UIButton * logOut = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -270,6 +281,15 @@
             break;
         case 1:{
             if (indexPath.row == 0) {
+                MyQRCodeViewController *myQRCodeView = [[MyQRCodeViewController alloc]init];
+                [self.navigationController pushViewController:myQRCodeView animated:YES];
+                
+            }
+        }
+            break;
+            
+        case 2:{
+            if (indexPath.row == 0) {
                 
                 Class messageClass = (NSClassFromString(@"MFMessageComposeViewController"));
                 
@@ -296,7 +316,7 @@
         }
             break;
 
-        case 2:{
+        case 3:{
           if (indexPath.row == 0) {
                 TearmServiceViewController * tearm = [[TearmServiceViewController alloc]init];
                 [self.navigationController pushViewController:tearm animated:YES];
