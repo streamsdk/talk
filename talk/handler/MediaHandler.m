@@ -81,7 +81,7 @@
             [con sendFileMessage:f.userId withFileId:[sf fileId] withMessage:bodyJsonData];
 //            [db readContentCopyDB:[dateFormatter stringFromDate:f.date]];    
         }
-        
+        [cache removeFileUpload:f];
         NSMutableArray * fileArray = [cache getFileUpload];
         if (fileArray != nil && [fileArray count] != 0) {
             [self doFileUpload:fileArray];
@@ -106,7 +106,7 @@
             progressView.hidden = YES;
             label.hidden = YES;
             [activityIndicatorView stopAnimating];
-            [cache removeFileUpload:f];
+            
         }
         
        // NSLog(@"byteSent:%f", bytes);

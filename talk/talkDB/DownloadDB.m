@@ -128,20 +128,27 @@
         NSAssert(0, @"Failed to open database");
     }
     //    select distinct * from ADDFRIENDS
-    NSMutableArray * array = [self readFileID:fileID withDB:database];
-    
-    if ([array count]!=0 && array) {
-        NSString * sql = [NSString stringWithFormat:@"DELETE FROM DOWNLOAD WHERE ROW='%@'",[array objectAtIndex:0]];
-        sqlite3_stmt *statement;
-        if (sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, nil) == SQLITE_OK) {
-            
-            NSLog(@"delete");
-        }
-        sqlite3_step(statement);
-        sqlite3_finalize(statement);
-
+//    NSMutableArray * array = [self readFileID:fileID withDB:database];
+//    
+//    if ([array count]!=0 && array) {
+//        NSString * sql = [NSString stringWithFormat:@"DELETE FROM DOWNLOAD WHERE ROW='%@'",[array objectAtIndex:0]];
+//        sqlite3_stmt *statement;
+//        if (sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, nil) == SQLITE_OK) {
+//            
+//            NSLog(@"delete");
+//        }
+//        
+//
+//    }
+    NSString * sql = [NSString stringWithFormat:@"DELETE FROM DOWNLOAD WHERE FILEID='%@'",fileID];
+    sqlite3_stmt *statement;
+    if (sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, nil) == SQLITE_OK) {
+        
+        NSLog(@"delete");
     }
-    
+
+    sqlite3_step(statement);
+    sqlite3_finalize(statement);
     sqlite3_close(database);
 }
 
