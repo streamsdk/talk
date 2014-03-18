@@ -584,7 +584,7 @@
             NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
             NSString *duration = [json objectForKey:@"duration"];
             NSString * tidpath= [[handler getPath] stringByAppendingString:@".png"];
-            [data writeToFile : tidpath atomically: YES ];
+            [data writeToFile:tidpath atomically:YES];
             [handler videoPath:tidpath];
             
             if (duration)

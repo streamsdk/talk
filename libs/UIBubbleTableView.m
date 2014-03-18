@@ -344,7 +344,7 @@
             
         }
         if (cell.data.fileType == FileDisappear){
-            if (![cell.data._videoPath hasPrefix:@".mp4"]) {
+            if (![cell.data._videoPath hasPrefix:@".mp4"] && cell.data._videoPath) {
                 UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]init];
                 [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
                 activityIndicatorView.frame = CGRectMake(268, cell.frame.size.height-15, 20, 20);
