@@ -81,9 +81,13 @@
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
 }
-
+-(void)back{
+    [[[[[UIApplication sharedApplication]delegate] window]rootViewController]dismissViewControllerAnimated:NO completion:NULL];
+}
 -(void)addFriends {
-    NSString * str = [NSString stringWithFormat:@"Do you want to add %@ as a friend?",name];
+    NSString * str;
+    if (status)     str = [NSString stringWithFormat:@"Do you want to add %@ as a friend?",name];
+    else str =[NSString stringWithFormat:@"Are you sure the invitation sent to %@?",name];
     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"YES", nil];
     alert.delegate = self;
     [alert show];
@@ -119,8 +123,7 @@
         [con sendMessage:name withMessage:jsonSent];
         
     }completionBlock:^{
-//        [self dismissViewControllerAnimated:NO completion:NULL];
-        [self backSetView];
+        [[[[[UIApplication sharedApplication]delegate] window]rootViewController]dismissViewControllerAnimated:NO completion:NULL];
         [HUD removeFromSuperview];
         HUD = nil;
     }];
@@ -157,13 +160,9 @@
     [jsonDic setObject:name forKey:@"friendname"];
     NSString *jsonSent = [jsonDic JSONString];
     [con sendMessage:name withMessage:jsonSent];
-//    [self dismissViewControllerAnimated:NO completion:nil];
-    [self backSetView];
+    [[[[[UIApplication sharedApplication]delegate] window]rootViewController]dismissViewControllerAnimated:NO completion:NULL];
 }
--(void)backSetView{
-    SettingViewController * setView = [[SettingViewController alloc]init];
-    [self.navigationController pushViewController:setView animated:NO];
-}
+
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex==1) {
         if ([status isEqualToString:@"request"]) {

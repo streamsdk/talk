@@ -288,9 +288,8 @@
             }
             if (indexPath.row == 1) {
                 ScannerViewController *scannerView = [[ScannerViewController alloc]init];
-//                scannerView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-//                [self presentViewController:scannerView animated:NO completion:nil];
-                [self.navigationController pushViewController:scannerView animated:NO];
+                [[[[[UIApplication sharedApplication]delegate]window]rootViewController]presentViewController:scannerView animated:NO completion:NULL];
+//                [self.navigationController pushViewController:scannerView animated:NO];
                 
             }
         }

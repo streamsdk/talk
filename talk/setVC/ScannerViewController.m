@@ -11,8 +11,13 @@
 #import <AVFoundation/AVFoundation.h>
 #import "ScannerAddViewController.h"
 #import "AddDB.h"
+#import "ZXResult.h"
+#import "SettingViewController.h"
+#import <arcstreamsdk/STreamUser.h>
 @interface ScannerViewController ()
-
+{
+    UIAlertView * alert;
+}
 @property (nonatomic, strong) ZXCapture *capture;
 
 @end
@@ -55,10 +60,10 @@
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
     
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:backButton];
+    [self.view addSubview:backButton];
 }
 -(void)back{
-    [self dismissViewControllerAnimated:NO completion:NULL];
+    [[[[[UIApplication sharedApplication]delegate]window]rootViewController]dismissViewControllerAnimated:NO completion:NULL];
 }
 - (void)displayForResult:(ZXResult*)result {
     NSString *formatString;
@@ -143,27 +148,34 @@
     NSString *status =[add readFriendID:name];
     ScannerAddViewController * addView = [[ScannerAddViewController alloc]init];
     if([status isEqualToString:@"friend"]){
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You are already friends！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You are already friends！" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+        [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(performDismiss:) userInfo:nil repeats:NO];
         [alert show];
     }else{
+        STreamUser *user =[[STreamUser alloc]init];
+        if (![user searchUser:name]) return;
         [addView setName:name];
         [addView setStatus:status];
-//        addView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-//        [self presentViewController:addView animated:YES completion:nil];
-        [self.navigationController pushViewController:addView animated:NO];
+        [[[[[UIApplication sharedApplication]delegate] window] rootViewController]  presentViewController:addView animated:NO completion:NULL];
     }
-    
  
+}
+-(void) performDismiss:(NSTimer *)timer
+{
+    [alert dismissWithClickedButtonIndex:0 animated:NO];
 }
 #pragma mark - ZXCaptureDelegate Methods
 
 - (void)captureResult:(ZXCapture*)capture result:(ZXResult*)result {
-    if (result) {
-        
-        [self displayForResult:result];
-        // Vibrate
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-    }
+     [[[[[UIApplication sharedApplication]delegate]window]rootViewController]dismissViewControllerAnimated:NO completion:^{
+         if (result) {
+             
+             [self displayForResult:result];
+             // Vibrate
+             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+         }
+     }];
+    
 }
 
 - (void)captureSize:(ZXCapture*)capture width:(NSNumber*)width height:(NSNumber*)height {

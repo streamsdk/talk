@@ -7,7 +7,8 @@
 //
 
 #import "MyQRCodeViewController.h"
-
+#import "ZXMultiFormatWriter.h"
+#import "ZXImage.h"
 @interface MyQRCodeViewController ()
 
 @end
@@ -32,7 +33,7 @@
     NSString * text = @"对方只需要CoolChat的二维码阅读器扫瞄此二维码，便可以将您添加为好友。";
     UIFont *font = [UIFont systemFontOfSize:12.0f];
     CGSize size = [(text ? text : @"") boundingRectWithSize:CGSizeMake(280, 9999) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil].size;
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 360, size.width, size.height)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(30, 360, size.width, size.height)];
     label.numberOfLines = 0;
     label.font = font;
     label.lineBreakMode = NSLineBreakByWordWrapping;
