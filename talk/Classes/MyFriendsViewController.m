@@ -511,10 +511,11 @@
             NSString *type = [json objectForKey:@"type"];
             NSString *fromUser = [json objectForKey:@"from"];
             NSString * fileId = [json objectForKey:@"fileId"];
+            NSString * timeId = [json objectForKey:@"id"];
             NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
             NSString *duration = [json objectForKey:@"duration"];
             NSString * tidpath= [[handler getPath] stringByAppendingString:@".png"];
-            NSData *data ;
+            NSData *data =[[NSData alloc]init];
             [data writeToFile:tidpath atomically:YES];
             [handler videoPath:tidpath];
             
@@ -522,6 +523,8 @@
                 [friendDict setObject:duration forKey:@"duration"];
             [friendDict setObject:tidpath forKey:@"tidpath"];
             [friendDict setObject:fileId forKey:@"fileId"];
+            [friendDict setObject:fromUser forKey:@"fromId"];
+            [friendDict setObject:timeId forKey:@"id"];
             [jsonDic setObject:friendDict forKey:fromUser];
 
             NSMutableDictionary * jsondict = [[NSMutableDictionary alloc]init];
@@ -530,7 +533,8 @@
             if (duration)
                 [jsondict setObject:duration forKey:@"duration"];
             [jsondict setObject:fileId forKey:@"fileId"];
-
+            [jsondict setObject:fromUser forKey:@"fromId"];
+            [jsondict setObject:timeId forKey:@"id"];
             NSString* jsBody = [jsondict JSONString];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
@@ -578,13 +582,13 @@
             path = photoPath;
             jsBody = body;
         }else if ([type isEqualToString:@"video"]){
-            
+            NSString * timeId = [json objectForKey:@"id"];
             NSString * tid = [json objectForKey:@"tid"];
             NSString * fileId = [json objectForKey:@"fileId"];
             NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
             NSString *duration = [json objectForKey:@"duration"];
             NSString * tidpath= [[handler getPath] stringByAppendingString:@".png"];
-            [data writeToFile : tidpath atomically: YES ];
+            [data writeToFile:tidpath atomically:YES];
             [handler videoPath:tidpath];
             
             if (duration)
@@ -592,6 +596,8 @@
             [friendDict setObject:tidpath forKey:@"tidpath"];
             [friendDict setObject:tid forKey:@"tid"];
             [friendDict setObject:fileId forKey:@"fileId"];
+            [friendDict setObject:fromUser forKey:@"fromId"];
+            [friendDict setObject:timeId forKey:@"id"];
              [jsonDic setObject:friendDict forKey:fromUser];
             path = tidpath;
             
@@ -603,6 +609,8 @@
                [jsondict setObject:duration forKey:@"duration"];
             [jsondict setObject:tid forKey:@"tid"];
             [jsondict setObject:fileId forKey:@"fileId"];
+            [jsondict setObject:fromUser forKey:@"fromId"];
+            [jsondict setObject:timeId forKey:@"id"];
             jsBody = [jsondict JSONString];
         }else if ([type isEqualToString:@"voice"]){
             

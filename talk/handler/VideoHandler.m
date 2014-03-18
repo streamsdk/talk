@@ -98,7 +98,12 @@
         HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
         
         _mp4Path = [[handler getPath] stringByAppendingString:@".mp4"];
-        
+        date = [NSDate dateWithTimeIntervalSinceNow:0];
+        MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:videoPath];
+        player.shouldAutoplay = NO;
+        //        NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
+        UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+        img = fileImage;
         exportSession.outputURL = [NSURL fileURLWithPath: _mp4Path];
         exportSession.outputFileType = AVFileTypeMPEG4;
         
@@ -129,12 +134,7 @@
                     break;
             }
         }];
-        date = [NSDate dateWithTimeIntervalSinceNow:0];
-        MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:videoPath];
-        player.shouldAutoplay = NO;
-//        NSData *videoData = [NSData dataWithContentsOfFile:_mp4Path];
-        UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-        img = fileImage;
+       
         NSBubbleData * bdata = [NSBubbleData dataWithImage:fileImage withTime:_time withType:@"video" date:date type:BubbleTypeMine withVidePath:_mp4Path withJsonBody:@""];
         if (_myData)
             bdata.avatar = [UIImage imageWithData:_myData];
