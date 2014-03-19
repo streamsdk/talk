@@ -502,7 +502,7 @@
         [imageCache saveUserMetadata:[handle getUserID] withMetadata:userMetadata];
         STreamUser *user = [[STreamUser alloc]init];
         [user updateUserMetadata:[handle getUserID] withMetadata:userMetadata];
-        userData = [[NSMutableArray alloc]initWithObjects:@"UserName",[handle getUserID],@"Email",email,@"Terms of Service",@"Privacy Policy",@"About",@"Log Out", nil];
+        userData = [[NSMutableArray alloc]initWithObjects:@"UserName",[handle getUserID],@"Email",email,@"My QRCode",@"Scanner QRCode",@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
     }
     [textField setText:@""];
     [textField setEnabled:NO];

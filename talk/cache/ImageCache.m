@@ -203,7 +203,10 @@ static NSLock *_theLock;
 }
 
 -(void) saveRaedCount:(NSNumber *)count withuserID:(NSString *)userId{
-    [_countDict setObject:count forKey:userId];
+    if (userId) {
+        [_countDict setObject:count forKey:userId];
+    }
+    
 }
 
 -(NSInteger)getReadCount:(NSString *)userId{
