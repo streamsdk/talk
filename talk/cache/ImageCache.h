@@ -14,8 +14,6 @@
 
 +(ImageCache *)sharedObject;
 
--(UIImage *)getVideoImage:(NSString *)videoPath;
-
 -(NSLock *)getLock;
 
 -(void)selfImageDownload:(NSData *)file withFileId:(NSString *)fileId;
