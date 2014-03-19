@@ -554,8 +554,12 @@
 {
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSString *sendToID = [imageCache getFriendID];
+    TalkDB * talk = [[TalkDB alloc]init];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString * name =[userDefaults objectForKey:@"username"];
+    NSInteger allCount = [talk allDataCount:name withOtherID:sendToID];
     int count = [imageCache getReadCount:sendToID];
-    if (count>=10) {
+    if (count>=10 && allCount > count) {
         if(!_reloading && scrollView.contentOffset.y < 20)
         {
             [self loadDataBegin];
@@ -570,11 +574,14 @@
     if (_reloading == NO)
     {
         _reloading = YES;
-        UIActivityIndicatorView *tableFooterActivityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
-        [tableFooterActivityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-        activity = tableFooterActivityIndicator;
+        if (!activity) {
+            UIActivityIndicatorView *tableFooterActivityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
+            [tableFooterActivityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+            activity = tableFooterActivityIndicator;
+            
+            self.tableHeaderView = activity;
+        }
         [activity startAnimating];
-        self.tableHeaderView = activity;
         [self loadDataing];
     }
 }
@@ -582,7 +589,8 @@
 // 加载数据中
 - (void) loadDataing
 {
-    [self performSelector:@selector(loadDataEnd) withObject:nil afterDelay:1.0];
+    [self performSelectorInBackground:@selector(loadDataEnd) withObject:nil];
+//    [self performSelector:@selector(loadDataEnd) withObject:nil afterDelay:1.0];
 }
 
 // 加载数据完毕

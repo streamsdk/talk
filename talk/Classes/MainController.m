@@ -313,7 +313,7 @@
     [_deleteBackview addSubview:_cancelButton];
     [_deleteBackview addSubview:_deleteButton];
     [bubbleTableView reloadData];
-    
+    self.automaticallyAdjustsScrollViewInsets = NO;
 }
 -(void)cancel {
     NSLog(@"cancel");
@@ -370,7 +370,10 @@
     for (NSBubbleData * data in bubbleData) {
         data.delegate = self;
     }
+    CGFloat formerHeight = bubbleTableView.contentSize.height;
     [bubbleTableView reloadData];
+    CGFloat newHeight = bubbleTableView.contentSize.height;
+    [bubbleTableView setContentOffset:CGPointMake(0, newHeight-formerHeight)];
 }
 -(void)getFiles:(NSData *)data withFromID:(NSString *)fromID withBody:(NSString *)body withPath:(NSString *)path{
     

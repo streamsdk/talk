@@ -27,4 +27,6 @@
 
 -(NSString *) readDB:(NSDate *)date;
 
+-(NSInteger)allDataCount:(NSString *) _userID withOtherID:(NSString *)_friendID;
+
 @end

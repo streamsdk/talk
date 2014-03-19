@@ -83,13 +83,7 @@
         sqlite3_close(database);
         NSAssert(0, @"Failed to open database");
     }
-   /* sqlite3_stmt * st;
-    NSString * str =@"select count(*) from FILEID";
-    if (sqlite3_prepare_v2(database, [str UTF8String], -1, &st, nil) == SQLITE_OK) {
-        
-        NSLog(@"");
-    }
-    NSString * sqlQuery =@"SELECT * FROM FILEID ORDER BY TIME DESC LIMIT 10 OFFSET 10";*/
+
     NSString * sqlQuery = [NSString stringWithFormat:@"SELECT * FROM FILEID WHERE USERID='%@' and FROMID='%@' ORDER BY TIME DESC LIMIT %d OFFSET 0",_userID,_friendID,count];
 //    NSString *sqlQuery = @"SELECT * FROM FILEID";
     sqlite3_stmt * statement;
@@ -122,12 +116,13 @@
                                 data.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:data];
                         }else if ([key isEqualToString:@"filepath"]) {
-                            NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"filepath"]];
-                             NSString * time = [chatDic objectForKey:@"duration"];
+                           /* NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"filepath"]];
                             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
                             player.shouldAutoplay = NO;
                             UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-//                            NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"video"]];;
+                            NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"video"]];;*/
+                            UIImage *fileImage = [self getVideoImage:[chatDic objectForKey:@"filepath"]];
+                             NSString * time = [chatDic objectForKey:@"duration"];
                             NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withTime:time withType:@"video" date:date type:BubbleTypeMine withVidePath:[chatDic objectForKey:@"filepath"] withJsonBody:@""];
                             if(myData)
                                 bdata.avatar = [UIImage imageWithData:myData];
@@ -179,12 +174,13 @@
                                 bdata.avatar = [UIImage imageWithData:otherData];
                             [dataArray addObject:bdata];
                         }if ([key isEqualToString:@"filepath"]) {
-                            NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"filepath"]];
+                           /* NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"filepath"]];
                             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
                             player.shouldAutoplay = NO;
                             UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-//                            NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"filepath"]];;
-//                            UIImage *fileImage = [UIImage imageWithData:data];
+                            NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"filepath"]];;
+                            UIImage *fileImage = [UIImage imageWithData:data];*/
+                            UIImage *fileImage = [self getVideoImage:[chatDic objectForKey:@"filepath"]];
                             NSString * time = [chatDic objectForKey:@"duration"];
                             NSString * body = [chatDic JSONString];
                             NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withTime:time  withType:@"video" date:date type:BubbleTypeSomeoneElse withVidePath:[chatDic objectForKey:@"filepath"] withJsonBody:body];
@@ -314,6 +310,48 @@
         }
     }
     return content;
+    
+}
+-(NSInteger)allDataCount:(NSString *) _userID withOtherID:(NSString *)_friendID{
+    NSInteger  count=0;
+    sqlite3 *database;
+    if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
+        sqlite3_close(database);
+        NSAssert(0, @"Failed to open database");
+    }
+    NSString * sqlQuery = @"SELECT USERID,FROMID FROM FILEID";
+    sqlite3_stmt * statement;
+    
+    if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
+        while (sqlite3_step(statement) == SQLITE_ROW) {
+            char *userId = (char*)sqlite3_column_text(statement, 0);
+            char *friendId =(char*) sqlite3_column_text(statement, 1);
+            NSString * userID = [[NSString alloc]initWithUTF8String:userId];
+            NSString *friendID = [[NSString alloc]initWithUTF8String:friendId];
+            if ([userID isEqualToString:_userID]&&[friendID isEqualToString:_friendID]) {
+                count=count+1;
+            }
+            
+        }
+    }
+    sqlite3_step(statement);
+    sqlite3_finalize(statement);
+    sqlite3_close(database);
+    return count;
+    
+}
+-(UIImage *)getVideoImage:(NSString *)videoPath
+{
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:videoPath] options:nil];
+    AVAssetImageGenerator *gen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+    gen.appliesPreferredTrackTransform = YES;
+    CMTime time = CMTimeMakeWithSeconds(0.0, 600);
+    NSError *error = nil;
+    CMTime actualTime;
+    CGImageRef image = [gen copyCGImageAtTime:time actualTime:&actualTime error:&error];
+    UIImage *thumb = [[UIImage alloc] initWithCGImage:image];
+    CGImageRelease(image);
+    return thumb;
     
 }
 -(NSString*)getCacheDirectory
