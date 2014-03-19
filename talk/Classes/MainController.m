@@ -315,7 +315,7 @@
     [_deleteBackview addSubview:_cancelButton];
     [_deleteBackview addSubview:_deleteButton];
     [bubbleTableView reloadData];
-    
+    self.automaticallyAdjustsScrollViewInsets = NO;
 }
 -(void)cancel {
     NSLog(@"cancel");

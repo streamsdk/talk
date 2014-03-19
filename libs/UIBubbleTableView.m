@@ -559,7 +559,7 @@
     NSString *sendToID = [imageCache getFriendID];
     int count = [imageCache getReadCount:sendToID];
     if (count>=10) {
-        if(!_reloading && scrollView.contentOffset.y < 20)
+        if(!_reloading && scrollView.contentOffset.y < 0)
         {
             [self loadDataBegin];
         }
