@@ -316,6 +316,34 @@
     return content;
     
 }
+-(NSInteger)allDataCount:(NSString *) _userID withOtherID:(NSString *)_friendID{
+    NSInteger  count=0;
+    sqlite3 *database;
+    if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
+        sqlite3_close(database);
+        NSAssert(0, @"Failed to open database");
+    }
+    NSString * sqlQuery = @"SELECT USERID,FROMID FROM FILEID";
+    sqlite3_stmt * statement;
+    
+    if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
+        while (sqlite3_step(statement) == SQLITE_ROW) {
+            char *userId = (char*)sqlite3_column_text(statement, 0);
+            char *friendId =(char*) sqlite3_column_text(statement, 1);
+            NSString * userID = [[NSString alloc]initWithUTF8String:userId];
+            NSString *friendID = [[NSString alloc]initWithUTF8String:friendId];
+            if ([userID isEqualToString:_userID]&&[friendID isEqualToString:_friendID]) {
+                count=count+1;
+            }
+            
+        }
+    }
+    sqlite3_step(statement);
+    sqlite3_finalize(statement);
+    sqlite3_close(database);
+    return count;
+
+}
 -(NSString*)getCacheDirectory
 {
     return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
