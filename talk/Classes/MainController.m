@@ -276,7 +276,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
      [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(refreshTable) name:@"send" object:nil];
-    
+    //dismissKeyboard
+    [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(dismissKeyBoard) name:@"dismissKeyboard" object:nil];
     //handler
     photoHandler = [[PhotoHandler alloc] init];
     

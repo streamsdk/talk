@@ -134,5 +134,5 @@
         [cHandler sendPhoto:image withdate:APPDELEGATE.date forBubbleDataArray:APPDELEGATE.array forBubbleMyData:myData withFileType:type];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"send" object:nil];
     }
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissKeyboard" object:nil];
 }@end
