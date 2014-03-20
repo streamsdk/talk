@@ -733,7 +733,7 @@
     [my addStaff:@"status" withObject:@"request"];
     [my updateInBackground];
     
-    [_button setBackgroundImage:[UIImage imageNamed:@"invitation.png"] forState:UIControlStateNormal];
+    [_button setBackgroundImage:[UIImage imageNamed:@"invi.png"] forState:UIControlStateNormal];
 
     SearchDB * db = [[SearchDB alloc]init];
 //    [myTableview reloadData];
