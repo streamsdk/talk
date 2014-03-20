@@ -229,12 +229,12 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "416990957.463719"
+                  timestampString = "417007281.670498"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
                   endingLineNumber = "1119"
-                  offsetFromSymbolStart = "430">
+                  offsetFromSymbolStart = "480">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -243,12 +243,12 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "416990957.463926"
+                  timestampString = "417007281.670785"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
                   endingLineNumber = "1119"
-                  offsetFromSymbolStart = "496">
+                  offsetFromSymbolStart = "650">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -355,12 +355,12 @@
                   symbolName = "-[ScannerViewController captureResult:result:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/talk/setVC/ScannerViewController.m"
-                  timestampString = "416990957.465092"
+                  timestampString = "417007281.672373"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "170"
                   endingLineNumber = "170"
-                  offsetFromSymbolStart = "86">
+                  offsetFromSymbolStart = "89">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -369,12 +369,12 @@
                   symbolName = "__46-[ScannerViewController captureResult:result:]_block_invoke"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/talk/setVC/ScannerViewController.m"
-                  timestampString = "416990957.465296"
+                  timestampString = "417007281.672616"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "170"
                   endingLineNumber = "170"
-                  offsetFromSymbolStart = "14">
+                  offsetFromSymbolStart = "21">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -402,11 +402,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "talk/Classes/MainController.m"
-            timestampString = "416987585.457391"
+            timestampString = "417004074.839884"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1295"
-            endingLineNumber = "1295"
+            startingLineNumber = "1296"
+            endingLineNumber = "1296"
             landmarkName = "-refreshTable"
             landmarkType = "5">
          </BreakpointContent>
@@ -418,11 +418,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "libs/UIBubbleTableView.m"
-            timestampString = "416990876.383833"
+            timestampString = "416992517.120028"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "531"
-            endingLineNumber = "531"
+            startingLineNumber = "528"
+            endingLineNumber = "528"
             landmarkName = "-downloadvideo:"
             landmarkType = "5">
          </BreakpointContent>
@@ -434,11 +434,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "libs/UIBubbleTableView.m"
-            timestampString = "416990876.383833"
+            timestampString = "416992517.120028"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "496"
-            endingLineNumber = "496"
+            startingLineNumber = "493"
+            endingLineNumber = "493"
+            landmarkName = "-downloadvideo:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "libs/UIBubbleTableView.m"
+            timestampString = "417002250.214913"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "498"
+            endingLineNumber = "498"
             landmarkName = "-downloadvideo:"
             landmarkType = "5">
          </BreakpointContent>

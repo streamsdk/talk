@@ -607,7 +607,7 @@
 
 #pragma MARK Icon button 表情事件
 -(void) disIconKeyboard {
-    [self dismissKeyBoard];
+//    [self dismissKeyBoard];
     
     //如果直接点击，通过toolbar的位置来判断
     if (toolBar.frame.origin.y== self.view.bounds.size.height - toolBarHeight&&toolBar.frame.size.height==toolBarHeight) {
@@ -617,10 +617,11 @@
             tableView.frame = CGRectMake(0.0f, 64.0f, self.view.frame.size.width,(float)(self.view.frame.size.height-ICONHEIGHT-40.0-64));
             
         }];
-        [self scrollBubbleViewToBottomAnimated:YES];
+        
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-ICONHEIGHT,self.view.frame.size.width, ICONHEIGHT)];
         }];
+        [self scrollBubbleViewToBottomAnimated:YES];
          return;
     }
     //如果键盘没有显示

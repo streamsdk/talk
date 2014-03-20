@@ -141,27 +141,29 @@
             break;
             
         case FriendsHistory:{
-            HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-            SearchDB * searchDB = [[SearchDB alloc]init];
-            STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:[handler getUserID]];
-            [sq setQueryLogicAnd:true];
-            [sq whereEqualsTo:@"status" forValue:@"sendRequest"];
-            /*[sq find:^(NSMutableArray *friends){
+            __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            
+            HUD.labelText = @"refresh friends...";
+            [self.view addSubview:HUD];
+            [HUD showAnimated:YES whileExecutingBlock:^{
+                HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+                SearchDB * searchDB = [[SearchDB alloc]init];
+                STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:[handler getUserID]];
+                [sq setQueryLogicAnd:true];
+                [sq whereEqualsTo:@"status" forValue:@"sendRequest"];
+                
+                NSMutableArray * friends = [sq find];
                 for (STreamObject *so in friends) {
                     if (![friendsHistoryArray containsObject:[so objectId]]) {
                         [searchDB insertDB:[handler getUserID] withFriendID:[so objectId]];
                     }
                 }
+                friendsHistoryArray = [searchDB readSearchDB:[handler getUserID]];
+            }completionBlock:^{
                 [myTableview reloadData];
-            }];*/
-            NSMutableArray * friends = [sq find];
-            for (STreamObject *so in friends) {
-                if (![friendsHistoryArray containsObject:[so objectId]]) {
-                    [searchDB insertDB:[handler getUserID] withFriendID:[so objectId]];
-                }
-                    }
-            friendsHistoryArray = [searchDB readSearchDB:[handler getUserID]];
-            [myTableview reloadData];
+                [HUD removeFromSuperview];
+                HUD = nil;
+            }];
 
         }
             
@@ -735,7 +737,7 @@
     [my addStaff:@"status" withObject:@"request"];
     [my updateInBackground];
     
-    [_button setBackgroundImage:[UIImage imageNamed:@"invitation.png"] forState:UIControlStateNormal];
+    [_button setBackgroundImage:[UIImage imageNamed:@"invi.png"] forState:UIControlStateNormal];
 
     SearchDB * db = [[SearchDB alloc]init];
 //    [myTableview reloadData];
