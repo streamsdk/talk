@@ -566,6 +566,7 @@
     if (count>=10 && allCount>count) {
         if(!_reloading && scrollView.contentOffset.y < 0)
         {
+            _reloading = YES;
             [self loadDataBegin];
         }
     }
@@ -575,16 +576,12 @@
 // 开始加载数据
 - (void) loadDataBegin
 {
-    if (_reloading == NO)
-    {
-        _reloading = YES;
-        UIActivityIndicatorView *tableFooterActivityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
-        [tableFooterActivityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-        activity = tableFooterActivityIndicator;
-        [activity startAnimating];
-        self.tableHeaderView = activity;
-        [self loadDataing];
-    }
+    UIActivityIndicatorView *tableFooterActivityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
+    [tableFooterActivityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+    activity = tableFooterActivityIndicator;
+    [activity startAnimating];
+    self.tableHeaderView = activity;
+    [self loadDataing];
 }
 
 // 加载数据中
@@ -598,8 +595,6 @@
 // 加载数据完毕
 - (void) loadDataEnd
 {
-    _reloading = NO;
-    
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSString *sendToID = [imageCache getFriendID];
     
@@ -614,7 +609,7 @@
     [self.bubbleDataSource reloadBubbleView:bubbleData];
     [activity stopAnimating];
     [activity removeFromSuperview];
-//    [super reloadData];
+    _reloading = NO;
 }
 
 
