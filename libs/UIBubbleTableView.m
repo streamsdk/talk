@@ -475,29 +475,24 @@
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                                   if ( !error )
-                                   {
-                                       ImageCache * imagecache = [ImageCache sharedObject];
-                                       NSNumber * num = [imagecache getDownloadingFile:timeId];
-                                       NSInteger tag = [num integerValue];
-                                       UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:tag];
-                                       UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+100];
-                                       //                                   NSString * jsonbody = cell.data.jsonBody;
-                                       //                                   NSDate * date = cell.data.date;
-                                       //                                   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                                       //                                   [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-                                       NSData *jsonData = [jsonbody dataUsingEncoding:NSUTF8StringEncoding];
-                                       if (!jsonData) {
-                                           [activityIndicatorView stopAnimating];
-                                           return ;
-                                       }
-                                       
-                                       JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
-                                       NSDictionary *json = [decoder objectWithData:jsonData];
-                                       NSString *fileId = [json objectForKey:@"fileId"];
+                                   ImageCache * imagecache = [ImageCache sharedObject];
+                                   NSNumber * num = [imagecache getDownloadingFile:timeId];
+                                   NSInteger tag = [num integerValue];
+                                   UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:tag];
+                                   UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+100];
+                                   NSData *jsonData = [jsonbody dataUsingEncoding:NSUTF8StringEncoding];
+                                   if (!jsonData) {
+                                       [activityIndicatorView stopAnimating];
+                                       return ;
+                                   }
+                                   
+                                   JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+                                   NSDictionary *json = [decoder objectWithData:jsonData];
+                                   NSString *fileId = [json objectForKey:@"fileId"];
+                                   NSString *timeId = [json objectForKey:@"id"];
+                                   if ( !error ){
+                                      
                                        NSString *tid = [json objectForKey:@"tid"];
-                                       //                                   NSString * fromId = [download readDownloadDBFileID:[dateFormatter stringFromDate:date]];
-                                       //                                    NSString * fromId1 = [download readDownloadDBFromFileID:fileId];
                                        NSString * fromId =[json objectForKey:@"fromId"];
                                        NSString *duration = [json objectForKey:@"duration"];
                                        
@@ -525,18 +520,29 @@
                                        [jsonDic setObject:dict forKey:fromId];
                                        NSString * jsonBody = [jsonDic JSONString];
                                        [download deleteDownloadDBFromFileID:fileId];
-                                       //                                   [download deleteDownloadDBFileID:[dateFormatter stringFromDate:date]];
                                        [talkDb updateDB:cell.data.date withContent:jsonBody];
                                        cell.data._videoPath = filepath;
                                        cell.data.jsonBody = jsonBody;
                                        [activityIndicatorView stopAnimating];
-                                       [cache removeDownloadingFile:fileId];
+                                       [cache removeDownloadingFile:timeId];
                                    } else{
+                                       if (cell.data.fileType == FileDisappear){
+                                           [cell.data.videobutton setTitle:@"Download" forState:UIControlStateNormal];
+                                           [cell.data.videobutton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+                                           [cell.data.videobutton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
+                                       }else{
+                                           UIButton * button = (UIButton *)[cell.contentView viewWithTag:tag];
+                                           button.hidden = NO;
+                                           [button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+                                           [button addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
+                                       }
+                                       [activityIndicatorView stopAnimating];
+                                       [cache removeDownloadingFile:timeId];
                                    }
+                                   
                                }];
 
     }
-        NSLog(@"download");
 }
 
 -(void)playerVideo:(UIButton *)button {
