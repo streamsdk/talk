@@ -122,12 +122,14 @@
                                 data.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:data];
                         }else if ([key isEqualToString:@"filepath"]) {
-                            NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"filepath"]];
-                             NSString * time = [chatDic objectForKey:@"duration"];
+                          /*  NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"filepath"]];
+                            
                             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
                             player.shouldAutoplay = NO;
-                            UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+                            UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];*/
 //                            NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"video"]];;
+                            NSString * time = [chatDic objectForKey:@"duration"];
+                            UIImage *fileImage = [self getVideoImage:[chatDic objectForKey:@"filepath"]];
                             NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withTime:time withType:@"video" date:date type:BubbleTypeMine withVidePath:[chatDic objectForKey:@"filepath"] withJsonBody:@""];
                             if(myData)
                                 bdata.avatar = [UIImage imageWithData:myData];
@@ -179,12 +181,13 @@
                                 bdata.avatar = [UIImage imageWithData:otherData];
                             [dataArray addObject:bdata];
                         }if ([key isEqualToString:@"filepath"]) {
-                            NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"filepath"]];
+                            /*NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"filepath"]];
                             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
                             player.shouldAutoplay = NO;
-                            UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+                            UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];*/
 //                            NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"filepath"]];;
 //                            UIImage *fileImage = [UIImage imageWithData:data];
+                            UIImage *fileImage = [self getVideoImage:[chatDic objectForKey:@"filepath"]];
                             NSString * time = [chatDic objectForKey:@"duration"];
                             NSString * body = [chatDic JSONString];
                             NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withTime:time  withType:@"video" date:date type:BubbleTypeSomeoneElse withVidePath:[chatDic objectForKey:@"filepath"] withJsonBody:body];
@@ -344,6 +347,21 @@
     return count;
 
 }
+-(UIImage *)getVideoImage:(NSString *)videoPath
+{
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:videoPath] options:nil];
+    AVAssetImageGenerator *gen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+    gen.appliesPreferredTrackTransform = YES;
+    CMTime time = CMTimeMakeWithSeconds(0.0, 600);
+    NSError *error = nil;
+    CMTime actualTime;
+    CGImageRef image = [gen copyCGImageAtTime:time actualTime:&actualTime error:&error];
+    UIImage *thumb = [[UIImage alloc] initWithCGImage:image];
+    CGImageRelease(image);
+    return thumb;
+    
+}
+
 -(NSString*)getCacheDirectory
 {
     return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
