@@ -753,8 +753,8 @@
     [faceButton setImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
     [pageControl setHidden:NO];
     keyboardIsShow=NO;
-    [messageText resignFirstResponder];
-    [self dismissKeyBoard];
+//    [messageText resignFirstResponder];
+//    [self dismissKeyBoard];
 }
 
 #pragma mark -
