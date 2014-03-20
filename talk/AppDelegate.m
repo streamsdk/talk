@@ -230,6 +230,8 @@
             [xmpp disconnect];
         }];
     }*/
+    UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
+    [pasteBoard setString:@""];
    STreamXMPP *xmpp = [STreamXMPP sharedObject];
    [xmpp disconnect];
 }
