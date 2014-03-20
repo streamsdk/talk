@@ -142,28 +142,28 @@
             break;
             
         case FriendsHistory:{
-            HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-            SearchDB * searchDB = [[SearchDB alloc]init];
-            STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:[handler getUserID]];
-            [sq setQueryLogicAnd:true];
-            [sq whereEqualsTo:@"status" forValue:@"sendRequest"];
-            /*[sq find:^(NSMutableArray *friends){
+            __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            
+            HUD.labelText = @"loading...";
+            [self.view addSubview:HUD];
+            [HUD showAnimated:YES whileExecutingBlock:^{
+                HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+                SearchDB * searchDB = [[SearchDB alloc]init];
+                STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:[handler getUserID]];
+                [sq setQueryLogicAnd:true];
+                [sq whereEqualsTo:@"status" forValue:@"sendRequest"];
+                NSMutableArray * friends = [sq find];
                 for (STreamObject *so in friends) {
                     if (![friendsHistoryArray containsObject:[so objectId]]) {
                         [searchDB insertDB:[handler getUserID] withFriendID:[so objectId]];
                     }
                 }
+                friendsHistoryArray = [searchDB readSearchDB:[handler getUserID]];
+            }completionBlock:^{
                 [myTableview reloadData];
-            }];*/
-            NSMutableArray * friends = [sq find];
-            for (STreamObject *so in friends) {
-                if (![friendsHistoryArray containsObject:[so objectId]]) {
-                    [searchDB insertDB:[handler getUserID] withFriendID:[so objectId]];
-                }
-                    }
-            friendsHistoryArray = [searchDB readSearchDB:[handler getUserID]];
-            [myTableview reloadData];
-
+                [HUD removeFromSuperview];
+                HUD = nil;
+            }];
         }
             
             break;
@@ -481,7 +481,7 @@
     STreamUser * user = [[STreamUser alloc]init];
     NSString * loginName = [handler getUserID];
     
-    UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"No results found" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Yes", nil];
+    UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"username is not a registered user" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Yes", nil];
 
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"Loading...";
