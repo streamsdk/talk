@@ -103,6 +103,7 @@
     NSLog(@"buttonIndex =%d",buttonIndex);
     CopyPhotoHandler * cHandler =[[CopyPhotoHandler alloc]init];
     [alertView close];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissKeyboard" object:nil];
     if (buttonIndex == 1) {
        
         NSString * contents =[[UIPasteboard generalPasteboard] string];
@@ -134,5 +135,5 @@
         [cHandler sendPhoto:image withdate:APPDELEGATE.date forBubbleDataArray:APPDELEGATE.array forBubbleMyData:myData withFileType:type];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"send" object:nil];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissKeyboard" object:nil];
+    
 }@end
