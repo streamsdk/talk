@@ -105,6 +105,7 @@
     NSLog(@"buttonIndex =%d",buttonIndex);
     CopyHandler * cHandler =[[CopyHandler alloc]init];
     [alertView close];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissKeyboard" object:nil];
     if (buttonIndex == 1) {
         
         NSString * contents =[[UIPasteboard generalPasteboard] string];

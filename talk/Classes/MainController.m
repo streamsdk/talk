@@ -277,6 +277,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inputKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
      [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(refreshTable) name:@"send" object:nil];
     
+    //dismissKeyboard
+    [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(dismissKeyBoard) name:@"dismissKeyboard" object:nil];
+   
     //handler
     photoHandler = [[PhotoHandler alloc] init];
     
@@ -605,18 +608,18 @@
 
 #pragma MARK Icon button 表情事件
 -(void) disIconKeyboard {
-    [self scrollBubbleViewToBottomAnimated:YES];
     //如果直接点击，通过toolbar的位置来判断
     if (toolBar.frame.origin.y== self.view.bounds.size.height - toolBarHeight&&toolBar.frame.size.height==toolBarHeight) {
         [UIView animateWithDuration:Time animations:^{
             toolBar.frame = CGRectMake(0, self.view.frame.size.height-ICONHEIGHT-toolBarHeight,  self.view.bounds.size.width,toolBarHeight);
             UIBubbleTableView *tableView = (UIBubbleTableView *)[self.view viewWithTag:TABLEVIEWTAG];
-            tableView.frame = CGRectMake(0.0f, 0.0f, self.view.frame.size.width,(float)(self.view.frame.size.height-ICONHEIGHT-40.0));
+            tableView.frame = CGRectMake(0.0f, 64.0f, self.view.frame.size.width,(float)(self.view.frame.size.height-ICONHEIGHT-40.0-64));
             
         }];
         [UIView animateWithDuration:Time animations:^{
             [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-ICONHEIGHT,self.view.frame.size.width, ICONHEIGHT)];
         }];
+        [self scrollBubbleViewToBottomAnimated:YES];
          return;
     }
     //如果键盘没有显示
@@ -632,7 +635,7 @@
         [UIView animateWithDuration:Time animations:^{
             toolBar.frame = CGRectMake(0, self.view.frame.size.height-ICONHEIGHT-toolBar.frame.size.height,  self.view.bounds.size.width,toolBar.frame.size.height);
             UIBubbleTableView *tableView = (UIBubbleTableView *)[self.view viewWithTag:TABLEVIEWTAG];
-            tableView.frame = CGRectMake(0.0f, 0.0f, self.view.frame.size.width,(float)(self.view.frame.size.height-ICONHEIGHT-40.0));
+            tableView.frame = CGRectMake(0.0f, 64.0f, self.view.frame.size.width,(float)(self.view.frame.size.height-ICONHEIGHT-40.0-64));
             
         }];
         
@@ -641,7 +644,8 @@
         }];
         [messageText resignFirstResponder];
     }
-
+    [self scrollBubbleViewToBottomAnimated:YES];
+    
 }
 #pragma MARK face button 表情事件
 -(void)disFaceKeyboard{
@@ -650,7 +654,7 @@
         [UIView animateWithDuration:Time animations:^{
             toolBar.frame = CGRectMake(0, self.view.frame.size.height-keyboardHeight-toolBarHeight,  self.view.bounds.size.width,toolBarHeight);
             UIBubbleTableView *tableView = (UIBubbleTableView *)[self.view viewWithTag:TABLEVIEWTAG];
-            tableView.frame = CGRectMake(0.0f, 0.0f, self.view.frame.size.width,(float)(self.view.frame.size.height-keyboardHeight-40.0));
+            tableView.frame = CGRectMake(0.0f, 64.0f, self.view.frame.size.width,(float)(self.view.frame.size.height-keyboardHeight-40.0-64));
             
         }];
         [UIView animateWithDuration:Time animations:^{
@@ -677,7 +681,7 @@
         [UIView animateWithDuration:Time animations:^{
             toolBar.frame = CGRectMake(0, self.view.frame.size.height-keyboardHeight-toolBar.frame.size.height,  self.view.bounds.size.width,toolBar.frame.size.height);
             UIBubbleTableView *tableView = (UIBubbleTableView *)[self.view viewWithTag:TABLEVIEWTAG];
-            tableView.frame = CGRectMake(0.0f, 0.0f, self.view.frame.size.width,(float)(self.view.frame.size.height-keyboardHeight-40.0));
+            tableView.frame = CGRectMake(0.0f, 64.0f, self.view.frame.size.width,(float)(self.view.frame.size.height-keyboardHeight-40.0-64));
             
         }];
         
@@ -717,7 +721,7 @@
     UIToolbar *toolbar = (UIToolbar *)[self.view viewWithTag:TOOLBARTAG];
     toolbar.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-40.0), self.view.frame.size.width, 40.0f);
     UIBubbleTableView *tableView = (UIBubbleTableView *)[self.view viewWithTag:TABLEVIEWTAG];
-    tableView.frame = CGRectMake(0.0f, 0.0f, self.view.frame.size.width,(float)(self.view.frame.size.height-h-40.0));
+    tableView.frame = CGRectMake(0.0f, 64.0f, self.view.frame.size.width,(float)(self.view.frame.size.height-h-40.0-64));
     [self scrollBubbleViewToBottomAnimated:YES];
 }
 -(void)inputKeyboardWillShow:(NSNotification *)notification{
@@ -752,8 +756,8 @@
     [faceButton setImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
     [pageControl setHidden:NO];
     keyboardIsShow=NO;
-    [messageText resignFirstResponder];
-    [self dismissKeyBoard];
+//    [messageText resignFirstResponder];
+//    [self dismissKeyBoard];
 }
 
 #pragma mark -
