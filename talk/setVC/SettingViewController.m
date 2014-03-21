@@ -73,11 +73,11 @@
             if (pImageId!=nil && ![pImageId isEqualToString:@""]) {
                profileImage = [UIImage imageWithData: [imageCache getImage:pImageId]];
             }else{
-              profileImage = [UIImage imageNamed:@"headImage.jpg"];
+              profileImage = [UIImage imageNamed:@"noavatar.png"];
             }
         }
     }else{
-      profileImage= [UIImage imageNamed:@"headImage.jpg"];
+      profileImage= [UIImage imageNamed:@"noavatar.png"];
     }
     
 }
@@ -203,7 +203,7 @@
             if (profileImage) {
                 l.contents = (id)[profileImage CGImage];
             }else{
-                l.contents = (id)[[UIImage imageNamed:@"headImage.jpg"] CGImage];
+                l.contents = (id)[[UIImage imageNamed:@"noavatar.png"] CGImage];
             }
             
             imageview.userInteractionEnabled = YES;
@@ -397,9 +397,17 @@
     UIImageView * imageview= (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
     imageview.image = avatarImg;
     [picker dismissViewControllerAnimated:YES completion:^{
-        [self uploadProfileImage];
+        
+        __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        HUD.labelText = @"uploadLoading...";
+        [self.view addSubview:HUD];
+        [HUD showAnimated:YES whileExecutingBlock:^{
+            [self uploadProfileImage];
+        }completionBlock:^{
+            [HUD removeFromSuperview];
+            HUD = nil;
+        }];
     }];
-    
     
 }
 -(UIImage *)imageWithImage:(UIImage *)_image scaledToSize:(CGSize)size {
@@ -488,7 +496,6 @@
         [imageCache saveUserMetadata:[handle getUserID] withMetadata:metaData];
     }
     [self loadAvatar:[handle getUserID]];
-//    [myTableView reloadData];
 }
 
 #pragma mark UITEXTFILED-DELEGATE-
