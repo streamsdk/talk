@@ -520,7 +520,8 @@
     [self.view addSubview:myTableview];
     [friendsSearchArray removeAllObjects];
     _friendsType = FriendsSearch;
-    
+    myTableview.bounces = NO;
+    myTableview.alwaysBounceHorizontal = NO;
     myTableview.tableHeaderView = nil;
     [searchBar becomeFirstResponder];
     
@@ -738,7 +739,7 @@
     [my updateInBackground];
     
     [_button setBackgroundImage:[UIImage imageNamed:@"invi.png"] forState:UIControlStateNormal];
-
+    [_button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     SearchDB * db = [[SearchDB alloc]init];
 //    [myTableview reloadData];
     NSMutableArray *sendData=[db  readSearchDB:[handler getUserID]];
