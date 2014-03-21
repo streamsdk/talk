@@ -17,6 +17,8 @@
 #import "STreamXMPP.h"
 #import "SearchDB.h"
 #import "SettingViewController.h"
+#import <arcstreamsdk/STreamUser.h>
+#import "MBProgressHUD.h"
 @interface ScannerAddViewController ()
 
 @end
@@ -39,6 +41,8 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor lightGrayColor];
+    
+
     DownloadAvatar * down = [[DownloadAvatar alloc]init];
     [down loadAvatar:name];
     UIImage * icon = [down readAvatar:name];
@@ -74,7 +78,7 @@
     [self.view addSubview:button];
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frameBack = CGRectMake(10, 20, 50, 40);
+    CGRect frameBack = CGRectMake(10, 20, 40, 40);
     [backButton setFrame:frameBack];
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
     
@@ -133,34 +137,43 @@
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * loginName= [handler getUserID];
     STreamObject * so = [[STreamObject alloc]init];
-    [so setCategory:loginName];
-    [so setObjectId:name];
-    [so addStaff:@"status" withObject:@"sendRequest"];
-    [so updateInBackground];
-    
-    STreamObject *my = [[STreamObject alloc]init];
-    [my setCategory:name];
-    [my setObjectId:loginName];
-    [my addStaff:@"status" withObject:@"request"];
-    [my updateInBackground];
-    
-    SearchDB * db = [[SearchDB alloc]init];
-    //    [myTableview reloadData];
-    NSMutableArray *sendData=[db  readSearchDB:[handler getUserID]];
-    if (![sendData containsObject:name]) {
-        [db insertDB:[handler getUserID] withFriendID:name];
-    }
-    
-    STreamXMPP *con = [STreamXMPP sharedObject];
-    long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
-    [jsonDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
-    [jsonDic setObject:@"request" forKey:@"type"];
-    [jsonDic setObject:loginName forKey:@"username"];
-    [jsonDic setObject:name forKey:@"friendname"];
-    NSString *jsonSent = [jsonDic JSONString];
-    [con sendMessage:name withMessage:jsonSent];
-    [[[[[UIApplication sharedApplication]delegate] window]rootViewController]dismissViewControllerAnimated:NO completion:NULL];
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"add friend ...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [so setCategory:loginName];
+        [so setObjectId:name];
+        [so addStaff:@"status" withObject:@"sendRequest"];
+        [so updateInBackground];
+        
+        STreamObject *my = [[STreamObject alloc]init];
+        [my setCategory:name];
+        [my setObjectId:loginName];
+        [my addStaff:@"status" withObject:@"request"];
+        [my updateInBackground];
+        
+        SearchDB * db = [[SearchDB alloc]init];
+        //    [myTableview reloadData];
+        NSMutableArray *sendData=[db  readSearchDB:[handler getUserID]];
+        if (![sendData containsObject:name]) {
+            [db insertDB:[handler getUserID] withFriendID:name];
+        }
+        
+        STreamXMPP *con = [STreamXMPP sharedObject];
+        long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
+        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+        [jsonDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
+        [jsonDic setObject:@"request" forKey:@"type"];
+        [jsonDic setObject:loginName forKey:@"username"];
+        [jsonDic setObject:name forKey:@"friendname"];
+        NSString *jsonSent = [jsonDic JSONString];
+        [con sendMessage:name withMessage:jsonSent];
+
+    }completionBlock:^{
+        [[[[[UIApplication sharedApplication]delegate] window]rootViewController]dismissViewControllerAnimated:NO completion:NULL];
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{

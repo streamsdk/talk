@@ -288,9 +288,9 @@
             }
             if (indexPath.row == 1) {
                 ScannerViewController *scannerView = [[ScannerViewController alloc]init];
-                [[[[[UIApplication sharedApplication]delegate]window]rootViewController]presentViewController:scannerView animated:NO completion:NULL];
+//                [[[[[UIApplication sharedApplication]delegate]window]rootViewController]presentViewController:scannerView animated:NO completion:NULL];
 //                [self.navigationController pushViewController:scannerView animated:NO];
-                
+                [self.navigationController presentViewController:scannerView animated:NO completion:NULL];
             }
         }
             break;
