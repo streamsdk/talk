@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "FilesUpload.h"
 #import "NSBubbleData.h"
+#import "DownLoadVideo.h"
 
 @interface ImageCache : NSObject
 
@@ -75,4 +76,9 @@
 -(NSInteger)getReadCount:(NSString *)userId;
 
 -(void) removeCoun;
+
+-(void) saveDownVideo :(DownLoadVideo *)downVideo;
+-(DownLoadVideo *)getDownVideo;
+-(void) deleteDownVideo;
+-(BOOL) downVideoArrayIsNull;
 @end

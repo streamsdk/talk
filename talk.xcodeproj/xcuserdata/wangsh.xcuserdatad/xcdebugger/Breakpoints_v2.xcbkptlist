@@ -229,7 +229,7 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "417082865.972661"
+                  timestampString = "417091662.571163"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
@@ -243,7 +243,7 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "417082865.973043"
+                  timestampString = "417091662.571379"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
@@ -338,12 +338,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "libs/UIBubbleTableView.m"
-            timestampString = "416992517.120028"
+            timestampString = "417088659.248598"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "528"
-            endingLineNumber = "528"
-            landmarkName = "-downloadvideo:"
+            startingLineNumber = "549"
+            endingLineNumber = "549"
+            landmarkName = "-downVideo:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -354,28 +354,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "libs/UIBubbleTableView.m"
-            timestampString = "416992517.120028"
+            timestampString = "417091438.607935"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "493"
-            endingLineNumber = "493"
-            landmarkName = "-downloadvideo:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "libs/UIBubbleTableView.m"
-            timestampString = "417002250.214913"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "498"
-            endingLineNumber = "498"
-            landmarkName = "-downloadvideo:"
+            startingLineNumber = "561"
+            endingLineNumber = "561"
+            landmarkName = "-downVideo:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

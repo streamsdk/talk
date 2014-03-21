@@ -25,6 +25,8 @@ static NSMutableDictionary * dic;
 static NSMutableDictionary*_downloadingFile;
 static NSMutableDictionary*_countDict;
 static NSLock *_theLock;
+static NSMutableArray * _downVideo;
+
 @implementation ImageCache
 
 
@@ -49,6 +51,7 @@ static NSLock *_theLock;
         _downloadingFile =[[NSMutableDictionary alloc]init];
         _countDict = [[NSMutableDictionary alloc]init];
         _theLock = [[NSLock alloc] init];
+        _downVideo = [[NSMutableArray alloc]init];
 
     });
     
@@ -216,5 +219,22 @@ static NSLock *_theLock;
 
 -(void) removeCoun{
     [_countDict removeAllObjects];
+}
+
+-(void) saveDownVideo :(DownLoadVideo *)downVideo{
+    [_downVideo addObject:downVideo];
+}
+-(DownLoadVideo *)getDownVideo{
+   return [_downVideo objectAtIndex:0];
+}
+-(BOOL) downVideoArrayIsNull{
+    if ([_downVideo count]==0) {
+        return YES;
+    }else{
+        return NO;
+    }
+}
+-(void) deleteDownVideo{
+    [_downVideo removeObjectAtIndex:0];
 }
 @end

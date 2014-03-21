@@ -18,7 +18,7 @@
 #import "HandlerUserIdAndDateFormater.h"
 #import "ImageCache.h"
 #import "TalkDB.h"
-
+#import "DownLoadVideo.h"
 //static int count =20;
 #define BUBBLETABLEVIEWCELL_TAG 1000
 
@@ -417,10 +417,12 @@
 }
 
 -(void) downloadvideo:(UIButton *)button{
+    ImageCache * cache = [ImageCache sharedObject];
+    DownLoadVideo *_downVideo = [[DownLoadVideo alloc]init];
+    
     UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:button.tag];
     UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+100];
     
-    DownloadDB * download = [[DownloadDB alloc]init];
     [activityIndicatorView startAnimating];
     NSString * jsonbody = cell.data.jsonBody;
     NSData *jsonData = [jsonbody dataUsingEncoding:NSUTF8StringEncoding];
@@ -456,95 +458,117 @@
         if (cell.data.fileType == FileDisappear){
             [cell.data.videobutton setTitle:@"Click to view" forState:UIControlStateNormal];
             [cell.data.videobutton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-            [cell.data.videobutton addTarget:self action:@selector(playerVideo:) forControlEvents:UIControlEventTouchUpInside];
+//            [cell.data.videobutton addTarget:self action:@selector(playerVideo:) forControlEvents:UIControlEventTouchUpInside];
+            [activityIndicatorView stopAnimating];
         }else{
             button.hidden = YES;
-            [self playerVideo:button];
+            [activityIndicatorView stopAnimating];
+//            [self playerVideo:button];
         }
     }else {
+        [cache addDownloadingFile:timeId withTag:[NSNumber numberWithInt:button.tag]];
         if (cell.data.fileType == FileVideo){
             button.hidden = YES;
+            [_downVideo setButton:button];
         }else{
+            [_downVideo setButton:cell.data.videobutton];
             [cell.data.videobutton setTitle:@"downloading" forState:UIControlStateNormal];
         }
-        ImageCache * cache = [ImageCache sharedObject];
-        [cache addDownloadingFile:timeId withTag:[NSNumber numberWithInt:button.tag]];
-        NSString *urlString = [STreamSession getFileObjectDownloadUrl:fileId];
-        NSURL *url = [NSURL URLWithString:urlString];
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-        [NSURLConnection sendAsynchronousRequest:request
-                                           queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                                   ImageCache * imagecache = [ImageCache sharedObject];
-                                   NSNumber * num = [imagecache getDownloadingFile:timeId];
-                                   NSInteger tag = [num integerValue];
-                                   UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:tag];
-                                   UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+100];
-                                   NSData *jsonData = [jsonbody dataUsingEncoding:NSUTF8StringEncoding];
-                                   if (!jsonData) {
-                                       [activityIndicatorView stopAnimating];
-                                       return ;
-                                   }
-                                   
-                                   JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
-                                   NSDictionary *json = [decoder objectWithData:jsonData];
-                                   NSString *fileId = [json objectForKey:@"fileId"];
-                                   NSString *timeId = [json objectForKey:@"id"];
-                                   if ( !error ){
-                                      
-                                       NSString *tid = [json objectForKey:@"tid"];
-                                       NSString * fromId =[json objectForKey:@"fromId"];
-                                       NSString *duration = [json objectForKey:@"duration"];
-                                       
-                                       if (cell.data.fileType == FileDisappear){
-                                           [cell.data.videobutton setTitle:@"Click to view" forState:UIControlStateNormal];
-                                           [cell.data.videobutton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-                                           [cell.data.videobutton addTarget:self action:@selector(playerVideo:) forControlEvents:UIControlEventTouchUpInside];
-                                       }
-                                       HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-                                       TalkDB * talkDb = [[TalkDB alloc]init];
-                                       NSString * filepath= [NSHomeDirectory() stringByAppendingFormat:@"/Documents/out-%@.mp4", fileId];
-                                       [data writeToFile : filepath atomically: YES ];
-                                       [handler videoPath:filepath];
-                                       NSMutableDictionary * dict = [[NSMutableDictionary alloc]init];
-                                       NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
-                                       if (tid) {
-                                           [dict setObject:tid forKey:@"tid"];
-                                       }
-                                       
-                                       [dict setObject:fileId forKey:@"fileId"];
-                                       [dict setObject:filepath forKey:@"filepath"];
-                                       if (duration) {
-                                           [dict setObject:duration forKey:@"duration"];
-                                       }
-                                       [jsonDic setObject:dict forKey:fromId];
-                                       NSString * jsonBody = [jsonDic JSONString];
-                                       [download deleteDownloadDBFromFileID:fileId];
-                                       [talkDb updateDB:cell.data.date withContent:jsonBody];
-                                       cell.data._videoPath = filepath;
-                                       cell.data.jsonBody = jsonBody;
-                                       [activityIndicatorView stopAnimating];
-                                       [cache removeDownloadingFile:timeId];
-                                   } else{
-                                       if (cell.data.fileType == FileDisappear){
-                                           [cell.data.videobutton setTitle:@"Download" forState:UIControlStateNormal];
-                                           [cell.data.videobutton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-                                           [cell.data.videobutton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
-                                       }else{
-                                           UIButton * button = (UIButton *)[cell.contentView viewWithTag:tag];
-                                           button.hidden = NO;
-                                           [button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-                                           [button addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
-                                       }
-                                       [activityIndicatorView stopAnimating];
-                                       [cache removeDownloadingFile:timeId];
-                                   }
-                                   
-                               }];
-
+        [_downVideo setDict:json];
+        [_downVideo setDate:cell.data.date];
+        if (![cache downVideoArrayIsNull]) {
+            [cache saveDownVideo:_downVideo];
+            return;
+        }
+        [cache saveDownVideo:_downVideo];
+        [self downVideo:_downVideo];
     }
 }
+-(void)downVideo :(DownLoadVideo *)loadvieo{
+    ImageCache * cache = [ImageCache sharedObject];
+    DownloadDB * download = [[DownloadDB alloc]init];
+    NSDictionary *json = loadvieo.dict;
+    NSString *fileId = [json objectForKey:@"fileId"];
+    NSString *timeId = [json objectForKey:@"id"];
+    NSString *urlString = [STreamSession getFileObjectDownloadUrl:fileId];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+//                               ImageCache * imagecache = [ImageCache sharedObject];
+//                               NSNumber * num = [imagecache getDownloadingFile:timeId];
+//                               NSInteger tag = [num integerValue];
+                               UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:loadvieo.button.tag];
+                               UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:loadvieo.button.tag+100];
+                               /*NSData *jsonData = [jsonbody dataUsingEncoding:NSUTF8StringEncoding];
+                               if (!jsonData) {
+                                   [activityIndicatorView stopAnimating];
+                                   return ;
+                               }
+                               
+                               JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+                               NSDictionary *json = [decoder objectWithData:jsonData];
+                               NSString *fileId = [json objectForKey:@"fileId"];
+                               NSString *timeId = [json objectForKey:@"id"];*/
+                               if ( !error ){
+                                   
+                                   NSString *tid = [json objectForKey:@"tid"];
+                                   NSString * fromId =[json objectForKey:@"fromId"];
+                                   NSString *duration = [json objectForKey:@"duration"];
+                                   
+                                   if (cell.data.fileType == FileDisappear){
+                                       [cell.data.videobutton setTitle:@"Click to view" forState:UIControlStateNormal];
+                                       [cell.data.videobutton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+                                       [cell.data.videobutton addTarget:self action:@selector(playerVideo:) forControlEvents:UIControlEventTouchUpInside];
+                                   }
+                                   HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+                                   TalkDB * talkDb = [[TalkDB alloc]init];
+                                   NSString * filepath= [NSHomeDirectory() stringByAppendingFormat:@"/Documents/out-%@.mp4", fileId];
+                                   [data writeToFile : filepath atomically: YES ];
+                                   [handler videoPath:filepath];
+                                   NSMutableDictionary * dict = [[NSMutableDictionary alloc]init];
+                                   NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
+                                   if (tid) {
+                                       [dict setObject:tid forKey:@"tid"];
+                                   }
+                                   
+                                   [dict setObject:fileId forKey:@"fileId"];
+                                   [dict setObject:filepath forKey:@"filepath"];
+                                   if (duration) {
+                                       [dict setObject:duration forKey:@"duration"];
+                                   }
+                                   [jsonDic setObject:dict forKey:fromId];
+                                   NSString * jsonBody = [jsonDic JSONString];
+                                   [download deleteDownloadDBFromFileID:fileId];
+                                   [talkDb updateDB:cell.data.date withContent:jsonBody];
+                                   cell.data._videoPath = filepath;
+                                   cell.data.jsonBody = jsonBody;
+                                   [activityIndicatorView stopAnimating];
+                                   [cache removeDownloadingFile:timeId];
+                               } else{
+                                   if (cell.data.fileType == FileDisappear){
+                                       [cell.data.videobutton setTitle:@"Download" forState:UIControlStateNormal];
+                                       [cell.data.videobutton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+                                       [cell.data.videobutton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
+                                   }else{
+//                                       UIButton * button = (UIButton *)[cell.contentView viewWithTag:tag];
+                                       UIButton * button = loadvieo.button;
+                                       button.hidden = NO;
+                                       [button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+                                       [button addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
+                                   }
+                                   [activityIndicatorView stopAnimating];
+                                   [cache removeDownloadingFile:timeId];
+                               }
+                               [cache deleteDownVideo];
+                               if (![cache downVideoArrayIsNull]) {
+                                   DownLoadVideo * downVideo = [cache getDownVideo];
+                                   [self downVideo:downVideo];
+                               }
+                           }];
 
+}
 -(void)playerVideo:(UIButton *)button {
     UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:button.tag];
     NSString * jsonbody = cell.data.jsonBody;
