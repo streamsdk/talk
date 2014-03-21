@@ -443,7 +443,31 @@
 #pragma mark alertview Delegate
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-     if (isaAatarImg) {
+    if (buttonIndex == 1) {
+        __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        HUD.labelText = @"log out...";
+        [self.view addSubview:HUD];
+        [HUD showAnimated:YES whileExecutingBlock:^{
+            STreamXMPP * con = [STreamXMPP sharedObject];
+            [con disconnect];
+            NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults removeObjectForKey:@"username"];
+            [userDefaults removeObjectForKey:@"password"];
+           
+        }completionBlock:^{
+            LoginViewController *loginVC = [[LoginViewController alloc]init];
+            [UIView animateWithDuration:0.01
+                             animations:^{
+                                 [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                                 [self.navigationController pushViewController:loginVC animated:NO];
+                                 [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.navigationController.view cache:NO];
+                             }];
+            [HUD removeFromSuperview];
+            HUD = nil;
+        }];        
+    }
+
+    /* if (isaAatarImg) {
          if (buttonIndex == 1) {
              __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
              HUD.labelText = @"uploading profileImage...";
@@ -458,24 +482,7 @@
         }
          isaAatarImg=NO;
      }else{
-         if (buttonIndex == 1) {
-            
-             
-             STreamXMPP * con = [STreamXMPP sharedObject];
-             [con disconnect];
-             NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
-             [userDefaults removeObjectForKey:@"username"];
-             [userDefaults removeObjectForKey:@"password"];
-             LoginViewController *loginVC = [[LoginViewController alloc]init];
-//             [self.navigationController pushViewController:loginVC animated:YES];
-             [UIView animateWithDuration:0.5
-                              animations:^{
-                                  [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                                  [self.navigationController pushViewController:loginVC animated:NO];
-                                  [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.navigationController.view cache:NO];
-                              }];
-         }
-     }
+             }*/
     
 }
 -(void) uploadProfileImage{
