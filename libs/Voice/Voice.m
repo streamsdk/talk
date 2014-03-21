@@ -12,7 +12,7 @@
 
 #pragma mark - <DEFINES>
 
-#define WAVE_UPDATE_FREQUENCY   0.05
+#define WAVE_UPDATE_FREQUENCY   0.0001
 
 #pragma mark - <CLASS> Voice
 

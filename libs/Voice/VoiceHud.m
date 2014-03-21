@@ -319,14 +319,14 @@
 {
     if (yesOrNo){
         
-        [UIView animateWithDuration:0.2 animations:^{
+        [UIView animateWithDuration:0.01 animations:^{
             
             _talkingImageView.alpha = 1;
             
         }];
     }else{
         
-        [UIView animateWithDuration:0.2 animations:^{
+        [UIView animateWithDuration:0.01 animations:^{
             
             _talkingImageView.alpha = 0;
             
@@ -337,7 +337,7 @@
     
     [_DEVICE_WINDOW addSubview:self];
     
-    [UIView animateWithDuration:0.25 animations:^{
+    [UIView animateWithDuration:0.001 animations:^{
         
         self.alpha = 1;
         

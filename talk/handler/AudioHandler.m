@@ -35,9 +35,14 @@
 
 -(void) sendAudio :(Voice *)voice forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID
 {
+    
     HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
-    NSString * bodyData = [NSString stringWithFormat:@"%d",(int)voice.recordTime];
-
+//    NSString * bodyData = [NSString stringWithFormat:@"%d",(int)voice.recordTime];
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+    
+    [numberFormatter setPositiveFormat:@"0"];
+    
+    NSString * bodyData = [numberFormatter stringFromNumber:[NSNumber numberWithFloat:voice.recordTime]];
     NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
     long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
     [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
