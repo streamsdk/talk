@@ -118,17 +118,7 @@
     [self.view addSubview:label];
     DownloadAvatar * loadavatar = [[DownloadAvatar alloc]init];
     profileImage = [loadavatar readAvatar:loginName];
-    
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"Loading...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-//        [self loadAvatar:loginName];
-    }completionBlock:^{
-//        [myTableView reloadData];
-        [HUD removeFromSuperview];
-        HUD = nil;
-    }];
+ 
     [myTableView reloadData];
 }
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
