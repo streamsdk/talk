@@ -76,18 +76,11 @@
  
     [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
     if (firstRead) {
-        __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        HUD.labelText = @"loading ...";
-        [self.view addSubview:HUD];
-        [HUD showAnimated:YES whileExecutingBlock:^{
-            [self loadFriends];
-        }completionBlock:^{
-            [self.tableView reloadData];
-            [HUD removeFromSuperview];
-            HUD = nil;
-            firstRead = NO;
-        }];
-
+        
+        [self loadFriends];
+        [self.tableView reloadData];
+        firstRead = NO;
+      
     }else{
         ImageCache *imageCache = [ImageCache sharedObject];
         [imageCache setFriendID:nil];
@@ -155,17 +148,17 @@
     
     mainVC = [[MainController alloc]init];
     
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"connecting ...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        [self connect];
-    }completionBlock:^{
-        [self.tableView reloadData];
-        [HUD removeFromSuperview];
-        HUD = nil;
-    }];
-    
+//    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+//    HUD.labelText = @"connecting ...";
+//    [self.view addSubview:HUD];
+//    [HUD showAnimated:YES whileExecutingBlock:^{
+//        [self connect];
+//    }completionBlock:^{
+//        [self.tableView reloadData];
+//        [HUD removeFromSuperview];
+//        HUD = nil;
+//    }];
+    [self performSelectorInBackground:@selector(connect) withObject:nil];
     [_refreshHeaderView refreshLastUpdatedDate];
 
     [self.tableView reloadData];
@@ -201,16 +194,17 @@
     toolBar.hidden = YES;
 }
 - (void)appHasBackInForeground{
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"connecting ...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        [self connect];
-    }completionBlock:^{
-        [self.tableView reloadData];
-        [HUD removeFromSuperview];
-        HUD = nil;
-    }];
+//    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+//    HUD.labelText = @"connecting ...";
+//    [self.view addSubview:HUD];
+//    [HUD showAnimated:YES whileExecutingBlock:^{
+//        [self connect];
+//    }completionBlock:^{
+//        [self.tableView reloadData];
+//        [HUD removeFromSuperview];
+//        HUD = nil;
+//    }];
+    [self performSelectorInBackground:@selector(connect) withObject:nil];
 }
 
 -(void) readAddDb {
