@@ -562,8 +562,8 @@
 -(void) recordCancel
 {
     [self.voice cancelled];
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"Deleted" delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
-    [alert show];
+//    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"Deleted" delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
+//    [alert show];
 }
 
 
