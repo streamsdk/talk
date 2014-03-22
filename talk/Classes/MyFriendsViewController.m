@@ -789,7 +789,8 @@
     NSString *userName = [userStr string];
     [imageCache setFriendID:userName];
     [imageCache removeFriendID:userName];
-    
+    [imageCache saveRaedCount:[NSNumber numberWithInt:0] withuserID:userName];
+    [imageCache saveTablecontentOffset:0 withUser:userName];
     [self.tableView reloadData];
     [self.navigationController pushViewController:mainVC animated:YES];
 }

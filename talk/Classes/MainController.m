@@ -143,8 +143,8 @@
 
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * userID = [handler getUserID];
-    
-//    bubbleData = [[NSMutableArray alloc]init];
+    rowCount = 10;
+    bubbleData = [[NSMutableArray alloc]init];
     TalkDB * talk =[[TalkDB alloc]init];
     if ([imageCache getReadCount:sendToID]>10)
         rowCount = [imageCache getReadCount:sendToID];
@@ -239,7 +239,7 @@
     
     isVideo=NO;
     isClearData = NO;
-    rowCount = 10;
+    
     isEmoji = NO;
     createUI = [[CreateUI alloc]init];
     deleteDic = [[NSMutableDictionary alloc] init];
