@@ -143,11 +143,11 @@
 
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * userID = [handler getUserID];
-    
+    rowCount = 10;
     bubbleData = [[NSMutableArray alloc]init];
     TalkDB * talk =[[TalkDB alloc]init];
     if ([imageCache getReadCount:sendToID]>10)
-        rowCount = 20;
+        rowCount = [imageCache getReadCount:sendToID];
     bubbleData = [talk readInitDB:userID withOtherID:sendToID withCount:rowCount];
     if ([bubbleData count]>=10) {
         [imageCache saveRaedCount:[NSNumber numberWithInt:rowCount] withuserID:sendToID];
@@ -183,8 +183,11 @@
         [backgroundView setImage:[UIImage imageWithData:data]];
     }
     [bubbleTableView reloadData];
-    [self dismissKeyBoard];
-    [self scrollBubbleViewToBottomAnimated:YES];
+    [bubbleTableView setContentOffset:CGPointMake(0, [imageCache getTablecontentOffset:sendToID])];
+    if ([imageCache getTablecontentOffset:sendToID]==0) {
+        [self scrollBubbleViewToBottomAnimated:YES];
+    }
+
 }
 -(void)SetBackground{
     
@@ -236,7 +239,6 @@
     
     isVideo=NO;
     isClearData = NO;
-    rowCount = 10;
     isEmoji = NO;
     createUI = [[CreateUI alloc]init];
     deleteDic = [[NSMutableDictionary alloc] init];
@@ -496,7 +498,7 @@
     NSMutableArray * dataArray = [[NSMutableArray alloc]init];
     TalkDB * talk =[[TalkDB alloc]init];
     dataArray = [talk readInitDB:[handler getUserID] withOtherID:sendToID withCount:10];
-    [imageCache saveRaedCount:[NSNumber numberWithInt:11] withuserID:sendToID];
+//    [imageCache saveRaedCount:[NSNumber numberWithInt:11] withuserID:sendToID];
     bubbleData = dataArray;
     for (NSBubbleData * data in bubbleData) {
         data.delegate = self;
@@ -525,6 +527,7 @@
     [self dismissKeyBoard];
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
+    
 }
 #pragma mark send audio
 -(void) sendRecordAudio {

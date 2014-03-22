@@ -247,7 +247,8 @@ static NSMutableArray *colors;
                                          maxHeight:maxheight];
             data = UIImageJPEGRepresentation(_image, 0.3);
         }
-        
+        ImageCache *imageCache = [ImageCache sharedObject];
+        [imageCache saveTablecontentOffset:0 withUser:[imageCache getFriendID]];
       [imageSendProtocol sendImages:data withTime:time ];
     }completionBlock:^{
         [self dismissViewControllerAnimated:YES completion:NULL];

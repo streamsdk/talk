@@ -24,7 +24,7 @@ static NSMutableArray *_fileUpload;
 static NSMutableDictionary * dic;
 static NSMutableDictionary*_downloadingFile;
 static NSMutableDictionary*_countDict;
-
+static NSMutableDictionary *_contentOffset;
 @implementation ImageCache
 
 
@@ -48,6 +48,7 @@ static NSMutableDictionary*_countDict;
         dic = [[NSMutableDictionary alloc]init];
         _downloadingFile =[[NSMutableDictionary alloc]init];
         _countDict = [[NSMutableDictionary alloc]init];
+        _contentOffset = [[NSMutableDictionary alloc]init];
     });
     
     return sharedInstance;
@@ -204,5 +205,10 @@ static NSMutableDictionary*_countDict;
 
     return [[_countDict objectForKey:userId]intValue];
 }
-
+-(void) saveTablecontentOffset:(CGFloat)f withUser:(NSString *)user{
+    [_contentOffset setObject:[NSNumber numberWithFloat:f] forKey:user];
+}
+-(CGFloat)getTablecontentOffset:(NSString *)user{
+    return [[_contentOffset objectForKey:user] floatValue];
+}
 @end

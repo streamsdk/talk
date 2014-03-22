@@ -554,13 +554,14 @@
 {
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSString *sendToID = [imageCache getFriendID];
+    [imageCache saveTablecontentOffset:self.contentOffset.y withUser:sendToID];
     TalkDB * talk = [[TalkDB alloc]init];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString * name =[userDefaults objectForKey:@"username"];
     NSInteger allCount = [talk allDataCount:name withOtherID:sendToID];
     int count = [imageCache getReadCount:sendToID];
     if (count>=10 && allCount > count) {
-        if(!_reloading && scrollView.contentOffset.y < 0)
+        if(!_reloading && scrollView.contentOffset.y < 5)
         {
             _reloading = YES;
             [self loadDataBegin];
@@ -605,6 +606,7 @@
     [activity stopAnimating];
     [activity removeFromSuperview];
     _reloading = NO;
+    [imageCache saveTablecontentOffset:self.contentOffset.y withUser:sendToID];
 }
 
 
