@@ -144,10 +144,10 @@
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * userID = [handler getUserID];
     
-    bubbleData = [[NSMutableArray alloc]init];
+//    bubbleData = [[NSMutableArray alloc]init];
     TalkDB * talk =[[TalkDB alloc]init];
     if ([imageCache getReadCount:sendToID]>10)
-        rowCount = 20;
+        rowCount = [imageCache getReadCount:sendToID];
     bubbleData = [talk readInitDB:userID withOtherID:sendToID withCount:rowCount];
     if ([bubbleData count]>=10) {
         [imageCache saveRaedCount:[NSNumber numberWithInt:rowCount] withuserID:sendToID];
@@ -184,7 +184,10 @@
     }
     [bubbleTableView reloadData];
     [self dismissKeyBoard];
-    [self scrollBubbleViewToBottomAnimated:YES];
+    [bubbleTableView setContentOffset:CGPointMake(0, [imageCache getTablecontentOffset:sendToID])];
+    if ([imageCache getTablecontentOffset:sendToID]==0) {
+        [self scrollBubbleViewToBottomAnimated:YES];
+    }
 }
 -(void)SetBackground{
     
@@ -377,6 +380,7 @@
     [bubbleTableView reloadData];
     CGFloat newHeight = bubbleTableView.contentSize.height;
     [bubbleTableView setContentOffset:CGPointMake(0, newHeight-formerHeight)];
+    
 }
 -(void)getFiles:(NSData *)data withFromID:(NSString *)fromID withBody:(NSString *)body withPath:(NSString *)path{
     
@@ -496,7 +500,7 @@
     NSMutableArray * dataArray = [[NSMutableArray alloc]init];
     TalkDB * talk =[[TalkDB alloc]init];
     dataArray = [talk readInitDB:[handler getUserID] withOtherID:sendToID withCount:10];
-    [imageCache saveRaedCount:[NSNumber numberWithInt:11] withuserID:sendToID];
+//    [imageCache saveRaedCount:[NSNumber numberWithInt:11] withuserID:sendToID];
     bubbleData = dataArray;
     for (NSBubbleData * data in bubbleData) {
         data.delegate = self;
@@ -508,6 +512,7 @@
     
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
+    [imageCache saveTablecontentOffset:0 withUser:sendToID];
 }
 
 -(void) sendVideo:(NSString *)time {

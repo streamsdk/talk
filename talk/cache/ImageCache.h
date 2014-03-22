@@ -81,4 +81,9 @@
 -(DownLoadVideo *)getDownVideo;
 -(void) deleteDownVideo;
 -(BOOL) downVideoArrayIsNull;
+
+-(void)saveTablecontentOffset:(CGFloat)f withUser:(NSString *)user;
+
+-(CGFloat) getTablecontentOffset:(NSString *)user;
+
 @end

@@ -26,7 +26,7 @@ static NSMutableDictionary*_downloadingFile;
 static NSMutableDictionary*_countDict;
 static NSLock *_theLock;
 static NSMutableArray * _downVideo;
-
+static NSMutableDictionary *_contentOffset;
 @implementation ImageCache
 
 
@@ -52,7 +52,7 @@ static NSMutableArray * _downVideo;
         _countDict = [[NSMutableDictionary alloc]init];
         _theLock = [[NSLock alloc] init];
         _downVideo = [[NSMutableArray alloc]init];
-
+        _contentOffset = [[NSMutableDictionary alloc]init];
     });
     
     return sharedInstance;
@@ -236,5 +236,11 @@ static NSMutableArray * _downVideo;
 }
 -(void) deleteDownVideo{
     [_downVideo removeObjectAtIndex:0];
+}
+-(void) saveTablecontentOffset:(CGFloat)f withUser:(NSString *)user{
+    [_contentOffset setObject:[NSNumber numberWithFloat:f] forKey:user];
+}
+-(CGFloat)getTablecontentOffset:(NSString *)user{
+    return [[_contentOffset objectForKey:user] floatValue];
 }
 @end

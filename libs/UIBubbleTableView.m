@@ -591,6 +591,7 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString * name =[userDefaults objectForKey:@"username"];
     TalkDB * talk = [[TalkDB alloc]init];
+    [imageCache saveTablecontentOffset:self.contentOffset.y withUser:sendToID];
     NSInteger allCount = [talk allDataCount:name withOtherID:sendToID];
     int count = [imageCache getReadCount:sendToID];
     if (count>=10 && allCount>count) {
@@ -602,7 +603,6 @@
     }
     
 }
-
 // 开始加载数据
 - (void) loadDataBegin
 {
@@ -640,6 +640,7 @@
     [activity stopAnimating];
     [activity removeFromSuperview];
     _reloading = NO;
+    [imageCache saveTablecontentOffset:self.contentOffset.y withUser:sendToID];
 }
 
 
