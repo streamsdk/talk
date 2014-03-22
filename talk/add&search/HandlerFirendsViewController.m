@@ -722,37 +722,45 @@
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * loginName= [handler getUserID];
     NSString * string= [friendsSearchArray objectAtIndex:_button.tag];
-    STreamObject * so = [[STreamObject alloc]init];
-    [so setCategory:loginName];
-    [so setObjectId:string];
-    [so addStaff:@"status" withObject:@"sendRequest"];
-    [so updateInBackground];
-    
-    STreamObject *my = [[STreamObject alloc]init];
-    [my setCategory:string];
-    [my setObjectId:loginName];
-    [my addStaff:@"status" withObject:@"request"];
-    [my updateInBackground];
-    
-    [_button setBackgroundImage:[UIImage imageNamed:@"invi.png"] forState:UIControlStateNormal];
-    [_button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    SearchDB * db = [[SearchDB alloc]init];
-//    [myTableview reloadData];
-    NSMutableArray *sendData=[db  readSearchDB:[handler getUserID]];
-    if (![sendData containsObject:string]) {
-        [db insertDB:[handler getUserID] withFriendID:string];
-    }
-    
-    STreamXMPP *con = [STreamXMPP sharedObject];
-    long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
-    [jsonDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
-    [jsonDic setObject:@"request" forKey:@"type"];
-    [jsonDic setObject:loginName forKey:@"username"];
-    [jsonDic setObject:string forKey:@"friendname"];
-     NSString *jsonSent = [jsonDic JSONString];
-    [con sendMessage:string withMessage:jsonSent];
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"send invitation...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        STreamObject * so = [[STreamObject alloc]init];
+        [so setCategory:loginName];
+        [so setObjectId:string];
+        [so addStaff:@"status" withObject:@"sendRequest"];
+        [so updateInBackground];
+        
+        STreamObject *my = [[STreamObject alloc]init];
+        [my setCategory:string];
+        [my setObjectId:loginName];
+        [my addStaff:@"status" withObject:@"request"];
+        [my updateInBackground];
        
+        SearchDB * db = [[SearchDB alloc]init];
+        NSMutableArray *sendData=[db  readSearchDB:[handler getUserID]];
+        if (![sendData containsObject:string]) {
+            [db insertDB:[handler getUserID] withFriendID:string];
+        }
+        
+        STreamXMPP *con = [STreamXMPP sharedObject];
+        long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
+        NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc] init];
+        [jsonDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
+        [jsonDic setObject:@"request" forKey:@"type"];
+        [jsonDic setObject:loginName forKey:@"username"];
+        [jsonDic setObject:string forKey:@"friendname"];
+        NSString *jsonSent = [jsonDic JSONString];
+        [con sendMessage:string withMessage:jsonSent];
+
+    }completionBlock:^{
+        [_button setBackgroundImage:[UIImage imageNamed:@"invi.png"] forState:UIControlStateNormal];
+        [_button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
+    
 }
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (isSendRequest) {
