@@ -260,6 +260,9 @@
 
 }
 -(void) connect {
+    [self startDownload];
+    [self readHistory];
+    [self startUpload];
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     [self setMessagesProtocol:mainVC];
     [self setUploadProtocol:mainVC];
@@ -385,10 +388,7 @@
 #pragma mark - STreamXMPPProtocol
 - (void)didAuthenticate{
     NSLog(@"");
-    self.title = @"reading...";
-    [self startDownload];
-    [self readHistory];
-    [self startUpload];
+//    self.title = @"reading...";
 }
 
 
