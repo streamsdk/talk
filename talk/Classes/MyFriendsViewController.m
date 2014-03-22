@@ -390,7 +390,7 @@
     if ([presenceType isEqualToString:@"unavailable"]){
         
     }
-
+    [self.tableView reloadData];
 }
 -(void) didReceiveRequest:(NSDictionary *)json{
     NSString *type = [json objectForKey:@"type"];
