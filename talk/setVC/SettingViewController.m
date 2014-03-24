@@ -455,6 +455,7 @@
     UIImage *sImage = [self imageWithImage:avatarImg scaledToMaxWidth:100 maxHeight:100];
     NSData * data = UIImageJPEGRepresentation(sImage, 0.8);
     [file postData:data];
+    sleep(3);
     NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
     if ([[file errorMessage] isEqualToString:@""] && [file fileId]){
         [metaData setValue:[file fileId] forKey:@"profileImageId"];
