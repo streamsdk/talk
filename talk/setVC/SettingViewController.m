@@ -493,7 +493,7 @@
     
     picker.mailComposeDelegate =self;
     [picker setSubject:@"文件分享"];
-    NSString *emailBody =[NSString stringWithFormat:@"I am using CoolChat now. Download CoolChat from apple store or google play store. My user name is %@. Add me as friend",[handle getUserID]] ;
+    NSString *emailBody =[NSString stringWithFormat:@"I am using CoolChat now. Download CoolChat from app store or google play store. My user name is %@. Add me as friend",[handle getUserID]] ;
     [picker setMessageBody:emailBody isHTML:NO];
     [self presentViewController:picker animated:YES completion:nil];
 }
@@ -502,7 +502,7 @@
     HandlerUserIdAndDateFormater *handle = [HandlerUserIdAndDateFormater sharedObject];
     MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
     picker.messageComposeDelegate =self;
-    NSString *smsBody =[NSString stringWithFormat:@"I am using CoolChat now. Download CoolChat from apple store or google play store. My user name is %@. Add me as friend",[handle getUserID]] ;
+    NSString *smsBody =[NSString stringWithFormat:@"I am using CoolChat now. Download CoolChat from app store or google play store. My user name is %@. Add me as friend",[handle getUserID]] ;
     picker.body=smsBody;
     [self presentViewController:picker animated:YES completion:nil];
 }

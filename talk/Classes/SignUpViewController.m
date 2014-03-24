@@ -205,7 +205,7 @@
         
         DownloadAvatar *downloadAvatar = [[DownloadAvatar alloc]init];
         __block NSString * error;
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"The user name is registered with the system" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"The user name has been registered with coolchat" delegate:self cancelButtonTitle:@"TRY NEW ONE" otherButtonTitles:nil, nil];
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"Adding you as a new user...";
         [self.view addSubview:HUD];
