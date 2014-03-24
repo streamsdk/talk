@@ -187,7 +187,7 @@
     if ([imageCache getTablecontentOffset:sendToID]==0) {
         [self scrollBubbleViewToBottomAnimated:YES];
     }
-
+    [self dismissKeyBoard];
 }
 -(void)SetBackground{
     

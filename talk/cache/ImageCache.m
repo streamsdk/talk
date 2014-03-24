@@ -25,6 +25,7 @@ static NSMutableDictionary * dic;
 static NSMutableDictionary*_downloadingFile;
 static NSMutableDictionary*_countDict;
 static NSMutableDictionary *_contentOffset;
+static NSMutableArray * _downVideo;
 @implementation ImageCache
 
 
@@ -49,6 +50,7 @@ static NSMutableDictionary *_contentOffset;
         _downloadingFile =[[NSMutableDictionary alloc]init];
         _countDict = [[NSMutableDictionary alloc]init];
         _contentOffset = [[NSMutableDictionary alloc]init];
+        _downVideo = [[NSMutableArray alloc]init];
     });
     
     return sharedInstance;
@@ -198,7 +200,9 @@ static NSMutableDictionary *_contentOffset;
 }
 
 -(void) saveRaedCount:(NSNumber *)count withuserID:(NSString *)userId{
-    [_countDict setObject:count forKey:userId];
+    if (userId) {
+        [_countDict setObject:count forKey:userId];
+    }
 }
 
 -(NSInteger)getReadCount:(NSString *)userId{
@@ -211,4 +215,21 @@ static NSMutableDictionary *_contentOffset;
 -(CGFloat)getTablecontentOffset:(NSString *)user{
     return [[_contentOffset objectForKey:user] floatValue];
 }
+-(void) saveDownVideo :(DownLoadVideo *)downVideo{
+    [_downVideo addObject:downVideo];
+}
+-(DownLoadVideo *)getDownVideo{
+    return [_downVideo objectAtIndex:0];
+}
+-(BOOL) downVideoArrayIsNull{
+    if ([_downVideo count]==0) {
+        return YES;
+    }else{
+        return NO;
+    }
+}
+-(void) deleteDownVideo{
+    [_downVideo removeObjectAtIndex:0];
+}
+
 @end

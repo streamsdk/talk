@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "FilesUpload.h"
 #import "NSBubbleData.h"
-
+#import "DownLoadVideo.h"
 @interface ImageCache : NSObject
 
 +(ImageCache *)sharedObject;
@@ -75,4 +75,12 @@
 -(void)saveTablecontentOffset:(CGFloat)f withUser:(NSString *)user;
 
 -(CGFloat) getTablecontentOffset:(NSString *)user;
+
+-(void) saveDownVideo :(DownLoadVideo *)downVideo;
+
+-(DownLoadVideo *)getDownVideo;
+
+-(void) deleteDownVideo;
+
+-(BOOL) downVideoArrayIsNull;
 @end
