@@ -305,6 +305,7 @@
 		0EE951FB185EA4B9003F4638 /* video1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE951CF185EA4B9003F4638 /* video1.png */; };
 		0EE951FE185EE9EC003F4638 /* UIImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE951FD185EE9EC003F4638 /* UIImageViewController.m */; };
 		0EEF277C18E027430005A741 /* DownLoadVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF277B18E027430005A741 /* DownLoadVideo.m */; };
+		0EEF277E18E047300005A741 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EEF277D18E047300005A741 /* cancel.png */; };
 		0EEFAE4E1895295500F44745 /* TearmServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEFAE4D1895295500F44745 /* TearmServiceViewController.m */; };
 		0EEFAE511895299500F44745 /* PrivacyPoolicyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEFAE501895299500F44745 /* PrivacyPoolicyViewController.m */; };
 		0EF01EBD18B4889D0012CC3F /* DownloadAvatar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF01EBC18B4889D0012CC3F /* DownloadAvatar.m */; };
@@ -840,6 +841,7 @@
 		0EE951FD185EE9EC003F4638 /* UIImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIImageViewController.m; path = Classes/UIImageViewController.m; sourceTree = "<group>"; };
 		0EEF277A18E027430005A741 /* DownLoadVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownLoadVideo.h; sourceTree = "<group>"; };
 		0EEF277B18E027430005A741 /* DownLoadVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownLoadVideo.m; sourceTree = "<group>"; };
+		0EEF277D18E047300005A741 /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel.png; sourceTree = "<group>"; };
 		0EEFAE4C1895295500F44745 /* TearmServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TearmServiceViewController.h; path = Classes/TearmServiceViewController.h; sourceTree = "<group>"; };
 		0EEFAE4D1895295500F44745 /* TearmServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TearmServiceViewController.m; path = Classes/TearmServiceViewController.m; sourceTree = "<group>"; };
 		0EEFAE4F1895299500F44745 /* PrivacyPoolicyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrivacyPoolicyViewController.h; path = setVC/PrivacyPoolicyViewController.h; sourceTree = "<group>"; };
@@ -2059,6 +2061,7 @@
 		0EE951A1185EA4B9003F4638 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0EEF277D18E047300005A741 /* cancel.png */,
 				0E423ADE18C6D8B7009D884E /* Selected.png */,
 				0E423ADF18C6D8B7009D884E /* Unselected.png */,
 				037D871A18B91B8A004B86E1 /* flash1136.png */,
@@ -2345,6 +2348,7 @@
 				0348E5ED1882C577002C7622 /* tick512.png in Resources */,
 				0E19E80C18711C5A00523232 /* Target.png in Resources */,
 				0EF01ED718B49AFF0012CC3F /* bg3.jpg in Resources */,
+				0EEF277E18E047300005A741 /* cancel.png in Resources */,
 				0ED46E1B18B329CC00312874 /* download.png in Resources */,
 				037D871918B919BE004B86E1 /* flash960.png in Resources */,
 				0345C21C189EA1BB007AB90F /* searchf.png in Resources */,
