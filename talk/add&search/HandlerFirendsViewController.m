@@ -484,7 +484,7 @@
     UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"username is not a registered user" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Yes", nil];
 
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"Loading...";
+    HUD.labelText = @"Searching User...";
     [self.view addSubview:HUD];
      __block BOOL isUserExist;
     [HUD showAnimated:YES whileExecutingBlock:^{
@@ -664,7 +664,7 @@
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * db = [[AddDB alloc]init];
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"add friend ...";
+    HUD.labelText = @"adding friend ...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
         [db updateDB:[handle getUserID] withFriendID:[friendsAddArray objectAtIndex:_button.tag] withStatus:@"friend"];
@@ -723,7 +723,7 @@
     NSString * loginName= [handler getUserID];
     NSString * string= [friendsSearchArray objectAtIndex:_button.tag];
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"send invitation...";
+    HUD.labelText = @"sending invitation...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
         STreamObject * so = [[STreamObject alloc]init];

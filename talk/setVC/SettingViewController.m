@@ -361,7 +361,7 @@
     imageview.image = avatarImg;
     [picker dismissViewControllerAnimated:YES completion:^{
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        HUD.labelText = @"uploadLoading...";
+        HUD.labelText = @"uploading...";
         [self.view addSubview:HUD];
         [HUD showAnimated:YES whileExecutingBlock:^{
             [self uploadProfileImage];

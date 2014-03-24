@@ -205,9 +205,9 @@
         
         DownloadAvatar *downloadAvatar = [[DownloadAvatar alloc]init];
         __block NSString * error;
-        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"this user name is existing in your system" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"The user name is registered with the system" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        HUD.labelText = @"Adding you as a new user, Please wait...";
+        HUD.labelText = @"Adding you as a new user...";
         [self.view addSubview:HUD];
         [HUD showAnimated:YES whileExecutingBlock:^{
             [user signUp:username withPassword:pword withMetadata:metaData];
