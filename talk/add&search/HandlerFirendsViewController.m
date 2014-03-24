@@ -125,7 +125,7 @@
         case FriendsAdd:{
             __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
             
-            HUD.labelText = @"refresh friends...";
+            HUD.labelText = @"loading...";
             [self.view addSubview:HUD];
             [HUD showAnimated:YES whileExecutingBlock:^{
                 [self loadFriends];

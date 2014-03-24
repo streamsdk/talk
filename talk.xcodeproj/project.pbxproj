@@ -2733,8 +2733,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: shuai wang (N96W62GJ82)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shuai wang (N96W62GJ82)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: shuai wang (C63799N3QU)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: shuai wang (C63799N3QU)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2752,7 +2752,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "FDDF9EB6-01C2-46F1-B896-6A8C14E4DBC1";
+				PROVISIONING_PROFILE = "564AE48F-42DF-4872-A6FD-9A184BF97723";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -2774,8 +2774,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: shuai wang (N96W62GJ82)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shuai wang (N96W62GJ82)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: shuai wang (C63799N3QU)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: shuai wang (C63799N3QU)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2786,7 +2786,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PROVISIONING_PROFILE = "FDDF9EB6-01C2-46F1-B896-6A8C14E4DBC1";
+				PROVISIONING_PROFILE = "564AE48F-42DF-4872-A6FD-9A184BF97723";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2798,8 +2798,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: shuai wang (N96W62GJ82)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shuai wang (N96W62GJ82)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: shuai wang (C63799N3QU)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: shuai wang (C63799N3QU)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/wangshuai/Desktop/talk,
@@ -2828,7 +2828,7 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "B3578245-E44A-4545-9556-253B241F491B";
+				PROVISIONING_PROFILE = "564AE48F-42DF-4872-A6FD-9A184BF97723";
 				USER_HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2840,8 +2840,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: shuai wang (N96W62GJ82)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shuai wang (N96W62GJ82)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: shuai wang (C63799N3QU)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: shuai wang (C63799N3QU)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/wangshuai/Desktop/talk,
@@ -2870,7 +2870,7 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "B3578245-E44A-4545-9556-253B241F491B";
+				PROVISIONING_PROFILE = "564AE48F-42DF-4872-A6FD-9A184BF97723";
 				USER_HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				WRAPPER_EXTENSION = app;
 			};
