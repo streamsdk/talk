@@ -498,7 +498,7 @@
     NSMutableArray * dataArray = [[NSMutableArray alloc]init];
     TalkDB * talk =[[TalkDB alloc]init];
     dataArray = [talk readInitDB:[handler getUserID] withOtherID:sendToID withCount:10];
-//    [imageCache saveRaedCount:[NSNumber numberWithInt:11] withuserID:sendToID];
+    [imageCache saveRaedCount:[NSNumber numberWithInt:([imageCache getReadCount:sendToID]+1)] withuserID:sendToID];
     bubbleData = dataArray;
     for (NSBubbleData * data in bubbleData) {
         data.delegate = self;
