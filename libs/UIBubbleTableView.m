@@ -326,6 +326,7 @@
                 activityIndicatorView.tag = 1000*indexPath.section+indexPath.row+100;
                 if (isTheFileDownloading) {
                     [activityIndicatorView startAnimating];
+                    [self checkfileManager:json withButton:downButton withActivityIndicatorView:activityIndicatorView withCell:cell];
                 }else{
                     [downButton setTitle:@"Download" forState:UIControlStateNormal];
                     [downButton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
@@ -414,20 +415,9 @@
     }
     
 }
-
--(void) downloadvideo:(UIButton *)button{
-    ImageCache * cache = [ImageCache sharedObject];
-    DownLoadVideo *_downVideo = [[DownLoadVideo alloc]init];
-    
-    UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:button.tag];
-    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+100];
-    [activityIndicatorView startAnimating];
-    NSString * jsonbody = cell.data.jsonBody;
-    NSData *jsonData = [jsonbody dataUsingEncoding:NSUTF8StringEncoding];
-    JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
-    NSDictionary *json = [decoder objectWithData:jsonData];
+-(BOOL)checkfileManager:(NSDictionary *)json withButton:(UIButton *)button withActivityIndicatorView: (UIActivityIndicatorView *)activityIndicatorView withCell:(UIBubbleTableViewCell *)cell {
     NSString *fileId = [json objectForKey:@"fileId"];
-    NSString *timeId = [json objectForKey:@"id"];
+    
     NSString *tid = [json objectForKey:@"tid"];
     NSString * fromId =[json objectForKey:@"fromId"];
     NSString *duration = [json objectForKey:@"duration"];
@@ -455,14 +445,31 @@
         if (cell.data.fileType == FileDisappear){
             [cell.data.videobutton setTitle:@"Click to view" forState:UIControlStateNormal];
             [cell.data.videobutton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-//            [cell.data.videobutton addTarget:self action:@selector(playerVideo:) forControlEvents:UIControlEventTouchUpInside];
+            //            [cell.data.videobutton addTarget:self action:@selector(playerVideo:) forControlEvents:UIControlEventTouchUpInside];
             [activityIndicatorView stopAnimating];
         }else{
             button.hidden = YES;
             [activityIndicatorView stopAnimating];
-//            [self playerVideo:button];
+            //            [self playerVideo:button];
         }
-    }else{
+        return YES;
+    }
+        return NO;
+}
+-(void) downloadvideo:(UIButton *)button{
+    ImageCache * cache = [ImageCache sharedObject];
+    DownLoadVideo *_downVideo = [[DownLoadVideo alloc]init];
+    
+    UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:button.tag];
+    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+100];
+    [activityIndicatorView startAnimating];
+    NSString * jsonbody = cell.data.jsonBody;
+    NSData *jsonData = [jsonbody dataUsingEncoding:NSUTF8StringEncoding];
+    JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+    NSDictionary *json = [decoder objectWithData:jsonData];
+    NSString *timeId = [json objectForKey:@"id"];
+    BOOL fileExist =[self checkfileManager:json withButton:button withActivityIndicatorView:activityIndicatorView withCell:cell];
+    if (!fileExist){
         [cache addDownloadingFile:timeId withTag:[NSNumber numberWithInt:button.tag]];
         if (cell.data.fileType == FileVideo){
             button.hidden = YES;
@@ -530,6 +537,7 @@
                                    [talkDb updateDB:cell.data.date withContent:jsonBody];
                                    cell.data._videoPath = filepath;
                                    cell.data.jsonBody = jsonBody;
+                                   [self reloadData];
                                    [activityIndicatorView stopAnimating];
                                    [cache removeDownloadingFile:timeId];
                                } else{
@@ -543,6 +551,7 @@
                                        [button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
                                        [button addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
                                    }
+                                   [self reloadData];
                                    [activityIndicatorView stopAnimating];
                                    [cache removeDownloadingFile:timeId];
                                }
