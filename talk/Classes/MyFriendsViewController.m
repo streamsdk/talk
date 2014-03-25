@@ -262,9 +262,6 @@
 -(void) connect {
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     if (![handle getUserID]) return;
-    [self startDownload];
-    [self readHistory];
-    [self startUpload];
     
     [self setMessagesProtocol:mainVC];
     [self setUploadProtocol:mainVC];
@@ -391,6 +388,9 @@
 - (void)didAuthenticate{
     NSLog(@"");
 //    self.title = @"reading...";
+    [self startDownload];
+    [self readHistory];
+    [self startUpload];
 }
 
 
