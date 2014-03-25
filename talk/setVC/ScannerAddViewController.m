@@ -86,8 +86,12 @@
     [self.view addSubview:backButton];
 }
 -(void)back{
-    [[[[[UIApplication sharedApplication]delegate] window]rootViewController]dismissViewControllerAnimated:NO completion:NULL];
+    [self performSelectorInBackground:@selector(dismiss) withObject:nil];
 }
+-(void) dismiss{
+    [[[[[UIApplication sharedApplication]delegate]window]rootViewController]dismissViewControllerAnimated:NO completion:NULL];
+}
+
 -(void)addFriends {
     NSString * str;
     if (status)     str = [NSString stringWithFormat:@"Do you want to add %@ as a friend?",name];

@@ -17,6 +17,7 @@
 @interface ScannerViewController ()
 {
     UIAlertView * alert;
+    UIActivityIndicatorView * activityIndicatorView;
 }
 @property (nonatomic, strong) ZXCapture *capture;
 
@@ -61,8 +62,19 @@
     
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
+    
+    activityIndicatorView = [[UIActivityIndicatorView alloc]init];
+    [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+    activityIndicatorView.frame = CGRectMake(160,50, 20, 20);
+    [activityIndicatorView setCenter:CGPointMake(160, 50)];
+    [self.view addSubview:activityIndicatorView];
+    [activityIndicatorView startAnimating];
 }
 -(void)back{
+    [self performSelectorInBackground:@selector(dismiss) withObject:nil];
+}
+-(void) dismiss{
+    [activityIndicatorView stopAnimating];
     [[[[[UIApplication sharedApplication]delegate]window]rootViewController]dismissViewControllerAnimated:NO completion:NULL];
 }
 - (void)displayForResult:(ZXResult*)result {
@@ -153,9 +165,16 @@
         [alert show];
     }else{
         STreamUser *user =[[STreamUser alloc]init];
-        if (![user searchUser:name]) return;
+        if (![user searchUser:name]){
+            alert = [[UIAlertView alloc]initWithTitle:@"" message:@"username is not a registered user！" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(performDismiss:) userInfo:nil repeats:NO];
+            [activityIndicatorView stopAnimating];
+            [alert show];
+            return;
+        }
         [addView setName:name];
         [addView setStatus:status];
+        [activityIndicatorView stopAnimating];
         [[[[[UIApplication sharedApplication]delegate] window] rootViewController]  presentViewController:addView animated:NO completion:NULL];
     }
  

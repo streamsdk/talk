@@ -484,7 +484,7 @@
     STreamUser * user = [[STreamUser alloc]init];
     NSString * loginName = [handler getUserID];
     
-    UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"No results found" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Yes", nil];
+    UIAlertView * alertview= [[UIAlertView alloc]initWithTitle:@"" message:@"username is not a registered user" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Yes", nil];
 
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"Loading...";
