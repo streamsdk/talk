@@ -265,6 +265,10 @@
     
     [self setMessagesProtocol:mainVC];
     [self setUploadProtocol:mainVC];
+    
+    [self startDownload];
+    [self readHistory];
+    [self startUpload];
     STreamXMPP *con = [STreamXMPP sharedObject];
     [con setXmppDelegate:self];
     if (![con connected]){
@@ -388,9 +392,9 @@
 - (void)didAuthenticate{
     NSLog(@"");
 //    self.title = @"reading...";
-    [self startDownload];
-    [self readHistory];
-    [self startUpload];
+//    [self startDownload];
+//    [self readHistory];
+//    [self startUpload];
 }
 
 
@@ -573,7 +577,7 @@
             [friendDict setObject:photoPath forKey:@"photo"];
             [jsonDic setObject:friendDict forKey:fromUser];
             path = photoPath;
-            jsBody = body;
+            jsBody = jsonBody;
         }else if ([type isEqualToString:@"video"]){
             NSString * timeId = [json objectForKey:@"id"];
             NSString * tid = [json objectForKey:@"tid"];
@@ -606,7 +610,7 @@
             [jsondict setObject:timeId forKey:@"id"];
             jsBody = [jsondict JSONString];
         }else if ([type isEqualToString:@"voice"]){
-            
+            NSString * fileId = [json objectForKey:@"fileId"];
             NSString *duration = [json objectForKey:@"duration"];
             NSMutableDictionary * friendsDict = [NSMutableDictionary dictionary];
             NSString * recordFilePath = [[handler getPath] stringByAppendingString:@".aac"];
