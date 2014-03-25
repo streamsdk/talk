@@ -528,6 +528,8 @@
 		0EE951F8185EA4B9003F4638 /* selectAdd.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE951CC185EA4B9003F4638 /* selectAdd.png */; };
 		0EE951FB185EA4B9003F4638 /* video1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE951CF185EA4B9003F4638 /* video1.png */; };
 		0EE951FE185EE9EC003F4638 /* UIImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE951FD185EE9EC003F4638 /* UIImageViewController.m */; };
+		0EEA49D918E122C800B20922 /* IphoneScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEA49D518E122C800B20922 /* IphoneScreen.m */; };
+		0EEA49DA18E122C800B20922 /* ImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEA49D718E122C800B20922 /* ImageUtil.m */; };
 		0EEFAE4E1895295500F44745 /* TearmServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEFAE4D1895295500F44745 /* TearmServiceViewController.m */; };
 		0EEFAE511895299500F44745 /* PrivacyPoolicyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEFAE501895299500F44745 /* PrivacyPoolicyViewController.m */; };
 		0EF01EBD18B4889D0012CC3F /* DownloadAvatar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF01EBC18B4889D0012CC3F /* DownloadAvatar.m */; };
@@ -1514,6 +1516,11 @@
 		0EE951CF185EA4B9003F4638 /* video1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video1.png; sourceTree = "<group>"; };
 		0EE951FC185EE9EC003F4638 /* UIImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIImageViewController.h; path = Classes/UIImageViewController.h; sourceTree = "<group>"; };
 		0EE951FD185EE9EC003F4638 /* UIImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIImageViewController.m; path = Classes/UIImageViewController.m; sourceTree = "<group>"; };
+		0EEA49D418E122C800B20922 /* IphoneScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IphoneScreen.h; sourceTree = "<group>"; };
+		0EEA49D518E122C800B20922 /* IphoneScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IphoneScreen.m; sourceTree = "<group>"; };
+		0EEA49D618E122C800B20922 /* ImageUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageUtil.h; sourceTree = "<group>"; };
+		0EEA49D718E122C800B20922 /* ImageUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageUtil.m; sourceTree = "<group>"; };
+		0EEA49D818E122C800B20922 /* ColorMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorMatrix.h; sourceTree = "<group>"; };
 		0EEFAE4C1895295500F44745 /* TearmServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TearmServiceViewController.h; path = Classes/TearmServiceViewController.h; sourceTree = "<group>"; };
 		0EEFAE4D1895295500F44745 /* TearmServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TearmServiceViewController.m; path = Classes/TearmServiceViewController.m; sourceTree = "<group>"; };
 		0EEFAE4F1895299500F44745 /* PrivacyPoolicyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrivacyPoolicyViewController.h; path = setVC/PrivacyPoolicyViewController.h; sourceTree = "<group>"; };
@@ -1712,6 +1719,7 @@
 				0EF5A015185585C900B4EDE7 /* login&signUp */,
 				0EF79DFC18583A9E00EB8A64 /* setVC */,
 				0EF79DF018580D0E00EB8A64 /* IconSort */,
+				0EEA49D318E1229500B20922 /* Filter */,
 				0E4B13D9187CF1650070752B /* imageContoller */,
 				0E1060CE18CAE98600DFBA3A /* customAlertview */,
 				0E2918D11859579000AA21B2 /* friendsSort */,
@@ -3526,6 +3534,18 @@
 			path = images;
 			sourceTree = "<group>";
 		};
+		0EEA49D318E1229500B20922 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				0EEA49D418E122C800B20922 /* IphoneScreen.h */,
+				0EEA49D518E122C800B20922 /* IphoneScreen.m */,
+				0EEA49D618E122C800B20922 /* ImageUtil.h */,
+				0EEA49D718E122C800B20922 /* ImageUtil.m */,
+				0EEA49D818E122C800B20922 /* ColorMatrix.h */,
+			);
+			name = Filter;
+			sourceTree = "<group>";
+		};
 		0EF01EC718B49AFF0012CC3F /* backgroundImages */ = {
 			isa = PBXGroup;
 			children = (
@@ -3936,6 +3956,7 @@
 				0E891A9B18D2DF57006430FE /* ZXURLTOResultParser.m in Sources */,
 				03D9C08618145E410039118F /* XMPPPubSub.m in Sources */,
 				0E891AD318D2DF57006430FE /* ZXQRCodeMultiReader.m in Sources */,
+				0EEA49DA18E122C800B20922 /* ImageUtil.m in Sources */,
 				0E891AD018D2DF57006430FE /* ZXMaxiCodeReader.m in Sources */,
 				0E891A8218D2DF57006430FE /* ZXBizcardResultParser.m in Sources */,
 				0E891AA618D2DF57006430FE /* ZXWhiteRectangleDetector.m in Sources */,
@@ -3973,6 +3994,7 @@
 				0E891AC118D2DF57006430FE /* ZXDataMatrixErrorCorrection.m in Sources */,
 				03D9C0F91814623B0039118F /* STreamXMPP.m in Sources */,
 				03D9BF7718145E370039118F /* XMPPMessage.m in Sources */,
+				0EEA49D918E122C800B20922 /* IphoneScreen.m in Sources */,
 				0E084793182736BC00350741 /* UIBubbleTableViewCell.m in Sources */,
 				0E891B2918D2DF57006430FE /* ZXMode.m in Sources */,
 				0E891AA418D2DF57006430FE /* ZXMathUtils.m in Sources */,
