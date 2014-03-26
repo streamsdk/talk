@@ -40,6 +40,7 @@
 #import "CopyPhotoHandler.h"
 #import "ChatBackGround.h"
 #import "CopyDB.h"
+#import "MapViewController.h"
 
 #define BUTTON_TAG 20000
 #define TOOLBARTAG		200
@@ -1100,6 +1101,11 @@
     if (buttonTag == 2) {
         [self addVideo];
         [self scrollBubbleViewToBottomAnimated:YES];
+    }
+    if (buttonTag == 3) {
+        [self scrollBubbleViewToBottomAnimated:YES];
+        MapViewController *map = [[MapViewController alloc]init];
+        [self presentViewController:map animated:NO completion:NULL];
     }
         
 }

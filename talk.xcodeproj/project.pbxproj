@@ -552,6 +552,8 @@
 		0EF79DF318580D9100EB8A64 /* IconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF79DF218580D9100EB8A64 /* IconView.m */; };
 		0EF79DFF18583ACF00EB8A64 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF79DFE18583ACF00EB8A64 /* SettingViewController.m */; };
 		0EF79E1218584CAF00EB8A64 /* BackData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF79E1118584CAF00EB8A64 /* BackData.m */; };
+		0EF8C24B18E279B9001BFD1B /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF8C24A18E279B9001BFD1B /* MapViewController.m */; };
+		0EF8C24D18E27B33001BFD1B /* map.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF8C24C18E27B33001BFD1B /* map.png */; };
 		0EF9B63E186EAAA1003DD866 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF9B63D186EAAA1003DD866 /* QuartzCore.framework */; };
 		0EFAD95B18682AF2001F0DED /* HandlerUserIdAndDateFormater.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */; };
 		0EFADBA318CC9014007724A6 /* CustomTextFiled.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFADBA218CC9014007724A6 /* CustomTextFiled.m */; };
@@ -1553,6 +1555,9 @@
 		0EF79DFE18583ACF00EB8A64 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingViewController.m; path = setVC/SettingViewController.m; sourceTree = "<group>"; };
 		0EF79E1018584CAF00EB8A64 /* BackData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BackData.h; path = setVC/BackData.h; sourceTree = "<group>"; };
 		0EF79E1118584CAF00EB8A64 /* BackData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BackData.m; path = setVC/BackData.m; sourceTree = "<group>"; };
+		0EF8C24918E279B9001BFD1B /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapViewController.h; path = map/MapViewController.h; sourceTree = "<group>"; };
+		0EF8C24A18E279B9001BFD1B /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapViewController.m; path = map/MapViewController.m; sourceTree = "<group>"; };
+		0EF8C24C18E27B33001BFD1B /* map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map.png; sourceTree = "<group>"; };
 		0EF9B63D186EAAA1003DD866 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0EFAD95918682AF2001F0DED /* HandlerUserIdAndDateFormater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HandlerUserIdAndDateFormater.h; path = cache/HandlerUserIdAndDateFormater.h; sourceTree = "<group>"; };
 		0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HandlerUserIdAndDateFormater.m; path = cache/HandlerUserIdAndDateFormater.m; sourceTree = "<group>"; };
@@ -1721,6 +1726,7 @@
 				0EF79DF018580D0E00EB8A64 /* IconSort */,
 				0EEA49D318E1229500B20922 /* Filter */,
 				0E4B13D9187CF1650070752B /* imageContoller */,
+				0EF8C24818E2799C001BFD1B /* map */,
 				0E1060CE18CAE98600DFBA3A /* customAlertview */,
 				0E2918D11859579000AA21B2 /* friendsSort */,
 				0EE95194185EA47D003F4638 /* search */,
@@ -3444,6 +3450,7 @@
 		0EE951A1185EA4B9003F4638 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0EF8C24C18E27B33001BFD1B /* map.png */,
 				0E891B5718D300BF006430FE /* cancel.png */,
 				0E423ADE18C6D8B7009D884E /* Selected.png */,
 				0E423ADF18C6D8B7009D884E /* Unselected.png */,
@@ -3620,6 +3627,15 @@
 				0EF79E1118584CAF00EB8A64 /* BackData.m */,
 			);
 			name = setVC;
+			sourceTree = "<group>";
+		};
+		0EF8C24818E2799C001BFD1B /* map */ = {
+			isa = PBXGroup;
+			children = (
+				0EF8C24918E279B9001BFD1B /* MapViewController.h */,
+				0EF8C24A18E279B9001BFD1B /* MapViewController.m */,
+			);
+			name = map;
 			sourceTree = "<group>";
 		};
 		44A80E99183129E2006069DE /* Emoji-master */ = {
@@ -3830,6 +3846,7 @@
 				0ED8ECA018288DC400C84741 /* black_bg_ip5@2x.png in Resources */,
 				0EE951DD185EA4B9003F4638 /* bubbleSomeone.png in Resources */,
 				030D10D0186D344700910292 /* camera_icon150.png in Resources */,
+				0EF8C24D18E27B33001BFD1B /* map.png in Resources */,
 				0E3C3C9A188A1632003D43EB /* selectcolors.png in Resources */,
 				0EF01ED418B49AFF0012CC3F /* bg10.png in Resources */,
 				0EE951F8185EA4B9003F4638 /* selectAdd.png in Resources */,
@@ -4188,6 +4205,7 @@
 				0E891AAA18D2DF57006430FE /* ZXReedSolomonEncoder.m in Sources */,
 				0E891AE718D2DF57006430FE /* ZXFieldParser.m in Sources */,
 				0E891AE418D2DF57006430FE /* ZXDecodedInformation.m in Sources */,
+				0EF8C24B18E279B9001BFD1B /* MapViewController.m in Sources */,
 				03D9C0E218145E510039118F /* GCDAsyncSocket.m in Sources */,
 				0E891AF918D2DF57006430FE /* ZXCode93Reader.m in Sources */,
 				0E891B0F18D2DF57006430FE /* ZXPDF417ECErrorCorrection.m in Sources */,
