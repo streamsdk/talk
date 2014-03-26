@@ -360,6 +360,43 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     return [[NSBubbleData alloc] initWithImage:image  withTime:time withType:video date:date type:type withVidePath:videoPath withJsonBody:body];
 #endif
 }
+
+#pragma mark - Custom map
+- (id)initWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude date:(NSDate *)date type:(NSBubbleType)type{
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,80, 80)];
+    imageView.layer.cornerRadius = 5.0;
+    imageView.layer.masksToBounds = YES;
+    imageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tappressGesutre=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(toMap)];
+    tappressGesutre.numberOfTouchesRequired=1;
+    [imageView addGestureRecognizer:tappressGesutre];
+    
+    UIImageView *mapImage= [[UIImageView alloc] initWithFrame:CGRectMake(10, 0,60, 60)];
+    mapImage .image = [UIImage imageNamed:@"map.png"];
+    mapImage.layer.cornerRadius = 5.0;
+    mapImage.layer.masksToBounds = YES;
+    mapImage.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tappressGesutre1=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(toMap)];
+    tappressGesutre1.numberOfTouchesRequired=1;
+    [mapImage addGestureRecognizer:tappressGesutre1];
+    [imageView addSubview:mapImage];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, 80, 30)];
+    label.backgroundColor = [UIColor clearColor];
+    label.numberOfLines = 2;
+    label.text = address;
+    label.font = [UIFont systemFontOfSize:12];
+    [imageView addSubview:label];
+    UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
+    return [self initWithView:imageView date:date type:type  withFileType:FileMessage insets:insets];
+}
++ (id)dataWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude date:(NSDate *)date type:(NSBubbleType)type{
+#if !__has_feature(objc_arc)
+    return [[[NSBubbleData alloc] initWithAddress:address latitude:latitude longitude:longitude date:date type:type]autorelease];
+#else
+    return [[NSBubbleData alloc] initWithAddress:address latitude:latitude longitude:longitude date:date type:type];
+#endif
+}
+
 #pragma mark - Custom view bubble
 
 + (id)dataWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type withFileType:(FileType)filetype insets:(UIEdgeInsets)insets
@@ -456,6 +493,10 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
             [self.delegate copyVideo:_image withdate:_date withView:imageview withPath:_videoPath withBubbleType:NO];
         }
     }
+}
+#pragma mark - map
+-(void) toMap {
+    NSLog(@"toMap");
 }
 #pragma mark scaled image
 -(UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size {

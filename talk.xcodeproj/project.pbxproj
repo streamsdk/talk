@@ -554,6 +554,7 @@
 		0EF79E1218584CAF00EB8A64 /* BackData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF79E1118584CAF00EB8A64 /* BackData.m */; };
 		0EF8C24B18E279B9001BFD1B /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF8C24A18E279B9001BFD1B /* MapViewController.m */; };
 		0EF8C24D18E27B33001BFD1B /* map.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF8C24C18E27B33001BFD1B /* map.png */; };
+		0EF8C25018E29A7C001BFD1B /* Maphandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF8C24F18E29A7C001BFD1B /* Maphandler.m */; };
 		0EF9B63E186EAAA1003DD866 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF9B63D186EAAA1003DD866 /* QuartzCore.framework */; };
 		0EFAD95B18682AF2001F0DED /* HandlerUserIdAndDateFormater.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */; };
 		0EFADBA318CC9014007724A6 /* CustomTextFiled.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFADBA218CC9014007724A6 /* CustomTextFiled.m */; };
@@ -1558,6 +1559,8 @@
 		0EF8C24918E279B9001BFD1B /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapViewController.h; path = map/MapViewController.h; sourceTree = "<group>"; };
 		0EF8C24A18E279B9001BFD1B /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapViewController.m; path = map/MapViewController.m; sourceTree = "<group>"; };
 		0EF8C24C18E27B33001BFD1B /* map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map.png; sourceTree = "<group>"; };
+		0EF8C24E18E29A7C001BFD1B /* Maphandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Maphandler.h; path = handler/Maphandler.h; sourceTree = "<group>"; };
+		0EF8C24F18E29A7C001BFD1B /* Maphandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Maphandler.m; path = handler/Maphandler.m; sourceTree = "<group>"; };
 		0EF9B63D186EAAA1003DD866 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0EFAD95918682AF2001F0DED /* HandlerUserIdAndDateFormater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HandlerUserIdAndDateFormater.h; path = cache/HandlerUserIdAndDateFormater.h; sourceTree = "<group>"; };
 		0EFAD95A18682AF2001F0DED /* HandlerUserIdAndDateFormater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HandlerUserIdAndDateFormater.m; path = cache/HandlerUserIdAndDateFormater.m; sourceTree = "<group>"; };
@@ -2499,6 +2502,8 @@
 				03F50C691867B4EB00E08C22 /* VideoHandler.m */,
 				03F50C6B1867B50000E08C22 /* MessageHandler.h */,
 				03F50C6C1867B50000E08C22 /* MessageHandler.m */,
+				0EF8C24E18E29A7C001BFD1B /* Maphandler.h */,
+				0EF8C24F18E29A7C001BFD1B /* Maphandler.m */,
 				03F50C6E1867B54300E08C22 /* AudioHandler.h */,
 				03F50C6F1867B54300E08C22 /* AudioHandler.m */,
 				0E1060D218CB0F0300DFBA3A /* CopyPhotoHandler.h */,
@@ -4267,6 +4272,7 @@
 				03F5A18F1867376400CD60FD /* PhotoHandler.m in Sources */,
 				03D9C05618145E410039118F /* XMPPProcessOne.m in Sources */,
 				03D9BF7518145E370039118F /* XMPPIQ.m in Sources */,
+				0EF8C25018E29A7C001BFD1B /* Maphandler.m in Sources */,
 				0E891A9618D2DF57006430FE /* ZXTelParsedResult.m in Sources */,
 				03D9BF5018145E270039118F /* XMPPAnonymousAuthentication.m in Sources */,
 				0E891B4118D2DF57006430FE /* ZXEncodeHints.m in Sources */,

@@ -40,7 +40,7 @@
 #import "CopyPhotoHandler.h"
 #import "ChatBackGround.h"
 #import "CopyDB.h"
-#import "MapViewController.h"
+#import "Maphandler.h"
 
 #define BUTTON_TAG 20000
 #define TOOLBARTAG		200
@@ -63,6 +63,7 @@
     NSData *myData;
     NSData * otherData;
 
+    Maphandler *mapHandler;
     PhotoHandler *photoHandler;
     VideoHandler *videoHandler;
     MessageHandler *messageHandler;
@@ -293,6 +294,8 @@
     
     copyPhotoHandler = [[CopyPhotoHandler alloc]init];
     
+    mapHandler = [[Maphandler alloc]init];
+    
     _deleteBackview = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-40, self.view.frame.size.width,40)];
     _deleteBackview.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_deleteBackview];
@@ -489,10 +492,9 @@
     UIGraphicsEndImageContext();
     return newImage;
 }
--(void) sendPhoto :(NSData *)data withTime:(NSString *)time{
+-(void)getBubbleData{
     [self dismissKeyBoard];
     ImageCache *imageCache = [ImageCache sharedObject];
-    
     HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
     NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[handler getUserID]];
     NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
@@ -501,21 +503,37 @@
     NSMutableArray * dataArray = [[NSMutableArray alloc]init];
     TalkDB * talk =[[TalkDB alloc]init];
     dataArray = [talk readInitDB:[handler getUserID] withOtherID:sendToID withCount:10];
-//    [imageCache saveRaedCount:[NSNumber numberWithInt:11] withuserID:sendToID];
+    [imageCache saveRaedCount:[NSNumber numberWithInt:([imageCache getReadCount:sendToID]+1)] withuserID:sendToID];
     bubbleData = dataArray;
     for (NSBubbleData * data in bubbleData) {
         data.delegate = self;
     }
-    if (sendToID) {
+}
+-(void) sendPhoto :(NSData *)data withTime:(NSString *)time{
+    [self getBubbleData];
+     ImageCache *imageCache = [ImageCache sharedObject];
+    if ([imageCache getFriendID]) {
         [photoHandler setController:self];
-        [photoHandler sendPhoto:data forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:sendToID withTime:time];
+        [photoHandler sendPhoto:data forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:[imageCache getFriendID] withTime:time];
     }
     
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
-    [imageCache saveTablecontentOffset:0 withUser:sendToID];
+    [imageCache saveTablecontentOffset:0 withUser:[imageCache getFriendID]];
 }
+#pragma mark --- sendlocation
 
+-(void) sendCurrendLocation:(NSString *)address latitude:(float)latitude longitude:(float)longitude{
+    [self getBubbleData];
+    ImageCache *imageCache = [ImageCache sharedObject];
+    if ([imageCache getFriendID]) {
+        [mapHandler sendAddress:address latitude:latitude longitude:longitude forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:[imageCache getFriendID]];
+    }
+    
+    [bubbleTableView reloadData];
+    [self scrollBubbleViewToBottomAnimated:YES];
+    [imageCache saveTablecontentOffset:0 withUser:[imageCache getFriendID]];
+}
 -(void) sendVideo:(NSString *)time {
     ImageCache *imageCache = [ImageCache sharedObject];
     NSString *sendToID =[imageCache getFriendID];

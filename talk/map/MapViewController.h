@@ -10,6 +10,11 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
+@protocol SendLocationDelegate <NSObject>
+
+-(void)sendCurrendLocation:(NSString *)address latitude:(float)latitude longitude:(float)longitude;
+@end
+
 @interface MapViewController : UIViewController<MKMapViewDelegate,CLLocationManagerDelegate>
 
 @property(nonatomic,strong)MKMapView *myMapView;
@@ -18,4 +23,5 @@
 
 @property (nonatomic,strong) CLGeocoder *myGeoCoder;
 
+@property (nonatomic)id <SendLocationDelegate> sendLocationDelegate;
 @end

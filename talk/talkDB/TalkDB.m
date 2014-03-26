@@ -155,6 +155,15 @@
                             if (myData)
                                 bubble.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:bubble];
+                        }else if ([key isEqualToString:@"address"]){
+                            NSMutableDictionary * addressDict = [chatDic objectForKey:@"address"];
+                            NSString * address = [addressDict objectForKey:@"address"];
+                            NSString * latitude = [addressDict objectForKey:@"latitude"];
+                            NSString * longitude = [addressDict objectForKey:@"longitude"];
+                            NSBubbleData *bubble = [NSBubbleData dataWithAddress:address latitude:[latitude floatValue] longitude:[longitude floatValue] date:date type:BubbleTypeMine];
+                            if (myData)
+                                bubble.avatar = [UIImage imageWithData:myData];
+                            [dataArray addObject:bubble];
                         }
 
                     }

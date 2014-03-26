@@ -7,15 +7,23 @@
 //
 
 #import "MapViewController.h"
+#import "MainController.h"
 
 @interface MapViewController ()
-
+{
+    float latitude;
+    float longitude;
+    __block NSString * address;
+    MainController * mainVC;
+    UILabel *label ;
+}
 @end
 
 @implementation MapViewController
 @synthesize myMapView;
 @synthesize myGeoCoder;
 @synthesize myLocationManager;
+@synthesize sendLocationDelegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -28,9 +36,19 @@
 -(void) back {
     [self dismissViewControllerAnimated:NO completion:NULL];
 }
+-(void)sendCurrentLocation {
+    [self setSendLocationDelegate:mainVC];
+    [sendLocationDelegate sendCurrendLocation:address latitude:latitude longitude:longitude];
+    [self performSelectorInBackground:@selector(dismissMap) withObject:nil];
+    
+}
+-(void) dismissMap {
+    [self dismissViewControllerAnimated:NO completion:NULL];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    mainVC = [[MainController alloc]init];
 	// Do any additional setup after loading the view.
     UIView * topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 70)];
     topView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
@@ -39,10 +57,20 @@
     CGRect frameBack = CGRectMake(10, 25, 40, 40);
     [backButton setFrame:frameBack];
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
-    
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     [topView addSubview:backButton];
-    
+    //forward.png
+    UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [sendButton setFrame:CGRectMake(self.view.frame.size.width-50, 25, 40, 40)];
+    [sendButton setImage:[UIImage imageNamed:@"forward.png"] forState:UIControlStateNormal];
+    [sendButton addTarget:self action:@selector(sendCurrentLocation) forControlEvents:UIControlEventTouchUpInside];
+    [topView addSubview:sendButton];
+    label = [[UILabel alloc] initWithFrame:CGRectMake(50, 25, self.view.frame.size.width-100, 40)];
+    label.backgroundColor = [UIColor clearColor];
+    label.text = address;
+    label.font = [UIFont systemFontOfSize:12];
+    [topView addSubview:label];
+
     myMapView = [[MKMapView alloc]init];
     [myMapView setFrame:CGRectMake(0, 70, self.view.frame.size.width, self.view.frame.size.height-70)];
     [self.view addSubview:myMapView];
@@ -69,14 +97,20 @@
     point.title = @"当前位置";
     point.subtitle = @"";//设置一些显示的信息
     [myMapView addAnnotation:point];
-    float latitude = userLocation.location.coordinate.latitude;
-    float longitude =userLocation.location.coordinate.longitude;
+    latitude = userLocation.location.coordinate.latitude;
+    longitude =userLocation.location.coordinate.longitude;
     NSLog(@"latitude=%f,longitude= %f",latitude,longitude);
+//    mapView.showsUserLocation = NO;
     [myGeoCoder reverseGeocodeLocation:userLocation.location
                      completionHandler:^(NSArray *placemarks, NSError *error){
                          if (error==nil) {
                              CLPlacemark *placemark= [placemarks lastObject];
                              NSString *locatedAt = [[placemark.addressDictionary valueForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
+                             address = locatedAt;
+                             if (address) {
+                                 mapView.showsUserLocation = NO;
+                                 label.text = address;
+                             }
                              NSLog(@"I am currently at %@",locatedAt);
 //                             NSDictionary *dict = placemark.addressDictionary;
 //                             NSLog(@"1%@,2%@,3%@,4%@,5%@,6%@,7%@,8%@,9%@,10%@,11%@,12%@,13%@",placemark.name,placemark.thoroughfare,placemark.subThoroughfare,placemark.locality,placemark.subLocality,placemark.administrativeArea,placemark.subAdministrativeArea,placemark.postalCode,placemark.ISOcountryCode,placemark.country,placemark.inlandWater,placemark.ocean,placemark.areasOfInterest);
