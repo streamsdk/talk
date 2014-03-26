@@ -55,45 +55,43 @@
         [myMapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
     }
     
-    myLocationManager = [[CLLocationManager alloc] init];
-	[myLocationManager setDelegate:self];
-	[myLocationManager setDesiredAccuracy:kCLLocationAccuracyBest];
-	[myLocationManager startUpdatingLocation];
+//    myLocationManager = [[CLLocationManager alloc] init];
+//	[myLocationManager setDelegate:self];
+//	[myLocationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+//	[myLocationManager startUpdatingLocation];
     myGeoCoder = [[CLGeocoder alloc]init];
 }
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
-    NSLog(@"%d", [locations count]);
-    CLLocation *currentLocation = [locations lastObject];
-    
-    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(currentLocation.coordinate, 3000, 3000);
-   [myMapView setRegion:[myMapView regionThatFits:viewRegion] animated:YES];
+-(void) mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 3000, 3000);
+    [myMapView setRegion:[myMapView regionThatFits:viewRegion] animated:YES];
     MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
-    point.coordinate = currentLocation.coordinate;
+    point.coordinate = userLocation.coordinate;
     point.title = @"当前位置";
     point.subtitle = @"";//设置一些显示的信息
     [myMapView addAnnotation:point];
-    manager.delegate = nil;
-    [manager stopUpdatingLocation];
-    /*[myGeoCoder reverseGeocodeLocation:currentLocation
+    float latitude = userLocation.location.coordinate.latitude;
+    float longitude =userLocation.location.coordinate.longitude;
+    NSLog(@"latitude=%f,longitude= %f",latitude,longitude);
+    [myGeoCoder reverseGeocodeLocation:userLocation.location
                      completionHandler:^(NSArray *placemarks, NSError *error){
                          if (error==nil) {
                              CLPlacemark *placemark= [placemarks lastObject];
+                             NSString *locatedAt = [[placemark.addressDictionary valueForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
+                             NSLog(@"I am currently at %@",locatedAt);
 //                             NSDictionary *dict = placemark.addressDictionary;
-                             //                         NSLog(@"%@,%@,%@,%@,%@,%@,%@,%@,%@,%@,%@",placemark.name,placemark.thoroughfare,placemark.subThoroughfare,placemark.locality,placemark.subLocality,placemark.administrativeArea,placemark.subAdministrativeArea,placemark.postalCode,placemark.ISOcountryCode,placemark.country,placemark.inlandWater,placemark.ocean,placemark.areasOfInterest);
+//                             NSLog(@"1%@,2%@,3%@,4%@,5%@,6%@,7%@,8%@,9%@,10%@,11%@,12%@,13%@",placemark.name,placemark.thoroughfare,placemark.subThoroughfare,placemark.locality,placemark.subLocality,placemark.administrativeArea,placemark.subAdministrativeArea,placemark.postalCode,placemark.ISOcountryCode,placemark.country,placemark.inlandWater,placemark.ocean,placemark.areasOfInterest);
                              point.title = @"当前位置";
-                             point.subtitle = placemark.name;
+                             point.subtitle = locatedAt;
                          }else{
-                             dispatch_async(dispatch_get_main_queue(), ^{
-                                 UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Error" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
-                                 [alert show];
-                             });
+//                             dispatch_async(dispatch_get_main_queue(), ^{
+//                                 UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Error" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+//                                 [alert show];
+//                             });
                          }
                          
-                     }];*/
-    
-
-    
+                     }];
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
