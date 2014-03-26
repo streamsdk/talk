@@ -266,9 +266,9 @@
     [self setMessagesProtocol:mainVC];
     [self setUploadProtocol:mainVC];
     
-    [self startDownload];
-    [self readHistory];
-    [self startUpload];
+//    [self startDownload];
+//    [self readHistory];
+//    [self startUpload];
     STreamXMPP *con = [STreamXMPP sharedObject];
     [con setXmppDelegate:self];
     if (![con connected]){
@@ -392,9 +392,9 @@
 - (void)didAuthenticate{
     NSLog(@"");
 //    self.title = @"reading...";
-//    [self startDownload];
-//    [self readHistory];
-//    [self startUpload];
+    [self startDownload];
+    [self readHistory];
+    [self startUpload];
 }
 
 
