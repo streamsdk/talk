@@ -37,8 +37,53 @@
     [self dismissViewControllerAnimated:NO completion:NULL];
 }
 -(void)sendCurrentLocation {
-    [self setSendLocationDelegate:mainVC];
-    [sendLocationDelegate sendCurrendLocation:address latitude:latitude longitude:longitude];
+    if (!address) address = @"I am currently at...";
+    MKMapSnapshotOptions *options = [[MKMapSnapshotOptions alloc] init];
+    options.region = myMapView.region;
+    options.scale = [UIScreen mainScreen].scale;
+    options.size = self.myMapView.frame.size;
+    /*MKMapSnapshotter *snapshotter = [[MKMapSnapshotter alloc] initWithOptions:options];
+    [snapshotter startWithCompletionHandler:^(MKMapSnapshot *snapshot, NSError *error) {
+        image = snapshot.image;
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+//        NSData *data = UIImagePNGRepresentation(image);
+//        [data writeToFile:[self snapshotFilename] atomically:YES];
+    }];*/
+    MKMapSnapshotter *snapshotter = [[MKMapSnapshotter alloc] initWithOptions:options];
+    [snapshotter startWithQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) completionHandler:^(MKMapSnapshot *snapshot, NSError *error) {
+        UIImage *image = snapshot.image;
+        CGRect finalImageRect = CGRectMake(0, 0, image.size.width, image.size.height);
+        
+        MKAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:nil reuseIdentifier:@""];
+        UIImage *pinImage = pin.image;
+        
+        UIGraphicsBeginImageContextWithOptions(image.size, YES, image.scale);
+        
+        [image drawAtPoint:CGPointMake(0, 0)];
+        
+        for (id<MKAnnotation>annotation in self.myMapView.annotations)
+        {
+            CGPoint point = [snapshot pointForCoordinate:annotation.coordinate];
+            if (CGRectContainsPoint(finalImageRect, point)) // this is too conservative, but you get the idea
+            {
+                CGPoint pinCenterOffset = pin.centerOffset;
+                point.x -= pin.bounds.size.width / 2.0;
+                point.y -= pin.bounds.size.height / 2.0;
+                point.x += pinCenterOffset.x;
+                point.y += pinCenterOffset.y;
+                
+                [pinImage drawAtPoint:point];
+            }
+        }
+        UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        UIImageWriteToSavedPhotosAlbum(finalImage, nil, nil, nil);
+        [self setSendLocationDelegate:mainVC];
+        [sendLocationDelegate sendCurrendLocation:address latitude:latitude longitude:longitude  withImage:finalImage];
+        
+    }];
+
+    
     [self performSelectorInBackground:@selector(dismissMap) withObject:nil];
     
 }
@@ -69,6 +114,7 @@
     label.backgroundColor = [UIColor clearColor];
     label.text = address;
     label.font = [UIFont systemFontOfSize:12];
+    label.textAlignment = NSTextAlignmentCenter;
     [topView addSubview:label];
 
     myMapView = [[MKMapView alloc]init];
@@ -110,8 +156,8 @@
                              if (address) {
                                  mapView.showsUserLocation = NO;
                                  label.text = address;
-                             }
-                             NSLog(@"I am currently at %@",locatedAt);
+                            }
+                            NSLog(@"I am currently at %@",locatedAt);
 //                             NSDictionary *dict = placemark.addressDictionary;
 //                             NSLog(@"1%@,2%@,3%@,4%@,5%@,6%@,7%@,8%@,9%@,10%@,11%@,12%@,13%@",placemark.name,placemark.thoroughfare,placemark.subThoroughfare,placemark.locality,placemark.subLocality,placemark.administrativeArea,placemark.subAdministrativeArea,placemark.postalCode,placemark.ISOcountryCode,placemark.country,placemark.inlandWater,placemark.ocean,placemark.areasOfInterest);
                              point.title = @"当前位置";

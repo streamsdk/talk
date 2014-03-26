@@ -229,7 +229,7 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "417513348.373246"
+                  timestampString = "417524732.702314"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
@@ -243,7 +243,7 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "417513348.373453"
+                  timestampString = "417524732.702586"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
@@ -297,7 +297,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "504"
             endingLineNumber = "504"
-            landmarkName = "-toMap"
+            landmarkName = "-imageWithImage:scaledToSize:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

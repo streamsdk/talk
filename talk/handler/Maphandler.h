@@ -10,8 +10,8 @@
 
 @interface Maphandler : NSObject
 
-- (void)receiveAddress:(NSString *)receiveAddress latitude:(float)latitude longitude:(float)longitude forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID;
+- (void)receiveAddress:(NSString *)receiveAddress latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID;
 
--(void) sendAddress :(NSString *)address latitude:(float)latitude longitude:(float)longitude forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID;
+-(void) sendAddress :(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID;
 
 @end

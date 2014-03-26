@@ -17,10 +17,10 @@
 
 
 @implementation Maphandler
-- (void)receiveAddress:(NSString *)receiveAddress latitude:(float)latitude longitude:(float)longitude forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
+- (void)receiveAddress:(NSString *)receiveAddress latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     if ([fromID isEqualToString:sendID]) {
-        NSBubbleData *sendBubble = [NSBubbleData dataWithAddress:receiveAddress latitude:latitude longitude:longitude date:[handler getDate] type:BubbleTypeSomeoneElse];
+        NSBubbleData *sendBubble = [NSBubbleData dataWithAddress:receiveAddress latitude:latitude longitude:longitude withImage:image date:[handler getDate] type:BubbleTypeSomeoneElse];
         if (otherData)
             sendBubble.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:sendBubble];
@@ -28,15 +28,17 @@
 
 }
 
--(void) sendAddress :(NSString *)address latitude:(float)latitude longitude:(float)longitude forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID{
+-(void) sendAddress :(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID{
+    NSData *data = UIImageJPEGRepresentation(image, 0.5);
+    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+    NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];
+    [data  writeToFile:photoPath atomically:YES];
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
     NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
-    NSBubbleData *sendBubble = [NSBubbleData dataWithAddress:address latitude:latitude longitude:longitude date:date type:BubbleTypeMine];
+    NSBubbleData *sendBubble = [NSBubbleData dataWithAddress:address latitude:latitude longitude:longitude withImage:image date:date type:BubbleTypeMine];
     if (myData)
         sendBubble.avatar = [UIImage imageWithData:myData];
     [bubbleData addObject:sendBubble];
-    
-    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
     
     STreamXMPP *con = [STreamXMPP sharedObject];
     
@@ -61,6 +63,7 @@
     NSMutableDictionary * addressDict = [[NSMutableDictionary alloc]init];
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
     [addressDict setObject:address forKey:@"address"];
+    [addressDict setObject:photoPath forKey:@"path"];
     [addressDict setObject:[NSString stringWithFormat:@"%f",latitude] forKey:@"latitude"];
     [addressDict setObject:[NSString stringWithFormat:@"%f",longitude]  forKey:@"longitude"];
     [friendDict setObject:addressDict forKey:@"address"];

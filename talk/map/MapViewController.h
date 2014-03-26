@@ -12,7 +12,7 @@
 
 @protocol SendLocationDelegate <NSObject>
 
--(void)sendCurrendLocation:(NSString *)address latitude:(float)latitude longitude:(float)longitude;
+-(void)sendCurrendLocation:(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image;
 @end
 
 @interface MapViewController : UIViewController<MKMapViewDelegate,CLLocationManagerDelegate>

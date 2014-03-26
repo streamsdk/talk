@@ -362,8 +362,8 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 }
 
 #pragma mark - Custom map
-- (id)initWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude date:(NSDate *)date type:(NSBubbleType)type{
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,80, 80)];
+- (id)initWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type{
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,90, 90)];
     imageView.layer.cornerRadius = 5.0;
     imageView.layer.masksToBounds = YES;
     imageView.userInteractionEnabled = YES;
@@ -371,8 +371,8 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     tappressGesutre.numberOfTouchesRequired=1;
     [imageView addGestureRecognizer:tappressGesutre];
     
-    UIImageView *mapImage= [[UIImageView alloc] initWithFrame:CGRectMake(10, 0,60, 60)];
-    mapImage .image = [UIImage imageNamed:@"map.png"];
+    UIImageView *mapImage= [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,90, 90)];
+    mapImage .image = image;
     mapImage.layer.cornerRadius = 5.0;
     mapImage.layer.masksToBounds = YES;
     mapImage.userInteractionEnabled = YES;
@@ -380,7 +380,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     tappressGesutre1.numberOfTouchesRequired=1;
     [mapImage addGestureRecognizer:tappressGesutre1];
     [imageView addSubview:mapImage];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, 80, 30)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 60, 90, 30)];
     label.backgroundColor = [UIColor clearColor];
     label.numberOfLines = 2;
     label.text = address;
@@ -389,11 +389,11 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
     return [self initWithView:imageView date:date type:type  withFileType:FileMessage insets:insets];
 }
-+ (id)dataWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude date:(NSDate *)date type:(NSBubbleType)type{
++ (id)dataWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type{
 #if !__has_feature(objc_arc)
-    return [[[NSBubbleData alloc] initWithAddress:address latitude:latitude longitude:longitude date:date type:type]autorelease];
+    return [[[NSBubbleData alloc] initWithAddress:address latitude:latitude longitude:longitude withImage:image date:date type:type]autorelease];
 #else
-    return [[NSBubbleData alloc] initWithAddress:address latitude:latitude longitude:longitude date:date type:type];
+    return [[NSBubbleData alloc] initWithAddress:address latitude:latitude longitude:longitude withImage:image date:date type:type];
 #endif
 }
 

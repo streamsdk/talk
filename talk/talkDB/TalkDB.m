@@ -160,7 +160,9 @@
                             NSString * address = [addressDict objectForKey:@"address"];
                             NSString * latitude = [addressDict objectForKey:@"latitude"];
                             NSString * longitude = [addressDict objectForKey:@"longitude"];
-                            NSBubbleData *bubble = [NSBubbleData dataWithAddress:address latitude:[latitude floatValue] longitude:[longitude floatValue] date:date type:BubbleTypeMine];
+                            NSString *path = [addressDict objectForKey:@"path"];
+                            UIImage *image = [UIImage imageWithContentsOfFile:path];
+                            NSBubbleData *bubble = [NSBubbleData dataWithAddress:address latitude:[latitude floatValue] longitude:[longitude floatValue] withImage:image date:date type:BubbleTypeMine];
                             if (myData)
                                 bubble.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:bubble];

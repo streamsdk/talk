@@ -75,8 +75,8 @@ typedef enum FileType
        withJsonBody:(NSString *)body;
 
 //map float latitude; longitude
-- (id)initWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude date:(NSDate *)date type:(NSBubbleType)type;
-+ (id)dataWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude date:(NSDate *)date type:(NSBubbleType)type;
+- (id)initWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type;
++ (id)dataWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type;
 
 - (id)initWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type withFileType:(FileType)filetype insets:(UIEdgeInsets)insets;
 + (id)dataWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type withFileType:(FileType)filetype insets:(UIEdgeInsets)insets;

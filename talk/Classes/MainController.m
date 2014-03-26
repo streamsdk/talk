@@ -523,11 +523,11 @@
 }
 #pragma mark --- sendlocation
 
--(void) sendCurrendLocation:(NSString *)address latitude:(float)latitude longitude:(float)longitude{
+-(void)sendCurrendLocation:(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image{
     [self getBubbleData];
     ImageCache *imageCache = [ImageCache sharedObject];
     if ([imageCache getFriendID]) {
-        [mapHandler sendAddress:address latitude:latitude longitude:longitude forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:[imageCache getFriendID]];
+        [mapHandler sendAddress:address latitude:latitude longitude:longitude withImage:image forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:[imageCache getFriendID]];
     }
     
     [bubbleTableView reloadData];
