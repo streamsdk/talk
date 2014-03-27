@@ -602,6 +602,7 @@
 #pragma mark Data Source Loading / Reloading Methods
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+    scrollView.decelerationRate=1.0;
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSString *sendToID = [imageCache getFriendID];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];

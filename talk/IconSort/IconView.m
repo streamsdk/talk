@@ -28,14 +28,14 @@
 		for (int y=0; y<4; y++) {
 			UIButton *button=[UIButton buttonWithType:UIButtonTypeCustom];
             [button setBackgroundColor:[UIColor clearColor]];
-            [button setFrame:CGRectMake(y*(size.width+30)+40, i*size.height, size.width, size.height)];
+            [button setFrame:CGRectMake(y*(size.width+20)+20*(y+1), i*size.height, size.width, size.height)];
             NSString * str = [icon objectAtIndex:i*4+y];
             UIImage *image = [UIImage imageNamed:str];
             [button setImage:image forState:UIControlStateNormal];
             button.tag=i*4+y;
             [button addTarget:self action:@selector(selected:) forControlEvents:UIControlEventTouchUpInside];
 			[self addSubview:button];
-            UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(y*(size.width+33), size.height, 110, 20)];
+            UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(y*81, size.height, 80, 20)];
             label.text= [array objectAtIndex:y];
             label.textAlignment = NSTextAlignmentCenter;
             label.font = [UIFont systemFontOfSize:10.0f];
@@ -43,7 +43,7 @@
             [label setBackgroundColor:[UIColor clearColor]];
             if (y!=3) {
                 UIButton * separatorButton  = [UIButton buttonWithType:UIButtonTypeCustom];
-                [separatorButton setFrame:CGRectMake(y*70+95, 10, 5, size.height-20)];
+                [separatorButton setFrame:CGRectMake(y*80+80, 10, 5, size.height-20)];
                 [separatorButton setImage:[UIImage imageNamed:@"separator.png"] forState:UIControlStateNormal];
                 [self addSubview:separatorButton];
             }
