@@ -326,7 +326,11 @@
                 activityIndicatorView.tag = 1000*indexPath.section+indexPath.row+100;
                 if (isTheFileDownloading) {
                     [activityIndicatorView startAnimating];
+                   
                 }else{
+                    if ([self checkfileManager:json withButton:downButton withActivityIndicatorView:activityIndicatorView withCell:cell]){
+                        return cell;
+                    }
                     [downButton setTitle:@"Download" forState:UIControlStateNormal];
                     [downButton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
                     [cell.contentView addSubview:downButton];
@@ -363,6 +367,12 @@
                     [activityIndicatorView startAnimating];
                     cell.data.videobutton.titleLabel.text =@"Downloading";
                 }else {
+                    if ([self checkfileManager:json withButton:cell.data.videobutton withActivityIndicatorView:activityIndicatorView withCell:cell]) {
+                        [cell.data.videobutton setTitle:@"Click to view" forState:UIControlStateNormal];
+                        [cell.data.videobutton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+                        [cell.data.videobutton addTarget:self action:@selector(playerVideo:) forControlEvents:UIControlEventTouchUpInside];
+                        return cell;
+                    }
                     if ([cell.data.videobutton.titleLabel.text isEqualToString:@"Download"]) {
                         cell.data.videobutton.tag = indexPath.row+1000*indexPath.section;
                         [cell.data.videobutton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
@@ -415,28 +425,15 @@
     }
     
 }
-
--(void) downloadvideo:(UIButton *)button{
-    ImageCache * cache = [ImageCache sharedObject];
-    DownLoadVideo *_downVideo = [[DownLoadVideo alloc]init];
-    
-    UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:button.tag];
-    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+100];
-    
-    [activityIndicatorView startAnimating];
-    NSString * jsonbody = cell.data.jsonBody;
-    NSData *jsonData = [jsonbody dataUsingEncoding:NSUTF8StringEncoding];
-    JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
-    NSDictionary *json = [decoder objectWithData:jsonData];
+-(BOOL)checkfileManager:(NSDictionary *)json withButton:(UIButton *)button withActivityIndicatorView: (UIActivityIndicatorView *)activityIndicatorView withCell:(UIBubbleTableViewCell *)cell {
     NSString *fileId = [json objectForKey:@"fileId"];
-    NSString *timeId = [json objectForKey:@"id"];
+    
     NSString *tid = [json objectForKey:@"tid"];
     NSString * fromId =[json objectForKey:@"fromId"];
     NSString *duration = [json objectForKey:@"duration"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *filePath =[NSHomeDirectory() stringByAppendingFormat:@"/Documents/out-%@.mp4", fileId];
     if([fileManager fileExistsAtPath:filePath]){
-        
         
         TalkDB * talkDb = [[TalkDB alloc]init];
         NSMutableDictionary * dict = [[NSMutableDictionary alloc]init];
@@ -458,14 +455,33 @@
         if (cell.data.fileType == FileDisappear){
             [cell.data.videobutton setTitle:@"Click to view" forState:UIControlStateNormal];
             [cell.data.videobutton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-//            [cell.data.videobutton addTarget:self action:@selector(playerVideo:) forControlEvents:UIControlEventTouchUpInside];
+            //            [cell.data.videobutton addTarget:self action:@selector(playerVideo:) forControlEvents:UIControlEventTouchUpInside];
             [activityIndicatorView stopAnimating];
         }else{
             button.hidden = YES;
             [activityIndicatorView stopAnimating];
-//            [self playerVideo:button];
+            //            [self playerVideo:button];
         }
-    }else {
+        return YES;
+    }
+    return NO;
+}
+
+-(void) downloadvideo:(UIButton *)button{
+    ImageCache * cache = [ImageCache sharedObject];
+    DownLoadVideo *_downVideo = [[DownLoadVideo alloc]init];
+    
+    UIBubbleTableViewCell * cell = (UIBubbleTableViewCell * )[self viewWithTag:button.tag];
+    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *) [cell.contentView viewWithTag:button.tag+100];
+    
+    [activityIndicatorView startAnimating];
+    NSString * jsonbody = cell.data.jsonBody;
+    NSData *jsonData = [jsonbody dataUsingEncoding:NSUTF8StringEncoding];
+    JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+    NSDictionary *json = [decoder objectWithData:jsonData];
+    NSString *timeId = [json objectForKey:@"id"];
+    BOOL fileExist =[self checkfileManager:json withButton:button withActivityIndicatorView:activityIndicatorView withCell:cell];
+    if (!fileExist) {
         [cache addDownloadingFile:timeId withTag:[NSNumber numberWithInt:button.tag]];
         if (cell.data.fileType == FileVideo){
             button.hidden = YES;
