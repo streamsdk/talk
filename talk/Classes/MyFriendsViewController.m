@@ -78,6 +78,7 @@
     if (firstRead) {
         
         [self loadFriends];
+        [self loadRequest];
         [self.tableView reloadData];
         firstRead = NO;
       
@@ -221,6 +222,19 @@
         }
     }
 
+}
+-(void) loadRequest{
+    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    NSString * loginName= [handle getUserID];
+    STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:loginName];
+    [sq setQueryLogicAnd:true];
+    [sq whereEqualsTo:@"status" forValue:@"request"];
+    NSMutableArray * friends = [sq find];
+    AddDB * addDB = [[AddDB alloc]init];
+
+    for (STreamObject *so in friends) {
+      [addDB insertDB:[handle getUserID] withFriendID:[[so objectId] lowercaseString] withStatus:@"request"];
+    }
 }
 -(void) loadFriends {
     [self readAddDb];
