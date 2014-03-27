@@ -609,8 +609,9 @@
     TalkDB * talk = [[TalkDB alloc]init];
     [imageCache saveTablecontentOffset:self.contentOffset.y withUser:sendToID];
     NSInteger allCount = [talk allDataCount:name withOtherID:sendToID];
+    NSInteger readCount = [imageCache getAllReadCount:sendToID];
     int count = [imageCache getReadCount:sendToID];
-    if (count>=10 && allCount>count) {
+    if (count>=10 && allCount!=readCount) {
         if(!_reloading && scrollView.contentOffset.y < 0)
         {
             _reloading = YES;

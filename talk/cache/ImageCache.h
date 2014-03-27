@@ -77,6 +77,10 @@
 
 -(void) removeCoun;
 
+-(void) saveRaedAllCount:(NSNumber *)count withuserID:(NSString *)userId ;
+
+-(NSInteger)getAllReadCount:(NSString *)userId;
+
 -(void) saveDownVideo :(DownLoadVideo *)downVideo;
 -(DownLoadVideo *)getDownVideo;
 -(void) deleteDownVideo;

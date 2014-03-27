@@ -27,6 +27,7 @@ static NSMutableDictionary*_countDict;
 static NSLock *_theLock;
 static NSMutableArray * _downVideo;
 static NSMutableDictionary *_contentOffset;
+static NSMutableDictionary*_allCountDict;
 @implementation ImageCache
 
 
@@ -53,6 +54,7 @@ static NSMutableDictionary *_contentOffset;
         _theLock = [[NSLock alloc] init];
         _downVideo = [[NSMutableArray alloc]init];
         _contentOffset = [[NSMutableDictionary alloc]init];
+        _allCountDict = [[NSMutableDictionary alloc]init];
     });
     
     return sharedInstance;
@@ -220,7 +222,15 @@ static NSMutableDictionary *_contentOffset;
 -(void) removeCoun{
     [_countDict removeAllObjects];
 }
+-(void) saveRaedAllCount:(NSNumber *)count withuserID:(NSString *)userId{
+    if (userId) {
+        [_allCountDict setObject:count forKey:userId];
+    }
+}
 
+-(NSInteger)getAllReadCount:(NSString *)userId{
+    return [[_allCountDict objectForKey:userId]intValue];
+}
 -(void) saveDownVideo :(DownLoadVideo *)downVideo{
     [_downVideo addObject:downVideo];
 }
