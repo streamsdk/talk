@@ -50,6 +50,11 @@ typedef enum FileType
 @property (nonatomic,retain) NSString * jsonBody;
 @property (nonatomic,strong) UIButton * videobutton;
 @property (nonatomic,retain) NSString * audioTime;
+@property (nonatomic,retain) NSString * address;
+
+@property (nonatomic,assign) float latitude;
+
+@property (nonatomic,assign) float longitude;
 //message
 - (id)initWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type;
 + (id)dataWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type;
@@ -75,8 +80,8 @@ typedef enum FileType
        withJsonBody:(NSString *)body;
 
 //map float latitude; longitude
-- (id)initWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type;
-+ (id)dataWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type;
+- (id)initWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type path:(NSString *)path;;
++ (id)dataWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type path:(NSString *)path;;
 
 - (id)initWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type withFileType:(FileType)filetype insets:(UIEdgeInsets)insets;
 + (id)dataWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type withFileType:(FileType)filetype insets:(UIEdgeInsets)insets;

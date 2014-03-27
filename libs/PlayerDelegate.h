@@ -20,4 +20,7 @@
 
 -(void)copyVideo:(UIImage *)image withdate:(NSDate *)date withView:(UIImageView *)imageview withPath:(NSString *)path withBubbleType:(BOOL)isMine;
 -(void)copyAudiodate:(NSDate *)date withView:(UIImageView *)imageview withAudioTime:(NSString *)time withBubbleType:(BOOL)isMine;
+
+-(void) showLocation:(NSString *)address latitude:(float)latitude longitude:(float)longitude;
+
 @end

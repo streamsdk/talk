@@ -48,7 +48,7 @@
 #define BIG_IMG_WIDTH  300.0
 #define BIG_IMG_HEIGHT 340.0
 
-@interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate,reloadTableDeleage,reloadCellDeleage>
+@interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate,reloadTableDeleage,reloadCellDeleage,MapDeleage>
 {
     NSMutableArray *bubbleData;
     CreateUI * createUI;
@@ -296,6 +296,8 @@
     
     mapHandler = [[Maphandler alloc]init];
     
+    mapHandler.delegate = self;
+    
     _deleteBackview = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-40, self.view.frame.size.width,40)];
     _deleteBackview.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_deleteBackview];
@@ -426,6 +428,11 @@
            
         }else if ([type isEqualToString:@"voice"]){
             [audioHandler receiveAudioFile:data withBody:time forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+        }else if ([type isEqualToString:@"map"]){
+            NSString *address = [json objectForKey:@"address"];
+            NSString *latitude = [json objectForKey:@"latitude"];
+            NSString *longitude = [json objectForKey:@"longitude"];
+            [mapHandler receiveAddress:address latitude:[latitude floatValue] longitude:[longitude floatValue] withImage:[UIImage imageWithData:data] forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
         }
         NSBubbleData * bubble = [bubbleData lastObject];
         bubble.delegate = self;
@@ -527,12 +534,15 @@
     [self getBubbleData];
     ImageCache *imageCache = [ImageCache sharedObject];
     if ([imageCache getFriendID]) {
+        
         [mapHandler sendAddress:address latitude:latitude longitude:longitude withImage:image forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:[imageCache getFriendID]];
     }
-    
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
     [imageCache saveTablecontentOffset:0 withUser:[imageCache getFriendID]];
+}
+-(void) reloadMapView{
+    [self viewWillAppear:YES];
 }
 -(void) sendVideo:(NSString *)time {
     ImageCache *imageCache = [ImageCache sharedObject];
@@ -1339,6 +1349,13 @@
 }
 -(void)handleCopyAudio:(id)sender{
     [self readContents];
+}
+-(void) showLocation:(NSString *)address latitude:(float)latitude longitude:(float)longitude{
+    LookMapViewController * lookMap = [[LookMapViewController alloc]init];
+    [lookMap setAddress:address];
+    [lookMap setLatitude:latitude];
+    [lookMap setLongitude:longitude];
+    [self presentViewController:lookMap animated:NO completion:NULL];
 }
 -(void)doInBackground
 {

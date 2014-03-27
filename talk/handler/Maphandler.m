@@ -12,15 +12,17 @@
 #import "NSBubbleData.h"
 #import "STreamXMPP.h"
 #import "HandlerUserIdAndDateFormater.h"
-#import "ACKMessageDB.h"
+#import "UploadDB.h"
 #import "ImageCache.h"
 
 
 @implementation Maphandler
+@synthesize isfromUploadDB,mappath;
+
 - (void)receiveAddress:(NSString *)receiveAddress latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     if ([fromID isEqualToString:sendID]) {
-        NSBubbleData *sendBubble = [NSBubbleData dataWithAddress:receiveAddress latitude:latitude longitude:longitude withImage:image date:[handler getDate] type:BubbleTypeSomeoneElse];
+        NSBubbleData *sendBubble = [NSBubbleData dataWithAddress:receiveAddress latitude:latitude longitude:longitude withImage:image date:[handler getDate] type:BubbleTypeSomeoneElse path:@""];
         if (otherData)
             sendBubble.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:sendBubble];
@@ -29,41 +31,48 @@
 }
 
 -(void) sendAddress :(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID{
-    NSData *data = UIImageJPEGRepresentation(image, 0.5);
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-    NSString *photoPath = [[handler getPath] stringByAppendingString:@".png"];
-    [data  writeToFile:photoPath atomically:YES];
-    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
-    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
-    NSBubbleData *sendBubble = [NSBubbleData dataWithAddress:address latitude:latitude longitude:longitude withImage:image date:date type:BubbleTypeMine];
-    if (myData)
-        sendBubble.avatar = [UIImage imageWithData:myData];
-    [bubbleData addObject:sendBubble];
+    NSString *mapPath = [[handler getPath] stringByAppendingString:@".png"];
     
-    STreamXMPP *con = [STreamXMPP sharedObject];
-    
-    //new message format
     long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
-    NSMutableDictionary *messagesDic = [[NSMutableDictionary alloc] init];
-    [messagesDic setObject:address forKey:@"address"];
-    [messagesDic setObject:[NSString stringWithFormat:@"%f",latitude] forKey:@"latitude"];
-    [messagesDic setObject:[NSString stringWithFormat:@"%f",longitude]  forKey:@"longitude"];
-    [messagesDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
-    [messagesDic setObject:@"map" forKey:@"type"];
-    [messagesDic setObject:[handler getUserID] forKey:@"from"];
+    
+    NSMutableDictionary *bodyDic = [[NSMutableDictionary alloc] init];
+    [bodyDic setObject:[NSString stringWithFormat:@"%lld", milliseconds] forKey:@"id"];
+    [bodyDic setObject:address forKey:@"address"];
+    [bodyDic setObject:[NSString stringWithFormat:@"%f",latitude] forKey:@"latitude"];
+    [bodyDic setObject:[NSString stringWithFormat:@"%f",longitude]  forKey:@"longitude"];
+    [bodyDic setObject:@"map" forKey:@"type"];
+    [bodyDic setObject:[handler getUserID] forKey:@"from"];
     
     ImageCache *cache = [ImageCache sharedObject];
     NSMutableDictionary *userMetadata = [cache getUserMetadata:sendID];
     if (userMetadata && [userMetadata objectForKey:@"token"]){
-        [messagesDic setObject:[userMetadata objectForKey:@"token"] forKey:@"token"];
+        [bodyDic setObject:[userMetadata objectForKey:@"token"] forKey:@"token"];
     }
     
+    NSMutableArray * fileArray = [cache getFileUpload];
+    FilesUpload * file = [[FilesUpload alloc]init];
+    [file setTime:[NSString stringWithFormat:@"%lld", milliseconds]];
     
-    NSString *messageSent = [messagesDic JSONString];
+    [file setBodyDict:bodyDic];
+    [file setUserId:sendID];
+    [file setChatId:[NSString stringWithFormat:@"%lld", milliseconds]];
+    [file setType:@"map"];
+    [file setFilepath:mapPath];
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
+    NSBubbleData * bubble = [NSBubbleData dataWithAddress:address latitude:latitude longitude:longitude withImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine path:mapPath];
+    if (myData) {
+        bubble.avatar = [UIImage imageWithData:myData];
+    }
+    [bubbleData addObject:bubble];
+    NSData *data = UIImageJPEGRepresentation(image, 1.0);
+    [data writeToFile:mapPath atomically:YES];
+    
+    NSMutableDictionary * jsonDic = [[NSMutableDictionary alloc]init];
     NSMutableDictionary * addressDict = [[NSMutableDictionary alloc]init];
     NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
     [addressDict setObject:address forKey:@"address"];
-    [addressDict setObject:photoPath forKey:@"path"];
+    [addressDict setObject:mapPath forKey:@"path"];
     [addressDict setObject:[NSString stringWithFormat:@"%f",latitude] forKey:@"latitude"];
     [addressDict setObject:[NSString stringWithFormat:@"%f",longitude]  forKey:@"longitude"];
     [friendDict setObject:addressDict forKey:@"address"];
@@ -74,11 +83,26 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
     
-    ACKMessageDB *ack = [[ACKMessageDB alloc]init];
-    [ack insertDB:[NSString stringWithFormat:@"%lld", milliseconds] withUserID:[handler getUserID] fromID:sendID withContent:messageSent withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:0];
-    
     [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
-    [con sendMessage:sendID withMessage:messageSent];
+    [file setDate:date];
+    [file setJsonDict:jsonDic];
+    [self.delegate reloadMapView];
+    UploadDB * uploadDb = [[UploadDB alloc]init];
+    NSString *time=nil;
+    [uploadDb insertUploadDB:[handler getUserID] filePath:mapPath withTime:time withFrom:sendID withType:@"map" withDate:[dateFormatter stringFromDate:date]];
+    
+    if (fileArray != nil && [fileArray count] != 0) {
+        FilesUpload * f =[fileArray objectAtIndex:0];
+        long long ftime = [f.time longLongValue];
+        if ((milliseconds/1000.0 - ftime/1000.0)<8) {
+            [cache addFileUpload:file];
+            return;
+        }
+    }
+    [cache addFileUpload:file];
+    
+    [super doFileUpload:fileArray];
+
 }
 
 @end

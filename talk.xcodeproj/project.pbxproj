@@ -471,6 +471,7 @@
 		0E8A4F36182B7FE300705C1F /* TalkDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8A4F35182B7FE300705C1F /* TalkDB.m */; };
 		0E8A4F38182B802600705C1F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8A4F37182B802600705C1F /* libsqlite3.dylib */; };
 		0E912FD418E3C23B003364F2 /* color.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E912FD318E3C23B003364F2 /* color.png */; };
+		0E912FD718E4349E003364F2 /* LookMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E912FD618E4349E003364F2 /* LookMapViewController.m */; };
 		0E960BF818D69B6D00ECDB96 /* MyQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E960BF718D69B6D00ECDB96 /* MyQRCodeViewController.m */; };
 		0E960BFE18D6A9BE00ECDB96 /* ScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E960BFD18D6A9BE00ECDB96 /* ScannerViewController.m */; };
 		0E960C0118D6B17D00ECDB96 /* ScannerAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E960C0018D6B17D00ECDB96 /* ScannerAddViewController.m */; };
@@ -1448,6 +1449,8 @@
 		0E8A4F35182B7FE300705C1F /* TalkDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TalkDB.m; path = talkDB/TalkDB.m; sourceTree = "<group>"; };
 		0E8A4F37182B802600705C1F /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		0E912FD318E3C23B003364F2 /* color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = color.png; sourceTree = "<group>"; };
+		0E912FD518E4349E003364F2 /* LookMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LookMapViewController.h; path = map/LookMapViewController.h; sourceTree = "<group>"; };
+		0E912FD618E4349E003364F2 /* LookMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LookMapViewController.m; path = map/LookMapViewController.m; sourceTree = "<group>"; };
 		0E960BF618D69B6D00ECDB96 /* MyQRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyQRCodeViewController.h; path = setVC/MyQRCodeViewController.h; sourceTree = "<group>"; };
 		0E960BF718D69B6D00ECDB96 /* MyQRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyQRCodeViewController.m; path = setVC/MyQRCodeViewController.m; sourceTree = "<group>"; };
 		0E960BFC18D6A9BE00ECDB96 /* ScannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScannerViewController.h; path = setVC/ScannerViewController.h; sourceTree = "<group>"; };
@@ -3642,6 +3645,8 @@
 			children = (
 				0EF8C24918E279B9001BFD1B /* MapViewController.h */,
 				0EF8C24A18E279B9001BFD1B /* MapViewController.m */,
+				0E912FD518E4349E003364F2 /* LookMapViewController.h */,
+				0E912FD618E4349E003364F2 /* LookMapViewController.m */,
 			);
 			name = map;
 			sourceTree = "<group>";
@@ -3981,6 +3986,7 @@
 				03D9C07218145E410039118F /* XMPPRoomOccupantMemoryStorageObject.m in Sources */,
 				0E891A9B18D2DF57006430FE /* ZXURLTOResultParser.m in Sources */,
 				03D9C08618145E410039118F /* XMPPPubSub.m in Sources */,
+				0E912FD718E4349E003364F2 /* LookMapViewController.m in Sources */,
 				0E891AD318D2DF57006430FE /* ZXQRCodeMultiReader.m in Sources */,
 				0EEA49DA18E122C800B20922 /* ImageUtil.m in Sources */,
 				0E891AD018D2DF57006430FE /* ZXMaxiCodeReader.m in Sources */,

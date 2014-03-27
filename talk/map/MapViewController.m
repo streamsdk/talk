@@ -16,6 +16,7 @@
     __block NSString * address;
     MainController * mainVC;
     UILabel *label ;
+    UIImage *snapImage;
 }
 @end
 
@@ -77,9 +78,11 @@
         }
         UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
+        NSData *data = UIImageJPEGRepresentation(finalImage, 0.1);
 //        UIImageWriteToSavedPhotosAlbum(finalImage, nil, nil, nil);
+        snapImage = [UIImage imageWithData:data];
         [self setSendLocationDelegate:mainVC];
-        [sendLocationDelegate sendCurrendLocation:address latitude:latitude longitude:longitude  withImage:finalImage];
+        [sendLocationDelegate sendCurrendLocation:address latitude:latitude longitude:longitude  withImage:snapImage];
         
     }];
 

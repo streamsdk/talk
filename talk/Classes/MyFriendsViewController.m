@@ -635,6 +635,24 @@
             [friendsDict setObject:recordFilePath forKey:@"audiodata"];
             [jsonDic setObject:friendsDict forKey:fromUser];
             jsBody = body;
+        }if ([type isEqualToString:@"map"]) {
+            NSString *address = [json objectForKey:@"address"];
+            NSString *mappath = [[handler getPath] stringByAppendingString:@".png"];
+            NSString * fileId = [json objectForKey:@"fileId"];
+            NSString *latitude = [json objectForKey:@"latitude"];
+            NSString *longitude = [json objectForKey:@"longitude"];
+            [data writeToFile:mappath atomically:YES];
+            NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+            [friendDict setObject:address forKey:@"address"];
+            [friendDict setObject:fileId forKey:@"fileId"];
+            [friendDict setObject:mappath forKey:@"path"];
+            [friendDict setObject:latitude forKey:@"latitude"];
+            [friendDict setObject:longitude forKey:@"longitude"];
+            [dict setObject:friendDict forKey:@"address"];
+            [jsonDic setObject:dict forKey:fromUser];
+            path = mappath;
+            jsBody = jsonBody;
         }
        
         TalkDB * db = [[TalkDB alloc]init];

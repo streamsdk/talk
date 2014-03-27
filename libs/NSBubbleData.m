@@ -36,7 +36,7 @@
 @synthesize jsonBody;
 @synthesize videobutton;
 @synthesize audioTime;
-
+@synthesize address= _address,latitude=_latitude,longitude =_longitude;
 #pragma mark - Lifecycle
 
 #if !__has_feature(objc_arc)
@@ -362,7 +362,13 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 }
 
 #pragma mark - Custom map
-- (id)initWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type{
+- (id)initWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type path:(NSString *)path{
+    photopath = path;
+    _date = date;
+    _address = address;
+    _latitude = latitude;
+    _longitude = longitude;
+    
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,90, 90)];
     imageView.layer.cornerRadius = 5.0;
     imageView.layer.masksToBounds = YES;
@@ -389,11 +395,11 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
     return [self initWithView:imageView date:date type:type  withFileType:FileMessage insets:insets];
 }
-+ (id)dataWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type{
++ (id)dataWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type path:(NSString *)path{
 #if !__has_feature(objc_arc)
-    return [[[NSBubbleData alloc] initWithAddress:address latitude:latitude longitude:longitude withImage:image date:date type:type]autorelease];
+    return [[[NSBubbleData alloc] initWithAddress:address latitude:latitude longitude:longitude withImage:image date:date type:type path:path]autorelease];
 #else
-    return [[NSBubbleData alloc] initWithAddress:address latitude:latitude longitude:longitude withImage:image date:date type:type];
+    return [[NSBubbleData alloc] initWithAddress:address latitude:latitude longitude:longitude withImage:image date:date type:type path:path];
 #endif
 }
 
@@ -497,6 +503,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
 #pragma mark - map
 -(void) toMap {
     NSLog(@"toMap");
+    [delegate showLocation:_address latitude:_latitude longitude:_longitude];
 }
 #pragma mark scaled image
 -(UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size {
