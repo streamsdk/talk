@@ -77,7 +77,7 @@
         }
         UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        UIImageWriteToSavedPhotosAlbum(finalImage, nil, nil, nil);
+//        UIImageWriteToSavedPhotosAlbum(finalImage, nil, nil, nil);
         [self setSendLocationDelegate:mainVC];
         [sendLocationDelegate sendCurrendLocation:address latitude:latitude longitude:longitude  withImage:finalImage];
         

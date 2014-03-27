@@ -76,14 +76,11 @@ static NSMutableArray *colors;
     [drawView setBackgroundColor:[UIColor colorWithPatternImage:newImg]];
     [self.view sendSubviewToBack:drawView];
     currentImage = newImg;
-//    CALayer *l = [drawView layer];
-//    [l setMasksToBounds:YES];
-//    [l setCornerRadius:8.0];
     
-    UIView * topView = [[UIView alloc]initWithFrame:CGRectMake(0, 26, self.view.frame.size.width, 50)];
+    UIView * topView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, 50)];
     topView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
     
-    UIView * colorView = [[UIView alloc]initWithFrame:CGRectMake(self.view.frame.size.width-20, 75, 20, 304)];
+    UIView * colorView = [[UIView alloc]initWithFrame:CGRectMake(self.view.frame.size.width-20, 90, 20, 264)];
     colorView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
 
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -115,7 +112,7 @@ static NSMutableArray *colors;
     [topView addSubview:redoButton];
 
     //colorsimageview
-    colorsImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 2, 10, 300)];
+    colorsImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 2, 10, 260)];
     CALayer *ll = [colorsImageView layer];
     [ll setMasksToBounds:YES];
     [ll setCornerRadius:6.0];
@@ -164,7 +161,7 @@ static NSMutableArray *colors;
     itemsarray = [[NSArray alloc]initWithObjects:clockitem,fiexibleSpace,doneitem, nil];
     [self.view addSubview:toolBar];
     NSArray *arr = [NSArray arrayWithObjects:@"原图",@"LOMO",@"黑白",@"复古",@"哥特",@"锐色",@"淡雅",@"酒红",@"青柠",@"浪漫",@"光晕",@"蓝调",@"梦幻",@"夜色", nil];
-    UIView * filterView = [[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight - 100, self.view.frame.size.width, 60)];
+    UIView * filterView = [[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight - 110, self.view.frame.size.width, 64)];
     filterView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
     scrollerView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, 60)];
     scrollerView.backgroundColor = [UIColor clearColor];
@@ -180,7 +177,7 @@ static NSMutableArray *colors;
         UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setImageStyle:)];
         recognizer.numberOfTouchesRequired = 1;
         recognizer.numberOfTapsRequired = 1;
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(x, 40, 40, 20)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(x, 44, 40, 20)];
         [label setBackgroundColor:[UIColor clearColor]];
         [label setText:[arr objectAtIndex:i]];
         [label setTextAlignment:NSTextAlignmentCenter];
@@ -191,7 +188,7 @@ static NSMutableArray *colors;
         
         [scrollerView addSubview:label];
         
-        UIImageView *bgImageView = [[UIImageView alloc]initWithFrame:CGRectMake(x, 0, 40, 40)];
+        UIImageView *bgImageView = [[UIImageView alloc]initWithFrame:CGRectMake(x, 5, 40, 40)];
         [bgImageView setTag:i];
         [bgImageView addGestureRecognizer:recognizer];
         [bgImageView setUserInteractionEnabled:YES];
