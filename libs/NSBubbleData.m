@@ -393,7 +393,7 @@ const UIEdgeInsets imageInsetsSomeone = {11, 18, 16, 14};
     label.font = [UIFont systemFontOfSize:12];
     [imageView addSubview:label];
     UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
-    return [self initWithView:imageView date:date type:type  withFileType:FileMessage insets:insets];
+    return [self initWithView:imageView date:date type:type  withFileType:FileImage insets:insets];
 }
 + (id)dataWithAddress:(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type path:(NSString *)path{
 #if !__has_feature(objc_arc)

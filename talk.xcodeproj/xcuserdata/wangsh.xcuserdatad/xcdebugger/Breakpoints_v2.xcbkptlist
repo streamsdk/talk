@@ -229,12 +229,12 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "417610724.703292"
+                  timestampString = "417667538.20654"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
                   endingLineNumber = "1119"
-                  offsetFromSymbolStart = "480">
+                  offsetFromSymbolStart = "430">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -243,12 +243,12 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "417610724.703512"
+                  timestampString = "417667538.206756"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
                   endingLineNumber = "1119"
-                  offsetFromSymbolStart = "650">
+                  offsetFromSymbolStart = "496">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -282,54 +282,6 @@
             startingLineNumber = "163"
             endingLineNumber = "163"
             landmarkName = "-readInitDB:withOtherID:withCount:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "talk/Classes/MainController.m"
-            timestampString = "417610716.613264"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "538"
-            endingLineNumber = "538"
-            landmarkName = "-sendCurrendLocation:latitude:longitude:withImage:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "talk/handler/Maphandler.m"
-            timestampString = "417610889.949543"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
-            landmarkName = "-sendAddress:latitude:longitude:withImage:forBubbleDataArray:forBubbleMyData:withSendId:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "libs/NSBubbleData.m"
-            timestampString = "417611108.386268"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "366"
-            endingLineNumber = "366"
-            landmarkName = "-initWithAddress:latitude:longitude:withImage:date:type:path:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

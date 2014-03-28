@@ -8,7 +8,7 @@
 
 #import "MapViewController.h"
 #import "MainController.h"
-
+#import "MBProgressHUD.h"
 @interface MapViewController ()
 {
     float latitude;
@@ -17,6 +17,7 @@
     MainController * mainVC;
     UILabel *label ;
     UIImage *snapImage;
+    __block MBProgressHUD *HUD;
 }
 @end
 
@@ -38,6 +39,7 @@
     [self dismissViewControllerAnimated:NO completion:NULL];
 }
 -(void)sendCurrentLocation {
+    [HUD show:YES];
     if (!address) address = @"I am currently at...";
     MKMapSnapshotOptions *options = [[MKMapSnapshotOptions alloc] init];
     options.region = myMapView.region;
@@ -81,17 +83,19 @@
         NSData *data = UIImageJPEGRepresentation(finalImage, 0.1);
 //        UIImageWriteToSavedPhotosAlbum(finalImage, nil, nil, nil);
         snapImage = [UIImage imageWithData:data];
-        [self setSendLocationDelegate:mainVC];
-        [sendLocationDelegate sendCurrendLocation:address latitude:latitude longitude:longitude  withImage:snapImage];
-        
+        [self performSelectorInBackground:@selector(dismissMap) withObject:nil];
     }];
-
-    
-    [self performSelectorInBackground:@selector(dismissMap) withObject:nil];
-    
 }
 -(void) dismissMap {
-    [self dismissViewControllerAnimated:NO completion:NULL];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self setSendLocationDelegate:mainVC];
+        [sendLocationDelegate sendCurrendLocation:address latitude:latitude longitude:longitude  withImage:snapImage];
+    }completionBlock:^{
+        [self dismissViewControllerAnimated:NO completion:NULL];
+        [HUD removeFromSuperview];
+        HUD = nil;
+        
+    }];
 }
 - (void)viewDidLoad
 {
@@ -137,6 +141,9 @@
 //	[myLocationManager setDesiredAccuracy:kCLLocationAccuracyBest];
 //	[myLocationManager startUpdatingLocation];
     myGeoCoder = [[CLGeocoder alloc]init];
+    HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"sending...";
+    [self.view addSubview:HUD];
 }
 -(void) mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
     MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 3000, 3000);
