@@ -200,6 +200,9 @@
 		0E0F82F818A3273C00E81CA5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0F82F718A3273C00E81CA5 /* MessageUI.framework */; };
 		0E0F82FE18A3549400E81CA5 /* MyToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F82FD18A3549400E81CA5 /* MyToolbar.m */; };
 		0E0F830118A37D4100E81CA5 /* ACKMessageDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F830018A37D4100E81CA5 /* ACKMessageDB.m */; };
+		0E104D8318E54EB100DDF39B /* StatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E104D8218E54EB100DDF39B /* StatusViewController.m */; };
+		0E104D8718E551F100DDF39B /* EditStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E104D8618E551F100DDF39B /* EditStatusViewController.m */; };
+		0E104D8A18E55ACA00DDF39B /* StatusDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E104D8918E55ACA00DDF39B /* StatusDB.m */; };
 		0E1060D118CAEA3100DFBA3A /* CustomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1060D018CAEA3100DFBA3A /* CustomAlertView.m */; };
 		0E1060D418CB0F0300DFBA3A /* CopyPhotoHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1060D318CB0F0300DFBA3A /* CopyPhotoHandler.m */; };
 		0E10614818AB8109000564C7 /* Progress.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E10614718AB8109000564C7 /* Progress.m */; };
@@ -935,6 +938,12 @@
 		0E0F82FD18A3549400E81CA5 /* MyToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyToolbar.m; path = Classes/MyToolbar.m; sourceTree = "<group>"; };
 		0E0F82FF18A37D4100E81CA5 /* ACKMessageDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACKMessageDB.h; path = talkDB/ACKMessageDB.h; sourceTree = "<group>"; };
 		0E0F830018A37D4100E81CA5 /* ACKMessageDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ACKMessageDB.m; path = talkDB/ACKMessageDB.m; sourceTree = "<group>"; };
+		0E104D8118E54EB100DDF39B /* StatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatusViewController.h; path = setVC/StatusViewController.h; sourceTree = "<group>"; };
+		0E104D8218E54EB100DDF39B /* StatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatusViewController.m; path = setVC/StatusViewController.m; sourceTree = "<group>"; };
+		0E104D8518E551F100DDF39B /* EditStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditStatusViewController.h; path = setVC/EditStatusViewController.h; sourceTree = "<group>"; };
+		0E104D8618E551F100DDF39B /* EditStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EditStatusViewController.m; path = setVC/EditStatusViewController.m; sourceTree = "<group>"; };
+		0E104D8818E55ACA00DDF39B /* StatusDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusDB.h; sourceTree = "<group>"; };
+		0E104D8918E55ACA00DDF39B /* StatusDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusDB.m; sourceTree = "<group>"; };
 		0E1060CF18CAEA3100DFBA3A /* CustomAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomAlertView.h; path = CustomAlertView/CustomAlertView.h; sourceTree = "<group>"; };
 		0E1060D018CAEA3100DFBA3A /* CustomAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomAlertView.m; path = CustomAlertView/CustomAlertView.m; sourceTree = "<group>"; };
 		0E1060D218CB0F0300DFBA3A /* CopyPhotoHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CopyPhotoHandler.h; path = handler/CopyPhotoHandler.h; sourceTree = "<group>"; };
@@ -1730,6 +1739,7 @@
 				0EF5A014185585AA00B4EDE7 /* XMPP */,
 				0E2918D81859AFC900AA21B2 /* cache */,
 				0EF5A015185585C900B4EDE7 /* login&signUp */,
+				0E104D8418E54EBD00DDF39B /* status */,
 				0EF79DFC18583A9E00EB8A64 /* setVC */,
 				0EF79DF018580D0E00EB8A64 /* IconSort */,
 				0EEA49D318E1229500B20922 /* Filter */,
@@ -2542,6 +2552,17 @@
 				0EE5B66218DC387400A3DBBF /* DownLoadVideo.m */,
 			);
 			path = libs;
+			sourceTree = "<group>";
+		};
+		0E104D8418E54EBD00DDF39B /* status */ = {
+			isa = PBXGroup;
+			children = (
+				0E104D8118E54EB100DDF39B /* StatusViewController.h */,
+				0E104D8218E54EB100DDF39B /* StatusViewController.m */,
+				0E104D8518E551F100DDF39B /* EditStatusViewController.h */,
+				0E104D8618E551F100DDF39B /* EditStatusViewController.m */,
+			);
+			name = status;
 			sourceTree = "<group>";
 		};
 		0E1060CE18CAE98600DFBA3A /* customAlertview */ = {
@@ -3383,6 +3404,8 @@
 		0E8A4F30182B7EE300705C1F /* talkDB */ = {
 			isa = PBXGroup;
 			children = (
+				0E104D8818E55ACA00DDF39B /* StatusDB.h */,
+				0E104D8918E55ACA00DDF39B /* StatusDB.m */,
 				0E9B4B0F18CD9F96007E56BB /* CopyDB.h */,
 				0E9B4B1018CD9F96007E56BB /* CopyDB.m */,
 				0E8A4F34182B7FE300705C1F /* TalkDB.h */,
@@ -3956,6 +3979,7 @@
 				0E1F9753186D964A00C709CE /* SearchDB.m in Sources */,
 				0E891B2818D2DF57006430FE /* ZXFormatInformation.m in Sources */,
 				0E0F82FE18A3549400E81CA5 /* MyToolbar.m in Sources */,
+				0E104D8318E54EB100DDF39B /* StatusViewController.m in Sources */,
 				44A80EAD183129E2006069DE /* EmojiEmoticons.m in Sources */,
 				03D9C05F18145E410039118F /* XMPPUserMemoryStorageObject.m in Sources */,
 				0E891A7818D2DF57006430FE /* ZXAztecDetector.m in Sources */,
@@ -4056,6 +4080,7 @@
 				0E891ABD18D2DF57006430FE /* ZXDataMatrixDetector.m in Sources */,
 				0E891B0218D2DF57006430FE /* ZXMultiFormatUPCEANReader.m in Sources */,
 				0E891B4518D2DF57006430FE /* ZXMultiFormatReader.m in Sources */,
+				0E104D8718E551F100DDF39B /* EditStatusViewController.m in Sources */,
 				44A80EB3183129E2006069DE /* UIExpandingTextView.m in Sources */,
 				03D9BF5318145E270039118F /* XMPPDigestMD5Authentication.m in Sources */,
 				03D9C05818145E410039118F /* XMPPGroupCoreDataStorageObject.m in Sources */,
@@ -4295,6 +4320,7 @@
 				03D9C0A118145E410039118F /* NSXMLElement+XEP_0203.m in Sources */,
 				0E891B2518D2DF57006430FE /* ZXPDF417Writer.m in Sources */,
 				0E891B0918D2DF57006430FE /* ZXUPCEANExtensionSupport.m in Sources */,
+				0E104D8A18E55ACA00DDF39B /* StatusDB.m in Sources */,
 				0E891AA018D2DF57006430FE /* ZXCapture.m in Sources */,
 				03451B8518326C5600030E79 /* SignUpViewController.m in Sources */,
 				0ED8ECAC18288EB600C84741 /* VoiceHud.m in Sources */,

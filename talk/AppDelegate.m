@@ -27,6 +27,8 @@
 #import "UploadDB.h"
 //#import "TwitterConnect.h"
 #import "CopyDB.h"
+#import "StatusDB.h"
+
 @implementation UINavigationBar (UINavigationBarCategory)
 - (void)drawRect:(CGRect)rect {
    
@@ -88,6 +90,8 @@
     CopyDB * db = [[CopyDB alloc]init];
     [db initDB];
     
+    StatusDB *status =[[StatusDB alloc]init];
+    [status initDB];
     /*TwitterConnect * twitter = [[TwitterConnect alloc]init];
     ACAccountStore  *accountStore = [[ACAccountStore alloc] init];
     [twitter setAccountStore:accountStore];
@@ -203,7 +207,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"网络错误" message:@"网络没有信号" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
         [alert show];
     }
-    
+
 }
 
 
@@ -230,6 +234,19 @@
             [xmpp disconnect];
         }];
     }*/
+    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *username = [userDefaults objectForKey:@"username"];
+    if (username) {
+        NSDate *now = [[NSDate alloc] init];
+        long millionsSecs = [now timeIntervalSince1970];
+        NSString *time = [NSString stringWithFormat:@"%ld",millionsSecs];
+        STreamObject * so = [[STreamObject alloc]init];
+        [so setObjectId:username];
+        [so addStaff:@"lastseen" withObject:time];
+        [so addStaff:@"Online" withObject:@"NO"];
+        [so updateInBackground];
+
+    }
    UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
     [pasteBoard setString:@""];
    STreamXMPP *xmpp = [STreamXMPP sharedObject];
@@ -244,6 +261,14 @@
         RootViewController * rootVC = [[RootViewController alloc]init];
         UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:rootVC];
         [self.window setRootViewController:nav];
+    }else {
+        STreamObject * so = [[STreamObject alloc]init];
+        [so setObjectId:username];
+        [so addStaff:@"Online" withObject:@"YES"];
+        [so updateInBackground];
+//        NSLog(@"");
+//        NSArray *array = [so getAllKeys];
+//        NSString *is = [so getValue:@"Online"];
     }
 }
 

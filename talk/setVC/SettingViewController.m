@@ -23,8 +23,9 @@
 #import "DownloadAvatar.h"
 #import "MyQRCodeViewController.h"
 #import "ScannerViewController.h"
-
+#import "StatusViewController.h"
 #define IMAGE_TAG 10000
+#import "StatusDB.h"
 @interface SettingViewController ()<MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate>
 {
     UIImage *avatarImg;
@@ -102,7 +103,7 @@
     if (!email) {
         email = @"";
     }
-    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"Email",email,@"My QRCode",@"Scanner QRCode",@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
+    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"status",@"status",@"Email",email,@"My QRCode",@"Scanner QRCode",@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
     myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height-30) style:UITableViewStyleGrouped];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
@@ -129,7 +130,7 @@
 
     switch (section) {
         case 0:
-            return 3;
+            return 4;
             break;
         case 1:
             return 2;
@@ -204,11 +205,15 @@
         }else if (indexPath.row==1){
             cell .textLabel.text = [userData objectAtIndex:indexPath.row-1];
             cell.detailTextLabel.text = [userData objectAtIndex:indexPath.row];
-        }else{
-            cell.tag = indexPath.row;
+        }else if (indexPath.row==2){
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell .textLabel.text = [userData objectAtIndex:indexPath.row];
             cell.detailTextLabel.text = [userData objectAtIndex:indexPath.row+1];
+        }else if (indexPath.row==3){
+            cell.tag = indexPath.row;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell .textLabel.text = [userData objectAtIndex:indexPath.row+1];
+            cell.detailTextLabel.text = [userData objectAtIndex:indexPath.row+2];
             emailText = [[UITextField alloc] initWithFrame:CGRectMake(100,0,160,44)];
             [emailText setBackgroundColor:[UIColor clearColor]];
             [emailText setKeyboardType:UIKeyboardTypeEmailAddress];
@@ -222,15 +227,15 @@
     }else if(indexPath.section==1){
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-        cell .textLabel.text = [userData objectAtIndex:indexPath.row+4];
+        cell .textLabel.text = [userData objectAtIndex:indexPath.row+6];
     }else if(indexPath.section==2){
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
-        cell .textLabel.text = [userData objectAtIndex:indexPath.row+6];
+        cell .textLabel.text = [userData objectAtIndex:indexPath.row+8];
     }else if(indexPath.section==3){
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
-        cell .textLabel.text = [userData objectAtIndex:indexPath.row+8];
+        cell .textLabel.text = [userData objectAtIndex:indexPath.row+10];
     }else if(indexPath.section==4){
         
         cell.backgroundColor = [UIColor redColor];
@@ -262,6 +267,14 @@
     switch (indexPath.section) {
         case 0:{
             if (indexPath.row==2) {
+                 HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+                StatusDB *db= [[StatusDB alloc]init];
+                [db insertStatus:@"Hey there! I am useing CoolChat!" withUser:[handle getUserID]];
+                [db insertStatus:@"Hey there! I am useing CoolChat!" withUser:[handle getUserID]];
+                StatusViewController * statusVC =[[StatusViewController alloc]init];
+                [statusVC setStatus:@"Hey there! I am useing CoolChat!"];
+                [self.navigationController pushViewController:statusVC animated:NO];
+            }else  if (indexPath.row==3) {
                 UITableViewCell * cell = (UITableViewCell *)[tableView viewWithTag:indexPath.row];
                 cell.detailTextLabel.text = @"";
                 [emailText setEnabled:YES];
@@ -505,7 +518,7 @@
         [imageCache saveUserMetadata:[handle getUserID] withMetadata:userMetadata];
         STreamUser *user = [[STreamUser alloc]init];
         [user updateUserMetadata:[handle getUserID] withMetadata:userMetadata];
-        userData = [[NSMutableArray alloc]initWithObjects:@"UserName",[handle getUserID],@"Email",email,@"My QRCode",@"Scanner QRCode",@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
+        userData = [[NSMutableArray alloc]initWithObjects:@"UserName",[handle getUserID],@"status",@"status",@"Email",email,@"My QRCode",@"Scanner QRCode",@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
     }
     [textField setText:@""];
     [textField setEnabled:NO];
