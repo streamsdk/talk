@@ -234,19 +234,6 @@
             [xmpp disconnect];
         }];
     }*/
-    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *username = [userDefaults objectForKey:@"username"];
-    if (username) {
-        NSDate *now = [[NSDate alloc] init];
-        long millionsSecs = [now timeIntervalSince1970];
-        NSString *time = [NSString stringWithFormat:@"%ld",millionsSecs];
-        STreamObject * so = [[STreamObject alloc]init];
-        [so setObjectId:username];
-        [so addStaff:@"lastseen" withObject:time];
-        [so addStaff:@"Online" withObject:@"NO"];
-        [so updateInBackground];
-
-    }
    UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
     [pasteBoard setString:@""];
    STreamXMPP *xmpp = [STreamXMPP sharedObject];
@@ -261,14 +248,6 @@
         RootViewController * rootVC = [[RootViewController alloc]init];
         UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:rootVC];
         [self.window setRootViewController:nav];
-    }else {
-        STreamObject * so = [[STreamObject alloc]init];
-        [so setObjectId:username];
-        [so addStaff:@"Online" withObject:@"YES"];
-        [so updateInBackground];
-//        NSLog(@"");
-//        NSArray *array = [so getAllKeys];
-//        NSString *is = [so getValue:@"Online"];
     }
 }
 

@@ -90,4 +90,7 @@
 
 -(CGFloat) getTablecontentOffset:(NSString *)user;
 
+-(void)saveOnline:(NSString *)online withuserId:(NSString *)userId;
+-(NSString *)getOnline:(NSString *)userId;
+
 @end

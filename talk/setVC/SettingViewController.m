@@ -453,6 +453,18 @@
             STreamXMPP * con = [STreamXMPP sharedObject];
             [con disconnect];
             NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+            NSString *username = [userDefaults objectForKey:@"username"];
+            if (username) {
+                NSDate *now = [[NSDate alloc] init];
+                long millionsSecs = [now timeIntervalSince1970];
+                NSString *time = [NSString stringWithFormat:@"%ld",millionsSecs];
+                STreamObject * so = [[STreamObject alloc]init];
+                [so setObjectId:username];
+                [so addStaff:@"lastseen" withObject:time];
+                [so addStaff:@"online" withObject:@"NO"];
+                [so updateInBackground];
+                
+            }
             [userDefaults removeObjectForKey:@"username"];
             [userDefaults removeObjectForKey:@"password"];
            

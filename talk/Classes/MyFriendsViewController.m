@@ -429,6 +429,11 @@
     if ([presenceType isEqualToString:@"unavailable"]){
         
     }
+    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    STreamObject * so = [[STreamObject alloc]init];
+    [so setObjectId:[handle getUserID]];
+    [so addStaff:@"online" withObject:@"YES"];
+    [so updateInBackground];
     [self.tableView reloadData];
 
 }
@@ -820,19 +825,60 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
   
-     ImageCache *imageCache = [ImageCache sharedObject];
-    
-    NSMutableArray * keys = [sortedArrForArrays objectAtIndex:indexPath.section];
-    ChineseString * userStr = [keys objectAtIndex:indexPath.row];
-    NSString *userName = [userStr string];
-    [imageCache setFriendID:userName];
-    [imageCache removeFriendID:userName];
-    [imageCache saveRaedCount:[NSNumber numberWithInt:0] withuserID:userName];
-    [imageCache saveTablecontentOffset:0 withUser:userName];
-    [self.tableView reloadData];
-    [self.navigationController pushViewController:mainVC animated:YES];
-}
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"sending...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        ImageCache *imageCache = [ImageCache sharedObject];
+        
+        NSMutableArray * keys = [sortedArrForArrays objectAtIndex:indexPath.section];
+        ChineseString * userStr = [keys objectAtIndex:indexPath.row];
+        NSString *userName = [userStr string];
+        [imageCache setFriendID:userName];
+        [imageCache removeFriendID:userName];
+        [imageCache saveRaedCount:[NSNumber numberWithInt:0] withuserID:userName];
+        [imageCache saveTablecontentOffset:0 withUser:userName];
+        STreamObject * so = [[STreamObject alloc]init];
+        [so setObjectId:userName];
+        NSString * online = [so getValue:@"online"];
+        if ([online isEqualToString:@"YES"]) {
+            [imageCache saveOnline:@"online" withuserId:userName];
+        }else{
+            NSString * time = [so getValue:@"lastseen"];
+            long long lastModifiedTime = [time longLongValue];
+            NSDate *now = [[NSDate alloc] init];
+            long long millionsSecs = [now timeIntervalSince1970];
+            long long diff = millionsSecs - lastModifiedTime;
+            NSString * timeDiff = [self getTimeDiff:diff withLastseen:time];
+           [imageCache saveOnline:timeDiff withuserId:userName];
 
+        }
+    } completionBlock:^{
+        [self.tableView reloadData];
+        [self.navigationController pushViewController:mainVC animated:YES];
+        [HUD removeFromSuperview];
+    }];
+    
+   
+}
+- (NSString *)getTimeDiff:(long long)diff withLastseen:(NSString *)lastseen{
+    NSDateFormatter *dateformat=[[NSDateFormatter  alloc]init];
+    [dateformat setDateFormat:@"HH:mm"];
+    NSString *lastseenTime;
+    int days;
+    int seconds = (int)(diff);
+    days = seconds / 3600 / 24;
+    if (days <= 1){
+        lastseenTime=[NSString stringWithFormat:@"last seen today at %@", [dateformat dateFromString:lastseen]];
+    }else  if (days<=2) {
+         lastseenTime=[NSString stringWithFormat:@"last seen yesterday at %@", [dateformat dateFromString:lastseen]];
+    }else{
+        NSDateFormatter *format=[[NSDateFormatter  alloc]init];
+        [format setDateFormat:@"dd/MM/yyyy"];
+        lastseenTime=[NSString stringWithFormat:@"last seen at %@", [format dateFromString:lastseen]];
+    }
+    return lastseenTime;
+}
 -(void)setImage:(UIImage *)icon withCell:(UITableViewCell *)cell{
     CGSize itemSize = CGSizeMake(50, 50);
     UIGraphicsBeginImageContextWithOptions(itemSize, NO,0.0);

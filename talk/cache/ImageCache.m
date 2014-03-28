@@ -28,6 +28,7 @@ static NSLock *_theLock;
 static NSMutableArray * _downVideo;
 static NSMutableDictionary *_contentOffset;
 static NSMutableDictionary*_allCountDict;
+static NSMutableDictionary*_onlineDict;
 @implementation ImageCache
 
 
@@ -55,6 +56,7 @@ static NSMutableDictionary*_allCountDict;
         _downVideo = [[NSMutableArray alloc]init];
         _contentOffset = [[NSMutableDictionary alloc]init];
         _allCountDict = [[NSMutableDictionary alloc]init];
+        _onlineDict = [[NSMutableDictionary alloc]init];
     });
     
     return sharedInstance;
@@ -252,5 +254,12 @@ static NSMutableDictionary*_allCountDict;
 }
 -(CGFloat)getTablecontentOffset:(NSString *)user{
     return [[_contentOffset objectForKey:user] floatValue];
+}
+
+-(void)saveOnline:(NSString *)online withuserId:(NSString *)userId{
+    [_onlineDict setObject:online forKey:userId];
+}
+-(NSString *)getOnline:(NSString *)userId{
+    return [_onlineDict objectForKey:userId];
 }
 @end

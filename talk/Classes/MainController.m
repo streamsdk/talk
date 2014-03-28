@@ -76,6 +76,9 @@
     BOOL isClearData;
     
     UIImageView * backgroundView;
+    UILabel *lable1;
+    UILabel *lable;
+    UIView * view;
 }
 
 @property(nonatomic,retain) Voice * voice;
@@ -141,8 +144,10 @@
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSString *sendToID = [imageCache getFriendID];
     
-    self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
-
+//    self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
+    lable.text=sendToID;
+    lable1.text = [imageCache getOnline:sendToID];
+    self.navigationItem.titleView = view;
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * userID = [handler getUserID];
     rowCount = 10;
@@ -326,6 +331,20 @@
     [_deleteBackview addSubview:_deleteButton];
     [bubbleTableView reloadData];
     self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    lable = [[UILabel alloc]initWithFrame:CGRectMake(30, 0, 180, 20)];
+    lable.backgroundColor = [UIColor clearColor];
+    lable.textColor =[UIColor whiteColor];
+    
+    lable1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 20,  180, 20)];
+    lable1.backgroundColor = [UIColor clearColor];
+    lable1.textColor =[UIColor grayColor];
+    lable1.font = [UIFont systemFontOfSize:13];
+
+    view =[[UIView alloc]initWithFrame:CGRectMake(0, 0, 180, 40)];
+    view.backgroundColor =[UIColor clearColor];
+    [view addSubview:lable];
+    [view addSubview:lable1];
 }
 -(void)cancel {
     NSLog(@"cancel");
