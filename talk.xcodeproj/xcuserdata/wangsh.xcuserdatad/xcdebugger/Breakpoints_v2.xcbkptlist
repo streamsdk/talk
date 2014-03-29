@@ -229,12 +229,12 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "417766623.877025"
+                  timestampString = "417781794.842187"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
                   endingLineNumber = "1119"
-                  offsetFromSymbolStart = "480">
+                  offsetFromSymbolStart = "430">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -243,12 +243,12 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "417766623.8773"
+                  timestampString = "417781794.842478"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
                   endingLineNumber = "1119"
-                  offsetFromSymbolStart = "650">
+                  offsetFromSymbolStart = "496">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -266,22 +266,6 @@
             startingLineNumber = "232"
             endingLineNumber = "232"
             landmarkName = "-signUpUser"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "libs/UIBubbleTableView.m"
-            timestampString = "417766604.267891"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "526"
-            endingLineNumber = "526"
-            landmarkName = "-downVideo:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
