@@ -542,6 +542,7 @@
                                    if (duration) {
                                        [dict setObject:duration forKey:@"duration"];
                                    }
+                                   [dict setObject:fromId forKey:@"fromId"];
                                    [jsonDic setObject:dict forKey:fromId];
                                    NSString * jsonBody = [jsonDic JSONString];
                                    [download deleteDownloadDBFromFileID:fileId];
