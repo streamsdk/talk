@@ -448,6 +448,8 @@
         if (duration) {
             [dict setObject:duration forKey:@"duration"];
         }
+        if (!fromId) return NO;
+        
         [jsonDic setObject:dict forKey:fromId];
         NSString * jsonBody = [jsonDic JSONString];
         [talkDb updateDB:cell.data.date withContent:jsonBody];
@@ -551,6 +553,7 @@
                                    cell.data.jsonBody = jsonBody;
                                    [activityIndicatorView stopAnimating];
                                    [cache removeDownloadingFile:timeId];
+                                   [self reloadData];
                                } else{
                                    if (cell.data.fileType == FileDisappear){
                                        [cell.data.videobutton setTitle:@"Download" forState:UIControlStateNormal];
