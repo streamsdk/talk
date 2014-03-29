@@ -328,6 +328,10 @@
                     [activityIndicatorView startAnimating];
                     [self checkfileManager:json withButton:downButton withActivityIndicatorView:activityIndicatorView withCell:cell];
                 }else{
+                    if ([self checkfileManager:json withButton:downButton withActivityIndicatorView:activityIndicatorView withCell:cell]){
+                        return cell;
+                    }
+
                     [downButton setTitle:@"Download" forState:UIControlStateNormal];
                     [downButton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
                     [cell.contentView addSubview:downButton];
@@ -363,6 +367,13 @@
                     [activityIndicatorView startAnimating];
                     cell.data.videobutton.titleLabel.text =@"Downloading";
                 }else {
+                    if ([self checkfileManager:json withButton:cell.data.videobutton withActivityIndicatorView:activityIndicatorView withCell:cell]) {
+                        [cell.data.videobutton setTitle:@"Click to view" forState:UIControlStateNormal];
+                        [cell.data.videobutton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+                        [cell.data.videobutton addTarget:self action:@selector(playerVideo:) forControlEvents:UIControlEventTouchUpInside];
+                        return cell;
+                    }
+
                     if ([cell.data.videobutton.titleLabel.text isEqualToString:@"Download"]) {
                         cell.data.videobutton.tag = indexPath.row+1000*indexPath.section;
                         [cell.data.videobutton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
@@ -537,7 +548,6 @@
                                    [talkDb updateDB:cell.data.date withContent:jsonBody];
                                    cell.data._videoPath = filepath;
                                    cell.data.jsonBody = jsonBody;
-                                   [self reloadData];
                                    [activityIndicatorView stopAnimating];
                                    [cache removeDownloadingFile:timeId];
                                } else{
@@ -551,7 +561,6 @@
                                        [button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
                                        [button addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
                                    }
-                                   [self reloadData];
                                    [activityIndicatorView stopAnimating];
                                    [cache removeDownloadingFile:timeId];
                                }
