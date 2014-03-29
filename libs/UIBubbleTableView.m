@@ -367,6 +367,13 @@
                     [activityIndicatorView startAnimating];
                     cell.data.videobutton.titleLabel.text =@"Downloading";
                 }else {
+                    if ([self checkfileManager:json withButton:cell.data.videobutton withActivityIndicatorView:activityIndicatorView withCell:cell]) {
+                        [cell.data.videobutton setTitle:@"Click to view" forState:UIControlStateNormal];
+                        [cell.data.videobutton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+                        [cell.data.videobutton addTarget:self action:@selector(playerVideo:) forControlEvents:UIControlEventTouchUpInside];
+                        return cell;
+                    }
+
                     if ([cell.data.videobutton.titleLabel.text isEqualToString:@"Download"]) {
                         cell.data.videobutton.tag = indexPath.row+1000*indexPath.section;
                         [cell.data.videobutton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
@@ -523,6 +530,7 @@
                                    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
                                    TalkDB * talkDb = [[TalkDB alloc]init];
                                    NSString * filepath= [NSHomeDirectory() stringByAppendingFormat:@"/Documents/out-%@.mp4", fileId];
+                                   [data writeToFile : filepath atomically: YES ];
                                    [handler videoPath:filepath];
                                    NSMutableDictionary * dict = [[NSMutableDictionary alloc]init];
                                    NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
@@ -540,7 +548,6 @@
                                    [talkDb updateDB:cell.data.date withContent:jsonBody];
                                    cell.data._videoPath = filepath;
                                    cell.data.jsonBody = jsonBody;
-                                   [data writeToFile : filepath atomically: YES ];
                                    [activityIndicatorView stopAnimating];
                                    [cache removeDownloadingFile:timeId];
                                } else{
