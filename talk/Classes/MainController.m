@@ -214,7 +214,9 @@
         }
         isVideo = NO;
     }else{
+        ImageCache *imageCache = [ImageCache sharedObject];
         if (buttonIndex ==0) {
+            [imageCache saveTablecontentOffset:bubbleTableView.contentOffset.y withUser:[imageCache getFriendID]];
             BackgroundImgViewController * bgView = [[BackgroundImgViewController alloc]init];
             bgView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
             [self presentViewController:bgView animated:YES completion:nil];
