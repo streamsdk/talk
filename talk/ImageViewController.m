@@ -161,7 +161,7 @@ static NSMutableArray *colors;
     itemsarray = [[NSArray alloc]initWithObjects:clockitem,fiexibleSpace,doneitem, nil];
     [self.view addSubview:toolBar];
     
-    NSArray *arr = [NSArray arrayWithObjects:@"原图",@"LOMO",@"黑白",@"复古",@"哥特",@"锐色",@"淡雅",@"酒红",@"青柠",@"浪漫",@"光晕",@"蓝调",@"梦幻",@"夜色", nil];
+    NSArray *arr = [NSArray arrayWithObjects:@"Nature",@"Lomo",@"BW",@"Retro",@"Gothic",@"Sharp",@"Elegant",@"Burgundy",@"Lime",@"Romantic",@"Halo",@"Blues",@"Dream",@"Night", nil];
     UIView * filterView = [[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight - 110, self.view.frame.size.width, 64)];
     filterView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
     scrollerView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, 60)];
