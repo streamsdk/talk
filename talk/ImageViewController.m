@@ -12,6 +12,9 @@
 #import "CreateUI.h"
 #import "ImageCache.h"
 #import "MyToolbar.h"
+#import "ImageUtil.h"
+#import "ColorMatrix.h"
+#import "IphoneScreen.h"
 
 #define CLOCKBUTTON_TAG 10000
 #define UNDO_TAG 1000
@@ -72,14 +75,12 @@ static NSMutableArray *colors;
     drawView.userInteractionEnabled = YES;
     [drawView setBackgroundColor:[UIColor colorWithPatternImage:newImg]];
     [self.view sendSubviewToBack:drawView];
-//    CALayer *l = [drawView layer];
-//    [l setMasksToBounds:YES];
-//    [l setCornerRadius:8.0];
+    currentImage = newImg;
     
-    UIView * topView = [[UIView alloc]initWithFrame:CGRectMake(0, 26, self.view.frame.size.width, 50)];
+    UIView * topView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, 50)];
     topView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
     
-    UIView * colorView = [[UIView alloc]initWithFrame:CGRectMake(self.view.frame.size.width-20, 80, 20, 320)];
+    UIView * colorView = [[UIView alloc]initWithFrame:CGRectMake(self.view.frame.size.width-20, 90, 20, 264)];
     colorView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
 
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -111,7 +112,7 @@ static NSMutableArray *colors;
     [topView addSubview:redoButton];
 
     //colorsimageview
-    colorsImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 10, 10, 300)];
+    colorsImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 2, 10, 260)];
     CALayer *ll = [colorsImageView layer];
     [ll setMasksToBounds:YES];
     [ll setCornerRadius:6.0];
@@ -119,12 +120,12 @@ static NSMutableArray *colors;
     [colorsImageView setUserInteractionEnabled:YES];
     [colorView addSubview:colorsImageView];
     
-    MyToolbar *toolBar=[[MyToolbar alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-60,self.view.frame.size.width,60)];
+    MyToolbar *toolBar=[[MyToolbar alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-40,self.view.frame.size.width,40)];
     toolBar.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
     toolBar.tag =TOOLBAR_TAG;
     
     UIButton *useButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frame = CGRectMake(260, 10, 40, 40);
+    CGRect frame = CGRectMake(260, 0, 40, 40);
     [useButton setFrame:frame];
     [useButton setImage:[UIImage imageNamed:@"forward.png"] forState:UIControlStateNormal];
     [useButton addTarget:self action:@selector(sendStart) forControlEvents:UIControlEventTouchDown];
@@ -132,7 +133,7 @@ static NSMutableArray *colors;
     useButton.tag = USERPHOTO_TAG;
     
     UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frameDone = CGRectMake(260, 10, 45, 45);
+    CGRect frameDone = CGRectMake(260, 0, 40, 40);
     [doneButton setFrame:frameDone];
     [doneButton setImage:[UIImage imageNamed:@"tick512.png"] forState:UIControlStateNormal];
     [doneButton addTarget:self action:@selector(doneClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -140,7 +141,7 @@ static NSMutableArray *colors;
 //    doneButton.hidden = YES;
     
     UIButton * clockButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [clockButton setFrame:CGRectMake(10,10, 40, 40)];
+    [clockButton setFrame:CGRectMake(10,0, 40, 40)];
     [clockButton setBackgroundImage:[UIImage imageNamed:@"clocknew.png"] forState:UIControlStateNormal];
     clockButton .tag = CLOCKBUTTON_TAG;
     clockButton.titleLabel.font = [UIFont systemFontOfSize:12.0f];
@@ -160,7 +161,135 @@ static NSMutableArray *colors;
     itemsarray = [[NSArray alloc]initWithObjects:clockitem,fiexibleSpace,doneitem, nil];
     [self.view addSubview:toolBar];
     
+    NSArray *arr = [NSArray arrayWithObjects:@"原图",@"LOMO",@"黑白",@"复古",@"哥特",@"锐色",@"淡雅",@"酒红",@"青柠",@"浪漫",@"光晕",@"蓝调",@"梦幻",@"夜色", nil];
+    UIView * filterView = [[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight - 110, self.view.frame.size.width, 64)];
+    filterView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
+    scrollerView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, 60)];
+    scrollerView.backgroundColor = [UIColor clearColor];
+    scrollerView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
+    scrollerView.showsHorizontalScrollIndicator = NO;
+    scrollerView.showsVerticalScrollIndicator = NO;//关闭纵向滚动条
+    scrollerView.bounces = NO;
+    
+    float x ;
+    for(int i=0;i<14;i++)
+    {
+        x = 10 + 51*i;
+        UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setImageStyle:)];
+        recognizer.numberOfTouchesRequired = 1;
+        recognizer.numberOfTapsRequired = 1;
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(x, 44, 40, 20)];
+        [label setBackgroundColor:[UIColor clearColor]];
+        [label setText:[arr objectAtIndex:i]];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        [label setFont:[UIFont systemFontOfSize:13.0f]];
+        [label setTextColor:[UIColor whiteColor]];
+        [label setUserInteractionEnabled:YES];
+        [label setTag:i];
+        
+        [scrollerView addSubview:label];
+        
+        UIImageView *bgImageView = [[UIImageView alloc]initWithFrame:CGRectMake(x, 5, 40, 40)];
+        [bgImageView setTag:i];
+        [bgImageView addGestureRecognizer:recognizer];
+        [bgImageView setUserInteractionEnabled:YES];
+        UIImage *bgImage = [self changeImage:i imageView:bgImageView];
+        bgImageView.image = bgImage;
+        [scrollerView addSubview:bgImageView];
+        
+    }
+    scrollerView.contentSize = CGSizeMake(x + 55, 60);
+    [filterView addSubview:scrollerView];
+    [self.view addSubview:filterView];
+    
 }
+
+- (void)setImageStyle:(UITapGestureRecognizer *)sender
+{
+    UIImage *_image =   [self changeImage:sender.view.tag imageView:nil];
+    image = _image;
+    [drawView setBackgroundColor:[UIColor colorWithPatternImage:_image]];
+}
+-(UIImage *)changeImage:(int)index imageView:(UIImageView *)imageView
+{
+    UIImage *_image;
+    switch (index) {
+        case 0:
+        {
+            return currentImage;
+        }
+            break;
+        case 1:
+        {
+            _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_lomo];
+        }
+            break;
+        case 2:
+        {
+            _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_heibai];
+        }
+            break;
+        case 3:
+        {
+            _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_fugu];
+        }
+            break;
+        case 4:
+        {
+            _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_gete];
+        }
+            break;
+        case 5:
+        {
+            _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_ruihua];
+        }
+            break;
+        case 6:
+        {
+            _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_danya];
+        }
+            break;
+        case 7:
+        {
+            _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_jiuhong];
+        }
+            break;
+        case 8:
+        {
+            _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_qingning];
+        }
+            break;
+        case 9:
+        {
+            _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_langman];
+        }
+            break;
+        case 10:
+        {
+            _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_guangyun];
+        }
+            break;
+        case 11:
+        {
+            _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_landiao];
+            
+        }
+            break;
+        case 12:
+        {
+            _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_menghuan];
+            
+        }
+            break;
+        case 13:
+        {
+            _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_yese];
+            
+        }
+    }
+    return _image;
+}
+
 -(void)undoClicked{
     [ self.drawView revocation];
 }

@@ -221,7 +221,7 @@
 		0E2E5EB718726D230044DC4C /* message_count@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E2E5EB518726D230044DC4C /* message_count@2x.png */; };
 		0E3A74F218740C9D00A9020D /* HandlerFirendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3A74F118740C9D00A9020D /* HandlerFirendsViewController.m */; };
 		0E3C3C9A188A1632003D43EB /* selectcolors.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E3C3C98188A1632003D43EB /* selectcolors.png */; };
-		0E3C3C9F188A2CE7003D43EB /* color.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E3C3C9E188A2CE7003D43EB /* color.png */; };
+		0E3C3C9F188A2CE7003D43EB /* color2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E3C3C9E188A2CE7003D43EB /* color2.png */; };
 		0E423AE018C6D8B7009D884E /* Selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E423ADE18C6D8B7009D884E /* Selected.png */; };
 		0E423AE118C6D8B7009D884E /* Unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E423ADF18C6D8B7009D884E /* Unselected.png */; };
 		0E49F040187E333700749A6D /* ALAirplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E49F026187E333700749A6D /* ALAirplayView.m */; };
@@ -263,6 +263,9 @@
 		0ED8ECAC18288EB600C84741 /* VoiceHud.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED8ECAB18288EB600C84741 /* VoiceHud.m */; };
 		0EDCAA7F1829F11500BF9101 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EDCAA7E1829F11500BF9101 /* CoreVideo.framework */; };
 		0EDCAAC5182A10B100BF9101 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0847371827305B00350741 /* AudioToolbox.framework */; };
+		0EE1208518E66FED008FE06F /* IphoneScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE1208118E66FED008FE06F /* IphoneScreen.m */; };
+		0EE1208618E66FED008FE06F /* ImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE1208318E66FED008FE06F /* ImageUtil.m */; };
+		0EE1208818E67192008FE06F /* color.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE1208718E67192008FE06F /* color.png */; };
 		0EE9518A185EA3EF003F4638 /* FileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE95189185EA3EF003F4638 /* FileCache.m */; };
 		0EE9518D185EA40D003F4638 /* BackgroundImgViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE9518C185EA40D003F4638 /* BackgroundImgViewController.m */; };
 		0EE95192185EA43C003F4638 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE9518F185EA43C003F4638 /* MainController.m */; };
@@ -738,7 +741,7 @@
 		0E3A74F018740C9D00A9020D /* HandlerFirendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HandlerFirendsViewController.h; path = "add&search/HandlerFirendsViewController.h"; sourceTree = "<group>"; };
 		0E3A74F118740C9D00A9020D /* HandlerFirendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HandlerFirendsViewController.m; path = "add&search/HandlerFirendsViewController.m"; sourceTree = "<group>"; };
 		0E3C3C98188A1632003D43EB /* selectcolors.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectcolors.png; sourceTree = "<group>"; };
-		0E3C3C9E188A2CE7003D43EB /* color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = color.png; sourceTree = "<group>"; };
+		0E3C3C9E188A2CE7003D43EB /* color2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = color2.png; sourceTree = "<group>"; };
 		0E423ADE18C6D8B7009D884E /* Selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Selected.png; sourceTree = "<group>"; };
 		0E423ADF18C6D8B7009D884E /* Unselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Unselected.png; sourceTree = "<group>"; };
 		0E49F025187E333700749A6D /* ALAirplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALAirplayView.h; sourceTree = "<group>"; };
@@ -792,6 +795,12 @@
 		0ED8ECAA18288EB600C84741 /* VoiceHud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VoiceHud.h; path = Voice/VoiceHud.h; sourceTree = "<group>"; };
 		0ED8ECAB18288EB600C84741 /* VoiceHud.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VoiceHud.m; path = Voice/VoiceHud.m; sourceTree = "<group>"; };
 		0EDCAA7E1829F11500BF9101 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		0EE1208018E66FED008FE06F /* IphoneScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IphoneScreen.h; sourceTree = "<group>"; };
+		0EE1208118E66FED008FE06F /* IphoneScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IphoneScreen.m; sourceTree = "<group>"; };
+		0EE1208218E66FED008FE06F /* ImageUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageUtil.h; sourceTree = "<group>"; };
+		0EE1208318E66FED008FE06F /* ImageUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageUtil.m; sourceTree = "<group>"; };
+		0EE1208418E66FED008FE06F /* ColorMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorMatrix.h; sourceTree = "<group>"; };
+		0EE1208718E67192008FE06F /* color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = color.png; sourceTree = "<group>"; };
 		0EE95188185EA3EF003F4638 /* FileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileCache.h; path = cache/FileCache.h; sourceTree = "<group>"; };
 		0EE95189185EA3EF003F4638 /* FileCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FileCache.m; path = cache/FileCache.m; sourceTree = "<group>"; };
 		0EE9518B185EA40D003F4638 /* BackgroundImgViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BackgroundImgViewController.h; path = Classes/BackgroundImgViewController.h; sourceTree = "<group>"; };
@@ -1038,6 +1047,7 @@
 				0EF5A015185585C900B4EDE7 /* login&signUp */,
 				0EF79DFC18583A9E00EB8A64 /* setVC */,
 				0EF79DF018580D0E00EB8A64 /* IconSort */,
+				0EE1207F18E66FCF008FE06F /* Filter */,
 				0E4B13D9187CF1650070752B /* imageContoller */,
 				0EFD8C0E18D40910005A93B0 /* customAlertview */,
 				0EFD8C1818D417E2005A93B0 /* customTextField */,
@@ -2047,6 +2057,18 @@
 			name = creatUI;
 			sourceTree = "<group>";
 		};
+		0EE1207F18E66FCF008FE06F /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				0EE1208018E66FED008FE06F /* IphoneScreen.h */,
+				0EE1208118E66FED008FE06F /* IphoneScreen.m */,
+				0EE1208218E66FED008FE06F /* ImageUtil.h */,
+				0EE1208318E66FED008FE06F /* ImageUtil.m */,
+				0EE1208418E66FED008FE06F /* ColorMatrix.h */,
+			);
+			name = Filter;
+			sourceTree = "<group>";
+		};
 		0EE95194185EA47D003F4638 /* search */ = {
 			isa = PBXGroup;
 			children = (
@@ -2076,7 +2098,8 @@
 				0345C21D189EA20E007AB90F /* mailf.png */,
 				0345C21B189EA1BB007AB90F /* searchf.png */,
 				0345C219189E9EF5007AB90F /* addf.png */,
-				0E3C3C9E188A2CE7003D43EB /* color.png */,
+				0E3C3C9E188A2CE7003D43EB /* color2.png */,
+				0EE1208718E67192008FE06F /* color.png */,
 				0E3C3C98188A1632003D43EB /* selectcolors.png */,
 				0EF6EB4118853FF400AE64AA /* clockselect.png */,
 				0E1C181D1883E37B00153F92 /* line@2x.png */,
@@ -2397,7 +2420,7 @@
 				0EE951E9185EA4B9003F4638 /* missingAvatar@2x.png in Resources */,
 				0EF01EDB18B49AFF0012CC3F /* bg7.png in Resources */,
 				0EE951DB185EA4B9003F4638 /* bubbleMine.png in Resources */,
-				0E3C3C9F188A2CE7003D43EB /* color.png in Resources */,
+				0E3C3C9F188A2CE7003D43EB /* color2.png in Resources */,
 				0EE951F2185EA4B9003F4638 /* video.png in Resources */,
 				0EE951F0185EA4B9003F4638 /* typingSomeone.png in Resources */,
 				0E49F069187E7B8F00749A6D /* undo.png in Resources */,
@@ -2431,6 +2454,7 @@
 				03D9C0EF18145E510039118F /* build-libidn.sh in Resources */,
 				0EE951F1185EA4B9003F4638 /* typingSomeone@2x.png in Resources */,
 				0E19E83A18716AA100523232 /* whiteArrow.png in Resources */,
+				0EE1208818E67192008FE06F /* color.png in Resources */,
 				0E49F048187E333700749A6D /* movieBackwardSelected@2x.png in Resources */,
 				0EE951EB185EA4B9003F4638 /* Speak@2x.png in Resources */,
 				0EE951F4185EA4B9003F4638 /* Voice.png in Resources */,
@@ -2522,6 +2546,7 @@
 				03D9C0E618145E510039118F /* DDLog.m in Sources */,
 				03D9BF0C18145C080039118F /* AppDelegate.m in Sources */,
 				03D9C0A318145E410039118F /* XMPPAttentionModule.m in Sources */,
+				0EE1208618E66FED008FE06F /* ImageUtil.m in Sources */,
 				03D9C0B518145E480039118F /* GCDMulticastDelegate.m in Sources */,
 				03D9C08D18145E410039118F /* XMPPTransports.m in Sources */,
 				03D9C07218145E410039118F /* XMPPRoomOccupantMemoryStorageObject.m in Sources */,
@@ -2561,6 +2586,7 @@
 				0EF6EB3A1884E81C00AE64AA /* Twitter.m in Sources */,
 				03D9C0B818145E480039118F /* XMPPIDTracker.m in Sources */,
 				03D9BF5F18145E2F0039118F /* NSXMLElement+XMPP.m in Sources */,
+				0EE1208518E66FED008FE06F /* IphoneScreen.m in Sources */,
 				03D9C0B918145E480039118F /* XMPPSRVResolver.m in Sources */,
 				03D9C07E18145E410039118F /* XMPPvCardTempBase.m in Sources */,
 				03D9C05318145E410039118F /* XMPPBandwidthMonitor.m in Sources */,

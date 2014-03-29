@@ -366,6 +366,7 @@
 
 #pragma mark - STreamXMPPProtocol
 - (void)didAuthenticate{
+    self.title = @"reading...";
     [self startDownload];
     [self readHistory];
     [self startUpload];

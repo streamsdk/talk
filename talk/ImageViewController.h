@@ -15,6 +15,9 @@
     NSArray *timeArray;
     UIActionSheet* actionSheet;
     
+    UIScrollView *scrollerView;
+    UIImage *currentImage;
+    
 }
 @property (nonatomic,strong) UIImage * image;
 @property (nonatomic,assign) id <ImageSendProtocol> imageSendProtocol;
