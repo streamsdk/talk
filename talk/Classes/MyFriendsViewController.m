@@ -409,9 +409,12 @@
     [self startDownload];
     [self readHistory];
     [self startUpload];
+    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    STreamObject * so = [[STreamObject alloc]init];
+    [so setObjectId:[handle getUserID]];
+    [so addStaff:@"online" withObject:@"YES"];
+    [so updateInBackground];
 }
-
-
 
 - (void)didNotAuthenticate:(NSXMLElement *)error{
     self.title = @"failed...";
@@ -429,11 +432,7 @@
     if ([presenceType isEqualToString:@"unavailable"]){
         
     }
-    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
-    STreamObject * so = [[STreamObject alloc]init];
-    [so setObjectId:[handle getUserID]];
-    [so addStaff:@"online" withObject:@"YES"];
-    [so updateInBackground];
+    
     [self.tableView reloadData];
 
 }
@@ -714,7 +713,7 @@
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
   
     if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellId];
 //        [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.tag = TABLECELL_TAG;
@@ -746,7 +745,7 @@
                 [button setBackgroundImage:[UIImage imageNamed:@"message_count.png"] forState:UIControlStateNormal];
                 [button setTitle:title forState:UIControlStateNormal];
               }
-            
+            cell.detailTextLabel.text = @"Hey,there! I am using CoolChat!";
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
         } else {
             NSLog(@"arr out of range");
@@ -826,7 +825,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
   
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"sending...";
+    HUD.labelText = @"loading...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
         ImageCache *imageCache = [ImageCache sharedObject];
@@ -840,6 +839,7 @@
         [imageCache saveTablecontentOffset:0 withUser:userName];
         STreamObject * so = [[STreamObject alloc]init];
         [so setObjectId:userName];
+        [so loadAll:userName];
         NSString * online = [so getValue:@"online"];
         if ([online isEqualToString:@"YES"]) {
             [imageCache saveOnline:@"online" withuserId:userName];
@@ -862,20 +862,21 @@
    
 }
 - (NSString *)getTimeDiff:(long long)diff withLastseen:(NSString *)lastseen{
-    NSDateFormatter *dateformat=[[NSDateFormatter  alloc]init];
-    [dateformat setDateFormat:@"HH:mm"];
+   
+    NSDate *d = [NSDate dateWithTimeIntervalSince1970:[lastseen longLongValue]];
+    NSDateFormatter *formatter1 = [[NSDateFormatter alloc] init];
+    [formatter1 setDateFormat:@"HH:mm"];
     NSString *lastseenTime;
     int days;
     int seconds = (int)(diff);
     days = seconds / 3600 / 24;
     if (days <= 1){
-        lastseenTime=[NSString stringWithFormat:@"last seen today at %@", [dateformat dateFromString:lastseen]];
+        lastseenTime=[NSString stringWithFormat:@"last seen today at %@", [formatter1 stringFromDate:d]];
     }else  if (days<=2) {
-         lastseenTime=[NSString stringWithFormat:@"last seen yesterday at %@", [dateformat dateFromString:lastseen]];
+         lastseenTime=[NSString stringWithFormat:@"last seen yesterday at %@", [formatter1 stringFromDate:d]];
     }else{
-        NSDateFormatter *format=[[NSDateFormatter  alloc]init];
-        [format setDateFormat:@"dd/MM/yyyy"];
-        lastseenTime=[NSString stringWithFormat:@"last seen at %@", [format dateFromString:lastseen]];
+       [formatter1 setDateFormat:@"MM/dd/yyyy"];
+        lastseenTime=[NSString stringWithFormat:@"last seen at %@", [formatter1 dateFromString:lastseen]];
     }
     return lastseenTime;
 }

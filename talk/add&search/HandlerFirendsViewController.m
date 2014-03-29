@@ -349,15 +349,16 @@
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 
     if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
         [cell setBackgroundColor:[UIColor clearColor]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         CALayer *l = [cell.imageView layer];
         [l setMasksToBounds:YES];
         [l setCornerRadius:8.0];
+        cell.detailTextLabel.text = @"Hey,there! I am using CoolChat!Hey,there! I am using CoolChat!";
     }
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setFrame:CGRectMake(cell.frame.size.width-80, 10, 40, 40)];
+    [button setFrame:CGRectMake(cell.frame.size.width-60, 15, 30, 30)];
 //    button.tag = CELL_BUTTON_TAG;
     [cell addSubview:button];
 //    UIButton * button = (UIButton *)[cell viewWithTag:CELL_BUTTON_TAG];

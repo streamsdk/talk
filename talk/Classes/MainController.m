@@ -146,7 +146,15 @@
     
 //    self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
     lable.text=sendToID;
-    lable1.text = [imageCache getOnline:sendToID];
+    NSString * online = [imageCache getOnline:sendToID];
+    if ([online isEqualToString:@"online"]) {
+        [lable1 setFrame:CGRectMake(30, 20, 100, 20)];
+        [lable1 setTextAlignment:NSTextAlignmentLeft];
+    }else{
+         [lable1 setFrame:CGRectMake(0, 20, 180, 20)];
+    }
+    lable1.text = online;
+
     self.navigationItem.titleView = view;
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * userID = [handler getUserID];
@@ -336,7 +344,7 @@
     lable.backgroundColor = [UIColor clearColor];
     lable.textColor =[UIColor whiteColor];
     
-    lable1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 20,  180, 20)];
+    lable1 = [[UILabel alloc]init];
     lable1.backgroundColor = [UIColor clearColor];
     lable1.textColor =[UIColor grayColor];
     lable1.font = [UIFont systemFontOfSize:13];

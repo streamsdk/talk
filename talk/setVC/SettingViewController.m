@@ -31,6 +31,8 @@
     UIImage *avatarImg;
     BOOL isaAatarImg;
     UIImage *profileImage;
+    NSString * status;
+    NSString *email;
 }
 @end
 
@@ -82,28 +84,48 @@
     }
     
 }
-
+-(void) viewWillAppear:(BOOL)animated{
+    HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
+    StatusDB * db = [[StatusDB alloc]init];
+    NSMutableArray* statusArray = [db readStatus:[handle getUserID]];
+    if ([statusArray count]!=0 && statusArray) {
+        status = [statusArray objectAtIndex:0];
+    }else{
+        status = @"Hey,there! I am using CoolChat!";
+    }
+    
+    ImageCache * imageCache = [ImageCache sharedObject];
+    NSMutableDictionary *userMetadata=[imageCache getUserMetadata:[handle getUserID]];
+    email=[userMetadata objectForKey:@"Email"];
+    if (!email) {
+        email = @"";
+    }
+     userData = [[NSMutableArray alloc]initWithObjects:@"UserName",[handle getUserID],@"status",status,@"Email",email,@"My QRCode",@"Scanner QRCode",@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
+    if (!isaAatarImg) [myTableView reloadData];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 //    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     [self.view setBackgroundColor:[UIColor lightGrayColor]];
-
-	// Do any additional setup after loading the view.
-//    self.navigationController.navigationItem.hidesBackButton = YES;
     isaAatarImg = NO;
-    
-    /*UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveClicked)];
-    self.navigationItem.rightBarButtonItem = rightItem;*/
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     NSString * loginName = [handle getUserID];
-    ImageCache * imageCache = [ImageCache sharedObject];
-    NSMutableDictionary *userMetadata=[imageCache getUserMetadata:[handle getUserID]];
-    NSString *email=[userMetadata objectForKey:@"Email"];
-    if (!email) {
-        email = @"";
-    }
-    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"status",@"status",@"Email",email,@"My QRCode",@"Scanner QRCode",@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"add friend ...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        STreamObject * so = [[STreamObject alloc]init];
+        [so setObjectId:[handle getUserID]];
+        [so loadAll:[handle getUserID]];
+        status =[so getValue:@"status"];
+        if (!status) status =@"Hey there! I am using CoolChat!";
+        StatusDB *db= [[StatusDB alloc]init];
+        [db insertStatus:status withUser:[handle getUserID]];
+    }completionBlock:^{
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
     myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height-30) style:UITableViewStyleGrouped];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
@@ -267,12 +289,8 @@
     switch (indexPath.section) {
         case 0:{
             if (indexPath.row==2) {
-                 HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
-                StatusDB *db= [[StatusDB alloc]init];
-                [db insertStatus:@"Hey there! I am useing CoolChat!" withUser:[handle getUserID]];
-                [db insertStatus:@"Hey there! I am useing CoolChat!" withUser:[handle getUserID]];
                 StatusViewController * statusVC =[[StatusViewController alloc]init];
-                [statusVC setStatus:@"Hey there! I am useing CoolChat!"];
+                [statusVC setStatus:status];
                 [self.navigationController pushViewController:statusVC animated:NO];
             }else  if (indexPath.row==3) {
                 UITableViewCell * cell = (UITableViewCell *)[tableView viewWithTag:indexPath.row];
@@ -374,6 +392,7 @@
 }
 -(void)headImageClicked:(UITapGestureRecognizer *)gestureRecognizer
 {
+    
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
                                   initWithTitle:nil
                                   delegate:self
@@ -386,6 +405,7 @@
 }
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     
+    isaAatarImg = YES;
     if (buttonIndex ==0) {
         [self takePhoto];
     }else if (buttonIndex ==1){
@@ -408,6 +428,7 @@
         }completionBlock:^{
             [HUD removeFromSuperview];
             HUD = nil;
+            isaAatarImg = NO;
         }];
     }];
     
@@ -456,8 +477,8 @@
             NSString *username = [userDefaults objectForKey:@"username"];
             if (username) {
                 NSDate *now = [[NSDate alloc] init];
-                long millionsSecs = [now timeIntervalSince1970];
-                NSString *time = [NSString stringWithFormat:@"%ld",millionsSecs];
+                long long millionsSecs = [now timeIntervalSince1970];
+                NSString *time = [NSString stringWithFormat:@"%lld",millionsSecs];
                 STreamObject * so = [[STreamObject alloc]init];
                 [so setObjectId:username];
                 [so addStaff:@"lastseen" withObject:time];
@@ -480,23 +501,6 @@
             HUD = nil;
         }];        
     }
-
-    /* if (isaAatarImg) {
-         if (buttonIndex == 1) {
-             __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-             HUD.labelText = @"uploading profileImage...";
-             [self.view addSubview:HUD];
-             [HUD showAnimated:YES whileExecutingBlock:^{
-                 [self uploadProfileImage];
-             }completionBlock:^{
-                 [HUD removeFromSuperview];
-                 HUD = nil;
-             }];
-
-        }
-         isaAatarImg=NO;
-     }else{
-             }*/
     
 }
 -(void) uploadProfileImage{
@@ -521,16 +525,17 @@
 
 #pragma mark UITEXTFILED-DELEGATE-
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    NSString * email = [[textField text]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if (email &&[email length]!=0) {
+    NSString * _email = [[textField text]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (_email &&[_email length]!=0) {
         HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
         ImageCache * imageCache = [ImageCache sharedObject];
         NSMutableDictionary *userMetadata=[imageCache getUserMetadata:[handle getUserID]];
-        [userMetadata  setObject:email forKey:@"Email"];
+        [userMetadata  setObject:_email forKey:@"Email"];
         [imageCache saveUserMetadata:[handle getUserID] withMetadata:userMetadata];
         STreamUser *user = [[STreamUser alloc]init];
         [user updateUserMetadata:[handle getUserID] withMetadata:userMetadata];
-        userData = [[NSMutableArray alloc]initWithObjects:@"UserName",[handle getUserID],@"status",@"status",@"Email",email,@"My QRCode",@"Scanner QRCode",@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
+        email = _email;
+        userData = [[NSMutableArray alloc]initWithObjects:@"UserName",[handle getUserID],@"status",status,@"Email",_email,@"My QRCode",@"Scanner QRCode",@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
     }
     [textField setText:@""];
     [textField setEnabled:NO];

@@ -40,7 +40,7 @@
     [self.view setBackgroundColor:[UIColor lightGrayColor]];
     self.title = @"Status";
 	statusArray = [[NSMutableArray alloc]init];
-    myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height-30) style:UITableViewStyleGrouped];
+    myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height) style:UITableViewStyleGrouped];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
     myTableView.dataSource = self;
@@ -57,7 +57,7 @@
             return 1;
             break;
         case 1:
-            return [statusArray count]-1;
+            return [statusArray count];
             break;
         default:
             break;
@@ -92,7 +92,13 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell .textLabel.text = [statusArray objectAtIndex:indexPath.row];
     }else if(indexPath.section==1){
-        cell .textLabel.text = [statusArray objectAtIndex:indexPath.row+1];
+        if (indexPath.row ==0) {
+            UIButton *_selectButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [_selectButton setFrame:CGRectMake(cell.frame.size.width-50, 5, 30, 30)];
+            [_selectButton setImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
+            [cell .contentView addSubview:_selectButton];
+        }
+        cell .textLabel.text = [statusArray objectAtIndex:indexPath.row];
     }
     
     return cell;
@@ -104,6 +110,8 @@
         EditStatusViewController * editStatusVC =[[EditStatusViewController alloc]init];
         [editStatusVC setStatus:[statusArray objectAtIndex:indexPath.section]];
         [self.navigationController pushViewController:editStatusVC animated:NO];
+    }else {
+        
     }
 }
 - (void)didReceiveMemoryWarning

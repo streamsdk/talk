@@ -27,12 +27,13 @@
         NSLog(@"Failed to open database");
     }
     
-    NSString *createSQL = @"CREATE TABLE IF NOT EXISTS STATUSDB (USER TEXT,STATUS TEXT);";
+    NSString *createSQL = @"CREATE TABLE IF NOT EXISTS STATUSDB (ROW INTEGER PRIMARY KEY AUTOINCREMENT,USER TEXT,STATUS TEXT);";
     char *errorMsg;
     if (sqlite3_exec (database, [createSQL UTF8String], NULL, NULL, &errorMsg) != SQLITE_OK) {
         sqlite3_close(database);
         NSLog(@"Error creating table: %s", errorMsg);
     }
+    
     
 }
 -(void)insertStatus:(NSString *)status withUser:(NSString *)user{
@@ -61,7 +62,7 @@
         sqlite3_close(database);
         NSAssert(0, @"Failed to open database");
     }
-    NSString * sqlQuery = @"SELECT STATUS,USER FROM STATUSDB";
+    NSString * sqlQuery = @"SELECT DISTINCT STATUS,USER FROM STATUSDB ORDER BY ROW DESC";
     sqlite3_stmt * statement;
     
     if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {

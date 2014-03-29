@@ -10,6 +10,7 @@
 #import "StatusViewController.h"
 #import "HandlerUserIdAndDateFormater.h"
 #import "StatusDB.h"
+#import <arcstreamsdk/STreamObject.h>
 @interface EditStatusViewController ()
 {
     UITextView *myUITextView;
@@ -29,13 +30,18 @@
     return self;
 }
 -(void) save {
-    /*NSLog(@"save");
+    NSLog(@"save");
     NSString * str = myUITextView.text;
     if (![str isEqualToString:status]) {
         HandlerUserIdAndDateFormater *handle =[HandlerUserIdAndDateFormater sharedObject];
         StatusDB * statusDb=[[StatusDB alloc]init];
-        [statusDb insertStatus:status withUser:[handle getUserID]];
-    }*/
+        [statusDb insertStatus:str withUser:[handle getUserID]];
+        STreamObject * so = [[STreamObject alloc]init];
+        [so setObjectId:[handle getUserID]];
+        [so addStaff:@"status" withObject:str];
+        [so updateInBackground];
+
+    }
     [self.navigationController popViewControllerAnimated:NO];
 }
 - (void)viewDidLoad
