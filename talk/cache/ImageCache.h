@@ -83,4 +83,9 @@
 -(void) deleteDownVideo;
 
 -(BOOL) downVideoArrayIsNull;
+
+-(void) saveRaedAllCount:(NSNumber *)count withuserID:(NSString *)userId ;
+
+-(NSInteger)getAllReadCount:(NSString *)userId;
+
 @end

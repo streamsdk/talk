@@ -12,7 +12,10 @@
 
 
 @interface TalkDB : NSObject
-
+{
+    int fileCount;
+    int readCount;
+}
 -(void) initDB;
 
 -(void)insertDBUserID:(NSString *)userID fromID:(NSString *)fromID withContent:(NSString *)content withTime:(NSString *)time withIsMine: (int)isMine;

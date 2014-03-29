@@ -66,7 +66,8 @@
 }
 
 -(NSMutableArray *) readInitDB :(NSString *) _userID withOtherID:(NSString *)_friendID withCount:(int)count{
-    
+    fileCount = 0;
+    readCount = 0;
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSMutableDictionary *userMetaData = [imageCache getUserMetadata:_userID];
     NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
@@ -84,8 +85,8 @@
         NSAssert(0, @"Failed to open database");
     }
 
-    NSString * sqlQuery = [NSString stringWithFormat:@"SELECT * FROM FILEID WHERE USERID='%@' and FROMID='%@' ORDER BY TIME DESC LIMIT %d OFFSET 0",_userID,_friendID,count];
-//    NSString *sqlQuery = @"SELECT * FROM FILEID";
+//    NSString * sqlQuery = [NSString stringWithFormat:@"SELECT * FROM FILEID WHERE USERID='%@' and FROMID='%@' ORDER BY TIME DESC LIMIT %d OFFSET 0",_userID,_friendID,count];
+    NSString *sqlQuery = @"SELECT * FROM FILEID ORDER BY TIME DESC";
     sqlite3_stmt * statement;
     
     if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
@@ -107,6 +108,7 @@
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
             NSDate *date = [dateFormatter dateFromString:time2];
             if ([userID isEqualToString:_userID] && [friendID isEqualToString:_friendID]) {
+                 readCount=readCount+1;
                 if (ismine == 0) {
                     NSArray * keys = [chatDic allKeys];
                     for (NSString * key in keys) {
@@ -127,6 +129,7 @@
                             if(myData)
                                 bdata.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:bdata];
+                             fileCount = fileCount+1;
                         }else if ([key isEqualToString:@"photo"]) {
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];
                             NSString * time = [chatDic objectForKey:@"time"];
@@ -139,6 +142,7 @@
                             if(myData)
                                 bubbledata.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:bubbledata];
+                             fileCount = fileCount+1;
                         }else if ([key isEqualToString:@"audiodata"]){
                             NSError * err = nil;
                             NSString * time = [chatDic objectForKey:@"time"];
@@ -148,6 +152,7 @@
                             if (myData)
                                 bubble.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:bubble];
+                             fileCount = fileCount+1;
                         }
 
                     }
@@ -173,6 +178,7 @@
                             if(otherData)
                                 bdata.avatar = [UIImage imageWithData:otherData];
                             [dataArray addObject:bdata];
+                             fileCount = fileCount+1;
                         }if ([key isEqualToString:@"filepath"]) {
                            /* NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"filepath"]];
                             MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
@@ -187,6 +193,7 @@
                             if(otherData)
                                 bdata.avatar = [UIImage imageWithData:otherData];
                             [dataArray addObject:bdata];
+                             fileCount = fileCount+1;
                         }else if ([key isEqualToString:@"photo"]) {
                             NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];
                             NSString * time = [chatDic objectForKey:@"time"];
@@ -200,6 +207,7 @@
                             if(otherData)
                                 bubbledata.avatar = [UIImage imageWithData:otherData];
                             [dataArray addObject:bubbledata];
+                             fileCount = fileCount+1;
 
                         }else if ([key isEqualToString:@"audiodata"]) {
                             NSError * err = nil;
@@ -210,6 +218,7 @@
                             if (otherData)
                                 bubble.avatar = [UIImage imageWithData:otherData];
                             [dataArray addObject:bubble];
+                             fileCount = fileCount+1;
                             break;
                         }
                         
@@ -217,9 +226,17 @@
                     }
                 }
             }
+            if (fileCount==count) {
+                [imageCache saveRaedAllCount:[NSNumber numberWithInt:readCount] withuserID:_friendID];
+                sqlite3_finalize(statement);
+                sqlite3_close(database);
+                return dataArray;
+            }
+
         }
             
     }
+    [imageCache saveRaedAllCount:[NSNumber numberWithInt:readCount] withuserID:_friendID];
     sqlite3_finalize(statement);
     sqlite3_close(database);
     

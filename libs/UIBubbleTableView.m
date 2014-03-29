@@ -589,6 +589,7 @@
 #pragma mark Data Source Loading / Reloading Methods
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+    scrollView.decelerationRate=1.0;
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSString *sendToID = [imageCache getFriendID];
     [imageCache saveTablecontentOffset:self.contentOffset.y withUser:sendToID];
@@ -596,8 +597,9 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString * name =[userDefaults objectForKey:@"username"];
     NSInteger allCount = [talk allDataCount:name withOtherID:sendToID];
+     NSInteger readCount = [imageCache getAllReadCount:sendToID];
     int count = [imageCache getReadCount:sendToID];
-    if (count>=10 && allCount > count) {
+    if (count>=10 && allCount!=readCount) {
         if(!_reloading && scrollView.contentOffset.y < 5)
         {
             _reloading = YES;
