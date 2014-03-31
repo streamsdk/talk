@@ -91,7 +91,7 @@
         sqlite3_close(database);
         NSAssert(0, @"Failed to open database");
     }
-    NSString * sqlQuery = [NSString stringWithFormat:@"SELECT FRIEND FROM FRIENDSTATUS WHERE USER='%@'",user];
+    NSString * sqlQuery = [NSString stringWithFormat:@"SELECT USER FROM FRIENDSTATUS WHERE FRIEND='%@'",user];
     sqlite3_stmt * statement;
     
     if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
@@ -112,13 +112,13 @@
         sqlite3_close(database);
         NSAssert(0, @"Failed to open database");
     }
-    NSString * update = [NSString stringWithFormat:@"UPDATE FRIENDSTATUS SET STATUS='%@' WHERE USERID='%@' AND FRIENDID='%@'",status,userID,friendID];
+    NSString * update = [NSString stringWithFormat:@"UPDATE FRIENDSTATUS SET STATUS='%@' WHERE USER='%@' AND FRIEND='%@'",status,userID,friendID];
     
     char *errorMsg = NULL;
     sqlite3_stmt *stmt;
     if (sqlite3_prepare_v2(database, [update UTF8String], -1, &stmt, nil) == SQLITE_OK) {
         
-        sqlite3_bind_text(stmt, 1, [status UTF8String], -1, NULL);
+        sqlite3_bind_text(stmt, 0, [status UTF8String], -1, NULL);
         
     }
     if (sqlite3_step(stmt) != SQLITE_DONE)

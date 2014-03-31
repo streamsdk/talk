@@ -21,7 +21,7 @@
 #import "STreamXMPP.h"
 #import <arcstreamsdk/JSONKit.h>
 #import "DownloadAvatar.h"
-
+#import "FriendStatusDB.h"
 #define SENDREQUEST_TAG 1000
 #define ADD_TAG  2000
 #define DELETE_TAG 3000
@@ -43,6 +43,8 @@
 
 @implementation HandlerFirendsViewController
 @synthesize searchBar=_searchBar;
+@synthesize statusDict;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -60,8 +62,22 @@
     [sq whereEqualsTo:@"status" forValue:@"request"];
     NSMutableArray * array = [sq find];
     NSMutableArray *objectID = [[NSMutableArray alloc]init];
+    STreamObject * statusSo = [[STreamObject alloc]init];
+    FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
     for (STreamObject *so in array) {
         [objectID addObject:[so objectId]];
+        [statusSo setObjectId:[so objectId]];
+        NSString *status =[statusSo getValue:@"status"];
+        if (status==nil || [status isEqualToString:@""]) {
+            status = @"Hey,there! I am using CoolChat!";
+        }
+        NSString * name = [friendStatusDB readfriend:[so objectId]];
+        if ([name isEqualToString:[handler getUserID]]) {
+            [friendStatusDB updateDB:[handler getUserID] withFriendID:[[so objectId] lowercaseString] withStatus:status];
+        }else{
+            [friendStatusDB insertStatus:loginName friend:[[so objectId] lowercaseString] status:status];
+        }
+
     }
     AddDB * db = [[AddDB alloc]init];
     if ([friendsAddArray count]!=0 && [array count]!=0) {
@@ -110,6 +126,7 @@
         }
 
     }
+    [self readFriendStatus];
     [friendsAddArray removeAllObjects];
     for (NSString * user in requestArray) {
         [friendsAddArray addObject:user];
@@ -118,7 +135,12 @@
         [friendsAddArray addObject:user];
     }
 }
-
+-(void) readFriendStatus{
+    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    statusDict = [[NSMutableDictionary alloc]init];
+    FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
+    statusDict = [friendStatusDB readStatus:[handle getUserID]];
+}
 -(void) refresh {
     switch (_friendsType) {
         case FriendsAdd:{
@@ -318,6 +340,7 @@
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * addDB = [[AddDB alloc]init];
     addDict = [addDB readDB:[handle getUserID]];
+    [self readFriendStatus];
     [self addFriends];
    
 }
@@ -355,7 +378,6 @@
         CALayer *l = [cell.imageView layer];
         [l setMasksToBounds:YES];
         [l setCornerRadius:8.0];
-        cell.detailTextLabel.text = @"Hey,there! I am using CoolChat!Hey,there! I am using CoolChat!";
     }
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setFrame:CGRectMake(cell.frame.size.width-60, 15, 30, 30)];
@@ -364,7 +386,6 @@
 //    UIButton * button = (UIButton *)[cell viewWithTag:CELL_BUTTON_TAG];
     switch (_friendsType) {
         case FriendsAdd:{
-            
             if (friendsAddArray && [friendsAddArray count]!=0) {
                 NSString * userId = [friendsAddArray objectAtIndex:indexPath.row];
                 NSString *status = [addDict objectForKey:userId];
@@ -397,6 +418,7 @@
                     cell.textLabel.text = [friendsAddArray objectAtIndex:indexPath.row];
                     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
                 }
+                cell.detailTextLabel.text = [statusDict objectForKey:[friendsAddArray objectAtIndex:indexPath.row]];
                 
             }
 
