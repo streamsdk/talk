@@ -11,13 +11,16 @@
 #import "MyStatusDB.h"
 #import "HandlerUserIdAndDateFormater.h"
 @interface StatusViewController ()
-
+{
+   
+    UITableViewCell * currentStatusCell;
+}
 @end
 
 @implementation StatusViewController
 @synthesize statusArray,myTableView;
-@synthesize status;
-
+@synthesize status=_status;;
+@synthesize row;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -26,8 +29,7 @@
     }
     return self;
 }
--(void)viewDidAppear:(BOOL)animated{
-
+-(void)viewWillAppear:(BOOL)animated{
     HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
     MyStatusDB * db = [[MyStatusDB alloc]init];
     statusArray = [db readStatus:[handle getUserID]];
@@ -37,6 +39,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    row = 0;
     [self.view setBackgroundColor:[UIColor lightGrayColor]];
     self.title = @"Status";
 	statusArray = [[NSMutableArray alloc]init];
@@ -90,14 +93,13 @@
     }
     if (indexPath.section==0) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell .textLabel.text = [statusArray objectAtIndex:indexPath.row];
+        cell .textLabel.text = [statusArray objectAtIndex:row];
+        currentStatusCell = cell;
     }else if(indexPath.section==1){
-        if (indexPath.row ==0) {
-            UIButton *_selectButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            [_selectButton setFrame:CGRectMake(cell.frame.size.width-50, 5, 30, 30)];
-            [_selectButton setImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
-            [cell .contentView addSubview:_selectButton];
-        }
+        if (row == indexPath.row)
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        else
+            cell.accessoryType = UITableViewCellAccessoryNone;
         cell .textLabel.text = [statusArray objectAtIndex:indexPath.row];
     }
     
@@ -108,11 +110,45 @@
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
         EditStatusViewController * editStatusVC =[[EditStatusViewController alloc]init];
-        [editStatusVC setStatus:[statusArray objectAtIndex:indexPath.section]];
+        [editStatusVC setStatus:_status];
         [self.navigationController pushViewController:editStatusVC animated:NO];
     }else {
-        
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
+        if(indexPath.row==row){
+            return;
+        }
+        NSIndexPath *oldIndexPath = [NSIndexPath indexPathForRow:row
+                                                       inSection:indexPath.section];
+        UITableViewCell *newCell = [tableView cellForRowAtIndexPath:indexPath];
+        if (newCell.accessoryType == UITableViewCellAccessoryNone) {
+            newCell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+        UITableViewCell *oldCell = [tableView cellForRowAtIndexPath:oldIndexPath];
+        if (oldCell.accessoryType == UITableViewCellAccessoryCheckmark) {
+            oldCell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        row=indexPath.row;
+        _status = [statusArray objectAtIndex:indexPath.row];
+        currentStatusCell.textLabel.text = _status;
+        HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
+        MyStatusDB * db = [[MyStatusDB alloc]init];
+        [db insertStatus:_status withUser:[handle getUserID]];
     }
+}
+
+- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+       return UITableViewCellAccessoryDisclosureIndicator;
+    }else {
+        if(indexPath.row==row){
+            return UITableViewCellAccessoryCheckmark;
+        }
+        else{
+            return UITableViewCellAccessoryNone;
+        }
+    }
+    
 }
 - (void)didReceiveMemoryWarning
 {

@@ -16,4 +16,5 @@
 
 @property (nonatomic,retain) NSString * status;
 
+@property (nonatomic,assign) NSInteger row;
 @end

@@ -14,6 +14,7 @@
 @interface EditStatusViewController ()
 {
     UITextView *myUITextView;
+    
 }
 @end
 
@@ -33,6 +34,11 @@
     NSLog(@"save");
     NSString * str = myUITextView.text;
     if (![str isEqualToString:status]) {
+        if ([[str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]==0)
+            str = @"Hey.there! I am using CoolChat!";
+        StatusViewController * statusVC =[[StatusViewController alloc]init];
+        [statusVC setRow:0];
+        [statusVC setStatus:str];
         HandlerUserIdAndDateFormater *handle =[HandlerUserIdAndDateFormater sharedObject];
         MyStatusDB * statusDb=[[MyStatusDB alloc]init];
         [statusDb insertStatus:str withUser:[handle getUserID]];
