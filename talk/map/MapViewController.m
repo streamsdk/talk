@@ -18,6 +18,7 @@
     UILabel *label ;
     UIImage *snapImage;
     __block MBProgressHUD *HUD;
+    UIButton *sendButton;
 }
 @end
 
@@ -112,11 +113,11 @@
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     [topView addSubview:backButton];
     //forward.png
-    UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [sendButton setFrame:CGRectMake(self.view.frame.size.width-50, 25, 40, 40)];
-    [sendButton setImage:[UIImage imageNamed:@"forward.png"] forState:UIControlStateNormal];
-    [sendButton addTarget:self action:@selector(sendCurrentLocation) forControlEvents:UIControlEventTouchUpInside];
-    [topView addSubview:sendButton];
+//    UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [sendButton setFrame:CGRectMake(self.view.frame.size.width-50, 25, 40, 40)];
+//    [sendButton setImage:[UIImage imageNamed:@"forward.png"] forState:UIControlStateNormal];
+//    [sendButton addTarget:self action:@selector(sendCurrentLocation) forControlEvents:UIControlEventTouchUpInside];
+//    [topView addSubview:sendButton];
     label = [[UILabel alloc] initWithFrame:CGRectMake(50, 25, self.view.frame.size.width-100, 40)];
     label.backgroundColor = [UIColor clearColor];
     label.text = address;
@@ -135,6 +136,10 @@
         myMapView.showsUserLocation =YES;
         [myMapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
     }
+    sendButton= [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [sendButton setBackgroundColor:[UIColor colorWithWhite:0.5 alpha:0.5]];
+    [sendButton setTitle:@"send current location"forState:UIControlStateNormal];
+    [sendButton addTarget:self action:@selector(sendCurrentLocation) forControlEvents:UIControlEventTouchUpInside];
     
 //    myLocationManager = [[CLLocationManager alloc] init];
 //	[myLocationManager setDelegate:self];
@@ -144,7 +149,30 @@
     HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"sending...";
     [self.view addSubview:HUD];
+    
+    UILongPressGestureRecognizer *lpress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+    lpress.minimumPressDuration = 0.5;//按0.5秒响应longPress方法
+    lpress.allowableMovement = 10.0;
+    [myMapView addGestureRecognizer:lpress];
 }
+- (void)longPress:(UIGestureRecognizer*)gestureRecognizer{
+    if (gestureRecognizer.state == UIGestureRecognizerStateEnded){
+        return;
+    }
+    
+    //坐标转换
+    CGPoint touchPoint = [gestureRecognizer locationInView:myMapView];
+    CLLocationCoordinate2D touchMapCoordinate =
+    [myMapView convertPoint:touchPoint toCoordinateFromView:myMapView];
+    
+    MKPointAnnotation *pointAnnotation = [[MKPointAnnotation alloc] init];;
+    pointAnnotation = [[MKPointAnnotation alloc] init];
+    pointAnnotation.coordinate = touchMapCoordinate;
+    pointAnnotation.title = @"名字";
+    
+    [myMapView addAnnotation:pointAnnotation];
+}
+
 -(void) mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
     MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 3000, 3000);
     [myMapView setRegion:[myMapView regionThatFits:viewRegion] animated:YES];
@@ -155,8 +183,11 @@
     [myMapView addAnnotation:point];
     latitude = userLocation.location.coordinate.latitude;
     longitude =userLocation.location.coordinate.longitude;
-    NSLog(@"latitude=%f,longitude= %f",latitude,longitude);
-//    mapView.showsUserLocation = NO;
+
+    CGPoint p = [mapView convertCoordinate:userLocation.coordinate toPointToView:mapView];
+    sendButton.center = p;
+    [sendButton setFrame:CGRectMake((self.view.frame.size.width-150)/2, p.y-50, 150, 30)];
+    [myMapView addSubview:sendButton];
     [myGeoCoder reverseGeocodeLocation:userLocation.location
                      completionHandler:^(NSArray *placemarks, NSError *error){
                          if (error==nil) {
@@ -167,11 +198,9 @@
                                  mapView.showsUserLocation = NO;
                                  label.text = address;
                             }
-                            NSLog(@"I am currently at %@",locatedAt);
-//                             NSDictionary *dict = placemark.addressDictionary;
-//                             NSLog(@"1%@,2%@,3%@,4%@,5%@,6%@,7%@,8%@,9%@,10%@,11%@,12%@,13%@",placemark.name,placemark.thoroughfare,placemark.subThoroughfare,placemark.locality,placemark.subLocality,placemark.administrativeArea,placemark.subAdministrativeArea,placemark.postalCode,placemark.ISOcountryCode,placemark.country,placemark.inlandWater,placemark.ocean,placemark.areasOfInterest);
                              point.title = @"当前位置";
                              point.subtitle = locatedAt;
+                             
                          }else{
 //                             dispatch_async(dispatch_get_main_queue(), ^{
 //                                 UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Error" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];

@@ -6,9 +6,9 @@
 //  Copyright (c) 2014年 wangshuai. All rights reserved.
 //
 
-#import "StatusDB.h"
+#import "MyStatusDB.h"
 
-@implementation StatusDB
+@implementation MyStatusDB
 
 -(NSString *) dataFilePath {
     

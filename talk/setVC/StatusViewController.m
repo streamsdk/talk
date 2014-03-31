@@ -8,7 +8,7 @@
 
 #import "StatusViewController.h"
 #import "EditStatusViewController.h"
-#import "StatusDB.h"
+#import "MyStatusDB.h"
 #import "HandlerUserIdAndDateFormater.h"
 @interface StatusViewController ()
 
@@ -29,7 +29,7 @@
 -(void)viewDidAppear:(BOOL)animated{
 
     HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
-    StatusDB * db = [[StatusDB alloc]init];
+    MyStatusDB * db = [[MyStatusDB alloc]init];
     statusArray = [db readStatus:[handle getUserID]];
     [myTableView reloadData];
     

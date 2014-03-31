@@ -188,6 +188,7 @@
 		0E03AB0C1881242400F7BDC7 /* ChatSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E03AB0B1881242400F7BDC7 /* ChatSettingViewController.m */; };
 		0E0434D2187A735700A16705 /* separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0434D0187A735700A16705 /* separator.png */; };
 		0E0434D3187A735700A16705 /* separator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0434D1187A735700A16705 /* separator@2x.png */; };
+		0E06823818E9265200907141 /* FriendStatusDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E06823718E9265200907141 /* FriendStatusDB.m */; };
 		0E0847361827304400350741 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0847351827304400350741 /* AVFoundation.framework */; };
 		0E084790182736BC00350741 /* NSBubbleData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E084786182736BC00350741 /* NSBubbleData.m */; };
 		0E084791182736BC00350741 /* UIBubbleHeaderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E084788182736BC00350741 /* UIBubbleHeaderTableViewCell.m */; };
@@ -202,7 +203,7 @@
 		0E0F830118A37D4100E81CA5 /* ACKMessageDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F830018A37D4100E81CA5 /* ACKMessageDB.m */; };
 		0E104D8318E54EB100DDF39B /* StatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E104D8218E54EB100DDF39B /* StatusViewController.m */; };
 		0E104D8718E551F100DDF39B /* EditStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E104D8618E551F100DDF39B /* EditStatusViewController.m */; };
-		0E104D8A18E55ACA00DDF39B /* StatusDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E104D8918E55ACA00DDF39B /* StatusDB.m */; };
+		0E104D8A18E55ACA00DDF39B /* MyStatusDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E104D8918E55ACA00DDF39B /* MyStatusDB.m */; };
 		0E1060D118CAEA3100DFBA3A /* CustomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1060D018CAEA3100DFBA3A /* CustomAlertView.m */; };
 		0E1060D418CB0F0300DFBA3A /* CopyPhotoHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1060D318CB0F0300DFBA3A /* CopyPhotoHandler.m */; };
 		0E10614818AB8109000564C7 /* Progress.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E10614718AB8109000564C7 /* Progress.m */; };
@@ -916,6 +917,8 @@
 		0E03AB0B1881242400F7BDC7 /* ChatSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChatSettingViewController.m; path = Classes/ChatSettingViewController.m; sourceTree = "<group>"; };
 		0E0434D0187A735700A16705 /* separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = separator.png; sourceTree = "<group>"; };
 		0E0434D1187A735700A16705 /* separator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "separator@2x.png"; sourceTree = "<group>"; };
+		0E06823618E9265200907141 /* FriendStatusDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendStatusDB.h; sourceTree = "<group>"; };
+		0E06823718E9265200907141 /* FriendStatusDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendStatusDB.m; sourceTree = "<group>"; };
 		0E0847351827304400350741 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0E0847371827305B00350741 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		0E084785182736BC00350741 /* NSBubbleData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSBubbleData.h; sourceTree = "<group>"; };
@@ -942,8 +945,8 @@
 		0E104D8218E54EB100DDF39B /* StatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatusViewController.m; path = setVC/StatusViewController.m; sourceTree = "<group>"; };
 		0E104D8518E551F100DDF39B /* EditStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditStatusViewController.h; path = setVC/EditStatusViewController.h; sourceTree = "<group>"; };
 		0E104D8618E551F100DDF39B /* EditStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EditStatusViewController.m; path = setVC/EditStatusViewController.m; sourceTree = "<group>"; };
-		0E104D8818E55ACA00DDF39B /* StatusDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusDB.h; sourceTree = "<group>"; };
-		0E104D8918E55ACA00DDF39B /* StatusDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusDB.m; sourceTree = "<group>"; };
+		0E104D8818E55ACA00DDF39B /* MyStatusDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyStatusDB.h; sourceTree = "<group>"; };
+		0E104D8918E55ACA00DDF39B /* MyStatusDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyStatusDB.m; sourceTree = "<group>"; };
 		0E1060CF18CAEA3100DFBA3A /* CustomAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomAlertView.h; path = CustomAlertView/CustomAlertView.h; sourceTree = "<group>"; };
 		0E1060D018CAEA3100DFBA3A /* CustomAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomAlertView.m; path = CustomAlertView/CustomAlertView.m; sourceTree = "<group>"; };
 		0E1060D218CB0F0300DFBA3A /* CopyPhotoHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CopyPhotoHandler.h; path = handler/CopyPhotoHandler.h; sourceTree = "<group>"; };
@@ -3404,8 +3407,10 @@
 		0E8A4F30182B7EE300705C1F /* talkDB */ = {
 			isa = PBXGroup;
 			children = (
-				0E104D8818E55ACA00DDF39B /* StatusDB.h */,
-				0E104D8918E55ACA00DDF39B /* StatusDB.m */,
+				0E104D8818E55ACA00DDF39B /* MyStatusDB.h */,
+				0E104D8918E55ACA00DDF39B /* MyStatusDB.m */,
+				0E06823618E9265200907141 /* FriendStatusDB.h */,
+				0E06823718E9265200907141 /* FriendStatusDB.m */,
 				0E9B4B0F18CD9F96007E56BB /* CopyDB.h */,
 				0E9B4B1018CD9F96007E56BB /* CopyDB.m */,
 				0E8A4F34182B7FE300705C1F /* TalkDB.h */,
@@ -4320,7 +4325,8 @@
 				03D9C0A118145E410039118F /* NSXMLElement+XEP_0203.m in Sources */,
 				0E891B2518D2DF57006430FE /* ZXPDF417Writer.m in Sources */,
 				0E891B0918D2DF57006430FE /* ZXUPCEANExtensionSupport.m in Sources */,
-				0E104D8A18E55ACA00DDF39B /* StatusDB.m in Sources */,
+				0E104D8A18E55ACA00DDF39B /* MyStatusDB.m in Sources */,
+				0E06823818E9265200907141 /* FriendStatusDB.m in Sources */,
 				0E891AA018D2DF57006430FE /* ZXCapture.m in Sources */,
 				03451B8518326C5600030E79 /* SignUpViewController.m in Sources */,
 				0ED8ECAC18288EB600C84741 /* VoiceHud.m in Sources */,

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
 
-@interface StatusDB : NSObject
+@interface MyStatusDB : NSObject
 
 -(void) initDB;
 

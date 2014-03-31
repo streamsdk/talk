@@ -31,6 +31,7 @@
 #import "UploadDB.h"
 #import "DownloadAvatar.h"
 #import "AddDB.h"
+#import "FriendStatusDB.h"
 #define TABLECELL_TAG 10000
 #define BUTTON_TAG 20000
 #define BUTTON_IMAGE_TAG 30000
@@ -47,7 +48,7 @@
 @synthesize userData,sortedArrForArrays,sectionHeadsKeys,messagesProtocol,toolBar;
 @synthesize button;
 @synthesize uploadProtocol;
-
+@synthesize statusDict;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -88,11 +89,10 @@
         userData = [[NSMutableArray alloc]init];
         sectionHeadsKeys=[[NSMutableArray alloc]init];
         [self readAddDb];
+        [self readFriendStatus];
         sortedArrForArrays = [self getChineseStringArr:userData];
         [self.tableView reloadData];
     }
-    
-    
 }
 - (void)viewDidLoad
 {
@@ -141,6 +141,7 @@
     label.font = [UIFont fontWithName:@"Arial" size:22.0f];
     self.tableView.tableHeaderView =label;
     
+    statusDict = [[NSMutableDictionary alloc]init];
     userData = [[NSMutableArray alloc]init];
     countDict= [[NSMutableDictionary alloc]init];
     userData = [[NSMutableArray alloc]init];
@@ -207,7 +208,12 @@
 //    }];
     [self performSelectorInBackground:@selector(connect) withObject:nil];
 }
-
+-(void) readFriendStatus{
+    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    statusDict = [[NSMutableDictionary alloc]init];
+    FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
+    statusDict = [friendStatusDB readStatus:[handle getUserID]];
+}
 -(void) readAddDb {
     userData = [[NSMutableArray alloc]init];
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
@@ -231,10 +237,18 @@
     [sq whereEqualsTo:@"status" forValue:@"request"];
     NSMutableArray * friends = [sq find];
     AddDB * addDB = [[AddDB alloc]init];
-
+    STreamObject * statusSo = [[STreamObject alloc]init];
+    FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
     for (STreamObject *so in friends) {
       [addDB insertDB:[handle getUserID] withFriendID:[[so objectId] lowercaseString] withStatus:@"request"];
+     [statusSo setObjectId:[so objectId]];
+        NSString *status =[statusSo getValue:@"status"];
+        if (status==nil || [status isEqualToString:@""]) {
+            status = @"Hey,there! I am using CoolChat!";
+        }
+        [friendStatusDB insertStatus:loginName friend:[so objectId] status:status];
     }
+    
 }
 -(void) loadFriends {
     [self readAddDb];
@@ -246,8 +260,22 @@
     [sq whereEqualsTo:@"status" forValue:@"friend"];
     NSMutableArray * friends = [sq find];
     NSMutableArray *objectID = [[NSMutableArray alloc]init];
+    
+    STreamObject * statusSo = [[STreamObject alloc]init];
+    FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
     for (STreamObject *so in friends) {
         [objectID addObject:[[so objectId] lowercaseString]];
+        [statusSo setObjectId:[so objectId]];
+        NSString *status =[statusSo getValue:@"status"];
+        if (status==nil || [status isEqualToString:@""]) {
+            status = @"Hey,there! I am using CoolChat!";
+        }
+        NSString * name = [friendStatusDB readfriend:[so objectId]];
+        if ([name isEqualToString:[handle getUserID]]) {
+            [friendStatusDB updateDB:[handle getUserID] withFriendID:[[so objectId] lowercaseString] withStatus:status];
+        }else{
+            [friendStatusDB insertStatus:loginName friend:[[so objectId] lowercaseString] status:status];
+        }
     }
     AddDB * addDB = [[AddDB alloc]init];
 
@@ -271,6 +299,7 @@
     
     sectionHeadsKeys=[[NSMutableArray alloc]init];
     sortedArrForArrays = [self getChineseStringArr:userData];
+    [self readFriendStatus];
 
 }
 -(void) connect {
@@ -745,7 +774,7 @@
                 [button setBackgroundImage:[UIImage imageNamed:@"message_count.png"] forState:UIControlStateNormal];
                 [button setTitle:title forState:UIControlStateNormal];
               }
-            cell.detailTextLabel.text = @"Hey,there! I am using CoolChat!";
+            cell.detailTextLabel.text = [statusDict objectForKey:str.string];
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
         } else {
             NSLog(@"arr out of range");

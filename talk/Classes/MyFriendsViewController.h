@@ -24,6 +24,7 @@
 @property(nonatomic,strong) UIButton * button;
 @property (assign,nonatomic) id<UploadProtocol> uploadProtocol;
 @property(nonatomic,strong) UIToolbar *toolBar;
+@property (nonatomic, retain) NSMutableDictionary *statusDict;
 -(void)reloadTableViewDataSource;
 -(void)doneLoadingTableViewData;
 

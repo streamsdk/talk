@@ -25,7 +25,7 @@
 #import "ScannerViewController.h"
 #import "StatusViewController.h"
 #define IMAGE_TAG 10000
-#import "StatusDB.h"
+#import "MyStatusDB.h"
 @interface SettingViewController ()<MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate>
 {
     UIImage *avatarImg;
@@ -86,7 +86,7 @@
 }
 -(void) viewWillAppear:(BOOL)animated{
     HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
-    StatusDB * db = [[StatusDB alloc]init];
+    MyStatusDB * db = [[MyStatusDB alloc]init];
     NSMutableArray* statusArray = [db readStatus:[handle getUserID]];
     if ([statusArray count]!=0 && statusArray) {
         status = [statusArray objectAtIndex:0];
@@ -120,7 +120,7 @@
         [so loadAll:[handle getUserID]];
         status =[so getValue:@"status"];
         if (!status) status =@"Hey there! I am using CoolChat!";
-        StatusDB *db= [[StatusDB alloc]init];
+        MyStatusDB *db= [[MyStatusDB alloc]init];
         [db insertStatus:status withUser:[handle getUserID]];
     }completionBlock:^{
         [HUD removeFromSuperview];
