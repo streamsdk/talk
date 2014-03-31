@@ -37,7 +37,10 @@
         MyStatusDB * statusDb=[[MyStatusDB alloc]init];
         [statusDb insertStatus:str withUser:[handle getUserID]];
         STreamObject * so = [[STreamObject alloc]init];
-        [so setObjectId:[handle getUserID]];
+        NSMutableString *userid = [[NSMutableString alloc] init];
+        [userid appendString:[handle getUserID]];
+        [userid appendString:@"status"];
+        [so setObjectId:userid];
         [so addStaff:@"status" withObject:str];
         [so updateInBackground];
 

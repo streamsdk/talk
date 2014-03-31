@@ -241,7 +241,11 @@
     FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
     for (STreamObject *so in friends) {
       [addDB insertDB:[handle getUserID] withFriendID:[[so objectId] lowercaseString] withStatus:@"request"];
-     [statusSo setObjectId:[so objectId]];
+        NSMutableString *userid = [[NSMutableString alloc] init];
+        [userid appendString:[so objectId]];
+        [userid appendString:@"status"];
+        [statusSo setObjectId:userid];
+        [statusSo loadAll:userid];
         NSString *status =[statusSo getValue:@"status"];
         if (status==nil || [status isEqualToString:@""]) {
             status = @"Hey,there! I am using CoolChat!";
@@ -265,7 +269,11 @@
     FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
     for (STreamObject *so in friends) {
         [objectID addObject:[[so objectId] lowercaseString]];
-        [statusSo setObjectId:[so objectId]];
+        NSMutableString *userid = [[NSMutableString alloc] init];
+        [userid appendString:[so objectId]];
+        [userid appendString:@"status"];
+        [statusSo setObjectId:userid];
+        [statusSo loadAll:userid];
         NSString *status =[statusSo getValue:@"status"];
         if (status==nil || [status isEqualToString:@""]) {
             status = @"Hey,there! I am using CoolChat!";
@@ -440,9 +448,13 @@
     [self startUpload];
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     STreamObject * so = [[STreamObject alloc]init];
-    [so setObjectId:[handle getUserID]];
+    NSMutableString *userid = [[NSMutableString alloc] init];
+    [userid appendString:[handle getUserID]];
+    [userid appendString:@"status"];
+    [so setObjectId:userid];
     [so addStaff:@"online" withObject:@"YES"];
     [so updateInBackground];
+
 }
 
 - (void)didNotAuthenticate:(NSXMLElement *)error{
@@ -867,18 +879,23 @@
         [imageCache saveRaedCount:[NSNumber numberWithInt:0] withuserID:userName];
         [imageCache saveTablecontentOffset:0 withUser:userName];
         STreamObject * so = [[STreamObject alloc]init];
-        [so setObjectId:userName];
-        [so loadAll:userName];
+        NSMutableString *userid = [[NSMutableString alloc] init];
+        [userid appendString:userName];
+        [userid appendString:@"status"];
+        [so setObjectId:userid];
+        [so loadAll:userid];
         NSString * online = [so getValue:@"online"];
         if ([online isEqualToString:@"YES"]) {
             [imageCache saveOnline:@"online" withuserId:userName];
         }else{
             NSString * time = [so getValue:@"lastseen"];
-            long long lastModifiedTime = [time longLongValue];
+//            long long lastModifiedTime = [time longLongValue];
             NSDate *now = [[NSDate alloc] init];
             long long millionsSecs = [now timeIntervalSince1970];
-            long long diff = millionsSecs - lastModifiedTime;
-            NSString * timeDiff = [self getTimeDiff:diff withLastseen:time];
+            NSString *diff = [NSString stringWithFormat:@"%lld",millionsSecs];
+//            long long diff = millionsSecs - lastModifiedTime;
+//            NSString * timeDiff = [self getTimeDiff:diff withLastseen:time];
+            NSString * timeDiff =[self getTime:diff withLastseen:time];
            [imageCache saveOnline:timeDiff withuserId:userName];
 
         }
@@ -890,6 +907,30 @@
     
    
 }
+- (NSString *)getTime:(NSString *)diff withLastseen:(NSString *)lastseen{
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyyMMdd"];
+    NSDate *now = [NSDate dateWithTimeIntervalSince1970:[diff longLongValue]];
+    NSDate *last = [NSDate dateWithTimeIntervalSince1970:[lastseen longLongValue]];
+    long long float1 = [[formatter stringFromDate:now] longLongValue];
+    long long float2 = [[formatter stringFromDate:last] longLongValue];
+    long long f= float1 - float2;
+    NSString *lastseenTime;
+    NSDateFormatter *formatter1 = [[NSDateFormatter alloc] init];
+    if (f<=0) {
+        [formatter1 setDateFormat:@"HH:mm"];
+        lastseenTime=[NSString stringWithFormat:@"last seen today at %@", [formatter1 stringFromDate:last]];
+    }else  if (f<=1) {
+        [formatter1 setDateFormat:@"HH:mm"];
+        lastseenTime=[NSString stringWithFormat:@"last seen yesterday at %@", [formatter1 stringFromDate:last]];
+    }else{
+        [formatter1 setDateFormat:@"MM/dd/yyyy"];
+        lastseenTime=[NSString stringWithFormat:@"last seen at %@", [formatter1 stringFromDate:last]];
+    }
+    return lastseenTime;
+    
+}
 - (NSString *)getTimeDiff:(long long)diff withLastseen:(NSString *)lastseen{
    
     NSDate *d = [NSDate dateWithTimeIntervalSince1970:[lastseen longLongValue]];
@@ -899,13 +940,13 @@
     int days;
     int seconds = (int)(diff);
     days = seconds / 3600 / 24;
-    if (days <= 1){
+    if (days <= 0){
         lastseenTime=[NSString stringWithFormat:@"last seen today at %@", [formatter1 stringFromDate:d]];
-    }else  if (days<=2) {
+    }else  if (days<=1) {
          lastseenTime=[NSString stringWithFormat:@"last seen yesterday at %@", [formatter1 stringFromDate:d]];
     }else{
        [formatter1 setDateFormat:@"MM/dd/yyyy"];
-        lastseenTime=[NSString stringWithFormat:@"last seen at %@", [formatter1 dateFromString:lastseen]];
+        lastseenTime=[NSString stringWithFormat:@"last seen at %@", [formatter1 stringFromDate:d]];
     }
     return lastseenTime;
 }

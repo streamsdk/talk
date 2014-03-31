@@ -134,19 +134,22 @@ static XMPPReconnect *xmppReconnect;
 */
 - (void)disconnect
 {
-    /*NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *username = [userDefaults objectForKey:@"username"];
     if (username) {
         NSDate *now = [[NSDate alloc] init];
         long millionsSecs = [now timeIntervalSince1970];
         NSString *time = [NSString stringWithFormat:@"%ld",millionsSecs];
         STreamObject * so = [[STreamObject alloc]init];
-        [so setObjectId:username];
+        NSMutableString *userid = [[NSMutableString alloc] init];
+        [userid appendString:username];
+        [userid appendString:@"status"];
+        [so setObjectId:userid];
         [so addStaff:@"lastseen" withObject:time];
         [so addStaff:@"online" withObject:@"NO"];
         [so updateInBackground];
         
-    }*/
+    }
     ImageCache * imagecache = [ImageCache sharedObject];
     [imagecache removeAllFileUpload];
     

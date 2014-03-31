@@ -66,7 +66,11 @@
     FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
     for (STreamObject *so in array) {
         [objectID addObject:[so objectId]];
+        NSMutableString *userid = [[NSMutableString alloc] init];
+        [userid appendString:[so objectId]];
+        [userid appendString:@"status"];
         [statusSo setObjectId:[so objectId]];
+        [statusSo loadAll:userid];
         NSString *status =[statusSo getValue:@"status"];
         if (status==nil || [status isEqualToString:@""]) {
             status = @"Hey,there! I am using CoolChat!";

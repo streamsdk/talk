@@ -116,8 +116,11 @@
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
         STreamObject * so = [[STreamObject alloc]init];
-        [so setObjectId:[handle getUserID]];
-        [so loadAll:[handle getUserID]];
+        NSMutableString *userid = [[NSMutableString alloc] init];
+        [userid appendString:[handle getUserID]];
+        [userid appendString:@"status"];
+        [so setObjectId:userid];
+        [so loadAll:userid];
         status =[so getValue:@"status"];
         if (!status) status =@"Hey there! I am using CoolChat!";
         MyStatusDB *db= [[MyStatusDB alloc]init];
@@ -480,7 +483,10 @@
                 long long millionsSecs = [now timeIntervalSince1970];
                 NSString *time = [NSString stringWithFormat:@"%lld",millionsSecs];
                 STreamObject * so = [[STreamObject alloc]init];
-                [so setObjectId:username];
+                NSMutableString *userid = [[NSMutableString alloc] init];
+                [userid appendString:username];
+                [userid appendString:@"status"];
+                [so setObjectId:userid];
                 [so addStaff:@"lastseen" withObject:time];
                 [so addStaff:@"online" withObject:@"NO"];
                 [so updateInBackground];

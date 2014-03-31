@@ -243,7 +243,10 @@
                 [self addAsFriendRequest:username withFriend:@"maria"];
                 
                 STreamObject *myObject = [[STreamObject alloc] init];
-                [myObject setObjectId:username];
+                NSMutableString *userid = [[NSMutableString alloc] init];
+                [userid appendString:username];
+                [userid appendString:@"status"];
+                [myObject setObjectId:userid];
                 [myObject createNewObject:^(BOOL succeed, NSString *response){}];
                 
                 [user loadUserMetadata:username response:^(BOOL succeed, NSString *error){
