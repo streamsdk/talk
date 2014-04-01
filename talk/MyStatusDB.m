@@ -42,17 +42,28 @@
         sqlite3_close(database);
         NSLog(@"Failed to open database");
     }
+    sqlite3_stmt *stmt = NULL;
+    [self deleteDB:status withSqlite3:database withSqlite3_stmt:stmt];
     char *insert = "INSERT INTO STATUSDB (USER, STATUS) VALUES (?, ?);";
-    
-    sqlite3_stmt *stmt;
     if (sqlite3_prepare_v2(database, insert, -1, &stmt, nil) == SQLITE_OK) {
-        sqlite3_bind_text(stmt, 1, [status UTF8String], -1, NULL);
-        sqlite3_bind_text(stmt, 2, [user UTF8String], -1, NULL);
+        sqlite3_bind_text(stmt, 1, [user UTF8String], -1, NULL);
+        sqlite3_bind_text(stmt, 2, [status UTF8String], -1, NULL);
         
     }
     sqlite3_step(stmt);
     sqlite3_finalize(stmt);
     sqlite3_close(database);
+}
+-(void) deleteDB :(NSString *)status withSqlite3:(sqlite3 *)database withSqlite3_stmt:(sqlite3_stmt *) statement{
+
+    NSString * delete = [NSString stringWithFormat:@"DELETE FROM STATUSDB WHERE STATUS='%@'",status];
+
+    if (sqlite3_prepare_v2(database, [delete UTF8String], -1, &statement, nil) == SQLITE_OK) {
+        while (sqlite3_step(statement) == SQLITE_ROW) {
+            NSLog(@"delete");
+        }
+    }
+    
 }
 
 -(NSMutableArray *)readStatus:(NSString *)user{
@@ -62,7 +73,7 @@
         sqlite3_close(database);
         NSAssert(0, @"Failed to open database");
     }
-    NSString * sqlQuery = @"SELECT DISTINCT STATUS,USER FROM STATUSDB ORDER BY ROW DESC";
+    NSString * sqlQuery = @"SELECT DISTINCT USER,STATUS FROM STATUSDB ORDER BY ROW DESC";
     sqlite3_stmt * statement;
     
     if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {

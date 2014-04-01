@@ -30,16 +30,18 @@
     return self;
 }
 -(void)viewWillAppear:(BOOL)animated{
+    row = 0;
+    
     HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
     MyStatusDB * db = [[MyStatusDB alloc]init];
     statusArray = [db readStatus:[handle getUserID]];
+    _status = [statusArray objectAtIndex:0];
     [myTableView reloadData];
-    
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    row = 0;
+    
     [self.view setBackgroundColor:[UIColor lightGrayColor]];
     self.title = @"Status";
 	statusArray = [[NSMutableArray alloc]init];
@@ -129,6 +131,7 @@
         }
         row=indexPath.row;
         _status = [statusArray objectAtIndex:indexPath.row];
+        currentStatusCell.textLabel.text = @"";
         currentStatusCell.textLabel.text = _status;
         HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
         MyStatusDB * db = [[MyStatusDB alloc]init];
