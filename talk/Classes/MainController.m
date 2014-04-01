@@ -138,7 +138,7 @@
     [toolBar addSubview:faceButton];
     
 }
--(void)loadOnline{
+-(void) updateTitle{
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSString * online = [imageCache getOnline:[imageCache getFriendID]];
     if ([online isEqualToString:@"online"]) {
@@ -148,7 +148,9 @@
         [lable1 setFrame:CGRectMake(0, 20, 180, 20)];
     }
     lable1.text = online;
-    self.navigationItem.titleView = view;
+}
+-(void)loadOnline{
+    [self performSelectorOnMainThread:@selector(updateTitle) withObject:nil waitUntilDone:NO];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -168,7 +170,7 @@
     }
     lable1.text = online;
 
-    self.navigationItem.titleView = view;
+//    self.navigationItem.titleView = view;
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * userID = [handler getUserID];
     rowCount = 10;
@@ -366,6 +368,7 @@
     view.backgroundColor =[UIColor clearColor];
     [view addSubview:lable];
     [view addSubview:lable1];
+    self.navigationItem.titleView = view;
     UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]init];
     [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
     activityIndicatorView.frame = CGRectMake(150, 100, 30, 30);
