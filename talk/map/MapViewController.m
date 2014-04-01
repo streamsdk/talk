@@ -18,7 +18,6 @@
     UILabel *label ;
     UIImage *snapImage;
     __block MBProgressHUD *HUD;
-    UIButton *sendButton;
 }
 @end
 
@@ -47,21 +46,13 @@
     options.region = myMapView.region;
     options.scale = [UIScreen mainScreen].scale;
     options.size = self.myMapView.frame.size;
-    /*MKMapSnapshotter *snapshotter = [[MKMapSnapshotter alloc] initWithOptions:options];
-    [snapshotter startWithCompletionHandler:^(MKMapSnapshot *snapshot, NSError *error) {
-        image = snapshot.image;
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-//        NSData *data = UIImagePNGRepresentation(image);
-//        [data writeToFile:[self snapshotFilename] atomically:YES];
-    }];*/
     MKMapSnapshotter *snapshotter = [[MKMapSnapshotter alloc] initWithOptions:options];
     [snapshotter startWithQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) completionHandler:^(MKMapSnapshot *snapshot, NSError *error) {
         UIImage *image = snapshot.image;
         CGRect finalImageRect = CGRectMake(0, 0, image.size.width, image.size.height);
         
-        MKAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:nil reuseIdentifier:@""];
+        MKAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:nil reuseIdentifier:address];
         UIImage *pinImage = pin.image;
-        
         UIGraphicsBeginImageContextWithOptions(image.size, YES, image.scale);
         
         [image drawAtPoint:CGPointMake(0, 0)];
@@ -83,6 +74,7 @@
         UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         NSData *data = UIImageJPEGRepresentation(finalImage, 0.1);
+        NSLog(@"%@",data);
 //        UIImageWriteToSavedPhotosAlbum(finalImage, nil, nil, nil);
         snapImage = [UIImage imageWithData:data];
         [self performSelectorInBackground:@selector(dismissMap) withObject:nil];
@@ -132,16 +124,10 @@
     if ([CLLocationManager locationServicesEnabled])
     {
         myMapView.mapType = MKMapTypeStandard;
-        
         myMapView.delegate = self;
         myMapView.showsUserLocation =YES;
         [myMapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
     }
-    sendButton= [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [sendButton setBackgroundColor:[UIColor colorWithWhite:0.5 alpha:0.5]];
-    [sendButton setTitle:@"send current location"forState:UIControlStateNormal];
-    [sendButton addTarget:self action:@selector(sendCurrentLocation) forControlEvents:UIControlEventTouchUpInside];
-    
 //    myLocationManager = [[CLLocationManager alloc] init];
 //	[myLocationManager setDelegate:self];
 //	[myLocationManager setDesiredAccuracy:kCLLocationAccuracyBest];
@@ -165,16 +151,11 @@
     [myMapView setRegion:[myMapView regionThatFits:viewRegion] animated:YES];
     MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
     point.coordinate = userLocation.coordinate;
-    point.title = @"当前位置";
-    point.subtitle = @"";//设置一些显示的信息
+    point.title = @"点击发送当前位置";
+    point.subtitle = @"";
     [myMapView addAnnotation:point];
     latitude = userLocation.location.coordinate.latitude;
     longitude =userLocation.location.coordinate.longitude;
-
-    CGPoint p = [mapView convertCoordinate:userLocation.coordinate toPointToView:mapView];
-    sendButton.center = p;
-    [sendButton setFrame:CGRectMake((self.view.frame.size.width-150)/2, p.y-50, 150, 30)];
-    [myMapView addSubview:sendButton];
     [myGeoCoder reverseGeocodeLocation:userLocation.location
                      completionHandler:^(NSArray *placemarks, NSError *error){
                          if (error==nil) {
@@ -185,9 +166,9 @@
                                  mapView.showsUserLocation = NO;
                                  label.text = address;
                             }
-                             point.title = @"当前位置";
+                             point.title = @"点击发送当前位置";
                              point.subtitle = locatedAt;
-                             
+                             [myMapView selectAnnotation:point animated:YES];
                          }else{
 //                             dispatch_async(dispatch_get_main_queue(), ^{
 //                                 UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Error" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
@@ -220,11 +201,11 @@
             
             MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
             point.coordinate = coords;
-            point.title = @"当前位置";
+            point.title = @"点击发送当前位置";
             point.subtitle = oreillyAddress;
             [myMapView addAnnotation:point];
             self.title = oreillyAddress;
-            
+            [myMapView selectAnnotation:point animated:YES];
         }else if ([placemarks count] == 0 &&
                  error == nil){
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -245,6 +226,24 @@
 }
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     [_searchBar resignFirstResponder];
+}
+#pragma mark mapView --delegate
+-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
+    MKPinAnnotationView *annotationView = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:@"PIN_ANNOTATION"];
+    if(annotationView == nil) {
+        annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation
+                                                         reuseIdentifier:@"PIN_ANNOTATION"] ;
+    }
+    annotationView.canShowCallout=YES;
+    annotationView.pinColor = MKPinAnnotationColorRed;
+    annotationView.animatesDrop = YES;
+    annotationView.highlighted = YES;
+    
+    UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+    [rightButton addTarget:self action:@selector(sendCurrentLocation) forControlEvents:UIControlEventTouchUpInside];
+    annotationView.rightCalloutAccessoryView = rightButton;
+    annotationView.annotation = annotation;
+    return annotationView;
 }
 - (void)didReceiveMemoryWarning
 {

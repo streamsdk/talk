@@ -76,7 +76,7 @@
     point.title = @"当前位置";
     point.subtitle = address;//设置一些显示的信息
     [myMapView addAnnotation:point];
-    
+     [myMapView selectAnnotation:point animated:YES];
 }
 
 - (void)didReceiveMemoryWarning
