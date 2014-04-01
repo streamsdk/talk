@@ -47,6 +47,7 @@
 #define TABLEVIEWTAG	300
 #define BIG_IMG_WIDTH  300.0
 #define BIG_IMG_HEIGHT 340.0
+#define activity_tag 10000
 
 @interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate,reloadTableDeleage,reloadCellDeleage,MapDeleage>
 {
@@ -353,6 +354,12 @@
     view.backgroundColor =[UIColor clearColor];
     [view addSubview:lable];
     [view addSubview:lable1];
+    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]init];
+    [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicatorView.frame = CGRectMake(150, 100, 30, 30);
+    [activityIndicatorView setCenter:CGPointMake(150, 100)];
+    activityIndicatorView.tag = activity_tag;
+    [self.view addSubview:activityIndicatorView];
 }
 -(void)cancel {
     NSLog(@"cancel");
@@ -604,13 +611,20 @@
     }
 
 }
-
+-(void) show{
+    [self.voice startRecordWithPath];
+}
 -(void) recordStart
 {
-    [self.voice startRecordWithPath];
+    UIActivityIndicatorView *activityIndicatorView =(UIActivityIndicatorView *)[self.view viewWithTag:activity_tag];
+    [activityIndicatorView startAnimating];
+    [self performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+   
 }
 -(void) recordEnd
 {
+    UIActivityIndicatorView *activityIndicatorView =(UIActivityIndicatorView *)[self.view viewWithTag:activity_tag];
+    [activityIndicatorView stopAnimating];
     [self.voice stopRecordWithCompletionBlock:^{
         
         if (self.voice.recordTime >= 0.5f) {
@@ -621,6 +635,8 @@
 }
 -(void) recordCancel
 {
+    UIActivityIndicatorView *activityIndicatorView =(UIActivityIndicatorView *)[self.view viewWithTag:activity_tag];
+    [activityIndicatorView stopAnimating];
     [self.voice cancelled];
 //    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"Deleted" delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
 //    [alert show];
