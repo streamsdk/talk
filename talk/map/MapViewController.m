@@ -27,6 +27,7 @@
 @synthesize myGeoCoder;
 @synthesize myLocationManager;
 @synthesize sendLocationDelegate;
+@synthesize searchBar = _searchBar;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -126,7 +127,7 @@
     [topView addSubview:label];
 
     myMapView = [[MKMapView alloc]init];
-    [myMapView setFrame:CGRectMake(0, 70, self.view.frame.size.width, self.view.frame.size.height-70)];
+    [myMapView setFrame:CGRectMake(0, 100, self.view.frame.size.width, self.view.frame.size.height-100)];
     [self.view addSubview:myMapView];
     if ([CLLocationManager locationServicesEnabled])
     {
@@ -149,30 +150,16 @@
     HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"sending...";
     [self.view addSubview:HUD];
+    _searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, 40)];
+    _searchBar.delegate = self;
+    _searchBar.barStyle=UIBarStyleDefault;
+    _searchBar.placeholder=@"search";
+    _searchBar.keyboardType=UIKeyboardTypeNamePhonePad;
+    _searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
-    UILongPressGestureRecognizer *lpress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
-    lpress.minimumPressDuration = 0.5;//按0.5秒响应longPress方法
-    lpress.allowableMovement = 10.0;
-    [myMapView addGestureRecognizer:lpress];
+    [self.view addSubview:_searchBar];
+   
 }
-- (void)longPress:(UIGestureRecognizer*)gestureRecognizer{
-    if (gestureRecognizer.state == UIGestureRecognizerStateEnded){
-        return;
-    }
-    
-    //坐标转换
-    CGPoint touchPoint = [gestureRecognizer locationInView:myMapView];
-    CLLocationCoordinate2D touchMapCoordinate =
-    [myMapView convertPoint:touchPoint toCoordinateFromView:myMapView];
-    
-    MKPointAnnotation *pointAnnotation = [[MKPointAnnotation alloc] init];;
-    pointAnnotation = [[MKPointAnnotation alloc] init];
-    pointAnnotation.coordinate = touchMapCoordinate;
-    pointAnnotation.title = @"名字";
-    
-    [myMapView addAnnotation:pointAnnotation];
-}
-
 -(void) mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
     MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 3000, 3000);
     [myMapView setRegion:[myMapView regionThatFits:viewRegion] animated:YES];
@@ -210,7 +197,55 @@
                          
                      }];
 }
+#pragma mark searchBarDelegate
+-(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [searchBar resignFirstResponder];
+    NSString *oreillyAddress = searchBar.text;
+    myGeoCoder = [[CLGeocoder alloc] init];
+    [myGeoCoder geocodeAddressString:oreillyAddress completionHandler:^(NSArray*placemarks, NSError *error) {
+        
+        if ([placemarks count] > 0 && error == nil){
+            NSLog(@"Found %lu placemark(s).", (unsigned long)[placemarks count]);
+            CLPlacemark *firstPlacemark = [placemarks objectAtIndex:0];
+            NSLog(@"Longitude = %f", firstPlacemark.location.coordinate.longitude);
+            NSLog(@"Latitude = %f", firstPlacemark.location.coordinate.latitude);
+            latitude=firstPlacemark.location.coordinate.latitude;
+            longitude =firstPlacemark.location.coordinate.longitude;
+            address=oreillyAddress;
+            CLLocationCoordinate2D coords = CLLocationCoordinate2DMake(latitude,longitude);
+            
+            float zoomLevel = 0.02;
+            MKCoordinateRegion region = MKCoordinateRegionMake(coords, MKCoordinateSpanMake(zoomLevel, zoomLevel));
+            [myMapView setRegion:[myMapView regionThatFits:region] animated:YES];
+            
+            MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
+            point.coordinate = coords;
+            point.title = @"当前位置";
+            point.subtitle = oreillyAddress;
+            [myMapView addAnnotation:point];
+            self.title = oreillyAddress;
+            
+        }else if ([placemarks count] == 0 &&
+                 error == nil){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Error" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+                [alert show];
+            });
+            NSLog(@"Found no placemarks.");
+        }else if (error != nil){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                 UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Error" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+                 [alert show];
+            });
+            NSLog(@"An error occurred = %@", error);
+        }
+    }];
+    
 
+}
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    [_searchBar resignFirstResponder];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

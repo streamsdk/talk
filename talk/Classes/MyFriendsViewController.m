@@ -393,7 +393,7 @@
             NSString *receivedMessage = [json objectForKey:@"message"];
             [self didReceiveMessage:receivedMessage withFrom:from];
         }
-        if ([type isEqualToString:@"video"] || [type isEqualToString:@"photo"] || [type isEqualToString:@"voice"]){
+        if ([type isEqualToString:@"video"] || [type isEqualToString:@"photo"] || [type isEqualToString:@"voice"] || [type isEqualToString:@"map"]){
             NSString *fileId = [json objectForKey:@"fileId"];
             [self didReceiveFile:fileId withBody:jsonValue withFrom:from];
         }

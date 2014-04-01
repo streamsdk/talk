@@ -15,7 +15,7 @@
 -(void)sendCurrendLocation:(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image;
 @end
 
-@interface MapViewController : UIViewController<MKMapViewDelegate,CLLocationManagerDelegate>
+@interface MapViewController : UIViewController<MKMapViewDelegate,CLLocationManagerDelegate,UISearchBarDelegate,UISearchDisplayDelegate>
 
 @property(nonatomic,strong)MKMapView *myMapView;
 
@@ -24,4 +24,6 @@
 @property (nonatomic,strong) CLGeocoder *myGeoCoder;
 
 @property (nonatomic)id <SendLocationDelegate> sendLocationDelegate;
+
+@property (nonatomic,strong) UISearchBar * searchBar;
 @end
