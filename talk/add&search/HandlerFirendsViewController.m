@@ -69,8 +69,8 @@
         NSMutableString *userid = [[NSMutableString alloc] init];
         [userid appendString:[so objectId]];
         [userid appendString:@"status"];
-        [statusSo setObjectId:[so objectId]];
-        [statusSo getObject:[so objectId] response:^(NSString * res) {
+        [statusSo setObjectId:userid];
+        [statusSo getObject:userid response:^(NSString * res) {
             NSString *status =[statusSo getValue:@"status"];
             if (status==nil || [status isEqualToString:@""]) {
                 status = @"Hey,there! I am using CoolChat!";
