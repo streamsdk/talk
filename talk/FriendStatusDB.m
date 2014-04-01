@@ -128,5 +128,26 @@
     sqlite3_close(database);
     
 }
+-(NSString *)readfriendStatus:(NSString *)user withFriend:(NSString *)friend{
+    NSString *status = nil;
+    sqlite3 *database;
+    if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
+        sqlite3_close(database);
+        NSAssert(0, @"Failed to open database");
+    }
+    NSString * sqlQuery = [NSString stringWithFormat:@"SELECT STATUS FROM FRIENDSTATUS WHERE FRIEND='%@' AND USER='%@'",friend,user];
+    sqlite3_stmt * statement;
+    
+    if (sqlite3_prepare_v2(database, [sqlQuery UTF8String], -1, &statement, nil) == SQLITE_OK) {
+        while (sqlite3_step(statement) == SQLITE_ROW) {
+            char * _status  = (char*)sqlite3_column_text(statement,0);
+            status =[[NSString alloc]initWithUTF8String:_status];
+           
+        }
+    }
+    sqlite3_finalize(statement);
+    sqlite3_close(database);
+    return status;
 
+}
 @end

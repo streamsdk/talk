@@ -889,6 +889,10 @@
             [imageCache saveOnline:@"online" withuserId:userName];
         }else{
             NSString * time = [so getValue:@"lastseen"];
+            if (!time){
+                long lastseen=[[NSDate dateWithTimeIntervalSinceNow:-(15*60*60)] timeIntervalSince1970];
+                time =[NSString stringWithFormat:@"%ld",lastseen];
+            }
 //            long long lastModifiedTime = [time longLongValue];
             NSDate *now = [[NSDate alloc] init];
             long long millionsSecs = [now timeIntervalSince1970];

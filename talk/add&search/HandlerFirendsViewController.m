@@ -183,6 +183,24 @@
                     if (![friendsHistoryArray containsObject:[so objectId]]) {
                         [searchDB insertDB:[handler getUserID] withFriendID:[so objectId]];
                     }
+                    STreamObject * statusSo = [[STreamObject alloc]init];
+                    FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
+                    NSMutableString *userid = [[NSMutableString alloc] init];
+                    [userid appendString:[so objectId]];
+                    [userid appendString:@"status"];
+                    [statusSo setObjectId:userid];
+                    [statusSo loadAll:userid];
+                    NSString *status =[statusSo getValue:@"status"];
+                    if (status==nil || [status isEqualToString:@""]) {
+                        status = @"Hey,there! I am using CoolChat!";
+                    }
+                    NSString * name = [friendStatusDB readfriend:[so objectId]];
+                    if ([name isEqualToString:[handler getUserID]]) {
+                        [friendStatusDB updateDB:[handler getUserID] withFriendID:[so objectId] withStatus:status];
+                    }else{
+                        [friendStatusDB insertStatus:[handler getUserID] friend:[so objectId] status:status];
+                    }
+
                 }
                 friendsHistoryArray = [searchDB readSearchDB:[handler getUserID]];
             }completionBlock:^{
@@ -280,7 +298,7 @@
     [searchLabel removeFromSuperview];
     [_searchBar removeFromSuperview];
     _friendsType = FriendsHistory;
-    self.title = @"Inivitations Sent";
+    self.title = @"Invitations Sent";
     
     [myTableview removeFromSuperview];
     myTableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 100, self.view.frame.size.width, self.view.frame.size.height-100)];
@@ -372,6 +390,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
+    FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
     static NSString *cellIdentifier = @"EliteCellIdentifier";
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 
@@ -478,6 +498,7 @@
              button.tag = indexPath.row;
             cell.textLabel.text = [friendsHistoryArray objectAtIndex:indexPath.row];
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
+            cell.detailTextLabel.text = [friendStatusDB readfriendStatus:[handler getUserID] withFriend:[friendsHistoryArray objectAtIndex:indexPath.row]];
         }
             
             break;
@@ -524,6 +545,24 @@
         if (isUserExist) {
             if (![loginName isEqualToString:string]) {
                 [friendsSearchArray addObject:string];
+                STreamObject * statusSo = [[STreamObject alloc]init];
+                FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
+                NSMutableString *userid = [[NSMutableString alloc] init];
+                [userid appendString:string];
+                [userid appendString:@"status"];
+                [statusSo setObjectId:userid];
+                [statusSo loadAll:userid];
+                NSString *status =[statusSo getValue:@"status"];
+                if (status==nil || [status isEqualToString:@""]) {
+                    status = @"Hey,there! I am using CoolChat!";
+                }
+                NSString * name = [friendStatusDB readfriend:string];
+                if ([name isEqualToString:[handler getUserID]]) {
+                    [friendStatusDB updateDB:[handler getUserID] withFriendID:string withStatus:status];
+                }else{
+                    [friendStatusDB insertStatus:loginName friend:string status:status];
+                }
+
             }
         }else{
             [alertview show];

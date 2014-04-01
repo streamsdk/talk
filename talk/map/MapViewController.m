@@ -74,7 +74,6 @@
         UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         NSData *data = UIImageJPEGRepresentation(finalImage, 0.1);
-        NSLog(@"%@",data);
 //        UIImageWriteToSavedPhotosAlbum(finalImage, nil, nil, nil);
         snapImage = [UIImage imageWithData:data];
         [self performSelectorInBackground:@selector(dismissMap) withObject:nil];

@@ -20,4 +20,6 @@
 -(NSString *)readfriend:(NSString *)user;
 
 -(void) updateDB:(NSString *)userID withFriendID:(NSString *)friendID withStatus:(NSString *)status;
+
+-(NSString *)readfriendStatus:(NSString *)user withFriend:(NSString *)friend;
 @end
