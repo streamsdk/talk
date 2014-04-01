@@ -10,6 +10,7 @@
 #import "EditStatusViewController.h"
 #import "MyStatusDB.h"
 #import "HandlerUserIdAndDateFormater.h"
+#import <arcstreamsdk/STreamObject.h>
 @interface StatusViewController ()
 {
    
@@ -136,6 +137,14 @@
         HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
         MyStatusDB * db = [[MyStatusDB alloc]init];
         [db insertStatus:_status withUser:[handle getUserID]];
+        STreamObject * so = [[STreamObject alloc]init];
+        NSMutableString *userid = [[NSMutableString alloc] init];
+        [userid appendString:[handle getUserID]];
+        [userid appendString:@"status"];
+        [so setObjectId:userid];
+        [so addStaff:@"status" withObject:_status];
+        [so updateInBackground];
+
     }
 }
 
