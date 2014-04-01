@@ -138,6 +138,18 @@
     [toolBar addSubview:faceButton];
     
 }
+-(void)loadOnline{
+    ImageCache * imageCache =  [ImageCache sharedObject];
+    NSString * online = [imageCache getOnline:[imageCache getFriendID]];
+    if ([online isEqualToString:@"online"]) {
+        [lable1 setFrame:CGRectMake(30, 20, 100, 20)];
+        [lable1 setTextAlignment:NSTextAlignmentLeft];
+    }else{
+        [lable1 setFrame:CGRectMake(0, 20, 180, 20)];
+    }
+    lable1.text = online;
+    self.navigationItem.titleView = view;
+}
 
 -(void)viewWillAppear:(BOOL)animated{
     
@@ -247,12 +259,11 @@
         }
     }
    
-}	
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view
-    
     isVideo=NO;
     isClearData = NO;
     
@@ -297,6 +308,7 @@
      [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(refreshTable) name:@"send" object:nil];
     //dismissKeyboard
     [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(dismissKeyBoard) name:@"dismissKeyboard" object:nil];
+    
     //handler
     photoHandler = [[PhotoHandler alloc] init];
     

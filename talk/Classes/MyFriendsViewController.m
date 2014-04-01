@@ -48,7 +48,7 @@
 @synthesize userData,sortedArrForArrays,sectionHeadsKeys,messagesProtocol,toolBar;
 @synthesize button;
 @synthesize uploadProtocol;
-@synthesize statusDict;
+@synthesize statusDict,loadonlineProtocol;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -244,13 +244,15 @@
         NSMutableString *userid = [[NSMutableString alloc] init];
         [userid appendString:[so objectId]];
         [userid appendString:@"status"];
-        [statusSo setObjectId:userid];
-        [statusSo loadAll:userid];
-        NSString *status =[statusSo getValue:@"status"];
-        if (status==nil || [status isEqualToString:@""]) {
-            status = @"Hey,there! I am using CoolChat!";
-        }
-        [friendStatusDB insertStatus:loginName friend:[so objectId] status:status];
+//        [statusSo setObjectId:userid];
+        [statusSo getObject:userid response:^(NSString * res) {
+            NSString *status =[statusSo getValue:@"status"];
+            if (status==nil || [status isEqualToString:@""]) {
+                status = @"Hey,there! I am using CoolChat!";
+            }
+            [friendStatusDB insertStatus:loginName friend:[so objectId] status:status];
+        }];
+       
     }
     
 }
@@ -284,6 +286,7 @@
         }else{
             [friendStatusDB insertStatus:loginName friend:[[so objectId] lowercaseString] status:status];
         }
+
     }
     AddDB * addDB = [[AddDB alloc]init];
 
@@ -864,26 +867,24 @@
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-  
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"loading...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        ImageCache *imageCache = [ImageCache sharedObject];
-        
-        NSMutableArray * keys = [sortedArrForArrays objectAtIndex:indexPath.section];
-        ChineseString * userStr = [keys objectAtIndex:indexPath.row];
-        NSString *userName = [userStr string];
-        [imageCache setFriendID:userName];
-        [imageCache removeFriendID:userName];
-        [imageCache saveRaedCount:[NSNumber numberWithInt:0] withuserID:userName];
-        [imageCache saveTablecontentOffset:0 withUser:userName];
-        STreamObject * so = [[STreamObject alloc]init];
-        NSMutableString *userid = [[NSMutableString alloc] init];
-        [userid appendString:userName];
-        [userid appendString:@"status"];
-        [so setObjectId:userid];
-        [so loadAll:userid];
+
+    ImageCache *imageCache = [ImageCache sharedObject];
+    
+    NSMutableArray * keys = [sortedArrForArrays objectAtIndex:indexPath.section];
+    ChineseString * userStr = [keys objectAtIndex:indexPath.row];
+    NSString *userName = [userStr string];
+    [imageCache setFriendID:userName];
+    [imageCache removeFriendID:userName];
+    [imageCache saveRaedCount:[NSNumber numberWithInt:0] withuserID:userName];
+    [imageCache saveTablecontentOffset:0 withUser:userName];
+    STreamObject * so = [[STreamObject alloc]init];
+    NSMutableString *userid = [[NSMutableString alloc] init];
+    [userid appendString:userName];
+    [userid appendString:@"status"];
+//    [so setObjectId:userid];
+//    [so loadAll:userid];
+    [self setLoadonlineProtocol:mainVC];
+    [so getObject:userid response:^(NSString * res) {
         NSString * online = [so getValue:@"online"];
         if ([online isEqualToString:@"YES"]) {
             [imageCache saveOnline:@"online" withuserId:userName];
@@ -893,21 +894,19 @@
                 long lastseen=[[NSDate dateWithTimeIntervalSinceNow:-(15*60*60)] timeIntervalSince1970];
                 time =[NSString stringWithFormat:@"%ld",lastseen];
             }
-//            long long lastModifiedTime = [time longLongValue];
+            //            long long lastModifiedTime = [time longLongValue];
             NSDate *now = [[NSDate alloc] init];
             long long millionsSecs = [now timeIntervalSince1970];
             NSString *diff = [NSString stringWithFormat:@"%lld",millionsSecs];
-//            long long diff = millionsSecs - lastModifiedTime;
-//            NSString * timeDiff = [self getTimeDiff:diff withLastseen:time];
+            //            long long diff = millionsSecs - lastModifiedTime;
+            //            NSString * timeDiff = [self getTimeDiff:diff withLastseen:time];
             NSString * timeDiff =[self getTime:diff withLastseen:time];
-           [imageCache saveOnline:timeDiff withuserId:userName];
-
+            [imageCache saveOnline:timeDiff withuserId:userName];
         }
-    } completionBlock:^{
-        [self.tableView reloadData];
-        [self.navigationController pushViewController:mainVC animated:YES];
-        [HUD removeFromSuperview];
+        [loadonlineProtocol loadOnline];
     }];
+    [self.tableView reloadData];
+    [self.navigationController pushViewController:mainVC animated:YES];
     
    
 }

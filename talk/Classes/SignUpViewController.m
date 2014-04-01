@@ -242,12 +242,12 @@
                 [self addAsFriend:username withFriend:@"coolchat"];
                 [self addAsFriendRequest:username withFriend:@"maria"];
                 
-                STreamObject *myObject = [[STreamObject alloc] init];
+                /*STreamObject *myObject = [[STreamObject alloc] init];
                 NSMutableString *userid = [[NSMutableString alloc] init];
                 [userid appendString:username];
                 [userid appendString:@"status"];
                 [myObject setObjectId:userid];
-                [myObject createNewObject:^(BOOL succeed, NSString *response){}];
+                [myObject createNewObject:^(BOOL succeed, NSString *response){}];*/
                 
                 [user loadUserMetadata:username response:^(BOOL succeed, NSString *error){
                     if ([error isEqualToString:username]){

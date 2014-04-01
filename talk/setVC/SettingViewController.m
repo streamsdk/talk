@@ -111,24 +111,19 @@
     isaAatarImg = NO;
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     NSString * loginName = [handle getUserID];
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"add friend ...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        STreamObject * so = [[STreamObject alloc]init];
-        NSMutableString *userid = [[NSMutableString alloc] init];
-        [userid appendString:[handle getUserID]];
-        [userid appendString:@"status"];
-        [so setObjectId:userid];
-        [so loadAll:userid];
+    STreamObject * so = [[STreamObject alloc]init];
+    NSMutableString *userid = [[NSMutableString alloc] init];
+    [userid appendString:[handle getUserID]];
+    [userid appendString:@"status"];
+    [so setObjectId:userid];
+    [so loadAll:userid];
+    [so getObject:userid response:^(NSString * res) {
         status =[so getValue:@"status"];
         if (!status) status =@"Hey there! I am using CoolChat!";
         MyStatusDB *db= [[MyStatusDB alloc]init];
         [db insertStatus:status withUser:[handle getUserID]];
-    }completionBlock:^{
-        [HUD removeFromSuperview];
-        HUD = nil;
     }];
+    
     myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height-30) style:UITableViewStyleGrouped];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;

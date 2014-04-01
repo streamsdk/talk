@@ -70,17 +70,18 @@
         [userid appendString:[so objectId]];
         [userid appendString:@"status"];
         [statusSo setObjectId:[so objectId]];
-        [statusSo loadAll:userid];
-        NSString *status =[statusSo getValue:@"status"];
-        if (status==nil || [status isEqualToString:@""]) {
-            status = @"Hey,there! I am using CoolChat!";
-        }
-        NSString * name = [friendStatusDB readfriend:[so objectId]];
-        if ([name isEqualToString:[handler getUserID]]) {
-            [friendStatusDB updateDB:[handler getUserID] withFriendID:[[so objectId] lowercaseString] withStatus:status];
-        }else{
-            [friendStatusDB insertStatus:loginName friend:[[so objectId] lowercaseString] status:status];
-        }
+        [statusSo getObject:[so objectId] response:^(NSString * res) {
+            NSString *status =[statusSo getValue:@"status"];
+            if (status==nil || [status isEqualToString:@""]) {
+                status = @"Hey,there! I am using CoolChat!";
+            }
+            NSString * name = [friendStatusDB readfriend:[so objectId]];
+            if ([name isEqualToString:[handler getUserID]]) {
+                [friendStatusDB updateDB:[handler getUserID] withFriendID:[[so objectId] lowercaseString] withStatus:status];
+            }else{
+                [friendStatusDB insertStatus:loginName friend:[[so objectId] lowercaseString] status:status];
+            }
+        }];
 
     }
     AddDB * db = [[AddDB alloc]init];
@@ -188,19 +189,22 @@
                     NSMutableString *userid = [[NSMutableString alloc] init];
                     [userid appendString:[so objectId]];
                     [userid appendString:@"status"];
-                    [statusSo setObjectId:userid];
-                    [statusSo loadAll:userid];
-                    NSString *status =[statusSo getValue:@"status"];
-                    if (status==nil || [status isEqualToString:@""]) {
-                        status = @"Hey,there! I am using CoolChat!";
-                    }
-                    NSString * name = [friendStatusDB readfriend:[so objectId]];
-                    if ([name isEqualToString:[handler getUserID]]) {
-                        [friendStatusDB updateDB:[handler getUserID] withFriendID:[so objectId] withStatus:status];
-                    }else{
-                        [friendStatusDB insertStatus:[handler getUserID] friend:[so objectId] status:status];
-                    }
+//                    [statusSo setObjectId:userid];
+                    [statusSo getObject:userid response:^(NSString *res) {
+                        NSString *status =[statusSo getValue:@"status"];
+                        if (status==nil || [status isEqualToString:@""]) {
+                            status = @"Hey,there! I am using CoolChat!";
+                        }
+                        NSString * name = [friendStatusDB readfriend:[so objectId]];
+                        if ([name isEqualToString:[handler getUserID]]) {
+                            [friendStatusDB updateDB:[handler getUserID] withFriendID:[so objectId] withStatus:status];
+                        }else{
+                            [friendStatusDB insertStatus:[handler getUserID] friend:[so objectId] status:status];
+                        }
 
+                    }];
+                    
+                    
                 }
                 friendsHistoryArray = [searchDB readSearchDB:[handler getUserID]];
             }completionBlock:^{
@@ -550,19 +554,22 @@
                 NSMutableString *userid = [[NSMutableString alloc] init];
                 [userid appendString:string];
                 [userid appendString:@"status"];
-                [statusSo setObjectId:userid];
-                [statusSo loadAll:userid];
-                NSString *status =[statusSo getValue:@"status"];
-                if (status==nil || [status isEqualToString:@""]) {
-                    status = @"Hey,there! I am using CoolChat!";
-                }
-                NSString * name = [friendStatusDB readfriend:string];
-                if ([name isEqualToString:[handler getUserID]]) {
-                    [friendStatusDB updateDB:[handler getUserID] withFriendID:string withStatus:status];
-                }else{
-                    [friendStatusDB insertStatus:loginName friend:string status:status];
-                }
+//                [statusSo setObjectId:userid];
+//                [statusSo loadAll:userid];
+                [statusSo getObject:userid response:^(NSString * res) {
+                    NSString *status =[statusSo getValue:@"status"];
+                    if (status==nil || [status isEqualToString:@""]) {
+                        status = @"Hey,there! I am using CoolChat!";
+                    }
+                    NSString * name = [friendStatusDB readfriend:string];
+                    if ([name isEqualToString:[handler getUserID]]) {
+                        [friendStatusDB updateDB:[handler getUserID] withFriendID:string withStatus:status];
+                    }else{
+                        [friendStatusDB insertStatus:loginName friend:string status:status];
+                    }
 
+                }];
+                
             }
         }else{
             [alertview show];

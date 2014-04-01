@@ -21,7 +21,7 @@
 #import "CustomTextFiled.h"
 #import "MapViewController.h"
 #import "LookMapViewController.h"
-
+#import "MyFriendsViewController.h"
 #define Time  0.001
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
 #define  keyboardHeight 216
@@ -32,7 +32,7 @@
 #define  buttonWh 34
 #define  ICONHEIGHT 80
 
-@interface MainController : UIViewController<UIBubbleTableViewDataSource,facialViewDelegate,UIVideoEditorControllerDelegate,UITextFieldDelegate,IconViewDelegate,UIAlertViewDelegate,GetAllMessagesProtocol,ImageSendProtocol,UIActionSheetDelegate,UploadProtocol,SendLocationDelegate>
+@interface MainController : UIViewController<UIBubbleTableViewDataSource,facialViewDelegate,UIVideoEditorControllerDelegate,UITextFieldDelegate,IconViewDelegate,UIAlertViewDelegate,GetAllMessagesProtocol,ImageSendProtocol,UIActionSheetDelegate,UploadProtocol,SendLocationDelegate,loadOnlineDelegate>
 {
     NSURL  *videoPath;
     NSMutableDictionary *deleteDic;
