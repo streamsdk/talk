@@ -35,7 +35,7 @@
     NSString * str = myUITextView.text;
     if (![str isEqualToString:status]) {
         if ([[str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]==0)
-            str = @"Hey.there! I am using CoolChat!";
+            str = status;
         StatusViewController * statusVC =[[StatusViewController alloc]init];
         [statusVC setRow:0];
         [statusVC setStatus:str];
