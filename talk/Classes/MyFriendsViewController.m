@@ -913,15 +913,17 @@
     [formatter setDateFormat:@"yyyyMMdd"];
     NSDate *now = [NSDate dateWithTimeIntervalSince1970:[diff longLongValue]];
     NSDate *last = [NSDate dateWithTimeIntervalSince1970:[lastseen longLongValue]];
+    NSDate * yester = [NSDate dateWithTimeIntervalSinceNow:-(24*60*60)];
     long long float1 = [[formatter stringFromDate:now] longLongValue];
     long long float2 = [[formatter stringFromDate:last] longLongValue];
+    long long float3 = [[formatter stringFromDate:yester] longLongValue];
     long long f= float1 - float2;
     NSString *lastseenTime;
     NSDateFormatter *formatter1 = [[NSDateFormatter alloc] init];
     if (f<=0) {
         [formatter1 setDateFormat:@"HH:mm"];
         lastseenTime=[NSString stringWithFormat:@"last seen today at %@", [formatter1 stringFromDate:last]];
-    }else  if (f<=1) {
+    }else  if (f<=1|| float2==float3) {
         [formatter1 setDateFormat:@"HH:mm"];
         lastseenTime=[NSString stringWithFormat:@"last seen yesterday at %@", [formatter1 stringFromDate:last]];
     }else{
