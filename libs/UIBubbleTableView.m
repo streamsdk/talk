@@ -447,6 +447,7 @@
         if (duration) {
             [dict setObject:duration forKey:@"duration"];
         }
+        if (!fromId)return NO;
         [jsonDic setObject:dict forKey:fromId];
         NSString * jsonBody = [jsonDic JSONString];
         [talkDb updateDB:cell.data.date withContent:jsonBody];
@@ -566,6 +567,7 @@
                                    if (cell.data.fileType == FileDisappear){
                                        [cell.data.videobutton setTitle:@"Download" forState:UIControlStateNormal];
                                        [cell.data.videobutton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+                                        [cell.data.videobutton setTag:loadvieo.button.tag];
                                        [cell.data.videobutton addTarget:self action:@selector(downloadvideo:) forControlEvents:UIControlEventTouchUpInside];
                                    }else{
 //                                       UIButton * button = (UIButton *)[cell.contentView viewWithTag:tag];
