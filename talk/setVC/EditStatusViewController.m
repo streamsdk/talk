@@ -11,7 +11,7 @@
 #import "HandlerUserIdAndDateFormater.h"
 #import "MyStatusDB.h"
 #import <arcstreamsdk/STreamObject.h>
-@interface EditStatusViewController ()
+@interface EditStatusViewController ()<UITextViewDelegate>
 {
     UITextView *myUITextView;
     
@@ -57,13 +57,25 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title = @"Your Status";
+    self.title = [NSString stringWithFormat:@"Your Status (%d)",130-[status length]];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
     myUITextView  = [[UITextView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, self.view.frame.size.width-20, 220.0f)];
     myUITextView.text = status;
     [myUITextView becomeFirstResponder];
     myUITextView.font = [UIFont systemFontOfSize:16];
     [self.view addSubview:myUITextView];
+    myUITextView.delegate = self;
+}
+
+-(void)textViewDidChange:(UITextView *)textView{
+    NSInteger number = [textView.text length];
+    if (number > 130) {
+        NSRange rg = {0,130};
+        textView.text = [textView.text substringWithRange:rg];
+        
+        number=130;
+    }
+   self.title = [NSString stringWithFormat:@"Your Status (%d)",130-number];
 }
 - (void)didReceiveMemoryWarning
 {

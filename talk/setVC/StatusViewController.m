@@ -52,6 +52,11 @@
     myTableView.dataSource = self;
     myTableView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:myTableView];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addStatus)];
+}
+-(void)addStatus {
+    EditStatusViewController * editStatusVC =[[EditStatusViewController alloc]init];
+    [self.navigationController pushViewController:editStatusVC animated:NO];
 }
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
     return 2;
