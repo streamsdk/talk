@@ -128,7 +128,7 @@
     }
     
 
-    [self.delegate reloadMapView];
+//    [self.delegate reloadMapView];
 }
 
 @end

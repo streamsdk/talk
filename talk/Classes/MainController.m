@@ -591,7 +591,7 @@
     [imageCache saveTablecontentOffset:0 withUser:[imageCache getFriendID]];
 }
 -(void) reloadMapView{
-    [self viewWillAppear:YES];
+//    [self viewWillAppear:YES];
 }
 -(void) sendVideo:(NSString *)time {
     ImageCache *imageCache = [ImageCache sharedObject];
