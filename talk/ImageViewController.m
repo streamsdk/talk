@@ -80,7 +80,7 @@ static NSMutableArray *colors;
     UIView * topView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, 50)];
     topView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
     
-    UIView * colorView = [[UIView alloc]initWithFrame:CGRectMake(self.view.frame.size.width-20, 90, 20, 264)];
+    UIView * colorView = [[UIView alloc]initWithFrame:CGRectMake(self.view.frame.size.width-20, 80, 20, 264)];
     colorView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
 
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -120,12 +120,12 @@ static NSMutableArray *colors;
     [colorsImageView setUserInteractionEnabled:YES];
     [colorView addSubview:colorsImageView];
     
-    MyToolbar *toolBar=[[MyToolbar alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-40,self.view.frame.size.width,40)];
+    MyToolbar *toolBar=[[MyToolbar alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-50,self.view.frame.size.width,50)];
     toolBar.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
     toolBar.tag =TOOLBAR_TAG;
     
     UIButton *useButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frame = CGRectMake(260, 0, 40, 40);
+    CGRect frame = CGRectMake(260, 5, 40, 40);
     [useButton setFrame:frame];
     [useButton setImage:[UIImage imageNamed:@"forward.png"] forState:UIControlStateNormal];
     [useButton addTarget:self action:@selector(sendStart) forControlEvents:UIControlEventTouchDown];
@@ -133,7 +133,7 @@ static NSMutableArray *colors;
     useButton.tag = USERPHOTO_TAG;
     
     UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frameDone = CGRectMake(260, 0, 40, 40);
+    CGRect frameDone = CGRectMake(260, 5, 40, 40);
     [doneButton setFrame:frameDone];
     [doneButton setImage:[UIImage imageNamed:@"tick512.png"] forState:UIControlStateNormal];
     [doneButton addTarget:self action:@selector(doneClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -141,7 +141,7 @@ static NSMutableArray *colors;
 //    doneButton.hidden = YES;
     
     UIButton * clockButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [clockButton setFrame:CGRectMake(10,0, 40, 40)];
+    [clockButton setFrame:CGRectMake(10,5, 40, 40)];
     [clockButton setBackgroundImage:[UIImage imageNamed:@"clocknew.png"] forState:UIControlStateNormal];
     clockButton .tag = CLOCKBUTTON_TAG;
     clockButton.titleLabel.font = [UIFont systemFontOfSize:12.0f];
@@ -162,7 +162,7 @@ static NSMutableArray *colors;
     [self.view addSubview:toolBar];
     
     NSArray *arr = [NSArray arrayWithObjects:@"Nature",@"Lomo",@"BW",@"Retro",@"Gothic",@"Sharp",@"Elegant",@"Burgundy",@"Lime",@"Romantic",@"Halo",@"Blues",@"Dream",@"Night", nil];
-    UIView * filterView = [[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight - 110, self.view.frame.size.width, 64)];
+    UIView * filterView = [[UIView alloc]initWithFrame:CGRectMake(0, ScreenHeight - 120, self.view.frame.size.width, 64)];
     filterView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
     scrollerView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, 60)];
     scrollerView.backgroundColor = [UIColor clearColor];
