@@ -527,6 +527,7 @@
                                    if (cell.data.fileType == FileDisappear){
                                        [cell.data.videobutton setTitle:@"Click to view" forState:UIControlStateNormal];
                                        [cell.data.videobutton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+                                       [cell.data.videobutton setTag:loadvieo.button.tag];
                                        [cell.data.videobutton addTarget:self action:@selector(playerVideo:) forControlEvents:UIControlEventTouchUpInside];
                                    }
                                    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
