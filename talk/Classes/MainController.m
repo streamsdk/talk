@@ -600,9 +600,6 @@
      keyBoardButton = [createUI setButtonFrame:frame withTitle:@"nil"];
     [keyBoardButton setImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
     
-    [[recordButton layer] setBorderColor:[[UIColor blackColor] CGColor]];
-    [[recordButton layer] setBorderWidth:1];
-    [[recordButton layer] setCornerRadius:4];
     [keyBoardButton addTarget:self action:@selector(recordToKeyboardClicked) forControlEvents:UIControlEventTouchUpInside];
     
     NSString *title =@"Hold to Talk";
