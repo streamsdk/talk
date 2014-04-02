@@ -358,11 +358,12 @@
     lable = [[UILabel alloc]initWithFrame:CGRectMake(30, 0, 180, 20)];
     lable.backgroundColor = [UIColor clearColor];
     lable.textColor =[UIColor whiteColor];
+    lable.font = [UIFont systemFontOfSize:15];
     
     lable1 = [[UILabel alloc]init];
     lable1.backgroundColor = [UIColor clearColor];
     lable1.textColor =[UIColor grayColor];
-    lable1.font = [UIFont systemFontOfSize:13];
+    lable1.font = [UIFont systemFontOfSize:11];
 
     view =[[UIView alloc]initWithFrame:CGRectMake(0, 0, 180, 40)];
     view.backgroundColor =[UIColor clearColor];

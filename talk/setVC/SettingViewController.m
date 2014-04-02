@@ -92,6 +92,7 @@
         status = [statusArray objectAtIndex:0];
     }else{
         status = @"Hey,there! I am using CoolChat!";
+        [db insertStatus:status withUser:[handle getUserID]];
     }
     
     ImageCache * imageCache = [ImageCache sharedObject];
@@ -111,7 +112,7 @@
     isaAatarImg = NO;
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     NSString * loginName = [handle getUserID];
-    STreamObject * so = [[STreamObject alloc]init];
+    /*STreamObject * so = [[STreamObject alloc]init];
     NSMutableString *userid = [[NSMutableString alloc] init];
     [userid appendString:[handle getUserID]];
     [userid appendString:@"status"];
@@ -122,8 +123,7 @@
         if (!status) status =@"Hey there! I am using CoolChat!";
         MyStatusDB *db= [[MyStatusDB alloc]init];
         [db insertStatus:status withUser:[handle getUserID]];
-    }];
-    
+    }];*/
     myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height-30) style:UITableViewStyleGrouped];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
