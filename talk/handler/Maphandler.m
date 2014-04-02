@@ -63,13 +63,11 @@
         [file setFilepath:mappath];
         [file setDate:uploadDate];
         NSMutableDictionary * addressDict = [[NSMutableDictionary alloc]init];
-        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
         [addressDict setObject:address forKey:@"address"];
         [addressDict setObject:mapPath forKey:@"path"];
         [addressDict setObject:[NSString stringWithFormat:@"%f",latitude] forKey:@"latitude"];
         [addressDict setObject:[NSString stringWithFormat:@"%f",longitude]  forKey:@"longitude"];
-        [friendDict setObject:addressDict forKey:@"address"];
-        [file setJsonDict:friendDict];
+        [file setJsonDict:addressDict];
         if (fileArray != nil && [fileArray count] != 0) {
             FilesUpload * f =[fileArray objectAtIndex:0];
             long long ftime = [f.time longLongValue];
@@ -111,10 +109,10 @@
         
         [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
         [file setDate:date];
-        [file setJsonDict:friendDict];
+        [file setJsonDict:addressDict];
         UploadDB * uploadDb = [[UploadDB alloc]init];
-        NSString *time=nil;
-        [uploadDb insertUploadDB:[handler getUserID] filePath:[addressDict JSONString] withTime:time withFrom:sendID withType:@"map" withDate:[dateFormatter stringFromDate:date]];
+        NSString *time=[addressDict JSONString];
+        [uploadDb insertUploadDB:[handler getUserID] filePath:mapPath withTime:time withFrom:sendID withType:@"map" withDate:[dateFormatter stringFromDate:date]];
         
         if (fileArray != nil && [fileArray count] != 0) {
             FilesUpload * f =[fileArray objectAtIndex:0];

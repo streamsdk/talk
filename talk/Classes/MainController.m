@@ -1290,8 +1290,8 @@
         [audioHandler sendAudio:v forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:fromID];
     }
     if ([type isEqualToString:@"map"]) {
-         NSDictionary * dict = [filePath objectFromJSONString];
-        [mapHandler setMappath:[dict objectForKey:@"path"]];
+         NSDictionary * dict = [time objectFromJSONString];
+        [mapHandler setMappath:filePath];
         [mapHandler setIsfromUploadDB:YES];
         [mapHandler setUploadDate:date];       
         UIImage *image =[UIImage imageWithContentsOfFile:[dict objectForKey:@"path"]];
