@@ -147,7 +147,7 @@ static XMPPReconnect *xmppReconnect;
         [so setObjectId:userid];
         [so addStaff:@"lastseen" withObject:time];
         [so addStaff:@"online" withObject:@"NO"];
-        [so updateInBackground];
+        [so update];
         
     }
     ImageCache * imagecache = [ImageCache sharedObject];
