@@ -31,7 +31,7 @@
 @synthesize recordPath;
 @synthesize recorder = _recorder;
 @synthesize recordTime;
-
+@synthesize HUD = _HUD;
 #pragma mark - Publick Function
 
 -(NSString*)getCurrentTimeString
@@ -186,6 +186,7 @@
         [voiceHud show];
         
     }
+    _HUD.hidden = YES;
 }
 
 -(void) resetTimer

@@ -47,7 +47,7 @@
 #define TABLEVIEWTAG	300
 #define BIG_IMG_WIDTH  300.0
 #define BIG_IMG_HEIGHT 340.0
-#define activity_tag 10000
+#define HUD_tag 10000
 
 @interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate,reloadTableDeleage,reloadCellDeleage,MapDeleage>
 {
@@ -369,12 +369,10 @@
     [view addSubview:lable];
     [view addSubview:lable1];
     self.navigationItem.titleView = view;
-    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]init];
-    [activityIndicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-    activityIndicatorView.frame = CGRectMake(150, 100, 30, 30);
-    [activityIndicatorView setCenter:CGPointMake(150, 100)];
-    activityIndicatorView.tag = activity_tag;
-    [self.view addSubview:activityIndicatorView];
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.tag = HUD_tag;
+    [self.view addSubview:HUD];
+
 }
 -(void)cancel {
     NSLog(@"cancel");
@@ -627,19 +625,20 @@
 
 }
 -(void) show{
+    
     [self.voice startRecordWithPath];
 }
 -(void) recordStart
 {
-    UIActivityIndicatorView *activityIndicatorView =(UIActivityIndicatorView *)[self.view viewWithTag:activity_tag];
-    [activityIndicatorView startAnimating];
+   MBProgressHUD *HUD =(MBProgressHUD *)[self.view viewWithTag:HUD_tag];
+    HUD.hidden = NO;
+    [HUD show:YES];
+    [self.voice setHUD:HUD];
     [self performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
    
 }
 -(void) recordEnd
 {
-    UIActivityIndicatorView *activityIndicatorView =(UIActivityIndicatorView *)[self.view viewWithTag:activity_tag];
-    [activityIndicatorView stopAnimating];
     [self.voice stopRecordWithCompletionBlock:^{
         
         if (self.voice.recordTime >= 0.5f) {
@@ -650,8 +649,6 @@
 }
 -(void) recordCancel
 {
-    UIActivityIndicatorView *activityIndicatorView =(UIActivityIndicatorView *)[self.view viewWithTag:activity_tag];
-    [activityIndicatorView stopAnimating];
     [self.voice cancelled];
 //    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"Deleted" delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
 //    [alert show];
