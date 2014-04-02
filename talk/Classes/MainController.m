@@ -625,17 +625,15 @@
 
 }
 -(void) show{
-    
-    [self.voice startRecordWithPath];
-}
--(void) recordStart
-{
-   MBProgressHUD *HUD =(MBProgressHUD *)[self.view viewWithTag:HUD_tag];
+    MBProgressHUD *HUD =(MBProgressHUD *)[self.view viewWithTag:HUD_tag];
     HUD.hidden = NO;
     [HUD show:YES];
     [self.voice setHUD:HUD];
-    [self performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
-   
+}
+-(void) recordStart
+{
+    [self performSelectorInBackground:@selector(show) withObject:nil ];
+   [self.voice startRecordWithPath];
 }
 -(void) recordEnd
 {
@@ -673,10 +671,6 @@
     CGRect frame = CGRectMake(5, 2, 30, 36);
      keyBoardButton = [createUI setButtonFrame:frame withTitle:@"nil"];
     [keyBoardButton setImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
-    
-    [[recordButton layer] setBorderColor:[[UIColor blackColor] CGColor]];
-    [[recordButton layer] setBorderWidth:1];
-    [[recordButton layer] setCornerRadius:4];
     [keyBoardButton addTarget:self action:@selector(recordToKeyboardClicked) forControlEvents:UIControlEventTouchUpInside];
     
     NSString *title =@"Hold to Talk";

@@ -229,12 +229,12 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "418117466.207957"
+                  timestampString = "418122603.539917"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
                   endingLineNumber = "1119"
-                  offsetFromSymbolStart = "430">
+                  offsetFromSymbolStart = "480">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -243,12 +243,12 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "418117466.208173"
+                  timestampString = "418122603.540123"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
                   endingLineNumber = "1119"
-                  offsetFromSymbolStart = "496">
+                  offsetFromSymbolStart = "650">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -307,12 +307,12 @@
                   symbolName = "-[MyFriendsViewController loadRequest]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/talk/Classes/MyFriendsViewController.m"
-                  timestampString = "418117466.208847"
+                  timestampString = "418122603.540903"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "248"
                   endingLineNumber = "248"
-                  offsetFromSymbolStart = "1164">
+                  offsetFromSymbolStart = "1297">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -321,14 +321,30 @@
                   symbolName = "__38-[MyFriendsViewController loadRequest]_block_invoke"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/talk/Classes/MyFriendsViewController.m"
-                  timestampString = "418117466.209048"
+                  timestampString = "418122603.541107"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "248"
                   endingLineNumber = "248"
-                  offsetFromSymbolStart = "58">
+                  offsetFromSymbolStart = "61">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "libs/UIBubbleTableView.m"
+            timestampString = "418122603.255252"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "591"
+            endingLineNumber = "591"
+            landmarkName = "-playerVideo:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
