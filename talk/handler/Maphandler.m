@@ -17,7 +17,7 @@
 
 
 @implementation Maphandler
-@synthesize isfromUploadDB,mappath;
+@synthesize isfromUploadDB,mappath,uploadDate;
 
 - (void)receiveAddress:(NSString *)receiveAddress latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
@@ -31,6 +31,7 @@
 }
 
 -(void) sendAddress :(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID{
+
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString *mapPath = [[handler getPath] stringByAppendingString:@".png"];
     
@@ -58,51 +59,78 @@
     [file setUserId:sendID];
     [file setChatId:[NSString stringWithFormat:@"%lld", milliseconds]];
     [file setType:@"map"];
-    [file setFilepath:mapPath];
-    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
-    NSBubbleData * bubble = [NSBubbleData dataWithAddress:address latitude:latitude longitude:longitude withImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine path:mapPath];
-    if (myData) {
-        bubble.avatar = [UIImage imageWithData:myData];
-    }
-    [bubbleData addObject:bubble];
-    NSData *data = UIImageJPEGRepresentation(image, 1.0);
-    [data writeToFile:mapPath atomically:YES];
-    
-    NSMutableDictionary * jsonDic = [[NSMutableDictionary alloc]init];
-    NSMutableDictionary * addressDict = [[NSMutableDictionary alloc]init];
-    NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
-    [addressDict setObject:address forKey:@"address"];
-    [addressDict setObject:mapPath forKey:@"path"];
-    [addressDict setObject:[NSString stringWithFormat:@"%f",latitude] forKey:@"latitude"];
-    [addressDict setObject:[NSString stringWithFormat:@"%f",longitude]  forKey:@"longitude"];
-    [friendDict setObject:addressDict forKey:@"address"];
-    [jsonDic setObject:friendDict forKey:sendID];
-    NSString  *str = [jsonDic JSONString];
-    
-    TalkDB * db = [[TalkDB alloc]init];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-    
-    [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
-    [file setDate:date];
-    [file setJsonDict:jsonDic];
-    [self.delegate reloadMapView];
-    UploadDB * uploadDb = [[UploadDB alloc]init];
-    NSString *time=nil;
-    [uploadDb insertUploadDB:[handler getUserID] filePath:mapPath withTime:time withFrom:sendID withType:@"map" withDate:[dateFormatter stringFromDate:date]];
-    
-    if (fileArray != nil && [fileArray count] != 0) {
-        FilesUpload * f =[fileArray objectAtIndex:0];
-        long long ftime = [f.time longLongValue];
-        if ((milliseconds/1000.0 - ftime/1000.0)<8) {
+    if (isfromUploadDB) {
+        [file setFilepath:mappath];
+        [file setDate:uploadDate];
+        NSMutableDictionary * addressDict = [[NSMutableDictionary alloc]init];
+        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        [addressDict setObject:address forKey:@"address"];
+        [addressDict setObject:mapPath forKey:@"path"];
+        [addressDict setObject:[NSString stringWithFormat:@"%f",latitude] forKey:@"latitude"];
+        [addressDict setObject:[NSString stringWithFormat:@"%f",longitude]  forKey:@"longitude"];
+        [friendDict setObject:addressDict forKey:@"address"];
+        [file setJsonDict:friendDict];
+        if (fileArray != nil && [fileArray count] != 0) {
+            FilesUpload * f =[fileArray objectAtIndex:0];
+            long long ftime = [f.time longLongValue];
+            if ((milliseconds/1000.0 - ftime/1000.0)<8) {
+                [cache addFileUpload:file];
+                return;
+            }
+        }else{
             [cache addFileUpload:file];
-            return;
         }
+        
+        [super doFileUpload:fileArray];
+        isfromUploadDB = NO;
+    }else{
+        [file setFilepath:mapPath];
+        NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
+        NSBubbleData * bubble = [NSBubbleData dataWithAddress:address latitude:latitude longitude:longitude withImage:image date:[NSDate dateWithTimeIntervalSinceNow:0] type:BubbleTypeMine path:mapPath];
+        if (myData) {
+            bubble.avatar = [UIImage imageWithData:myData];
+        }
+        [bubbleData addObject:bubble];
+        NSData *data = UIImageJPEGRepresentation(image, 1.0);
+        [data writeToFile:mapPath atomically:YES];
+        
+        NSMutableDictionary * jsonDic = [[NSMutableDictionary alloc]init];
+        NSMutableDictionary * addressDict = [[NSMutableDictionary alloc]init];
+        NSMutableDictionary *friendDict = [NSMutableDictionary dictionary];
+        [addressDict setObject:address forKey:@"address"];
+        [addressDict setObject:mapPath forKey:@"path"];
+        [addressDict setObject:[NSString stringWithFormat:@"%f",latitude] forKey:@"latitude"];
+        [addressDict setObject:[NSString stringWithFormat:@"%f",longitude]  forKey:@"longitude"];
+        [friendDict setObject:addressDict forKey:@"address"];
+        [jsonDic setObject:friendDict forKey:sendID];
+        NSString  *str = [jsonDic JSONString];
+        
+        TalkDB * db = [[TalkDB alloc]init];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+        
+        [db insertDBUserID:[handler getUserID] fromID:sendID withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:0];
+        [file setDate:date];
+        [file setJsonDict:friendDict];
+        UploadDB * uploadDb = [[UploadDB alloc]init];
+        NSString *time=nil;
+        [uploadDb insertUploadDB:[handler getUserID] filePath:[addressDict JSONString] withTime:time withFrom:sendID withType:@"map" withDate:[dateFormatter stringFromDate:date]];
+        
+        if (fileArray != nil && [fileArray count] != 0) {
+            FilesUpload * f =[fileArray objectAtIndex:0];
+            long long ftime = [f.time longLongValue];
+            if ((milliseconds/1000.0 - ftime/1000.0)<8) {
+                [cache addFileUpload:file];
+                return;
+            }
+        }
+        [cache addFileUpload:file];
+        
+        [super doFileUpload:fileArray];
     }
-    [cache addFileUpload:file];
     
-    [super doFileUpload:fileArray];
 
+    [self.delegate reloadMapView];
 }
 
 @end

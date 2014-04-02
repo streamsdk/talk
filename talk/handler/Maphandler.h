@@ -16,7 +16,7 @@
 
 @interface Maphandler : MediaHandler
 
-@property (nonatomic,assign) BOOL  *isfromUploadDB;
+@property (nonatomic,assign) BOOL  isfromUploadDB;
 
 @property (nonatomic,retain) NSString  *mappath;
 
