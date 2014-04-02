@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "MBProgressHUD.h"
 @interface Voice : NSObject
 
 @property(nonatomic,retain) NSString * recordPath;
 @property(nonatomic) float recordTime;
+@property (nonatomic,strong) MBProgressHUD * HUD;
 
 -(NSString*)getCurrentTimeString;
 

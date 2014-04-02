@@ -46,7 +46,7 @@
 #define TABLEVIEWTAG	300
 #define BIG_IMG_WIDTH  300.0
 #define BIG_IMG_HEIGHT 340.0
-
+#define HUD_TAG 10000
 @interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate,reloadTableDeleage,reloadCellDeleage>
 {
     NSMutableArray *bubbleData;
@@ -321,6 +321,9 @@
     [_deleteBackview addSubview:_deleteButton];
     [bubbleTableView reloadData];
     self.automaticallyAdjustsScrollViewInsets = NO;
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.tag = HUD_TAG;
+    [self.view addSubview:HUD];
 }
 -(void)cancel {
     NSLog(@"cancel");
@@ -549,9 +552,15 @@
     }
 
 }
-
+-(void)showHUD{
+    MBProgressHUD *HUD =(MBProgressHUD *)[self.view viewWithTag:HUD_TAG];
+    HUD.hidden = NO;
+    [HUD show:YES];
+    [self.voice setHUD:HUD];
+}
 -(void) recordStart
 {
+    [self performSelectorInBackground:@selector(showHUD) withObject:nil];
     [self.voice startRecordWithPath];
 }
 -(void) recordEnd
