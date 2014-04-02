@@ -33,6 +33,10 @@
 -(void) save {
     NSLog(@"save");
     NSString * str = myUITextView.text;
+    if ([[str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]==0 && status==nil){
+        [self.navigationController popViewControllerAnimated:NO];
+        return;
+    }
     if (![str isEqualToString:status]) {
         if ([[str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]==0)
             str = status;
