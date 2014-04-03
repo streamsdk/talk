@@ -143,8 +143,8 @@
     
     STreamObject *myObject = [[STreamObject alloc] init];
     [myObject setObjectId:friendUserName];
-    [myObject addStaff:@"status" withObject:@"friend"];
     [myObject setCategory:myUserName];
+    [myObject addStaff:@"status" withObject:@"friend"];
     [myObject updateInBackground];
     
     
@@ -238,7 +238,7 @@
                 [userDefaults setObject:username forKey:@"username"];
                 [userDefaults setObject:pword forKey:@"password"];
                 
-                
+                sleep(2);
                 [self addAsFriend:username withFriend:@"coolchat"];
                 [self addAsFriendRequest:username withFriend:@"maria"];
                 
