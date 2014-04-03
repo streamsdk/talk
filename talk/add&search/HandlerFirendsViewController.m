@@ -406,9 +406,10 @@
         CALayer *l = [cell.imageView layer];
         [l setMasksToBounds:YES];
         [l setCornerRadius:8.0];
+        cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20.0f];
     }
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setFrame:CGRectMake(cell.frame.size.width-60, 15, 30, 30)];
+    [button setFrame:CGRectMake(cell.frame.size.width-35, 15, 30, 30)];
 //    button.tag = CELL_BUTTON_TAG;
     [cell addSubview:button];
 //    UIButton * button = (UIButton *)[cell viewWithTag:CELL_BUTTON_TAG];
@@ -430,7 +431,6 @@
                     [self setImage:icon withCell:cell];
                     
                     cell.textLabel.text = [friendsAddArray objectAtIndex:indexPath.row];
-                    cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
                     
                 }else if ([status isEqualToString:@"request"]){
                     [button setBackgroundImage:[UIImage imageNamed:@"addfriend.png"] forState:UIControlStateNormal];
@@ -444,7 +444,6 @@
                     
                     [button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
                     cell.textLabel.text = [friendsAddArray objectAtIndex:indexPath.row];
-                    cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
                 }
                 cell.detailTextLabel.text = [statusDict objectForKey:[friendsAddArray objectAtIndex:indexPath.row]];
                 
@@ -474,7 +473,6 @@
                         [button setBackgroundImage:[UIImage imageNamed:@"friends.png"] forState:UIControlStateNormal];
                          button.tag = indexPath.row;
                         cell.textLabel.text = userId;
-                        cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20.0f];
                         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:@"You are already friends！" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
                         [alert show];
                     }
@@ -484,7 +482,6 @@
                      button.tag = indexPath.row;
                     [button addTarget:self action:@selector(addFriendSendRequest:) forControlEvents:UIControlEventTouchUpInside];
                     cell.textLabel.text = userId;
-                    cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20.0f];
                 }
             }
 
@@ -501,7 +498,6 @@
             [button setBackgroundImage:[UIImage imageNamed:@"invi.png"] forState:UIControlStateNormal];
              button.tag = indexPath.row;
             cell.textLabel.text = [friendsHistoryArray objectAtIndex:indexPath.row];
-            cell.textLabel.font = [UIFont fontWithName:@"Arial" size:22.0f];
             cell.detailTextLabel.text = [friendStatusDB readfriendStatus:[handler getUserID] withFriend:[friendsHistoryArray objectAtIndex:indexPath.row]];
         }
             
