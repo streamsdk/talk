@@ -22,6 +22,7 @@
 #import <arcstreamsdk/JSONKit.h>
 #import "DownloadAvatar.h"
 #import "FriendStatusDB.h"
+#import "ReadStatus.h"
 #define SENDREQUEST_TAG 1000
 #define ADD_TAG  2000
 #define DELETE_TAG 3000
@@ -62,27 +63,10 @@
     [sq whereEqualsTo:@"status" forValue:@"request"];
     NSMutableArray * array = [sq find];
     NSMutableArray *objectID = [[NSMutableArray alloc]init];
-    STreamObject * statusSo = [[STreamObject alloc]init];
-    FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
+    ReadStatus * readStatus =[[ReadStatus alloc]init];
     for (STreamObject *so in array) {
         [objectID addObject:[so objectId]];
-        NSMutableString *userid = [[NSMutableString alloc] init];
-        [userid appendString:[so objectId]];
-        [userid appendString:@"status"];
-        [statusSo setObjectId:userid];
-        [statusSo getObject:userid response:^(NSString * res) {
-            NSString *status =[statusSo getValue:@"status"];
-            if (status==nil || [status isEqualToString:@""]) {
-                status = @"Hey,there! I am using CoolChat!";
-            }
-            NSString * name = [friendStatusDB readfriend:[so objectId]];
-            if ([name isEqualToString:[handler getUserID]]) {
-                [friendStatusDB updateDB:[handler getUserID] withFriendID:[[so objectId] lowercaseString] withStatus:status];
-            }else{
-                [friendStatusDB insertStatus:loginName friend:[[so objectId] lowercaseString] status:status];
-            }
-        }];
-
+//        [readStatus readFriendsStatus:[so objectId]];
     }
     AddDB * db = [[AddDB alloc]init];
     if ([friendsAddArray count]!=0 && [array count]!=0) {
@@ -131,7 +115,7 @@
         }
 
     }
-    [self readFriendStatus];
+    statusDict = [readStatus getFriendStatus];
     [friendsAddArray removeAllObjects];
     for (NSString * user in requestArray) {
         [friendsAddArray addObject:user];
@@ -139,12 +123,6 @@
     for (NSString * user in friendArray) {
         [friendsAddArray addObject:user];
     }
-}
--(void) readFriendStatus{
-    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
-    statusDict = [[NSMutableDictionary alloc]init];
-    FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
-    statusDict = [friendStatusDB readStatus:[handle getUserID]];
 }
 -(void) refresh {
     switch (_friendsType) {
@@ -178,34 +156,15 @@
                 STreamQuery  * sq = [[STreamQuery alloc]initWithCategory:[handler getUserID]];
                 [sq setQueryLogicAnd:true];
                 [sq whereEqualsTo:@"status" forValue:@"sendRequest"];
-                
                 NSMutableArray * friends = [sq find];
+                ReadStatus * readStatus =[[ReadStatus alloc]init];
                 for (STreamObject *so in friends) {
                     if (![friendsHistoryArray containsObject:[so objectId]]) {
                         [searchDB insertDB:[handler getUserID] withFriendID:[so objectId]];
                     }
-                    STreamObject * statusSo = [[STreamObject alloc]init];
-                    FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
-                    NSMutableString *userid = [[NSMutableString alloc] init];
-                    [userid appendString:[so objectId]];
-                    [userid appendString:@"status"];
-//                    [statusSo setObjectId:userid];
-                    [statusSo getObject:userid response:^(NSString *res) {
-                        NSString *status =[statusSo getValue:@"status"];
-                        if (status==nil || [status isEqualToString:@""]) {
-                            status = @"Hey,there! I am using CoolChat!";
-                        }
-                        NSString * name = [friendStatusDB readfriend:[so objectId]];
-                        if ([name isEqualToString:[handler getUserID]]) {
-                            [friendStatusDB updateDB:[handler getUserID] withFriendID:[so objectId] withStatus:status];
-                        }else{
-                            [friendStatusDB insertStatus:[handler getUserID] friend:[so objectId] status:status];
-                        }
-
-                    }];
-                    
-                    
+                    [readStatus readFriendsStatus:[so objectId]];
                 }
+                statusDict = [readStatus getFriendStatus];
                 friendsHistoryArray = [searchDB readSearchDB:[handler getUserID]];
             }completionBlock:^{
                 [myTableview reloadData];
@@ -240,11 +199,6 @@
     NSArray * array = [addDict allKeys];
     for (int i = 0; i<[array count]; i++) {
         NSString *status = [addDict objectForKey:[array objectAtIndex:i]];
-        /*if (![status isEqualToString:@"sendRequest"]) {
-            if (![friendsAddArray containsObject:[array objectAtIndex:i]]) {
-                [friendsAddArray addObject:[array objectAtIndex:i]];
-            }
-        }*/
         if ([status isEqualToString:@"request"]) {
             if (![friendsAddArray containsObject:[array objectAtIndex:i]]) {
                 [requestArray insertObject:[array objectAtIndex:i] atIndex:0];
@@ -334,13 +288,6 @@
     friendsAddArray = [[NSMutableArray alloc]init];
     friendsSearchArray = [[NSMutableArray alloc]init];
     friendsHistoryArray = [[NSMutableArray alloc]init];
-    
-    /*_searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64+36, self.view.bounds.size.width, 40)];
-    _searchBar.delegate = self;
-    _searchBar.tag =SEARCH_TAG;
-    _searchBar.barStyle=UIBarStyleDefault;
-    _searchBar.placeholder=@"search";
-    _searchBar.keyboardType=UIKeyboardTypeNamePhonePad;*/
 
     NSArray *segmentedArray = [[NSArray alloc]initWithObjects:@"",@"",@"",nil];
     
@@ -366,7 +313,8 @@
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * addDB = [[AddDB alloc]init];
     addDict = [addDB readDB:[handle getUserID]];
-    [self readFriendStatus];
+    ReadStatus *readStatus =[[ReadStatus alloc]init];
+    statusDict = [readStatus getFriendStatus];
     [self addFriends];
    
 }
@@ -542,6 +490,7 @@
     HUD.labelText = @"Loading...";
     [self.view addSubview:HUD];
      __block BOOL isUserExist;
+    ReadStatus * readStatus = [[ReadStatus alloc]init];
     [HUD showAnimated:YES whileExecutingBlock:^{
         isUserExist = [user searchUser:string];
         
@@ -549,27 +498,7 @@
         if (isUserExist) {
             if (![loginName isEqualToString:string]) {
                 [friendsSearchArray addObject:string];
-                STreamObject * statusSo = [[STreamObject alloc]init];
-                FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
-                NSMutableString *userid = [[NSMutableString alloc] init];
-                [userid appendString:string];
-                [userid appendString:@"status"];
-//                [statusSo setObjectId:userid];
-//                [statusSo loadAll:userid];
-                [statusSo getObject:userid response:^(NSString * res) {
-                    NSString *status =[statusSo getValue:@"status"];
-                    if (status==nil || [status isEqualToString:@""]) {
-                        status = @"Hey,there! I am using CoolChat!";
-                    }
-                    NSString * name = [friendStatusDB readfriend:string];
-                    if ([name isEqualToString:[handler getUserID]]) {
-                        [friendStatusDB updateDB:[handler getUserID] withFriendID:string withStatus:status];
-                    }else{
-                        [friendStatusDB insertStatus:loginName friend:string status:status];
-                    }
-
-                }];
-                
+                [readStatus readFriendsStatus:string];
             }
         }else{
             [alertview show];

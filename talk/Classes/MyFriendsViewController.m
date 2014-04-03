@@ -32,6 +32,8 @@
 #import "DownloadAvatar.h"
 #import "AddDB.h"
 #import "FriendStatusDB.h"
+#import "ReadStatus.h"
+
 #define TABLECELL_TAG 10000
 #define BUTTON_TAG 20000
 #define BUTTON_IMAGE_TAG 30000
@@ -81,7 +83,8 @@
     userData = [[NSMutableArray alloc]init];
     sectionHeadsKeys=[[NSMutableArray alloc]init];
     [self readAddDb];
-    [self readFriendStatus];
+    ReadStatus *readStatus =[[ReadStatus alloc]init];
+   statusDict = [readStatus getFriendStatus];
     sortedArrForArrays = [self getChineseStringArr:userData];
     [self.tableView reloadData];
 }
@@ -177,12 +180,6 @@
 - (void)appHasBackInForeground{
     [self performSelectorInBackground:@selector(connect) withObject:nil];
 }
--(void) readFriendStatus{
-    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
-    statusDict = [[NSMutableDictionary alloc]init];
-    FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
-    statusDict = [friendStatusDB readStatus:[handle getUserID]];
-}
 -(void) readAddDb {
     userData = [[NSMutableArray alloc]init];
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
@@ -209,42 +206,19 @@
     AddDB * addDB = [[AddDB alloc]init];
      NSMutableDictionary * addDict = [addDB readDB:[handle getUserID]];
     NSArray *allkey = [addDict allKeys];
+    ReadStatus * readStatus = [[ReadStatus alloc]init];
     for (STreamObject *so in friends) {
         if ([allkey containsObject:[[so objectId]lowercaseString]]) {
             [addDB updateDB:[handle getUserID] withFriendID:[[so objectId] lowercaseString] withStatus:[so getValue:@"status"]];
         }else{
             [addDB insertDB:[handle getUserID] withFriendID:[[so objectId] lowercaseString] withStatus:[so getValue:@"status"]];
         }
-        [self readFriendsStatus:[[so objectId] lowercaseString]];
+        [readStatus readFriendsStatus:[[so objectId]lowercaseString]];
     }
     [self readAddDb];
-    [self readFriendStatus];
+    statusDict = [readStatus getFriendStatus];
     sectionHeadsKeys=[[NSMutableArray alloc]init];
     sortedArrForArrays = [self getChineseStringArr:userData];
-}
--(void)readFriendsStatus:(NSString *)friend{
-     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
-    STreamObject * statusSo = [[STreamObject alloc]init];
-    FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
-    NSMutableString *userid = [[NSMutableString alloc] init];
-    [userid appendString:friend];
-    [userid appendString:@"status"];
-    [statusSo setObjectId:userid];
-    [statusSo loadAll:userid];
-    [statusSo getObject:userid response:^(NSString *res) {
-        NSString *status =[statusSo getValue:@"status"];
-        if (status==nil || [status isEqualToString:@""]) {
-            status = @"Hey,there! I am using CoolChat!";
-        }
-        NSString * name = [friendStatusDB readfriend:friend];
-        if ([name isEqualToString:[handle getUserID]]) {
-            [friendStatusDB updateDB:[handle getUserID] withFriendID:friend withStatus:status];
-        }else{
-            [friendStatusDB insertStatus:[handle getUserID] friend:friend status:status];
-        }
-
-    }];
-    
 }
 -(void) connect {
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
@@ -406,7 +380,8 @@
         }
         NSString * friendname = [json objectForKey:@"friendname"];
         NSString * username = [json objectForKey:@"username"];
-        [self readFriendsStatus:username];
+        ReadStatus * readStatus = [[ReadStatus alloc]init];
+        [readStatus readFriendsStatus:username];
         AddDB * addDb = [[AddDB alloc]init];
         NSMutableDictionary * dict = [addDb readDB:friendname];
         if (dict!=nil && [dict count]!= 0) {
