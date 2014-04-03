@@ -409,7 +409,7 @@
         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20.0f];
     }
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setFrame:CGRectMake(cell.frame.size.width-35, 15, 30, 30)];
+    [button setFrame:CGRectMake(cell.frame.size.width-38, 15, 30, 30)];
 //    button.tag = CELL_BUTTON_TAG;
     [cell addSubview:button];
 //    UIButton * button = (UIButton *)[cell viewWithTag:CELL_BUTTON_TAG];
@@ -446,7 +446,11 @@
                     cell.textLabel.text = [friendsAddArray objectAtIndex:indexPath.row];
                 }
                 cell.detailTextLabel.text = [statusDict objectForKey:[friendsAddArray objectAtIndex:indexPath.row]];
-                
+                if ([cell.detailTextLabel.text length]>32) {
+                    NSRange rg = {0,32};
+                    NSString  *str = [cell.detailTextLabel.text substringWithRange:rg];
+                    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@...",str];
+                }
             }
 
         }
