@@ -18,6 +18,7 @@
     NSMutableDictionary *statusDict = [[NSMutableDictionary alloc]init];
     FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
     statusDict = [friendStatusDB readStatus:[handle getUserID]];
+    if ([statusDict count]==0) statusDict = [friendStatusDB readStatus:[handle getUserID]];
     return statusDict;
 }
 -(void)readFriendsStatus:(NSString *)friend{

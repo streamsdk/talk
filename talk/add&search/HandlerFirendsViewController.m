@@ -451,6 +451,11 @@
              button.tag = indexPath.row;
             cell.textLabel.text = [friendsHistoryArray objectAtIndex:indexPath.row];
             cell.detailTextLabel.text = [friendStatusDB readfriendStatus:[handler getUserID] withFriend:[friendsHistoryArray objectAtIndex:indexPath.row]];
+            if ([cell.detailTextLabel.text length]>32) {
+                NSRange rg = {0,32};
+                NSString  *str = [cell.detailTextLabel.text substringWithRange:rg];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@...",str];
+            }
         }
             
             break;
