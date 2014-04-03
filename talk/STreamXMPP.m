@@ -60,7 +60,7 @@ static XMPPReconnect *xmppReconnect;
     xmppReconnect = [[XMPPReconnect alloc] init];
     [xmppReconnect activate:xmppStream];
     [xmppStream addDelegate:self delegateQueue:dispatch_get_main_queue()];
-    [xmppStream setHostName:@"streamsdk.cn"];
+    [xmppStream setHostName:@"streamsdk.com"];
     //xmppStream.enableBackgroundingOnSocket = YES;
     //[xmppStream setHostName:@"192.168.1.17"];
     
@@ -79,9 +79,19 @@ static XMPPReconnect *xmppReconnect;
 	}*/
     
     myJID = [[NSMutableString alloc] init];
+    if (![STreamSession getClientAuthKey]){
+        [STreamSession setUpServerUrl:@"http://streamsdk.com/print/print/"];
+        //[STreamSession setUpServerUrl:@"http://192.168.1.17:8081/api/"];
+        //res = [STreamSession authenticate:@"7E95CF60694890DCD4CEFBF79BC3BAE4"  secretKey:@"73B7C757A511B1574FDF63B3FEB638B7" clientKey:@"4768674EDC06477EC63AEEF8FEAB0CF8" ];
+        //不要用这个,这个是正在运营的
+        [STreamSession authenticate:@"A82C2F6E73F3D911F5E424953A1C8E62"  secretKey:@"A3C7D9386C4A4063CDE1B4A8B3820BD2" clientKey:@"C8BB14A1A961E9D391196D9F411B18D8" ];
+        //[STreamSession setUpServerUrl:@"http://streamsdk.com/api/"];
+        //[STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3" clientKey:@"01D901D6EFBA42145E54F52E465F407B" ];
+    }
+    
     [myJID appendString:[STreamSession getClientAuthKey]];
     [myJID appendString:userName];
-    [myJID appendString:@"@streamsdk.cn"];
+    [myJID appendString:@"@streamsdk.com"];
     
 	myPassword = password;
     uName = userName;
@@ -217,7 +227,7 @@ static XMPPReconnect *xmppReconnect;
     NSMutableString *userJID = [[NSMutableString alloc] init];
     [userJID appendString:[STreamSession getClientAuthKey]];
     [userJID appendString:toUser];
-    [userJID appendString:@"@streamsdk.cn"];
+    [userJID appendString:@"@streamsdk.com"];
     
     NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
     [body setStringValue:message];
@@ -294,7 +304,7 @@ static XMPPReconnect *xmppReconnect;
     
     
     /*NSString *from = [message fromStr];
-    NSArray *array = [from componentsSeparatedByString:@"@streamsdk.cn"];
+    NSArray *array = [from componentsSeparatedByString:@"@streamsdk.com"];
     
     NSString * str = [[STreamSession getClientAuthKey] lowercaseString];
     NSString *fromid = nil;
@@ -423,7 +433,7 @@ static XMPPReconnect *xmppReconnect;
     NSMutableString *userJID = [[NSMutableString alloc] init];
     [userJID appendString:[STreamSession getClientAuthKey]];
     [userJID appendString:toUser];
-    [userJID appendString:@"@streamsdk.cn"];
+    [userJID appendString:@"@streamsdk.com"];
     
     NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
     [body setStringValue:message];
