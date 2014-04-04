@@ -73,9 +73,11 @@
         }
         UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        NSData *data = UIImageJPEGRepresentation(finalImage, 0.1);
+//        NSData *data = UIImageJPEGRepresentation(finalImage, 0.1);
 //        UIImageWriteToSavedPhotosAlbum(finalImage, nil, nil, nil);
-        snapImage = [UIImage imageWithData:data];
+        snapImage = [self imageWithImage:finalImage scaledToMaxWidth:90 maxHeight:100];
+        NSData *data = UIImageJPEGRepresentation(snapImage, 0.8);
+        snapImage =[UIImage imageWithData:data];
         [self performSelectorInBackground:@selector(dismissMap) withObject:nil];
     }];
 }
@@ -104,12 +106,7 @@
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     [topView addSubview:backButton];
-    //forward.png
-//    UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [sendButton setFrame:CGRectMake(self.view.frame.size.width-50, 25, 40, 40)];
-//    [sendButton setImage:[UIImage imageNamed:@"forward.png"] forState:UIControlStateNormal];
-//    [sendButton addTarget:self action:@selector(sendCurrentLocation) forControlEvents:UIControlEventTouchUpInside];
-//    [topView addSubview:sendButton];
+    
     label = [[UILabel alloc] initWithFrame:CGRectMake(50, 25, self.view.frame.size.width-100, 40)];
     label.backgroundColor = [UIColor clearColor];
     label.text = address;
@@ -248,6 +245,32 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+#pragma mark image scaled
+-(UIImage *)imageWithImage:(UIImage *)_image scaledToSize:(CGSize)size {
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+        UIGraphicsBeginImageContextWithOptions(size, NO, [[UIScreen mainScreen] scale]);
+    } else {
+        UIGraphicsBeginImageContext(size);
+    }
+    [_image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
+
+-(UIImage *)imageWithImage:(UIImage *)_image scaledToMaxWidth:(CGFloat)width maxHeight:(CGFloat)height {
+    CGFloat oldWidth = _image.size.width;
+    CGFloat oldHeight = _image.size.height;
+    
+    CGFloat scaleFactor = (oldWidth > oldHeight) ? width / oldWidth : height / oldHeight;
+    
+    CGFloat newHeight = oldHeight * scaleFactor;
+    CGFloat newWidth = oldWidth * scaleFactor;
+    CGSize newSize = CGSizeMake(newWidth, newHeight);
+    
+    return [self imageWithImage:_image scaledToSize:newSize];
 }
 
 @end

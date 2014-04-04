@@ -805,7 +805,10 @@
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyyMMdd"];
-    NSDate *now = [NSDate dateWithTimeIntervalSince1970:[diff longLongValue]];
+     NSDate *now = [NSDate dateWithTimeIntervalSince1970:[diff longLongValue]];
+    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+    NSInteger interval = [zone secondsFromGMTForDate:now];
+    now = [now dateByAddingTimeInterval: interval];
     NSDate *last = [NSDate dateWithTimeIntervalSince1970:[lastseen longLongValue]];
     NSDate * yester = [NSDate dateWithTimeIntervalSinceNow:-(24*60*60)];
     long long float1 = [[formatter stringFromDate:now] longLongValue];

@@ -92,7 +92,11 @@
         status = [statusArray objectAtIndex:0];
     }else{
         status = @"Hey,there! I am using CoolChat!";
-        [db insertStatus:status withUser:[handle getUserID]];
+//        [db insertStatus:status withUser:[handle getUserID]];
+        NSArray * arry =[[NSArray alloc]initWithObjects:@"Sleeping",@"In a meeting",@"Available",@"Busy",@"At school",@"Hey there! I am using CoolChat!", nil];
+        for (NSString * str in arry) {
+            [db insertStatus:str withUser:[handle getUserID]];
+        }
     }
     
     ImageCache * imageCache = [ImageCache sharedObject];

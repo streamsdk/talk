@@ -13,7 +13,6 @@
 #import <arcstreamsdk/STreamObject.h>
 @interface StatusViewController ()
 {
-   
     UITableViewCell * currentStatusCell;
 }
 @end
@@ -36,7 +35,7 @@
     HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
     MyStatusDB * db = [[MyStatusDB alloc]init];
     statusArray = [db readStatus:[handle getUserID]];
-    _status = [statusArray objectAtIndex:0];
+        _status = [statusArray objectAtIndex:0];
     [myTableView reloadData];
 }
 - (void)viewDidLoad

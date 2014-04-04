@@ -23,7 +23,7 @@
 #import "TearmServiceViewController.h"
 #import "PrivacyPoolicyViewController.h"
 #import "AddDB.h"
-
+#import "MyStatusDB.h"
 @interface SignUpViewController ()<UIActionSheetDelegate>
 {
     UIActionSheet* actionSheet;
@@ -237,6 +237,11 @@
                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                 [userDefaults setObject:username forKey:@"username"];
                 [userDefaults setObject:pword forKey:@"password"];
+                MyStatusDB * db = [[MyStatusDB alloc]init];
+                NSArray * arry =[[NSArray alloc]initWithObjects:@"Sleeping",@"In a meeting",@"Available",@"Busy",@"At school",@"Hey there! I am using CoolChat!", nil];
+                for (NSString * status in arry) {
+                    [db insertStatus:status withUser:username];
+                }
                 
                 sleep(2);
                 [self addAsFriend:username withFriend:@"coolchat"];

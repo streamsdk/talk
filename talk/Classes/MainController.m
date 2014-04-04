@@ -142,10 +142,9 @@
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSString * online = [imageCache getOnline:[imageCache getFriendID]];
     if ([online isEqualToString:@"online"]) {
-        [lable1 setFrame:CGRectMake(30, 20, 100, 20)];
-        [lable1 setTextAlignment:NSTextAlignmentLeft];
+        [lable1 setFrame:CGRectMake(0, 20, view.frame.size.width-30, 20)];
     }else{
-        [lable1 setFrame:CGRectMake(0, 20, 180, 20)];
+        [lable1 setFrame:CGRectMake(0, 20, view.frame.size.width, 20)];
     }
     lable1.text = online;
 }
@@ -162,12 +161,10 @@
 //    self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
     lable.text=sendToID;
     NSString * online = [imageCache getOnline:sendToID];
-    if ([online isEqualToString:@"online"]) {
-        [lable1 setFrame:CGRectMake(30, 20, 100, 20)];
-        [lable1 setTextAlignment:NSTextAlignmentLeft];
-    }else{
-         [lable1 setFrame:CGRectMake(0, 20, 180, 20)];
-    }
+    if ([online isEqualToString:@"online"])
+       [lable1 setFrame:CGRectMake(0, 20, view.frame.size.width-30, 20)];
+    else
+        [lable1 setFrame:CGRectMake(0, 20, view.frame.size.width, 20)];
     lable1.text = online;
 
 //    self.navigationItem.titleView = view;
@@ -275,7 +272,6 @@
 
     self.voice = [[Voice alloc] init];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(SetBackground)];
-
     backgroundView = [[UIImageView alloc]initWithFrame:self.view.frame];
     backgroundView.userInteractionEnabled = YES;
     [self.view addSubview:backgroundView];
@@ -355,26 +351,34 @@
     [bubbleTableView reloadData];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    lable = [[UILabel alloc]initWithFrame:CGRectMake(30, 0, 180, 20)];
+    view =[[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width-160, 44)];
+    view.backgroundColor =[UIColor clearColor];
+    view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    view.autoresizesSubviews = YES;
+    
+    lable = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width-30, 20)];
     lable.backgroundColor = [UIColor clearColor];
     lable.textColor =[UIColor whiteColor];
-    lable.font = [UIFont systemFontOfSize:15];
+    lable.font = [UIFont systemFontOfSize:13];
+    lable.textAlignment =NSTextAlignmentCenter;
+    lable.autoresizingMask = view.autoresizingMask;
     
-    lable1 = [[UILabel alloc]init];
+    lable1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 20,view.frame.size.width, 20)];
     lable1.backgroundColor = [UIColor clearColor];
     lable1.textColor =[UIColor grayColor];
     lable1.font = [UIFont systemFontOfSize:11];
-
-    view =[[UIView alloc]initWithFrame:CGRectMake(0, 0, 180, 40)];
-    view.backgroundColor =[UIColor clearColor];
+    lable1.textAlignment =NSTextAlignmentCenter;
+    lable.autoresizingMask = view.autoresizingMask;
+    
     [view addSubview:lable];
     [view addSubview:lable1];
     self.navigationItem.titleView = view;
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+       MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.tag = HUD_tag;
     [self.view addSubview:HUD];
 
 }
+
 -(void)cancel {
     NSLog(@"cancel");
     bubbleTableView.isEdit = NO;
