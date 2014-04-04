@@ -237,11 +237,11 @@
     annotationView.pinColor = MKPinAnnotationColorRed;
     annotationView.animatesDrop = YES;
     annotationView.highlighted = YES;
-    
-    UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-    [rightButton addTarget:self action:@selector(sendCurrentLocation) forControlEvents:UIControlEventTouchUpInside];
-    annotationView.rightCalloutAccessoryView = rightButton;
     annotationView.annotation = annotation;
+    annotationView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tappressGesutre=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(sendCurrentLocation)];
+    tappressGesutre.numberOfTouchesRequired=1;
+    [annotationView addGestureRecognizer:tappressGesutre];
     return annotationView;
 }
 - (void)didReceiveMemoryWarning
