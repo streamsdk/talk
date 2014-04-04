@@ -28,8 +28,6 @@
     NSMutableString *userid = [[NSMutableString alloc] init];
     [userid appendString:friend];
     [userid appendString:@"status"];
-    [statusSo setObjectId:userid];
-    [statusSo loadAll:userid];
     [statusSo getObject:userid response:^(NSString *res) {
         NSString *status =[statusSo getValue:@"status"];
         if (status==nil || [status isEqualToString:@""]) {

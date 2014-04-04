@@ -238,7 +238,7 @@
                 [userDefaults setObject:username forKey:@"username"];
                 [userDefaults setObject:pword forKey:@"password"];
                 
-                
+                sleep(2);
                 [self addAsFriend:username withFriend:@"coolchat"];
                 [self addAsFriendRequest:username withFriend:@"maria"];
                 
