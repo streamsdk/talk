@@ -86,6 +86,7 @@
         [alertView setUseMotionEffects:true];
         [alertView show];
         [self resignFirstResponder];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"resignResponder" object:nil];
     }else{
         self.text = contents;
     }

@@ -306,7 +306,8 @@
      [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(refreshTable) name:@"send" object:nil];
     //dismissKeyboard
     [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(dismissKeyBoard) name:@"dismissKeyboard" object:nil];
-    
+//    resignResponder
+     [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(dismiss) name:@"resignResponder" object:nil];
     //handler
     photoHandler = [[PhotoHandler alloc] init];
     
@@ -889,13 +890,19 @@
     NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSTimeInterval animationDuration;
     [animationDurationValue getValue:&animationDuration];
-    [faceButton setImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
+    if (isFace) {
+        [faceButton setImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
+
+    }
     [pageControl setHidden:NO];
     keyboardIsShow=NO;
 //    [messageText resignFirstResponder];
 //    [self dismissKeyBoard];
 }
-
+-(void) dismiss{
+    [pageControl setHidden:YES];
+    sendButton.hidden = YES;
+}
 #pragma mark -
 #pragma mark facialView delegate 点击表情键盘上的文字
 -(void)selectedFacialView:(NSString*)str
