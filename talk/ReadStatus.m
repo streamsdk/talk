@@ -10,7 +10,7 @@
 #import "HandlerUserIdAndDateFormater.h"
 #import "FriendStatusDB.h"
 #import <arcstreamsdk/STreamObject.h>
-
+#import "ImageCache.h"
 @implementation ReadStatus
 
 -(NSMutableDictionary *) getFriendStatus{
@@ -23,23 +23,19 @@
 }
 -(void)readFriendsStatus:(NSString *)friend{
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
-    STreamObject * statusSo = [[STreamObject alloc]init];
     FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
-    NSMutableString *userid = [[NSMutableString alloc] init];
-    [userid appendString:friend];
-    [userid appendString:@"status"];
-    [statusSo getObject:userid response:^(NSString *res) {
-        NSString *status =[statusSo getValue:@"status"];
-        if (status==nil || [status isEqualToString:@""]) {
-            status = @"Hey,there! I am using CoolChat!";
-        }
-        NSString * name = [friendStatusDB readfriend:friend];
-        if ([name isEqualToString:[handle getUserID]]) {
-            [friendStatusDB updateDB:[handle getUserID] withFriendID:friend withStatus:status];
-        }else{
-            [friendStatusDB insertStatus:[handle getUserID] friend:friend status:status];
-        }
-        
-    }];
+    ImageCache * imageCache = [ImageCache sharedObject];
+    NSMutableDictionary *userMetadata=[imageCache getUserMetadata:friend];
+    NSString *status =[userMetadata objectForKey:@"status"];
+    if (status==nil || [status isEqualToString:@""]) {
+        status = @"Hey,there! I am using CoolChat!";
+    }
+    NSString * name = [friendStatusDB readfriend:friend];
+    if ([name isEqualToString:[handle getUserID]]) {
+        [friendStatusDB updateDB:[handle getUserID] withFriendID:friend withStatus:status];
+    }else{
+        [friendStatusDB insertStatus:[handle getUserID] friend:friend status:status];
+    }
+//    return status;
 }
 @end
