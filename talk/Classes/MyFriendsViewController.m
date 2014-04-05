@@ -797,6 +797,7 @@
         [loadonlineProtocol loadOnline];
     }];
     [self.tableView reloadData];
+    self.title = @"MyFriends";
     [self.navigationController pushViewController:mainVC animated:YES];
     
    

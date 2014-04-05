@@ -142,7 +142,7 @@
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSString * online = [imageCache getOnline:[imageCache getFriendID]];
     if ([online isEqualToString:@"online"]) {
-        [lable1 setFrame:CGRectMake(0, 20, view.frame.size.width-30, 20)];
+        [lable1 setFrame:CGRectMake(0, 20, view.frame.size.width-50, 20)];
     }else{
         [lable1 setFrame:CGRectMake(0, 20, view.frame.size.width, 20)];
     }
@@ -162,7 +162,7 @@
     lable.text=sendToID;
     NSString * online = [imageCache getOnline:sendToID];
     if ([online isEqualToString:@"online"])
-       [lable1 setFrame:CGRectMake(0, 20, view.frame.size.width-30, 20)];
+       [lable1 setFrame:CGRectMake(0, 20, view.frame.size.width-50, 20)];
     else
         [lable1 setFrame:CGRectMake(0, 20, view.frame.size.width, 20)];
     lable1.text = online;
@@ -357,7 +357,7 @@
     view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     view.autoresizesSubviews = YES;
     
-    lable = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width-30, 20)];
+    lable = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width-50, 20)];
     lable.backgroundColor = [UIColor clearColor];
     lable.textColor =[UIColor whiteColor];
     lable.font = [UIFont systemFontOfSize:13];
