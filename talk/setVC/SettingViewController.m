@@ -458,6 +458,8 @@
 #pragma mark alertview Delegate
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+
+    ImageCache*imageCache =[ImageCache sharedObject];
     if (buttonIndex == 1) {
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"log out...";
@@ -471,6 +473,10 @@
                 NSDate *now = [[NSDate alloc] init];
                 long long millionsSecs = [now timeIntervalSince1970];
                 NSString *time = [NSString stringWithFormat:@"%lld",millionsSecs];
+                STreamUser *user =[[STreamUser alloc]init];
+                NSMutableDictionary * userMetadata= [imageCache getUserMetadata:username];
+                [imageCache saveUserMetadata:username withMetadata:userMetadata];
+                [user updateUserMetadata:username withMetadata:userMetadata];
                 STreamObject * so = [[STreamObject alloc]init];
                 NSMutableString *userid = [[NSMutableString alloc] init];
                 [userid appendString:username];
@@ -483,6 +489,8 @@
             }
             [userDefaults removeObjectForKey:@"username"];
             [userDefaults removeObjectForKey:@"password"];
+            
+            
            
         }completionBlock:^{
             LoginViewController *loginVC = [[LoginViewController alloc]init];

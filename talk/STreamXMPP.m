@@ -16,7 +16,7 @@
 #import "ACKMessageDB.h"
 #import "AddDB.h"
 #import "ImageCache.h"
-
+#import <arcstreamsdk/STreamUser.h>
 #if DEBUG
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 #else
@@ -134,9 +134,15 @@ static XMPPReconnect *xmppReconnect;
 */
 - (void)disconnect
 {
+    ImageCache * imageCache =[ImageCache sharedObject];
     NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *username = [userDefaults objectForKey:@"username"];
     if (username) {
+        STreamUser *user =[[STreamUser alloc]init];
+        NSMutableDictionary * userMetadata= [imageCache getUserMetadata:username];
+        [imageCache saveUserMetadata:username withMetadata:userMetadata];
+        [user updateUserMetadata:username withMetadata:userMetadata];
+        
         NSDate *now = [[NSDate alloc] init];
         long millionsSecs = [now timeIntervalSince1970];
         NSString *time = [NSString stringWithFormat:@"%ld",millionsSecs];
