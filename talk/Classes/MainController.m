@@ -154,10 +154,10 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     
+    faceScrollView.hidden=YES;
      [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSString *sendToID = [imageCache getFriendID];
-    
 //    self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
     lable.text=sendToID;
     NSString * online = [imageCache getOnline:sendToID];
@@ -863,6 +863,7 @@
 }
 -(void)inputKeyboardWillShow:(NSNotification *)notification{
     //键盘显示，设置toolbar的frame跟随键盘的frame
+    isFace=NO;
    CGFloat animationTime = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     
     [UIView animateWithDuration:animationTime animations:^{
