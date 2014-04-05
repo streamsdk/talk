@@ -102,7 +102,10 @@ static NSMutableDictionary*_onlineDict;
     [_cachedSelfImageFiles addObject:fileId];
     [_selfImageDictionary setObject:file forKey:fileId]; 
 }
-
+-(void)removefileId:(NSString *)fileId{
+    [_cachedSelfImageFiles removeObject:fileId];
+    [_selfImageDictionary removeObjectForKey:fileId];
+}
 -(NSData *)getImage:(NSString *)fileId{
     NSData *data =  [_selfImageDictionary objectForKey:fileId];
     if (data){

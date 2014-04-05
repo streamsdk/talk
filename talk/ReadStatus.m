@@ -11,6 +11,8 @@
 #import "FriendStatusDB.h"
 #import <arcstreamsdk/STreamObject.h>
 #import "ImageCache.h"
+#import <arcstreamsdk/STreamUser.h>
+#import "AddDB.h"
 @implementation ReadStatus
 
 -(NSMutableDictionary *) getFriendStatus{
@@ -38,4 +40,29 @@
     }
 //    return status;
 }
+-(void)loadAllMetaData{
+    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    AddDB * addDB = [[AddDB alloc]init];
+    NSMutableDictionary * addDict = [addDB readDB:[handle getUserID]];
+    NSArray * array = [addDict allKeys];
+    STreamUser *user = [[STreamUser alloc] init];
+    for (NSString * friendID in array) {
+        [user loadUserMetadata:friendID response:^(BOOL succeed, NSString *error){
+            if ([error isEqualToString:friendID]){
+                NSMutableDictionary *dic = [user userMetadata];
+                ImageCache *imageCache = [ImageCache sharedObject];
+                NSString *newPImageId = [dic objectForKey:@"profileImageId"];
+                NSMutableDictionary *userMetaData = [imageCache getUserMetadata:friendID];
+                NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+                if (pImageId && newPImageId &&![pImageId isEqualToString:newPImageId]) {
+                    [imageCache removefileId:pImageId];
+                }
+                [imageCache saveUserMetadata:friendID withMetadata:dic];
+                [self readFriendsStatus:friendID];
+            }
+        }];
+        
+    }
+}
+
 @end

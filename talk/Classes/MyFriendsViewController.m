@@ -369,6 +369,10 @@
     }
     
     [self.tableView reloadData];
+    
+    ReadStatus * readStatus = [[ReadStatus alloc]init];
+    [readStatus performSelectorInBackground:@selector(loadAllMetaData) withObject:nil];
+    statusDict = [readStatus getFriendStatus];
 
 }
 -(void) didReceiveRequest:(NSDictionary *)json{

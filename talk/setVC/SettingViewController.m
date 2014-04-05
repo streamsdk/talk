@@ -26,9 +26,9 @@
 #import "StatusViewController.h"
 #define IMAGE_TAG 10000
 #import "MyStatusDB.h"
+#import "FileCache.h"
 @interface SettingViewController ()<MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate>
 {
-    UIImage *avatarImg;
     BOOL isaAatarImg;
     UIImage *profileImage;
     NSString * status;
@@ -407,9 +407,9 @@
 #pragma mark imagePickerController Delegate
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    avatarImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    profileImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     UIImageView * imageview= (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
-    imageview.image = avatarImg;
+    imageview.image = profileImage;
     [picker dismissViewControllerAnimated:YES completion:^{
         
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -503,20 +503,23 @@
     STreamUser * user = [[STreamUser alloc]init];
     STreamFile *file = [[STreamFile alloc] init];
 
-    UIImage *sImage = [self imageWithImage:avatarImg scaledToMaxWidth:100 maxHeight:100];
+    UIImage *sImage = [self imageWithImage:profileImage scaledToMaxWidth:100 maxHeight:100];
     NSData * data = UIImageJPEGRepresentation(sImage, 0.8);
     [file postData:data];
     NSLog(@"errorMessage：%@",[file errorMessage]);
     NSLog(@"ID:%@",[file fileId]);
     ImageCache *imageCache = [ImageCache sharedObject];
+    FileCache *filecache = [FileCache sharedObject];
     NSMutableDictionary *metaData = [imageCache getUserMetadata:[handle getUserID]];
     if ([[file errorMessage] isEqualToString:@""] && [file fileId]){
         [metaData setValue:[file fileId] forKey:@"profileImageId"];
+        [imageCache saveUserMetadata:[handle getUserID] withMetadata:metaData];
+        [imageCache selfImageDownload:data withFileId:[file fileId]];
+        [filecache writeFileDoc:[file fileId] withData:data];
         [user updateUserMetadata:[handle getUserID] withMetadata:metaData];
         
-        [imageCache saveUserMetadata:[handle getUserID] withMetadata:metaData];
     }
-    [self loadAvatar:[handle getUserID]];
+//    [self loadAvatar:[handle getUserID]];
 }
 
 #pragma mark UITEXTFILED-DELEGATE-

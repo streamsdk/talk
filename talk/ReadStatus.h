@@ -14,4 +14,6 @@
 
 -(void)readFriendsStatus:(NSString *)friend;
 
+-(void)loadAllMetaData ;
+
 @end

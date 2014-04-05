@@ -175,6 +175,7 @@
                      }];
 }
 #pragma mark searchBarDelegate
+
 -(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
     NSString *oreillyAddress = searchBar.text;
@@ -200,7 +201,7 @@
             point.title = @"点击发送当前位置";
             point.subtitle = oreillyAddress;
             [myMapView addAnnotation:point];
-            self.title = oreillyAddress;
+            label.text = oreillyAddress;
             [myMapView selectAnnotation:point animated:YES];
         }else if ([placemarks count] == 0 &&
                  error == nil){
