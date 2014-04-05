@@ -17,7 +17,7 @@
    
     ImageCache *imageCache = [ImageCache sharedObject];
     FileCache * filecache = [FileCache sharedObject];
-    if ([imageCache getUserMetadata:userID]!=nil) {
+//    if ([imageCache getUserMetadata:userID]!=nil) {
         NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
         NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
         if (pImageId!=nil && ![pImageId isEqualToString:@""] &&[imageCache getImage:pImageId]==nil){
@@ -35,16 +35,16 @@
                                    }];
 
         }
-    }else{
-        STreamUser *user = [[STreamUser alloc] init];
-        [user loadUserMetadata:userID response:^(BOOL succeed, NSString *error){
-            if ([error isEqualToString:userID]){
-                NSMutableDictionary *dic = [user userMetadata];
-                ImageCache *imageCache = [ImageCache sharedObject];
-                [imageCache saveUserMetadata:userID withMetadata:dic];
-            }
-        }];
-    }
+//    }else{
+//        STreamUser *user = [[STreamUser alloc] init];
+//        [user loadUserMetadata:userID response:^(BOOL succeed, NSString *error){
+//            if ([error isEqualToString:userID]){
+//                NSMutableDictionary *dic = [user userMetadata];
+//                ImageCache *imageCache = [ImageCache sharedObject];
+//                [imageCache saveUserMetadata:userID withMetadata:dic];
+//            }
+//        }];
+//    }
 
 }
 
