@@ -85,27 +85,29 @@
     
 }
 -(void) viewWillAppear:(BOOL)animated{
+
+    NSArray * arry =[[NSArray alloc]initWithObjects:@"Sleeping",@"In a meeting",@"Available",@"Busy",@"At school",@"Hey there! I am using CoolChat!", nil];
     HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
-    MyStatusDB * db = [[MyStatusDB alloc]init];
-    NSMutableArray* statusArray = [db readStatus:[handle getUserID]];
-    if ([statusArray count]!=0 && statusArray) {
-        status = [statusArray objectAtIndex:0];
-    }else{
-        status = @"Hey,there! I am using CoolChat!";
-//        [db insertStatus:status withUser:[handle getUserID]];
-        NSArray * arry =[[NSArray alloc]initWithObjects:@"Sleeping",@"In a meeting",@"Available",@"Busy",@"At school",@"Hey there! I am using CoolChat!", nil];
-        for (NSString * str in arry) {
-            [db insertStatus:str withUser:[handle getUserID]];
-        }
-    }
-    
+     MyStatusDB * db = [[MyStatusDB alloc]init];
     ImageCache * imageCache = [ImageCache sharedObject];
     NSMutableDictionary *userMetadata=[imageCache getUserMetadata:[handle getUserID]];
     email=[userMetadata objectForKey:@"Email"];
     if (!email) {
         email = @"";
     }
-     userData = [[NSMutableArray alloc]initWithObjects:@"UserName",[handle getUserID],@"status",status,@"Email",email,@"My QRCode",@"Scanner QRCode",@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
+    NSMutableArray* statusArray = [db readStatus:[handle getUserID]];
+    if ([statusArray count]==0){
+        for (NSString * str in arry) {
+            [db insertStatus:str withUser:[handle getUserID]];
+        }
+    }
+    status = [userMetadata objectForKey:@"status"];
+    if (!status) {
+        status = @"Hey,there! I am using CoolChat!";
+        [userMetadata setObject:status forKey:@"status"];
+        [imageCache saveUserMetadata:[handle getUserID] withMetadata:userMetadata];
+    }
+    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",[handle getUserID],@"status",status,@"Email",email,@"My QRCode",@"Scanner QRCode",@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
     if (!isaAatarImg) [myTableView reloadData];
 }
 - (void)viewDidLoad
@@ -116,18 +118,6 @@
     isaAatarImg = NO;
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     NSString * loginName = [handle getUserID];
-    /*STreamObject * so = [[STreamObject alloc]init];
-    NSMutableString *userid = [[NSMutableString alloc] init];
-    [userid appendString:[handle getUserID]];
-    [userid appendString:@"status"];
-    [so setObjectId:userid];
-    [so loadAll:userid];
-    [so getObject:userid response:^(NSString * res) {
-        status =[so getValue:@"status"];
-        if (!status) status =@"Hey there! I am using CoolChat!";
-        MyStatusDB *db= [[MyStatusDB alloc]init];
-        [db insertStatus:status withUser:[handle getUserID]];
-    }];*/
     myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height-30) style:UITableViewStyleGrouped];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
@@ -518,11 +508,12 @@
     [file postData:data];
     NSLog(@"errorMessage：%@",[file errorMessage]);
     NSLog(@"ID:%@",[file fileId]);
-    NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
+    ImageCache *imageCache = [ImageCache sharedObject];
+    NSMutableDictionary *metaData = [imageCache getUserMetadata:[handle getUserID]];
     if ([[file errorMessage] isEqualToString:@""] && [file fileId]){
         [metaData setValue:[file fileId] forKey:@"profileImageId"];
         [user updateUserMetadata:[handle getUserID] withMetadata:metaData];
-        ImageCache *imageCache = [ImageCache sharedObject];
+        
         [imageCache saveUserMetadata:[handle getUserID] withMetadata:metaData];
     }
     [self loadAvatar:[handle getUserID]];

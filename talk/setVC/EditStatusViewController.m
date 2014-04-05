@@ -11,6 +11,8 @@
 #import "HandlerUserIdAndDateFormater.h"
 #import "MyStatusDB.h"
 #import <arcstreamsdk/STreamObject.h>
+#import <arcstreamsdk/STreamUser.h>
+#import "ImageCache.h"
 @interface EditStatusViewController ()<UITextViewDelegate>
 {
     UITextView *myUITextView;
@@ -46,13 +48,13 @@
         HandlerUserIdAndDateFormater *handle =[HandlerUserIdAndDateFormater sharedObject];
         MyStatusDB * statusDb=[[MyStatusDB alloc]init];
         [statusDb insertStatus:str withUser:[handle getUserID]];
-        STreamObject * so = [[STreamObject alloc]init];
-        NSMutableString *userid = [[NSMutableString alloc] init];
-        [userid appendString:[handle getUserID]];
-        [userid appendString:@"status"];
-        [so setObjectId:userid];
-        [so addStaff:@"status" withObject:str];
-        [so updateInBackground];
+        ImageCache * imageCache = [ImageCache sharedObject];
+        NSMutableDictionary *userMetadata=[imageCache getUserMetadata:[handle getUserID]];
+        [userMetadata setObject:str forKey:@"status"];
+        STreamUser *user =[[STreamUser alloc]init];
+        [imageCache saveUserMetadata:[handle getUserID] withMetadata:userMetadata];
+        [user updateUserMetadata:[handle getUserID] withMetadata:userMetadata];
+        
 
     }
     [self.navigationController popViewControllerAnimated:NO];

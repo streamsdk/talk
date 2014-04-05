@@ -11,6 +11,8 @@
 #import "MyStatusDB.h"
 #import "HandlerUserIdAndDateFormater.h"
 #import <arcstreamsdk/STreamObject.h>
+#import <arcstreamsdk/STreamUser.h>
+#import "ImageCache.h"
 @interface StatusViewController ()
 {
     UITableViewCell * currentStatusCell;
@@ -30,12 +32,14 @@
     return self;
 }
 -(void)viewWillAppear:(BOOL)animated{
-    row = 0;
-    
+    row=0;
     HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
     MyStatusDB * db = [[MyStatusDB alloc]init];
     statusArray = [db readStatus:[handle getUserID]];
-        _status = [statusArray objectAtIndex:0];
+//        _status = [statusArray objectAtIndex:0];
+    ImageCache * imageCache = [ImageCache sharedObject];
+    NSMutableDictionary *userMetadata=[imageCache getUserMetadata:[handle getUserID]];
+    _status=[userMetadata objectForKey:@"status"];
     [myTableView reloadData];
 }
 - (void)viewDidLoad
@@ -100,11 +104,14 @@
     }
     if (indexPath.section==0) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell .textLabel.text = [statusArray objectAtIndex:row];
+        cell .textLabel.text = _status;
         currentStatusCell = cell;
     }else if(indexPath.section==1){
-        if (row == indexPath.row)
+//        row == indexPath.row
+        if ([_status isEqualToString:[statusArray objectAtIndex:indexPath.row]]){
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            row = indexPath.row;
+        }
         else
             cell.accessoryType = UITableViewCellAccessoryNone;
         cell .textLabel.text = [statusArray objectAtIndex:indexPath.row];
@@ -139,16 +146,14 @@
         currentStatusCell.textLabel.text = @"";
         currentStatusCell.textLabel.text = _status;
         HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
-        MyStatusDB * db = [[MyStatusDB alloc]init];
-        [db insertStatus:_status withUser:[handle getUserID]];
-        STreamObject * so = [[STreamObject alloc]init];
-        NSMutableString *userid = [[NSMutableString alloc] init];
-        [userid appendString:[handle getUserID]];
-        [userid appendString:@"status"];
-        [so setObjectId:userid];
-        [so addStaff:@"status" withObject:_status];
-        [so updateInBackground];
-
+//        MyStatusDB * db = [[MyStatusDB alloc]init];
+//        [db insertStatus:_status withUser:[handle getUserID]];
+        ImageCache * imageCache = [ImageCache sharedObject];
+        NSMutableDictionary *userMetadata=[imageCache getUserMetadata:[handle getUserID]];
+        [userMetadata setObject:_status forKey:@"status"];
+        STreamUser *user =[[STreamUser alloc]init];
+        [imageCache saveUserMetadata:[handle getUserID] withMetadata:userMetadata];
+        [user updateUserMetadata:[handle getUserID] withMetadata:userMetadata];
     }
 }
 
@@ -157,7 +162,7 @@
     if (indexPath.section == 0) {
        return UITableViewCellAccessoryDisclosureIndicator;
     }else {
-        if(indexPath.row==row){
+        if ([_status isEqualToString:[statusArray objectAtIndex:indexPath.row]]){
             return UITableViewCellAccessoryCheckmark;
         }
         else{
