@@ -32,7 +32,6 @@
         if ([error isEqualToString:friendID]){
             NSMutableDictionary *dic = [user userMetadata];
             [allMetaData setObject:dic forKey:friendID];
-            NSLog(@"all=%@",allMetaData);
              [imageCache saveUserMetadata:friendID withMetadata:dic];
         }
         }];

@@ -16,6 +16,7 @@
     UIActionSheet* actionSheet;
     UIScrollView *scrollerView;
     UIImage *currentImage;
+    UIImage *formerImage;
     
 }
 @property (nonatomic,strong) UIImage * image;
