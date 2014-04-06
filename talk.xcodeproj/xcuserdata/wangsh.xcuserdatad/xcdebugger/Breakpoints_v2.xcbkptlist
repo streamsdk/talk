@@ -229,12 +229,12 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "418470422.929041"
+                  timestampString = "418474138.25036"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
                   endingLineNumber = "1119"
-                  offsetFromSymbolStart = "480">
+                  offsetFromSymbolStart = "430">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -243,12 +243,12 @@
                   symbolName = "-[XMPPStream oldSchoolSecureConnectWithTimeout:error:]"
                   moduleName = "talk"
                   urlString = "file://localhost/Users/wangsh/Desktop/github/talk/Core/XMPPStream.m"
-                  timestampString = "418470422.929304"
+                  timestampString = "418474138.250563"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1119"
                   endingLineNumber = "1119"
-                  offsetFromSymbolStart = "650">
+                  offsetFromSymbolStart = "496">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -265,6 +265,54 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "332"
             endingLineNumber = "332">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "talk/Classes/MyFriendsViewController.m"
+            timestampString = "418473633.070346"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "273"
+            endingLineNumber = "273"
+            landmarkName = "-readHistory"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "talk/Classes/MyFriendsViewController.m"
+            timestampString = "418473649.418606"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "300"
+            endingLineNumber = "300"
+            landmarkName = "-readHistory"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "talk/Classes/MyFriendsViewController.m"
+            timestampString = "418473679.743612"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "346"
+            endingLineNumber = "346"
+            landmarkName = "-didAuthenticate"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

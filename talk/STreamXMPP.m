@@ -141,7 +141,7 @@ static XMPPReconnect *xmppReconnect;
     if (username) {
         STreamUser *user =[[STreamUser alloc]init];
         NSMutableDictionary * userMetadata= [imageCache getUserMetadata:username];
-        if (![[userMetadata objectForKey:@"status"] isEqualToString:status]) {
+        if (status== nil||![[userMetadata objectForKey:@"status"] isEqualToString:status]) {
             [user updateUserMetadata:username withMetadata:userMetadata];
         }
         

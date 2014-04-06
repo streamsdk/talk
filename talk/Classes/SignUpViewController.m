@@ -236,14 +236,8 @@
 //                [nameArray writeToFile:nameFilePath atomically:YES];
                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                 [userDefaults setObject:username forKey:@"username"];
+                 sleep(2);
                 [userDefaults setObject:pword forKey:@"password"];
-                MyStatusDB * db = [[MyStatusDB alloc]init];
-                NSArray * arry =[[NSArray alloc]initWithObjects:@"Sleeping",@"In a meeting",@"Available",@"Busy",@"At school",@"Hey there! I am using CoolChat!", nil];
-                for (NSString * status in arry) {
-                    [db insertStatus:status withUser:username];
-                }
-                
-                sleep(2);
                 [self addAsFriend:username withFriend:@"coolchat"];
                 [self addAsFriendRequest:username withFriend:@"maria"];
                 
@@ -253,14 +247,12 @@
                 [userid appendString:@"status"];
                 [myObject setObjectId:userid];
                 [myObject createNewObject:^(BOOL succeed, NSString *response){}];*/
-                
+
                 [user loadUserMetadata:username response:^(BOOL succeed, NSString *error){
                     if ([error isEqualToString:username]){
                         NSMutableDictionary *dic = [user userMetadata];
                         ImageCache *imageCache = [ImageCache sharedObject];
                         [imageCache saveUserMetadata:username withMetadata:dic];
-                        if ([dic objectForKey:@"status"]!= nil)
-                            [userDefaults setObject:[dic objectForKey:@"status"] forKey:@"status"];
                         [downloadAvatar loadAvatar:username];
                     }
                 }];
