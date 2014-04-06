@@ -86,7 +86,7 @@
 }
 -(void) viewWillAppear:(BOOL)animated{
 
-    NSArray * arry =[[NSArray alloc]initWithObjects:@"Sleeping",@"In a meeting",@"Available",@"Busy",@"At school",@"Hey there! I am using CoolChat!", nil];
+    NSArray * arry =[[NSArray alloc]initWithObjects:@"Sleeping",@"In a meeting",@"Available",@"Busy",@"At school",@"Hey there! I am using CoolChat", nil];
     HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
      MyStatusDB * db = [[MyStatusDB alloc]init];
     ImageCache * imageCache = [ImageCache sharedObject];
@@ -103,9 +103,11 @@
     }
     status = [userMetadata objectForKey:@"status"];
     if (!status) {
-        status = @"Hey,there! I am using CoolChat!";
+        status = @"Hey there! I am using CoolChat";
         [userMetadata setObject:status forKey:@"status"];
         [imageCache saveUserMetadata:[handle getUserID] withMetadata:userMetadata];
+    }else{
+         [db insertStatus:status withUser:[handle getUserID]];
     }
     userData = [[NSMutableArray alloc]initWithObjects:@"UserName",[handle getUserID],@"status",status,@"Email",email,@"My QRCode",@"Scanner QRCode",@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
     if (!isaAatarImg) [myTableView reloadData];
@@ -470,7 +472,7 @@
             NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
             NSString *username = [userDefaults objectForKey:@"username"];
             if (username) {
-                NSDate *now = [[NSDate alloc] init];
+                NSDate *now = [NSDate date];
                 long long millionsSecs = [now timeIntervalSince1970];
                 NSString *time = [NSString stringWithFormat:@"%lld",millionsSecs];
                 STreamUser *user =[[STreamUser alloc]init];

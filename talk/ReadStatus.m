@@ -43,7 +43,7 @@
     ImageCache *imageCache = [ImageCache sharedObject];
     NSMutableDictionary *userMetaData = [imageCache getUserMetadata:fromID];
     status = [userMetaData objectForKey:@"status"];
-    if (status==nil || [status isEqualToString:@""])status = @"Hey,there! I am using CoolChat!";
+    if (status==nil || [status isEqualToString:@""])status = @"Hey there! I am using CoolChat";
     return status;
 }
 

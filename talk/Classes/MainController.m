@@ -832,7 +832,8 @@
 #pragma mark 隐藏键盘
 
 -(void)dismissKeyBoard{
-    
+    faceScrollView.hidden = YES;
+    iconScrollView.hidden=YES;
     isEmoji = NO;
     //键盘显示的时候，toolbar需要还原到正常位置，并显示表情
     [UIView animateWithDuration:Time animations:^{

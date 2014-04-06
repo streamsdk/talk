@@ -362,7 +362,7 @@
     if ([presenceType isEqualToString:@"unavailable"]){
         
     }
-    [NSThread sleepForTimeInterval:2];
+    [NSThread sleepForTimeInterval:0.1];
     [self performSelectorOnMainThread:@selector(doneLoadingTableViewData) withObject:nil waitUntilDone:YES];
 }
 -(void) didReceiveRequest:(NSDictionary *)json{
@@ -778,7 +778,7 @@
                 time =[NSString stringWithFormat:@"%ld",lastseen];
             }
             //            long long lastModifiedTime = [time longLongValue];
-            NSDate *now = [[NSDate alloc] init];
+            NSDate *now = [NSDate date];
             long long millionsSecs = [now timeIntervalSince1970];
             NSString *diff = [NSString stringWithFormat:@"%lld",millionsSecs];
             //            long long diff = millionsSecs - lastModifiedTime;
