@@ -259,6 +259,8 @@
                         NSMutableDictionary *dic = [user userMetadata];
                         ImageCache *imageCache = [ImageCache sharedObject];
                         [imageCache saveUserMetadata:username withMetadata:dic];
+                        if ([dic objectForKey:@"status"]!= nil)
+                            [userDefaults setObject:[dic objectForKey:@"status"] forKey:@"status"];
                         [downloadAvatar loadAvatar:username];
                     }
                 }];

@@ -137,13 +137,15 @@ static XMPPReconnect *xmppReconnect;
     ImageCache * imageCache =[ImageCache sharedObject];
     NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *username = [userDefaults objectForKey:@"username"];
+    NSString *status = [userDefaults objectForKey:@"status"];
     if (username) {
         STreamUser *user =[[STreamUser alloc]init];
         NSMutableDictionary * userMetadata= [imageCache getUserMetadata:username];
-        [imageCache saveUserMetadata:username withMetadata:userMetadata];
-        [user updateUserMetadata:username withMetadata:userMetadata];
+        if (![[userMetadata objectForKey:@"status"] isEqualToString:status]) {
+            [user updateUserMetadata:username withMetadata:userMetadata];
+        }
         
-        NSDate *now = [[NSDate alloc] init];
+        NSDate *now = [NSDate date];
         long millionsSecs = [now timeIntervalSince1970];
         NSString *time = [NSString stringWithFormat:@"%ld",millionsSecs];
         STreamObject * so = [[STreamObject alloc]init];

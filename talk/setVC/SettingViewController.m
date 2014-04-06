@@ -53,37 +53,6 @@
 -(void) saveClicked {
     
 }
-
--(void) loadAvatar:(NSString *)userID {
-    
-       ImageCache *imageCache = [ImageCache sharedObject];
-    if ([imageCache getUserMetadata:userID]!=nil) {
-        NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
-        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-        if (pImageId!=nil && ![pImageId isEqualToString:@""] &&[imageCache getImage:pImageId]==nil){
-            FileCache *fileCache = [FileCache sharedObject];
-            STreamFile *file = [[STreamFile alloc] init];
-            if (![imageCache getImage:pImageId]){
-                [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
-                    if ([pImageId isEqualToString:oId]){
-                        [imageCache selfImageDownload:imageData withFileId:pImageId];
-                        [fileCache writeFileDoc:pImageId withData:imageData];
-                        profileImage = [UIImage imageWithData: [imageCache getImage:pImageId]];
-                    }
-                }];
-            }
-        }else{
-            if (pImageId!=nil && ![pImageId isEqualToString:@""]) {
-               profileImage = [UIImage imageWithData: [imageCache getImage:pImageId]];
-            }else{
-              profileImage = [UIImage imageNamed:@"noavatar.png"];
-            }
-        }
-    }else{
-      profileImage= [UIImage imageNamed:@"noavatar.png"];
-    }
-    
-}
 -(void) viewWillAppear:(BOOL)animated{
 
     NSArray * arry =[[NSArray alloc]initWithObjects:@"Sleeping",@"In a meeting",@"Available",@"Busy",@"At school",@"Hey there! I am using CoolChat", nil];
@@ -471,14 +440,16 @@
             [con disconnect];
             NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
             NSString *username = [userDefaults objectForKey:@"username"];
+            NSString *status =[userDefaults objectForKey:@"status"];
             if (username) {
                 NSDate *now = [NSDate date];
                 long long millionsSecs = [now timeIntervalSince1970];
                 NSString *time = [NSString stringWithFormat:@"%lld",millionsSecs];
                 STreamUser *user =[[STreamUser alloc]init];
                 NSMutableDictionary * userMetadata= [imageCache getUserMetadata:username];
-                [imageCache saveUserMetadata:username withMetadata:userMetadata];
-                [user updateUserMetadata:username withMetadata:userMetadata];
+                if (![[userMetadata objectForKey:@"status"] isEqualToString:status]) {
+                     [user updateUserMetadata:username withMetadata:userMetadata];
+                }
                 STreamObject * so = [[STreamObject alloc]init];
                 NSMutableString *userid = [[NSMutableString alloc] init];
                 [userid appendString:username];
