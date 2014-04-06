@@ -51,9 +51,9 @@
         ImageCache * imageCache = [ImageCache sharedObject];
         NSMutableDictionary *userMetadata=[imageCache getUserMetadata:[handle getUserID]];
         [userMetadata setObject:str forKey:@"status"];
-        STreamUser *user =[[STreamUser alloc]init];
         [imageCache saveUserMetadata:[handle getUserID] withMetadata:userMetadata];
-        [user updateUserMetadata:[handle getUserID] withMetadata:userMetadata];
+//        STreamUser *user =[[STreamUser alloc]init];
+//        [user updateUserMetadata:[handle getUserID] withMetadata:userMetadata];
         
 
     }

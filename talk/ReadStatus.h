@@ -10,10 +10,7 @@
 
 @interface ReadStatus : NSObject
 
--(NSMutableDictionary *) getFriendStatus;
-
--(void)readFriendsStatus:(NSString *)friend;
-
 -(void)loadAllMetaData ;
 
+-(NSString *)readStatus:(NSString *)froemID;
 @end

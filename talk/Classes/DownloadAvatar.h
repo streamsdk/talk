@@ -10,8 +10,6 @@
 
 @interface DownloadAvatar : NSObject
 
--(void) loadAvatar:(NSString * )userID;
-
--(UIImage *)readAvatar:(NSString *)userID;
+-(UIImage *)loadAvatar:(NSString *) userID;
 
 @end

@@ -1,4 +1,4 @@
- //
+// //
 //  MyFriendsViewController.m
 //  talk
 //
@@ -31,7 +31,6 @@
 #import "UploadDB.h"
 #import "DownloadAvatar.h"
 #import "AddDB.h"
-#import "FriendStatusDB.h"
 #import "ReadStatus.h"
 
 #define TABLECELL_TAG 10000
@@ -83,8 +82,6 @@
     userData = [[NSMutableArray alloc]init];
     sectionHeadsKeys=[[NSMutableArray alloc]init];
     [self readAddDb];
-    ReadStatus *readStatus =[[ReadStatus alloc]init];
-   statusDict = [readStatus getFriendStatus];
     sortedArrForArrays = [self getChineseStringArr:userData];
     [self.tableView reloadData];
 }
@@ -206,17 +203,14 @@
     AddDB * addDB = [[AddDB alloc]init];
      NSMutableDictionary * addDict = [addDB readDB:[handle getUserID]];
     NSArray *allkey = [addDict allKeys];
-    ReadStatus * readStatus = [[ReadStatus alloc]init];
     for (STreamObject *so in friends) {
         if ([allkey containsObject:[[so objectId]lowercaseString]]) {
             [addDB updateDB:[handle getUserID] withFriendID:[[so objectId] lowercaseString] withStatus:[so getValue:@"status"]];
         }else{
             [addDB insertDB:[handle getUserID] withFriendID:[[so objectId] lowercaseString] withStatus:[so getValue:@"status"]];
         }
-        [readStatus readFriendsStatus:[[so objectId]lowercaseString]];
     }
     [self readAddDb];
-    statusDict = [readStatus getFriendStatus];
     sectionHeadsKeys=[[NSMutableArray alloc]init];
     sortedArrForArrays = [self getChineseStringArr:userData];
 }
@@ -348,7 +342,8 @@
     [so setObjectId:userid];
     [so addStaff:@"online" withObject:@"YES"];
     [so updateInBackground];
-
+    ReadStatus * readStatus = [[ReadStatus alloc]init];
+    [readStatus performSelectorInBackground:@selector(loadAllMetaData) withObject:nil];
 }
 
 - (void)didNotAuthenticate:(NSXMLElement *)error{
@@ -367,13 +362,8 @@
     if ([presenceType isEqualToString:@"unavailable"]){
         
     }
-    
-    [self.tableView reloadData];
-    
-    ReadStatus * readStatus = [[ReadStatus alloc]init];
-    [readStatus performSelectorInBackground:@selector(loadAllMetaData) withObject:nil];
-    statusDict = [readStatus getFriendStatus];
-
+    [NSThread sleepForTimeInterval:2];
+    [self performSelectorOnMainThread:@selector(doneLoadingTableViewData) withObject:nil waitUntilDone:YES];
 }
 -(void) didReceiveRequest:(NSDictionary *)json{
     NSString *type = [json objectForKey:@"type"];
@@ -384,8 +374,6 @@
         }
         NSString * friendname = [json objectForKey:@"friendname"];
         NSString * username = [json objectForKey:@"username"];
-        ReadStatus * readStatus = [[ReadStatus alloc]init];
-        [readStatus readFriendsStatus:username];
         AddDB * addDb = [[AddDB alloc]init];
         NSMutableDictionary * dict = [addDb readDB:friendname];
         if (dict!=nil && [dict count]!= 0) {
@@ -670,15 +658,13 @@
         NSArray *arr = [sortedArrForArrays objectAtIndex:indexPath.section];
         if ([arr count] > indexPath.row) {
             ChineseString *str = (ChineseString *) [arr objectAtIndex:indexPath.row];
-            DownloadAvatar * down = [[DownloadAvatar alloc]init];
-            [down loadAvatar:str.string];
-            UIImage * icon = [down readAvatar:str.string];
-             [self setImage:icon withCell:cell];
             CALayer *l = [cell.imageView layer];
             [l setMasksToBounds:YES];
             [l setCornerRadius:8.0];
             cell.textLabel.text = str.string;
-
+            DownloadAvatar * down = [[DownloadAvatar alloc]init];
+            UIImage * icon = [down loadAvatar:str.string];
+            [self setImage:icon withCell:cell];
             ImageCache * imageCache = [ImageCache sharedObject];
             NSInteger count = [imageCache getMessagesCount:str.string];
 
@@ -687,7 +673,9 @@
                 [button setBackgroundImage:[UIImage imageNamed:@"message_count.png"] forState:UIControlStateNormal];
                 [button setTitle:title forState:UIControlStateNormal];
               }
-            cell.detailTextLabel.text = [statusDict objectForKey:str.string];
+            ReadStatus * status = [[ReadStatus alloc]init];
+            cell.detailTextLabel.text = [status readStatus:str.string];
+            
         } else {
             NSLog(@"arr out of range");
         }
@@ -918,7 +906,7 @@
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
 	
 	[self reloadTableViewDataSource];
-	[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
+//	[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
 	
 }
 

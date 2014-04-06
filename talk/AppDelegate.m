@@ -28,7 +28,6 @@
 //#import "TwitterConnect.h"
 #import "CopyDB.h"
 #import "MyStatusDB.h"
-#import "FriendStatusDB.h"
 
 @implementation UINavigationBar (UINavigationBarCategory)
 - (void)drawRect:(CGRect)rect {
@@ -93,8 +92,6 @@
     
     MyStatusDB *status =[[MyStatusDB alloc]init];
     [status initDB];
-    FriendStatusDB *friendStatus =[[FriendStatusDB alloc]init];
-    [friendStatus initDB];
     
     /*TwitterConnect * twitter = [[TwitterConnect alloc]init];
     ACAccountStore  *accountStore = [[ACAccountStore alloc] init];

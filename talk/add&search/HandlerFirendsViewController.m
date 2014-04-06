@@ -21,7 +21,6 @@
 #import "STreamXMPP.h"
 #import <arcstreamsdk/JSONKit.h>
 #import "DownloadAvatar.h"
-#import "FriendStatusDB.h"
 #import "ReadStatus.h"
 #define SENDREQUEST_TAG 1000
 #define ADD_TAG  2000
@@ -63,10 +62,8 @@
     [sq whereEqualsTo:@"status" forValue:@"request"];
     NSMutableArray * array = [sq find];
     NSMutableArray *objectID = [[NSMutableArray alloc]init];
-    ReadStatus * readStatus =[[ReadStatus alloc]init];
     for (STreamObject *so in array) {
         [objectID addObject:[so objectId]];
-//        [readStatus readFriendsStatus:[so objectId]];
     }
     AddDB * db = [[AddDB alloc]init];
     if ([friendsAddArray count]!=0 && [array count]!=0) {
@@ -115,7 +112,6 @@
         }
 
     }
-    statusDict = [readStatus getFriendStatus];
     [friendsAddArray removeAllObjects];
     for (NSString * user in requestArray) {
         [friendsAddArray addObject:user];
@@ -162,9 +158,7 @@
                     if (![friendsHistoryArray containsObject:[so objectId]]) {
                         [searchDB insertDB:[handler getUserID] withFriendID:[so objectId]];
                     }
-                    [readStatus readFriendsStatus:[so objectId]];
                 }
-                statusDict = [readStatus getFriendStatus];
                 friendsHistoryArray = [searchDB readSearchDB:[handler getUserID]];
             }completionBlock:^{
                 [myTableview reloadData];
@@ -313,8 +307,6 @@
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     AddDB * addDB = [[AddDB alloc]init];
     addDict = [addDB readDB:[handle getUserID]];
-    ReadStatus *readStatus =[[ReadStatus alloc]init];
-    statusDict = [readStatus getFriendStatus];
     [self addFriends];
    
 }
@@ -342,8 +334,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-    FriendStatusDB * friendStatusDB = [[FriendStatusDB alloc]init];
     static NSString *cellIdentifier = @"EliteCellIdentifier";
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 
@@ -374,8 +364,7 @@
                     [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
                     
                     DownloadAvatar * down = [[DownloadAvatar alloc]init];
-                    [down loadAvatar:userId];
-                    UIImage * icon = [down readAvatar:userId];
+                    UIImage * icon = [down loadAvatar:userId];
                     [self setImage:icon withCell:cell];
                     
                     cell.textLabel.text = [friendsAddArray objectAtIndex:indexPath.row];
@@ -386,14 +375,14 @@
                     [cell.imageView setFrame:CGRectMake(0, 5, 50, 50)];
                     
                     DownloadAvatar * down = [[DownloadAvatar alloc]init];
-                    [down loadAvatar:userId];
-                    UIImage * icon = [down readAvatar:userId];
+                    UIImage * icon = [down loadAvatar:userId];
                     [self setImage:icon withCell:cell];
                     
                     [button addTarget:self action:@selector(addFriends:) forControlEvents:UIControlEventTouchUpInside];
                     cell.textLabel.text = [friendsAddArray objectAtIndex:indexPath.row];
                 }
-                cell.detailTextLabel.text = [statusDict objectForKey:[friendsAddArray objectAtIndex:indexPath.row]];
+                ReadStatus * readstatus = [[ReadStatus alloc]init];
+                cell.detailTextLabel.text = [readstatus readStatus:[friendsAddArray objectAtIndex:indexPath.row]];
                 if ([cell.detailTextLabel.text length]>32) {
                     NSRange rg = {0,32};
                     NSString  *str = [cell.detailTextLabel.text substringWithRange:rg];
@@ -409,8 +398,7 @@
                 
                 NSString * userId = [friendsSearchArray objectAtIndex:indexPath.row];
                 DownloadAvatar * down = [[DownloadAvatar alloc]init];
-                [down loadAvatar:userId];
-                UIImage * icon = [down readAvatar:userId];
+                UIImage * icon = [down loadAvatar:userId];
                 [self setImage:icon withCell:cell];
                 
                 NSArray * array = [addDict allKeys];
@@ -443,14 +431,14 @@
         case FriendsHistory:{
             [cell.imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
             DownloadAvatar * down = [[DownloadAvatar alloc]init];
-            [down loadAvatar:[friendsHistoryArray objectAtIndex:indexPath.row]];
-            UIImage * icon = [down readAvatar:[friendsHistoryArray objectAtIndex:indexPath.row]];
+            UIImage * icon = [down loadAvatar:[friendsHistoryArray objectAtIndex:indexPath.row]];
             [self setImage:icon withCell:cell];
 
             [button setBackgroundImage:[UIImage imageNamed:@"invi.png"] forState:UIControlStateNormal];
              button.tag = indexPath.row;
             cell.textLabel.text = [friendsHistoryArray objectAtIndex:indexPath.row];
-            cell.detailTextLabel.text = [friendStatusDB readfriendStatus:[handler getUserID] withFriend:[friendsHistoryArray objectAtIndex:indexPath.row]];
+            ReadStatus * readstatus = [[ReadStatus alloc]init];
+            cell.detailTextLabel.text = [readstatus readStatus:[friendsHistoryArray objectAtIndex:indexPath.row]];
             if ([cell.detailTextLabel.text length]>32) {
                 NSRange rg = {0,32};
                 NSString  *str = [cell.detailTextLabel.text substringWithRange:rg];
@@ -495,7 +483,6 @@
     HUD.labelText = @"Loading...";
     [self.view addSubview:HUD];
      __block BOOL isUserExist;
-    ReadStatus * readStatus = [[ReadStatus alloc]init];
     [HUD showAnimated:YES whileExecutingBlock:^{
         isUserExist = [user searchUser:string];
         
@@ -503,7 +490,6 @@
         if (isUserExist) {
             if (![loginName isEqualToString:string]) {
                 [friendsSearchArray addObject:string];
-                [readStatus readFriendsStatus:string];
             }
         }else{
             [alertview show];

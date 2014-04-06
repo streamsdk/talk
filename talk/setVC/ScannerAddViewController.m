@@ -44,8 +44,7 @@
     
 
     DownloadAvatar * down = [[DownloadAvatar alloc]init];
-    [down loadAvatar:name];
-    UIImage * icon = [down readAvatar:name];
+    UIImage * icon = [down loadAvatar:name];
     CGFloat height = 100;
     UIImageView * imageview = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - 100)/2, height,100, 100)];
     CALayer *l = [imageview layer];

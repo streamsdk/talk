@@ -134,7 +134,7 @@
     label.text= @"CoolChat messenger V1.0";
     [self.view addSubview:label];
     DownloadAvatar * loadavatar = [[DownloadAvatar alloc]init];
-    profileImage = [loadavatar readAvatar:loginName];
+    profileImage = [loadavatar loadAvatar:loginName];
     [myTableView reloadData];
 }
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
