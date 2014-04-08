@@ -242,9 +242,6 @@
 -(void) connect {
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     if (![handle getUserID]) return;
-    [self startDownload];
-    [self readHistory];
-    [self startUpload];
     [self setMessagesProtocol:mainVC];
     [self setUploadProtocol:mainVC];
     STreamXMPP *con = [STreamXMPP sharedObject];
@@ -369,7 +366,9 @@
 #pragma mark - STreamXMPPProtocol
 - (void)didAuthenticate{
     NSLog(@"");
-   
+    [self startDownload];
+    [self readHistory];
+    [self startUpload];
 }
 
 
