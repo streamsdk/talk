@@ -15,6 +15,8 @@
 {
     int fileCount;
     int readCount;
+    NSData* myData;
+    NSData* otherData;
 }
 -(void) initDB;
 

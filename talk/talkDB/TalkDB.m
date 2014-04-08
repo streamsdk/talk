@@ -11,7 +11,8 @@
 #import "ImageCache.h"
 #import <arcstreamsdk/JSONKit.h>
 #import <MediaPlayer/MediaPlayer.h>
-
+#import "CopyDB.h"
+#import <arcstreamsdk/STreamFile.h>
 @implementation TalkDB
 
 -(NSString *) dataFilePath {
@@ -64,18 +65,21 @@
     sqlite3_close(database);
 
 }
-
+-(void)readAvatar:(NSString *)user withFriend:(NSString *)friend{
+    ImageCache * imageCache =  [ImageCache sharedObject];
+    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:user];
+    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+    myData = [imageCache getImage:pImageId];
+    
+    NSMutableDictionary *metaData = [imageCache getUserMetadata:friend];
+    NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
+    otherData = [imageCache getImage:pImageId2];
+}
 -(NSMutableArray *) readInitDB :(NSString *) _userID withOtherID:(NSString *)_friendID withCount:(int)count{
     fileCount = 0;
     readCount = 0;
     ImageCache * imageCache =  [ImageCache sharedObject];
-    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:_userID];
-    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-    NSData* myData = [imageCache getImage:pImageId];
-    
-    NSMutableDictionary *metaData = [imageCache getUserMetadata:_friendID];
-    NSString *pImageId2 = [metaData objectForKey:@"profileImageId"];
-    NSData *otherData = [imageCache getImage:pImageId2];
+    [self readAvatar:_userID withFriend:_friendID];
 
     NSMutableArray *dataArray = [[NSMutableArray alloc]init];
     sqlite3 *database;
@@ -124,12 +128,7 @@
                                 data.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:data];
                         }else if ([key isEqualToString:@"filepath"]) {
-                          /*  NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"filepath"]];
-                            
-                            MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
-                            player.shouldAutoplay = NO;
-                            UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];*/
-//                            NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"video"]];;
+                    
                             NSString * time = [chatDic objectForKey:@"duration"];
                             UIImage *fileImage = [self getVideoImage:[chatDic objectForKey:@"filepath"]];
                             NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withTime:time withType:@"video" date:date type:BubbleTypeMine withVidePath:[chatDic objectForKey:@"filepath"] withJsonBody:@""];
@@ -138,17 +137,19 @@
                             [dataArray addObject:bdata];
                             fileCount = fileCount+1;
                         }else if ([key isEqualToString:@"photo"]) {
-                            NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];
-                            NSString * time = [chatDic objectForKey:@"time"];
-                            NSBubbleData * bubbledata;
-                            if (!time)
-                                bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeMine path:[chatDic objectForKey:@"photo"]];
-                            else
-                                bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time withPath:[chatDic objectForKey:@"photo"]date:date withType:BubbleTypeMine];;
-//                                NSBubbleData *bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeMine]
-                            if(myData)
-                                bubbledata.avatar = [UIImage imageWithData:myData];
-                            [dataArray addObject:bubbledata];
+                            BOOL fileExists = [self checkfileManager:chatDic withType:@"photo" withUserID:userID withFriend:friendID withTime:time2 withIsmine:YES withDataArray:dataArray];
+                            if (fileExists) {
+                                NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];
+                                NSString * time = [chatDic objectForKey:@"time"];
+                                NSBubbleData * bubbledata;
+                                if (!time)
+                                    bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeMine path:[chatDic objectForKey:@"photo"]];
+                                else
+                                    bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time withPath:[chatDic objectForKey:@"photo"]date:date withType:BubbleTypeMine];;
+                                if(myData)
+                                    bubbledata.avatar = [UIImage imageWithData:myData];
+                                [dataArray addObject:bubbledata];
+                            }
                             fileCount = fileCount+1;
                         }else if ([key isEqualToString:@"audiodata"]){
                             NSError * err = nil;
@@ -214,19 +215,21 @@
                             [dataArray addObject:bdata];
                             fileCount = fileCount+1;
                         }else if ([key isEqualToString:@"photo"]) {
-                            NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];
-                            NSString * time = [chatDic objectForKey:@"time"];
-                            NSBubbleData * bubbledata;
-                            if (!time)
-                                bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeSomeoneElse path:[chatDic objectForKey:@"photo"]];
-                            else
-                                bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time withPath:[chatDic objectForKey:@"photo"] date:date withType:BubbleTypeSomeoneElse];
-                            /*NSBubbleData *bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeSomeoneElse];*/
-                            
-                            if(otherData)
-                                bubbledata.avatar = [UIImage imageWithData:otherData];
-                            [dataArray addObject:bubbledata];
-                            fileCount = fileCount+1;
+                            BOOL fileExists = [self checkfileManager:chatDic withType:@"photo" withUserID:userID withFriend:friendID withTime:time2 withIsmine:NO withDataArray:dataArray];
+                            if (fileExists) {
+                                NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"photo"]];
+                                NSString * time = [chatDic objectForKey:@"time"];
+                                NSBubbleData * bubbledata;
+                                if (!time)
+                                    bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeSomeoneElse path:[chatDic objectForKey:@"photo"]];
+                                else
+                                    bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time withPath:[chatDic objectForKey:@"photo"] date:date withType:BubbleTypeSomeoneElse];
+                                if(otherData)
+                                    bubbledata.avatar = [UIImage imageWithData:otherData];
+                                [dataArray addObject:bubbledata];
+                            }
+                            if (![[chatDic objectForKey:@"time"] isEqualToString:@"-1"])
+                                fileCount = fileCount+1;
                         }else if ([key isEqualToString:@"audiodata"]) {
                             NSError * err = nil;
                             NSString * time = [chatDic objectForKey:@"time"];
@@ -400,7 +403,64 @@
     return thumb;
     
 }
-
+-(BOOL)checkfileManager:(NSDictionary *)jsonDict withType:(NSString *)type withUserID:(NSString *)userId withFriend:(NSString *)friendId withTime:(NSString *)time withIsmine:(BOOL) isMine withDataArray:(NSMutableArray *)dataArray{
+    [self readAvatar:userId withFriend:friendId];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *filePath;
+    if ([type isEqualToString:@"photo"]) {
+        filePath =[jsonDict objectForKey:type];
+    }
+    if([fileManager fileExistsAtPath:filePath]){
+        return YES;
+    }
+    STreamFile * sf = [[STreamFile alloc]init];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+    NSDate *date = [dateFormatter dateFromString:time];
+    if (isMine) {
+        CopyDB * db = [[CopyDB alloc]init];
+        NSString *contents = [db readContentCopyDB:time];
+        NSDictionary * dict = [contents objectFromJSONString];
+        NSString * fileID = [dict objectForKey:@"fileId"];
+        [sf downloadAsData:fileID downloadedData:^(NSData *data, NSString * objectId) {
+            if ([fileID isEqualToString:objectId]) {
+                [data writeToFile:[jsonDict objectForKey:type] atomically:YES];
+                NSData * data =[NSData dataWithContentsOfFile:[jsonDict objectForKey:type]];
+                NSString * time = [jsonDict objectForKey:@"time"];
+                NSBubbleData * bubbledata;
+                if (!time)
+                    bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeMine path:[jsonDict objectForKey:type]];
+                else
+                    bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time withPath:[jsonDict objectForKey:type]date:date withType:BubbleTypeMine];
+                if(myData)
+                    bubbledata.avatar = [UIImage imageWithData:myData];
+                [dataArray addObject:bubbledata];
+            }
+        }];
+    }else{
+        NSString * _time = [jsonDict objectForKey:@"time"];
+        if ([_time isEqualToString:@"-1"]) return NO;
+        NSString * fileID = [jsonDict objectForKey:@"fileId"];
+        [sf downloadAsData:fileID downloadedData:^(NSData *data, NSString * objectId) {
+            if ([fileID isEqualToString:objectId]) {
+                [data writeToFile:[jsonDict objectForKey:type] atomically:YES];
+                NSData * data =[NSData dataWithContentsOfFile:[jsonDict objectForKey:type]];
+                NSString * time = [jsonDict objectForKey:@"time"];
+                NSBubbleData * bubbledata;
+                if (!time)
+                    bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeMine path:[jsonDict objectForKey:type]];
+                else
+                    bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time withPath:[jsonDict objectForKey:type]date:date withType:BubbleTypeSomeoneElse];;
+                if(otherData)
+                    bubbledata.avatar = [UIImage imageWithData:otherData];
+                [dataArray addObject:bubbledata];
+            }
+        }];
+        
+    }
+    return NO;
+    
+}
 -(NSString*)getCacheDirectory
 {
     return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0] stringByAppendingPathComponent:@"userName.text"];
