@@ -774,7 +774,10 @@
         }else{
             NSString * time = [so getValue:@"lastseen"];
             if (!time){
-                long lastseen=[[NSDate dateWithTimeIntervalSinceNow:-(15*60*60)] timeIntervalSince1970];
+                time = [imageCache getOnline:userName];
+                if (time) return ;
+                int value = (arc4random() % 24) + 1;
+                long lastseen=[[NSDate dateWithTimeIntervalSinceNow:-(value*60*60)] timeIntervalSince1970];
                 time =[NSString stringWithFormat:@"%ld",lastseen];
             }
             //            long long lastModifiedTime = [time longLongValue];
