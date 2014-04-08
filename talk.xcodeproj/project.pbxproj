@@ -493,6 +493,7 @@
 		0EDCAA7F1829F11500BF9101 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EDCAA7E1829F11500BF9101 /* CoreVideo.framework */; };
 		0EDCAAC5182A10B100BF9101 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0847371827305B00350741 /* AudioToolbox.framework */; };
 		0EE5B66318DC387400A3DBBF /* DownLoadVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE5B66218DC387400A3DBBF /* DownLoadVideo.m */; };
+		0EE8186A18F3D6D000CACCA0 /* SearchImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE8186918F3D6D000CACCA0 /* SearchImageViewController.m */; };
 		0EE9518A185EA3EF003F4638 /* FileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE95189185EA3EF003F4638 /* FileCache.m */; };
 		0EE9518D185EA40D003F4638 /* BackgroundImgViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE9518C185EA40D003F4638 /* BackgroundImgViewController.m */; };
 		0EE95192185EA43C003F4638 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE9518F185EA43C003F4638 /* MainController.m */; };
@@ -1489,6 +1490,8 @@
 		0EDCAA7E1829F11500BF9101 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		0EE5B66118DC387400A3DBBF /* DownLoadVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownLoadVideo.h; sourceTree = "<group>"; };
 		0EE5B66218DC387400A3DBBF /* DownLoadVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownLoadVideo.m; sourceTree = "<group>"; };
+		0EE8186818F3D6D000CACCA0 /* SearchImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchImageViewController.h; path = searchimage/SearchImageViewController.h; sourceTree = "<group>"; };
+		0EE8186918F3D6D000CACCA0 /* SearchImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchImageViewController.m; path = searchimage/SearchImageViewController.m; sourceTree = "<group>"; };
 		0EE95188185EA3EF003F4638 /* FileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileCache.h; path = cache/FileCache.h; sourceTree = "<group>"; };
 		0EE95189185EA3EF003F4638 /* FileCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FileCache.m; path = cache/FileCache.m; sourceTree = "<group>"; };
 		0EE9518B185EA40D003F4638 /* BackgroundImgViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BackgroundImgViewController.h; path = Classes/BackgroundImgViewController.h; sourceTree = "<group>"; };
@@ -1753,6 +1756,8 @@
 				0EE95194185EA47D003F4638 /* search */,
 				0E3A74EF18740C2300A9020D /* add&searchFriends */,
 				0E49F024187E333700749A6D /* videoPlayer */,
+				0EE8186818F3D6D000CACCA0 /* SearchImageViewController.h */,
+				0EE8186918F3D6D000CACCA0 /* SearchImageViewController.m */,
 				03D9BF0A18145C080039118F /* AppDelegate.h */,
 				03D9BF0B18145C080039118F /* AppDelegate.m */,
 				03D9BF0D18145C080039118F /* Images.xcassets */,
@@ -4248,6 +4253,7 @@
 				0E891AC518D2DF57006430FE /* ZXEncoderContext.m in Sources */,
 				0E891AC218D2DF57006430FE /* ZXDataMatrixSymbolInfo144.m in Sources */,
 				0E891A7D18D2DF57006430FE /* ZXAztecWriter.m in Sources */,
+				0EE8186A18F3D6D000CACCA0 /* SearchImageViewController.m in Sources */,
 				0E891AAA18D2DF57006430FE /* ZXReedSolomonEncoder.m in Sources */,
 				0E891AE718D2DF57006430FE /* ZXFieldParser.m in Sources */,
 				0E891AE418D2DF57006430FE /* ZXDecodedInformation.m in Sources */,

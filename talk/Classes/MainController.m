@@ -41,7 +41,7 @@
 #import "ChatBackGround.h"
 #import "CopyDB.h"
 #import "Maphandler.h"
-
+#import "SearchImageViewController.h"
 #define BUTTON_TAG 20000
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
@@ -153,7 +153,7 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    
+    pageControl.hidden = YES;
     faceScrollView.hidden=YES;
      [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
     ImageCache * imageCache =  [ImageCache sharedObject];
@@ -1193,6 +1193,8 @@
         [self scrollBubbleViewToBottomAnimated:YES];
         MapViewController *map = [[MapViewController alloc]init];
         [self presentViewController:map animated:NO completion:NULL];
+//        SearchImageViewController *search = [[SearchImageViewController alloc]init];
+//        [self presentViewController:search animated:NO completion:NULL];
     }
         
 }

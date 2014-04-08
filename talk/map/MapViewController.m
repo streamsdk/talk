@@ -37,6 +37,7 @@
     return self;
 }
 -(void) back {
+    [_searchBar resignFirstResponder];
     [self dismissViewControllerAnimated:NO completion:NULL];
 }
 -(void)sendCurrentLocation {

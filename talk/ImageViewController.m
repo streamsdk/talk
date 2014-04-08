@@ -207,6 +207,7 @@ static NSMutableArray *colors;
 - (void)setImageStyle:(UITapGestureRecognizer *)sender
 {
     UIImage *_image =   [self changeImage:sender.view.tag imageView:nil];
+    image = _image;
     [drawView setBackgroundColor:[UIColor colorWithPatternImage:_image]];
 }
 -(UIImage *)changeImage:(int)index imageView:(UIImageView *)imageView
@@ -220,7 +221,6 @@ static NSMutableArray *colors;
             break;
         case 1:
         {
-            image = [ImageUtil imageWithImage:formerImage withColorMatrix:colormatrix_lomo];
             _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_lomo];
             
         }
@@ -228,77 +228,65 @@ static NSMutableArray *colors;
         case 2:
         {
             _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_heibai];
-            image = [ImageUtil imageWithImage:formerImage withColorMatrix:colormatrix_heibai];
 
         }
             break;
         case 3:
         {
             _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_fugu];
-            image = [ImageUtil imageWithImage:formerImage withColorMatrix:colormatrix_fugu];
         }
             break;
         case 4:
         {
             _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_gete];
-            image = [ImageUtil imageWithImage:formerImage withColorMatrix:colormatrix_gete];
         }
             break;
         case 5:
         {
             _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_ruihua];
-            image = [ImageUtil imageWithImage:formerImage withColorMatrix:colormatrix_ruihua];
         }
             break;
         case 6:
         {
             _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_danya];
-            image = [ImageUtil imageWithImage:formerImage withColorMatrix:colormatrix_danya];
         }
             break;
         case 7:
         {
             _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_jiuhong];
-            image = [ImageUtil imageWithImage:formerImage withColorMatrix:colormatrix_jiuhong];
         }
             break;
         case 8:
         {
             _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_qingning];
-            image = [ImageUtil imageWithImage:formerImage withColorMatrix:colormatrix_qingning];
             
         }
             break;
         case 9:
         {
             _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_langman];
-            image = [ImageUtil imageWithImage:formerImage withColorMatrix:colormatrix_langman];
         }
             break;
         case 10:
         {
             _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_guangyun];
-            image = [ImageUtil imageWithImage:image withColorMatrix:colormatrix_langman];
         }
             break;
         case 11:
         {
             _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_landiao];
-            image = [ImageUtil imageWithImage:image withColorMatrix:colormatrix_landiao];
             
         }
             break;
         case 12:
         {
             _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_menghuan];
-            image = [ImageUtil imageWithImage:image withColorMatrix:colormatrix_menghuan];
             
         }
             break;
         case 13:
         {
             _image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_yese];
-            image = [ImageUtil imageWithImage:currentImage withColorMatrix:colormatrix_yese];
             
         }
     }
