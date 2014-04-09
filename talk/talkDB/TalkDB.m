@@ -199,7 +199,8 @@
 //                            MPMoviePlayerController *player = [[MPMoviePlayerController alloc]initWithContentURL:url];
 //                            player.shouldAutoplay = NO;
 //                            UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-                            
+                            BOOL fileExists = [self checkfileManager:chatDic withType:@"tidpath" withUserID:userID withFriend:friendID withTime:time2 withIsmine:NO withDataArray:dataArray];
+                            if (fileExists) {
                                 NSData * data =[NSData dataWithContentsOfFile:[chatDic objectForKey:@"tidpath"]];;
                                 UIImage *fileImage = [UIImage imageWithData:data];
                                 NSString * time = [chatDic objectForKey:@"duration"];
@@ -209,6 +210,8 @@
                                     bdata.avatar = [UIImage imageWithData:otherData];
                                 [dataArray addObject:bdata];
                                 fileCount = fileCount+1;
+                            }
+                            
 
                           }if ([key isEqualToString:@"filepath"]) {
                             /*NSURL *url = [NSURL fileURLWithPath:[chatDic objectForKey:@"filepath"]];
@@ -475,10 +478,9 @@
         NSString * duration = [jsonDict objectForKey:@"duration"];
         if ([duration isEqualToString:@"-1"]) return NO;
         NSString * fileID = [jsonDict objectForKey:@"fileId"];
-//        if ([type isEqualToString:@"filepath"]&& !duration){
-//            fileID=  [jsonDict objectForKey:@"tid"];
-//            type = @"tidpath";
-//        }
+        if ([type isEqualToString:@"tidpath"]){
+            fileID=  [jsonDict objectForKey:@"tid"];
+        }
         
         [sf downloadAsData:fileID downloadedData:^(NSData *data, NSString * objectId) {
             if ([fileID isEqualToString:objectId]) {
@@ -497,11 +499,11 @@
                     NSData * audioData = [NSData dataWithContentsOfFile:[jsonDict objectForKey:type] options: 0 error:&err];
                     bubbledata = [NSBubbleData dataWithtimes:time date:date type:BubbleTypeSomeoneElse withData:audioData];
                 }
-                if ([type isEqualToString:@"filepath"]) {
+                if ([type isEqualToString:@"filepath"]||[type isEqualToString:@"tidpath"]) {
                     UIImage *fileImage = [self getVideoImage:type];
                     NSString * time = [jsonDict objectForKey:[jsonDict objectForKey:type]];
                     NSString * body = [jsonDict JSONString];
-                    bubbledata= [NSBubbleData dataWithImage:fileImage withTime:time  withType:@"video" date:date type:BubbleTypeSomeoneElse withVidePath:[jsonDict objectForKey:@"filepath"] withJsonBody:body];
+                    bubbledata= [NSBubbleData dataWithImage:fileImage withTime:time  withType:@"video" date:date type:BubbleTypeSomeoneElse withVidePath:[jsonDict objectForKey:type] withJsonBody:body];
                 }
                 if(otherData)
                     bubbledata.avatar = [UIImage imageWithData:otherData];
