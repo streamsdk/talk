@@ -149,8 +149,9 @@
                                 if(myData)
                                     bubbledata.avatar = [UIImage imageWithData:myData];
                                 [dataArray addObject:bubbledata];
+                                fileCount = fileCount+1;
                             }
-                            fileCount = fileCount+1;
+                            
                         }else if ([key isEqualToString:@"audiodata"]){
                             BOOL fileExists = [self checkfileManager:chatDic withType:@"audiodata" withUserID:userID withFriend:friendID withTime:time2 withIsmine:YES withDataArray:dataArray];
                             if (fileExists) {
@@ -162,9 +163,9 @@
                                 if (myData)
                                     bubble.avatar = [UIImage imageWithData:myData];
                                 [dataArray addObject:bubble];
-
+                                fileCount = fileCount+1;
                             }
-                             fileCount = fileCount+1;
+                            
                         }else if ([key isEqualToString:@"address"]){
                             NSMutableDictionary * addressDict = [chatDic objectForKey:@"address"];
                             NSString * address = [addressDict objectForKey:@"address"];
@@ -231,19 +232,23 @@
                                 if(otherData)
                                     bubbledata.avatar = [UIImage imageWithData:otherData];
                                 [dataArray addObject:bubbledata];
-                            }
-                            if (![[chatDic objectForKey:@"time"] isEqualToString:@"-1"])
                                 fileCount = fileCount+1;
+                            }
+                                
                         }else if ([key isEqualToString:@"audiodata"]) {
-                            NSError * err = nil;
-                            NSString * time = [chatDic objectForKey:@"time"];
-                            NSString * dataPath = [chatDic objectForKey:@"audiodata"];
-                            NSData * audioData = [NSData dataWithContentsOfFile:dataPath options: 0 error:&err];
-                            NSBubbleData *bubble = [NSBubbleData dataWithtimes:time date:date type:BubbleTypeSomeoneElse withData:audioData];
-                            if (otherData)
-                                bubble.avatar = [UIImage imageWithData:otherData];
-                            [dataArray addObject:bubble];
-                            fileCount = fileCount+1;
+                            BOOL fileExists = [self checkfileManager:chatDic withType:@"audiodata" withUserID:userID withFriend:friendID withTime:time2 withIsmine:NO withDataArray:dataArray];
+                            if (fileExists) {
+                                NSError * err = nil;
+                                NSString * time = [chatDic objectForKey:@"time"];
+                                NSString * dataPath = [chatDic objectForKey:@"audiodata"];
+                                NSData * audioData = [NSData dataWithContentsOfFile:dataPath options: 0 error:&err];
+                                NSBubbleData *bubble = [NSBubbleData dataWithtimes:time date:date type:BubbleTypeSomeoneElse withData:audioData];
+                                if (otherData)
+                                    bubble.avatar = [UIImage imageWithData:otherData];
+                                [dataArray addObject:bubble];
+                                fileCount = fileCount+1;
+                            }
+                            
                             break;
                         }else if ([key isEqualToString:@"address"]){
                             NSMutableDictionary * addressDict = [chatDic objectForKey:@"address"];
