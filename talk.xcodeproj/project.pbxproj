@@ -493,6 +493,7 @@
 		0EDCAA7F1829F11500BF9101 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EDCAA7E1829F11500BF9101 /* CoreVideo.framework */; };
 		0EDCAAC5182A10B100BF9101 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0847371827305B00350741 /* AudioToolbox.framework */; };
 		0EE5B66318DC387400A3DBBF /* DownLoadVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE5B66218DC387400A3DBBF /* DownLoadVideo.m */; };
+		0EE6828918F5398200FA0E99 /* DownloadVoice.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE6828818F5398200FA0E99 /* DownloadVoice.m */; };
 		0EE8186A18F3D6D000CACCA0 /* SearchImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE8186918F3D6D000CACCA0 /* SearchImageViewController.m */; };
 		0EE9518A185EA3EF003F4638 /* FileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE95189185EA3EF003F4638 /* FileCache.m */; };
 		0EE9518D185EA40D003F4638 /* BackgroundImgViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE9518C185EA40D003F4638 /* BackgroundImgViewController.m */; };
@@ -1490,6 +1491,8 @@
 		0EDCAA7E1829F11500BF9101 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		0EE5B66118DC387400A3DBBF /* DownLoadVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownLoadVideo.h; sourceTree = "<group>"; };
 		0EE5B66218DC387400A3DBBF /* DownLoadVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownLoadVideo.m; sourceTree = "<group>"; };
+		0EE6828718F5398200FA0E99 /* DownloadVoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DownloadVoice.h; path = downVoice/DownloadVoice.h; sourceTree = "<group>"; };
+		0EE6828818F5398200FA0E99 /* DownloadVoice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DownloadVoice.m; path = downVoice/DownloadVoice.m; sourceTree = "<group>"; };
 		0EE8186818F3D6D000CACCA0 /* SearchImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchImageViewController.h; path = searchimage/SearchImageViewController.h; sourceTree = "<group>"; };
 		0EE8186918F3D6D000CACCA0 /* SearchImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchImageViewController.m; path = searchimage/SearchImageViewController.m; sourceTree = "<group>"; };
 		0EE95188185EA3EF003F4638 /* FileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileCache.h; path = cache/FileCache.h; sourceTree = "<group>"; };
@@ -1737,6 +1740,7 @@
 				0355801C18812D670036CC3C /* twitter */,
 				0E19E82518716AA100523232 /* EGOTableViewPullRefresh */,
 				03F5A1891867367500CD60FD /* handler */,
+				0EE6828A18F5398A00FA0E99 /* downvoice */,
 				0E8A4F30182B7EE300705C1F /* talkDB */,
 				0ED8EC9A18288D8500C84741 /* Voice */,
 				0EE07675182B53540052BC02 /* creatUI */,
@@ -3479,6 +3483,15 @@
 			name = creatUI;
 			sourceTree = "<group>";
 		};
+		0EE6828A18F5398A00FA0E99 /* downvoice */ = {
+			isa = PBXGroup;
+			children = (
+				0EE6828718F5398200FA0E99 /* DownloadVoice.h */,
+				0EE6828818F5398200FA0E99 /* DownloadVoice.m */,
+			);
+			name = downvoice;
+			sourceTree = "<group>";
+		};
 		0EE95194185EA47D003F4638 /* search */ = {
 			isa = PBXGroup;
 			children = (
@@ -4251,6 +4264,7 @@
 				03D9C0E318145E510039118F /* DDAbstractDatabaseLogger.m in Sources */,
 				0E1B053118A623A7001715C6 /* FilesUpload.m in Sources */,
 				0E891AC518D2DF57006430FE /* ZXEncoderContext.m in Sources */,
+				0EE6828918F5398200FA0E99 /* DownloadVoice.m in Sources */,
 				0E891AC218D2DF57006430FE /* ZXDataMatrixSymbolInfo144.m in Sources */,
 				0E891A7D18D2DF57006430FE /* ZXAztecWriter.m in Sources */,
 				0EE8186A18F3D6D000CACCA0 /* SearchImageViewController.m in Sources */,

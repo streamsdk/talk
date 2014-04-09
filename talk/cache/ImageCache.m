@@ -29,6 +29,7 @@ static NSMutableArray * _downVideo;
 static NSMutableDictionary *_contentOffset;
 static NSMutableDictionary*_allCountDict;
 static NSMutableDictionary*_onlineDict;
+static NSMutableDictionary*_voiceDict;
 @implementation ImageCache
 
 
@@ -57,6 +58,7 @@ static NSMutableDictionary*_onlineDict;
         _contentOffset = [[NSMutableDictionary alloc]init];
         _allCountDict = [[NSMutableDictionary alloc]init];
         _onlineDict = [[NSMutableDictionary alloc]init];
+        _voiceDict = [[NSMutableDictionary alloc]init];
     });
     
     return sharedInstance;
@@ -265,4 +267,15 @@ static NSMutableDictionary*_onlineDict;
 -(NSString *)getOnline:(NSString *)userId{
     return [_onlineDict objectForKey:userId];
 }
+-(void)saveVoiceFile:(NSArray *)array withfileID:(NSString *)fileId{
+    [_voiceDict setObject:array forKey:fileId];
+}
+-(NSArray *)getVoiceFile:(NSString *)fileId{
+    return [_voiceDict objectForKey:fileId];
+}
+-(void)removeVoiceFile:(NSString *)fileId{
+    
+    [_voiceDict removeObjectForKey:fileId];
+}
+
 @end
