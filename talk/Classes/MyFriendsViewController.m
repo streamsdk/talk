@@ -486,7 +486,8 @@
             NSString  *str = [jsonDic JSONString];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-            NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
+            NSDate *date = [NSDate dateWithTimeIntervalSince1970:[timeId longLongValue]/1000.0];
+//            NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
             [handler setDate:date];
             [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
             [messagesProtocol getFiles:data withFromID:fromUser withBody:jsBody withPath:tidpath];
@@ -507,7 +508,7 @@
         NSMutableDictionary *json = [decoder objectWithData:jsonData];
         NSString *type = [json objectForKey:@"type"];
         NSString *fromUser = [json objectForKey:@"from"];
-        
+        NSString * timeId  =[json objectForKey:@"id"];
         NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
         HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
         NSString * path;
@@ -594,7 +595,11 @@
         NSString  *str = [jsonDic JSONString];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-        NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:[timeId longLongValue]/1000.0];
+//        NSTimeZone *zone = [NSTimeZone systemTimeZone];
+//        NSInteger interval = [zone secondsFromGMTForDate:date];
+//        date = [date dateByAddingTimeInterval:interval];
+//        NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
         [handler setDate:date];
         [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
         [messagesProtocol getFiles:data withFromID:fromUser withBody:jsBody withPath:path];
