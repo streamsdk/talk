@@ -152,15 +152,19 @@
                             }
                             fileCount = fileCount+1;
                         }else if ([key isEqualToString:@"audiodata"]){
-                            NSError * err = nil;
-                            NSString * time = [chatDic objectForKey:@"time"];
-                            NSString * dataPath = [chatDic objectForKey:@"audiodata"];
-                            NSData * audioData = [NSData dataWithContentsOfFile:dataPath options: 0 error:&err];
-                            NSBubbleData *bubble = [NSBubbleData dataWithtimes:time date:date type:BubbleTypeMine withData:audioData];
-                            if (myData)
-                                bubble.avatar = [UIImage imageWithData:myData];
-                            [dataArray addObject:bubble];
-                            fileCount = fileCount+1;
+                            BOOL fileExists = [self checkfileManager:chatDic withType:@"audiodata" withUserID:userID withFriend:friendID withTime:time2 withIsmine:YES withDataArray:dataArray];
+                            if (fileExists) {
+                                NSError * err = nil;
+                                NSString * time = [chatDic objectForKey:@"time"];
+                                NSString * dataPath = [chatDic objectForKey:@"audiodata"];
+                                NSData * audioData = [NSData dataWithContentsOfFile:dataPath options: 0 error:&err];
+                                NSBubbleData *bubble = [NSBubbleData dataWithtimes:time date:date type:BubbleTypeMine withData:audioData];
+                                if (myData)
+                                    bubble.avatar = [UIImage imageWithData:myData];
+                                [dataArray addObject:bubble];
+
+                            }
+                             fileCount = fileCount+1;
                         }else if ([key isEqualToString:@"address"]){
                             NSMutableDictionary * addressDict = [chatDic objectForKey:@"address"];
                             NSString * address = [addressDict objectForKey:@"address"];
@@ -406,10 +410,7 @@
 -(BOOL)checkfileManager:(NSDictionary *)jsonDict withType:(NSString *)type withUserID:(NSString *)userId withFriend:(NSString *)friendId withTime:(NSString *)time withIsmine:(BOOL) isMine withDataArray:(NSMutableArray *)dataArray{
     [self readAvatar:userId withFriend:friendId];
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *filePath;
-    if ([type isEqualToString:@"photo"]) {
-        filePath =[jsonDict objectForKey:type];
-    }
+    NSString *filePath =[jsonDict objectForKey:type];
     if([fileManager fileExistsAtPath:filePath]){
         return YES;
     }
@@ -428,10 +429,18 @@
                 NSData * data =[NSData dataWithContentsOfFile:[jsonDict objectForKey:type]];
                 NSString * time = [jsonDict objectForKey:@"time"];
                 NSBubbleData * bubbledata;
-                if (!time)
-                    bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeMine path:[jsonDict objectForKey:type]];
-                else
-                    bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time withPath:[jsonDict objectForKey:type]date:date withType:BubbleTypeMine];
+                if ([type isEqualToString:@"photo"]) {
+                    if (!time)
+                        bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeMine path:[jsonDict objectForKey:type]];
+                    else
+                        bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time withPath:[jsonDict objectForKey:type]date:date withType:BubbleTypeMine];
+                }
+                if ([type isEqualToString:@"audiodata"]){
+                    NSError * err = nil;
+                    NSData * audioData = [NSData dataWithContentsOfFile:[jsonDict objectForKey:type] options: 0 error:&err];
+                    bubbledata = [NSBubbleData dataWithtimes:time date:date type:BubbleTypeMine withData:audioData];
+                }
+                
                 if(myData)
                     bubbledata.avatar = [UIImage imageWithData:myData];
                 [dataArray addObject:bubbledata];
@@ -447,10 +456,17 @@
                 NSData * data =[NSData dataWithContentsOfFile:[jsonDict objectForKey:type]];
                 NSString * time = [jsonDict objectForKey:@"time"];
                 NSBubbleData * bubbledata;
-                if (!time)
-                    bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeMine path:[jsonDict objectForKey:type]];
-                else
-                    bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time withPath:[jsonDict objectForKey:type]date:date withType:BubbleTypeSomeoneElse];;
+                 if ([type isEqualToString:@"photo"]) {
+                     if (!time)
+                         bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeMine path:[jsonDict objectForKey:type]];
+                     else
+                         bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time withPath:[jsonDict objectForKey:type]date:date withType:BubbleTypeSomeoneElse];
+                 }
+                if ([type isEqualToString:@"audiodata"]){
+                    NSError * err = nil;
+                    NSData * audioData = [NSData dataWithContentsOfFile:[jsonDict objectForKey:type] options: 0 error:&err];
+                    bubbledata = [NSBubbleData dataWithtimes:time date:date type:BubbleTypeSomeoneElse withData:audioData];
+                }
                 if(otherData)
                     bubbledata.avatar = [UIImage imageWithData:otherData];
                 [dataArray addObject:bubbledata];
