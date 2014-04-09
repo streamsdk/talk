@@ -768,7 +768,9 @@
 //        [self scrollBubbleViewToBottomAnimated:YES];
 //         return;
 //    }
-    
+    if (!iconScrollView.hidden && keyboardIsShow) {
+        iconScrollView.hidden=YES;
+    }
     if (iconScrollView.hidden) {
         
         iconScrollView.hidden=NO;
@@ -797,6 +799,9 @@
 #pragma MARK face button 表情事件
 -(void)disFaceKeyboard{
 
+    if (!faceScrollView.hidden && keyboardIsShow) {
+        faceScrollView.hidden=YES;
+    }
     if (faceScrollView.hidden) {
         
         faceScrollView.hidden=NO;
@@ -833,7 +838,6 @@
 
 -(void)dismissKeyBoard{
     faceScrollView.hidden = YES;
-//    iconScrollView.hidden=YES;
     isEmoji = NO;
     //键盘显示的时候，toolbar需要还原到正常位置，并显示表情
     [UIView animateWithDuration:Time animations:^{
@@ -843,7 +847,7 @@
     
     [UIView animateWithDuration:Time animations:^{
         [faceScrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, keyboardHeight)];
-        [iconScrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, keyboardHeight)];
+        [iconScrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, ICONHEIGHT)];
     }];
     [faceButton setImage:[UIImage imageNamed:@"face512.png"] forState:UIControlStateNormal];
     [messageText resignFirstResponder];
@@ -1162,6 +1166,7 @@
     isTextEdit = NO;
 }
 -(void) dismissKeyboard:(UITapGestureRecognizer *)estureRecognizer {
+    iconScrollView.hidden = YES;
     [self dismissKeyBoard];
 }
 #pragma mark show bubbleview  lastrow
@@ -1196,7 +1201,7 @@
 //        SearchImageViewController *search = [[SearchImageViewController alloc]init];
 //        [self presentViewController:search animated:NO completion:NULL];
     }
-        
+    iconScrollView.hidden = YES;
 }
 
 -(void)bigImage:(UIImage *)image{
