@@ -71,6 +71,7 @@
     UIImage *copyImage;
     if (photopath!=nil || videopath!= nil || audiopath != nil) {
         [self resignFirstResponder];
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"resignResponder" object:nil];
         if (photopath)
             copyImage = [UIImage imageWithData:[NSData dataWithContentsOfFile:photopath]];
         if (videopath)

@@ -51,8 +51,8 @@
 {
     NSMutableArray *bubbleData;
     CreateUI * createUI;
-    
-    UIScrollView *scrollView;//表情滚动视图
+    UIScrollView *iconScrollView;
+    UIScrollView *faceScrollView;//表情滚动视图
     UIPageControl *pageControl;
     UIButton *sendButton;
     
@@ -99,7 +99,8 @@
 }
 
 -(void)initWithToolBar{
-    
+    pageControl.hidden = YES;
+    faceScrollView.hidden=YES;
     //初始化为NO added
     keyboardIsShow=NO;
     isFace = NO;
@@ -283,7 +284,9 @@
     
     //dismissKeyboard
     [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(dismissKeyBoard) name:@"dismissKeyboard" object:nil];
-   
+    //    resignResponder
+    [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(dismiss) name:@"resignResponder" object:nil];
+    
     //handler
     photoHandler = [[PhotoHandler alloc] init];
     
@@ -324,6 +327,64 @@
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.tag = HUD_TAG;
     [self.view addSubview:HUD];
+    
+    //创建表情键盘
+    faceScrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, keyboardHeight)];
+    [faceScrollView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"facesBack"]]];
+    for (int i=0; i<9; i++) {
+        FacialView *fview=[[FacialView alloc] initWithFrame:CGRectMake(12+320*i, 15, facialViewWidth, facialViewHeight)];
+        [fview setBackgroundColor:[UIColor clearColor]];
+        [fview loadFacialView:i size:CGSizeMake(33, 43)];
+        fview.delegate=self;
+        [faceScrollView addSubview:fview];
+    }
+    
+    [faceScrollView setShowsVerticalScrollIndicator:NO];
+    [faceScrollView setShowsHorizontalScrollIndicator:NO];
+    faceScrollView.contentSize=CGSizeMake(320*9, keyboardHeight);
+    faceScrollView.pagingEnabled=YES;
+    faceScrollView.delegate=self;
+    faceScrollView.hidden=YES;
+    [self.view addSubview:faceScrollView];
+    isFace = YES;
+    pageControl=[[UIPageControl alloc]initWithFrame:CGRectMake(84, self.view.frame.size.height-35, 150, 30)];
+    [pageControl setCurrentPage:0];
+    pageControl.pageIndicatorTintColor=RGBACOLOR(195, 179, 163, 1);
+    pageControl.currentPageIndicatorTintColor=RGBACOLOR(132, 104, 77, 1);
+    pageControl.numberOfPages = 9;//指定页面个数
+    [pageControl setBackgroundColor:[UIColor clearColor]];
+    pageControl.hidden=YES;
+    [pageControl addTarget:self action:@selector(changePage:)forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:pageControl];
+    
+    sendButton= [createUI setButtonFrame:CGRectMake(260, self.view.frame.size.height-35, 50, 30) withTitle:@"send"];
+    [sendButton.titleLabel setFont:[UIFont systemFontOfSize:15.0f]];
+    [[sendButton layer] setBorderColor:[[UIColor blackColor] CGColor]];
+    [[sendButton layer] setBorderWidth:1];
+    [[sendButton layer] setCornerRadius:4];
+    sendButton.tag = BUTTON_TAG;
+    sendButton.hidden = YES;
+    [sendButton addTarget:self action:@selector(sendClicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:sendButton];
+    
+    //icon
+    iconScrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, ICONHEIGHT)];
+    [iconScrollView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"facesBack.png"]]];
+    for (int i=0; i<5; i++) {
+        IconView *fview=[[IconView alloc] initWithFrame:CGRectMake(320*i, 15, self.view.frame.size.width, facialViewHeight)];
+        [fview setBackgroundColor:[UIColor clearColor]];
+        [fview loadIconView:i size:CGSizeMake(40, 40)];
+        fview.delegate=self;
+        [iconScrollView addSubview:fview];
+    }
+    [iconScrollView setShowsVerticalScrollIndicator:NO];
+    [iconScrollView setShowsHorizontalScrollIndicator:NO];
+    iconScrollView.contentSize=CGSizeMake(320, ICONHEIGHT);
+    iconScrollView.pagingEnabled=YES;
+    iconScrollView.delegate=self;
+    iconScrollView.hidden =YES;
+    [self.view addSubview:iconScrollView];
+
 }
 -(void)cancel {
     NSLog(@"cancel");
@@ -591,7 +652,8 @@
 -(void) KeyboardTorecordClicked {
     
     [self dismissKeyBoard];
-    [scrollView removeFromSuperview];
+    faceScrollView.hidden=YES;
+    iconScrollView.hidden=YES;
     [recordOrKeyboardButton removeFromSuperview];
     [messageText removeFromSuperview];
     [iconButton removeFromSuperview];
@@ -619,49 +681,45 @@
 
 #pragma MARK Icon button 表情事件
 -(void) disIconKeyboard {
-    //如果直接点击，通过toolbar的位置来判断
-    if (toolBar.frame.origin.y== self.view.bounds.size.height - toolBarHeight&&toolBar.frame.size.height==toolBarHeight) {
+    if (!iconScrollView.hidden && keyboardIsShow) {
+        iconScrollView.hidden=YES;
+    }
+    if (iconScrollView.hidden) {
+        
+        iconScrollView.hidden=NO;
+        if (keyboardIsShow) {
+            [self dismissKeyBoard];
+        }
+        [faceButton setImage:[UIImage imageNamed:@"face512.png"] forState:UIControlStateNormal];
         [UIView animateWithDuration:Time animations:^{
             toolBar.frame = CGRectMake(0, self.view.frame.size.height-ICONHEIGHT-toolBarHeight,  self.view.bounds.size.width,toolBarHeight);
             UIBubbleTableView *tableView = (UIBubbleTableView *)[self.view viewWithTag:TABLEVIEWTAG];
             tableView.frame = CGRectMake(0.0f, 64.0f, self.view.frame.size.width,(float)(self.view.frame.size.height-ICONHEIGHT-40.0-64));
             
         }];
+        
         [UIView animateWithDuration:Time animations:^{
-            [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-ICONHEIGHT,self.view.frame.size.width, ICONHEIGHT)];
+            [iconScrollView setFrame:CGRectMake(0, self.view.frame.size.height-ICONHEIGHT,self.view.frame.size.width, ICONHEIGHT)];
         }];
-        [self scrollBubbleViewToBottomAnimated:YES];
-         return;
-    }
-    //如果键盘没有显示
-    if (isFace) {
-        [UIView animateWithDuration:Time animations:^{
-            [scrollView setFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, TABLEVIEWTAG)];
-        }];
-        [messageText becomeFirstResponder];
         
     }else{
-        
-        //键盘显示的时候，toolbar需要还原到正常位置
-        [UIView animateWithDuration:Time animations:^{
-            toolBar.frame = CGRectMake(0, self.view.frame.size.height-ICONHEIGHT-toolBar.frame.size.height,  self.view.bounds.size.width,toolBar.frame.size.height);
-            UIBubbleTableView *tableView = (UIBubbleTableView *)[self.view viewWithTag:TABLEVIEWTAG];
-            tableView.frame = CGRectMake(0.0f, 64.0f, self.view.frame.size.width,(float)(self.view.frame.size.height-ICONHEIGHT-40.0-64));
-            
-        }];
-        
-        [UIView animateWithDuration:Time animations:^{
-            [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-ICONHEIGHT  ,self.view.frame.size.width, ICONHEIGHT)];
-        }];
-        [messageText resignFirstResponder];
+        iconScrollView.hidden=YES;
+        [self dismissKeyBoard];
     }
+
     [self scrollBubbleViewToBottomAnimated:YES];
     
 }
 #pragma MARK face button 表情事件
 -(void)disFaceKeyboard{
-    //如果直接点击表情，通过toolbar的位置来判断
-    if (toolBar.frame.origin.y== self.view.bounds.size.height - toolBarHeight&&toolBar.frame.size.height==toolBarHeight) {
+    if (!faceScrollView.hidden && keyboardIsShow) {
+        faceScrollView.hidden=YES;
+    }
+    if (faceScrollView.hidden) {
+        
+        faceScrollView.hidden=NO;
+        [self scrollBubbleViewToBottomAnimated:YES];
+        //键盘显示的时候，toolbar需要还原到正常位置，并显示表情
         [UIView animateWithDuration:Time animations:^{
             toolBar.frame = CGRectMake(0, self.view.frame.size.height-keyboardHeight-toolBarHeight,  self.view.bounds.size.width,toolBarHeight);
             UIBubbleTableView *tableView = (UIBubbleTableView *)[self.view viewWithTag:TABLEVIEWTAG];
@@ -669,44 +727,29 @@
             
         }];
         [UIView animateWithDuration:Time animations:^{
-            [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-keyboardHeight,self.view.frame.size.width, keyboardHeight)];
+            [faceScrollView setFrame:CGRectMake(0, self.view.frame.size.height-keyboardHeight,self.view.frame.size.width, keyboardHeight)];
         }];
         [self scrollBubbleViewToBottomAnimated:YES];
         [faceButton setImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
         [pageControl setHidden:NO];
-        return;
-    }
-    //如果键盘没有显示，点击表情了，隐藏表情，显示键盘
-    if (!keyboardIsShow) {
+        sendButton.hidden=NO;
+        [messageText resignFirstResponder];
+        
+    }else{
+        faceScrollView.hidden=YES;
         [UIView animateWithDuration:Time animations:^{
-            [scrollView setFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, keyboardHeight)];
+            [faceScrollView setFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, keyboardHeight)];
         }];
         [messageText becomeFirstResponder];
         [pageControl setHidden:YES];
-        [sendButton removeFromSuperview];
-
-
-    }else{
-        [self scrollBubbleViewToBottomAnimated:YES];
-        //键盘显示的时候，toolbar需要还原到正常位置，并显示表情
-        [UIView animateWithDuration:Time animations:^{
-            toolBar.frame = CGRectMake(0, self.view.frame.size.height-keyboardHeight-toolBar.frame.size.height,  self.view.bounds.size.width,toolBar.frame.size.height);
-            UIBubbleTableView *tableView = (UIBubbleTableView *)[self.view viewWithTag:TABLEVIEWTAG];
-            tableView.frame = CGRectMake(0.0f, 64.0f, self.view.frame.size.width,(float)(self.view.frame.size.height-keyboardHeight-40.0-64));
-            
-        }];
+        [sendButton setHidden:YES];
         
-        [UIView animateWithDuration:Time animations:^{
-            [scrollView setFrame:CGRectMake(0, self.view.frame.size.height-keyboardHeight,self.view.frame.size.width, keyboardHeight)];
-        }];
-        [pageControl setHidden:NO];
-        [messageText resignFirstResponder];
     }
 }
 #pragma mark 隐藏键盘
 
 -(void)dismissKeyBoard{
-    
+    faceScrollView.hidden = YES;
     isEmoji = NO;
     //键盘显示的时候，toolbar需要还原到正常位置，并显示表情
     [UIView animateWithDuration:Time animations:^{
@@ -715,12 +758,12 @@
     }];
     
     [UIView animateWithDuration:Time animations:^{
-        [scrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, keyboardHeight)];
+        [faceScrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, keyboardHeight)];
+        [iconScrollView setFrame:CGRectMake(0, self.view.frame.size.height,self.view.frame.size.width, ICONHEIGHT)];
     }];
     [faceButton setImage:[UIImage imageNamed:@"face512.png"] forState:UIControlStateNormal];
     [messageText resignFirstResponder];
-//    UIButton *button = (UIButton *)[self.view viewWithTag:BUTTON_TAG];
-    [sendButton removeFromSuperview];
+    sendButton.hidden = YES;
     [pageControl setHidden:YES];
 }
 
@@ -764,11 +807,18 @@
     NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSTimeInterval animationDuration;
     [animationDurationValue getValue:&animationDuration];
-    [faceButton setImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
+    if (isFace) {
+        [faceButton setImage:[UIImage imageNamed:@"keyboard512.png"] forState:UIControlStateNormal];
+        
+    }
     [pageControl setHidden:NO];
     keyboardIsShow=NO;
 //    [messageText resignFirstResponder];
 //    [self dismissKeyBoard];
+}
+-(void) dismiss{
+    [pageControl setHidden:YES];
+    sendButton.hidden = YES;
 }
 
 #pragma mark -
@@ -795,72 +845,22 @@
 #pragma mark PhotoButton clicked
 -(void) photoClicked {
     isFace = NO;
-    [scrollView removeFromSuperview];
-    [pageControl removeFromSuperview];
-    scrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, ICONHEIGHT)];
-    [scrollView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"facesBack.png"]]];
-    for (int i=0; i<5; i++) {
-        IconView *fview=[[IconView alloc] initWithFrame:CGRectMake(320*i, 15, self.view.frame.size.width, facialViewHeight)];
-        [fview setBackgroundColor:[UIColor clearColor]];
-        [fview loadIconView:i size:CGSizeMake(40, 40)];
-        fview.delegate=self;
-        [scrollView addSubview:fview];
-    }
-    [scrollView setShowsVerticalScrollIndicator:NO];
-    [scrollView setShowsHorizontalScrollIndicator:NO];
-    scrollView.contentSize=CGSizeMake(320, ICONHEIGHT);
-    scrollView.pagingEnabled=YES;
-    scrollView.delegate=self;
-    [self.view addSubview:scrollView];
+    faceScrollView.hidden=YES;
+    pageControl.hidden=YES;
+    sendButton.hidden =YES;
     [self disIconKeyboard];
 }
 #pragma mark Face button 
 -(void) faceClicked {
-    [scrollView removeFromSuperview];
-    [pageControl removeFromSuperview];
-    [sendButton removeFromSuperview];
-    //创建表情键盘
-    scrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, keyboardHeight)];
-    [scrollView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"facesBack"]]];
-    for (int i=0; i<9; i++) {
-        FacialView *fview=[[FacialView alloc] initWithFrame:CGRectMake(12+320*i, 15, facialViewWidth, facialViewHeight)];
-        [fview setBackgroundColor:[UIColor clearColor]];
-        [fview loadFacialView:i size:CGSizeMake(33, 43)];
-        fview.delegate=self;
-        [scrollView addSubview:fview];
-    }
-
-    [scrollView setShowsVerticalScrollIndicator:NO];
-    [scrollView setShowsHorizontalScrollIndicator:NO];
-    scrollView.contentSize=CGSizeMake(320*9, keyboardHeight);
-    scrollView.pagingEnabled=YES;
-    scrollView.delegate=self;
-    [self.view addSubview:scrollView];
     isFace = YES;
-    pageControl=[[UIPageControl alloc]initWithFrame:CGRectMake(84, self.view.frame.size.height-35, 150, 30)];
-    [pageControl setCurrentPage:0];
-    pageControl.pageIndicatorTintColor=RGBACOLOR(195, 179, 163, 1);
-    pageControl.currentPageIndicatorTintColor=RGBACOLOR(132, 104, 77, 1);
-    pageControl.numberOfPages = 9;//指定页面个数
-    [pageControl setBackgroundColor:[UIColor clearColor]];
-    pageControl.hidden=YES;
-    [pageControl addTarget:self action:@selector(changePage:)forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:pageControl];
-    
-     sendButton= [createUI setButtonFrame:CGRectMake(260, self.view.frame.size.height-35, 50, 30) withTitle:@"send"];
-    [sendButton.titleLabel setFont:[UIFont systemFontOfSize:15.0f]];
-    [[sendButton layer] setBorderColor:[[UIColor blackColor] CGColor]];
-    [[sendButton layer] setBorderWidth:1];
-    [[sendButton layer] setCornerRadius:4];
-    sendButton.tag = BUTTON_TAG;
-    [sendButton addTarget:self action:@selector(sendClicked) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:sendButton];
+    iconScrollView.hidden=YES;
+    sendButton.hidden=NO;
     [self disFaceKeyboard];
     isEmoji = YES;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)sender {
-    int page = scrollView.contentOffset.x / 320;//通过滚动的偏移量来判断目前页面所对应的小白点
+    int page = faceScrollView.contentOffset.x / 320;//通过滚动的偏移量来判断目前页面所对应的小白点
     pageControl.currentPage = page;//pagecontroll响应值的变化
     
 }
@@ -868,7 +868,7 @@
 
 - (void)changePage:(id)sender {
     int page = pageControl.currentPage;//获取当前pagecontroll的值
-    [scrollView setContentOffset:CGPointMake(320 * page, 0)];//根据pagecontroll的值来改变scrollview的滚动位置，以此切换到指定的页面
+    [faceScrollView setContentOffset:CGPointMake(320 * page, 0)];//根据pagecontroll的值来改变scrollview的滚动位置，以此切换到指定的页面
 }
 
 #pragma mark - Tool Methods
@@ -1078,6 +1078,7 @@
     isTextEdit = NO;
 }
 -(void) dismissKeyboard:(UITapGestureRecognizer *)estureRecognizer {
+    iconScrollView.hidden=YES;
     [self dismissKeyBoard];
 }
 
@@ -1106,7 +1107,7 @@
         [self addVideo];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
-        
+    iconScrollView.hidden=YES;
 }
 
 -(void)bigImage:(UIImage *)image{
