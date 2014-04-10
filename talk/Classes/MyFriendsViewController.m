@@ -31,7 +31,7 @@
 #import "UploadDB.h"
 #import "DownloadAvatar.h"
 #import "AddDB.h"
-
+#import "LoadAllMetaData.h"
 #define TABLECELL_TAG 10000
 #define BUTTON_TAG 20000
 #define BUTTON_IMAGE_TAG 30000
@@ -384,6 +384,8 @@
     [self startDownload];
     [self readHistory];
     [self startUpload];
+    LoadAllMetaData * loadAll = [[LoadAllMetaData alloc]init];
+    [loadAll performSelectorInBackground:@selector(loadAllMetaData) withObject:nil];
     NSLog(@"");
    
 }
@@ -406,7 +408,9 @@
     if ([presenceType isEqualToString:@"unavailable"]){
         
     }
-    [self.tableView reloadData];
+    [NSThread sleepForTimeInterval:0.1];
+    [self performSelectorOnMainThread:@selector(doneLoadingTableViewData) withObject:nil waitUntilDone:YES];
+//    [self.tableView reloadData];
 }
 -(void) didReceiveRequest:(NSDictionary *)json{
     NSString *type = [json objectForKey:@"type"];

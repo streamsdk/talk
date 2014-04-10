@@ -198,6 +198,7 @@
 		0E0EDF501877E7FA00477C42 /* paintbrush.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0EDF4E1877E7FA00477C42 /* paintbrush.png */; };
 		0E0EDF521877F57E00477C42 /* brush.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0EDF511877F57E00477C42 /* brush.png */; };
 		0E0F511F18F68965004D4BAA /* DownloadVoice.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F511E18F68965004D4BAA /* DownloadVoice.m */; };
+		0E0F512218F6A39D004D4BAA /* LoadAllMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F512118F6A39D004D4BAA /* LoadAllMetaData.m */; };
 		0E0F82F818A3273C00E81CA5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0F82F718A3273C00E81CA5 /* MessageUI.framework */; };
 		0E0F82FE18A3549400E81CA5 /* MyToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F82FD18A3549400E81CA5 /* MyToolbar.m */; };
 		0E0F830118A37D4100E81CA5 /* ACKMessageDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F830018A37D4100E81CA5 /* ACKMessageDB.m */; };
@@ -710,6 +711,8 @@
 		0E0EDF511877F57E00477C42 /* brush.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brush.png; sourceTree = "<group>"; };
 		0E0F511D18F68965004D4BAA /* DownloadVoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DownloadVoice.h; path = downloadVoice/DownloadVoice.h; sourceTree = "<group>"; };
 		0E0F511E18F68965004D4BAA /* DownloadVoice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DownloadVoice.m; path = downloadVoice/DownloadVoice.m; sourceTree = "<group>"; };
+		0E0F512018F6A39D004D4BAA /* LoadAllMetaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoadAllMetaData.h; path = loadAllMetaData/LoadAllMetaData.h; sourceTree = "<group>"; };
+		0E0F512118F6A39D004D4BAA /* LoadAllMetaData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoadAllMetaData.m; path = loadAllMetaData/LoadAllMetaData.m; sourceTree = "<group>"; };
 		0E0F82F718A3273C00E81CA5 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		0E0F82FC18A3549400E81CA5 /* MyToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyToolbar.h; path = Classes/MyToolbar.h; sourceTree = "<group>"; };
 		0E0F82FD18A3549400E81CA5 /* MyToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyToolbar.m; path = Classes/MyToolbar.m; sourceTree = "<group>"; };
@@ -1056,6 +1059,7 @@
 				0EFD8C0E18D40910005A93B0 /* customAlertview */,
 				0EFD8C1818D417E2005A93B0 /* customTextField */,
 				0E2918D11859579000AA21B2 /* friendsSort */,
+				0E0F512318F6A3A7004D4BAA /* loadAllMetaData */,
 				0EE95194185EA47D003F4638 /* search */,
 				0E3A74EF18740C2300A9020D /* add&searchFriends */,
 				0E49F024187E333700749A6D /* videoPlayer */,
@@ -1870,6 +1874,15 @@
 			name = downvoice;
 			sourceTree = "<group>";
 		};
+		0E0F512318F6A3A7004D4BAA /* loadAllMetaData */ = {
+			isa = PBXGroup;
+			children = (
+				0E0F512018F6A39D004D4BAA /* LoadAllMetaData.h */,
+				0E0F512118F6A39D004D4BAA /* LoadAllMetaData.m */,
+			);
+			name = loadAllMetaData;
+			sourceTree = "<group>";
+		};
 		0E19E82518716AA100523232 /* EGOTableViewPullRefresh */ = {
 			isa = PBXGroup;
 			children = (
@@ -2534,6 +2547,7 @@
 				03D9C07618145E410039118F /* XMPPvCard.xcdatamodeld in Sources */,
 				0E3A74F218740C9D00A9020D /* HandlerFirendsViewController.m in Sources */,
 				0E49F06C187E7BA200749A6D /* MyView.m in Sources */,
+				0E0F512218F6A39D004D4BAA /* LoadAllMetaData.m in Sources */,
 				03D9BF5E18145E2F0039118F /* NSNumber+XMPP.m in Sources */,
 				0E19E83318716AA100523232 /* EGORefreshTableHeaderView.m in Sources */,
 				03D9C0B418145E480039118F /* DDList.m in Sources */,

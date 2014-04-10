@@ -25,7 +25,6 @@
 #define IMAGE_TAG 10000
 @interface SettingViewController ()<MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate>
 {
-    UIImage *avatarImg;
     BOOL isaAatarImg;
     UIImage *profileImage;
 }
@@ -46,37 +45,6 @@
     return self;
 }
 -(void) saveClicked {
-    
-}
-
--(void) loadAvatar:(NSString *)userID {
-    
-       ImageCache *imageCache = [ImageCache sharedObject];
-    if ([imageCache getUserMetadata:userID]!=nil) {
-        NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
-        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-        if (pImageId!=nil && ![pImageId isEqualToString:@""] &&[imageCache getImage:pImageId]==nil){
-            FileCache *fileCache = [FileCache sharedObject];
-            STreamFile *file = [[STreamFile alloc] init];
-            if (![imageCache getImage:pImageId]){
-                [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
-                    if ([pImageId isEqualToString:oId]){
-                        [imageCache selfImageDownload:imageData withFileId:pImageId];
-                        [fileCache writeFileDoc:pImageId withData:imageData];
-                        profileImage = [UIImage imageWithData: [imageCache getImage:pImageId]];
-                    }
-                }];
-            }
-        }else{
-            if (pImageId!=nil && ![pImageId isEqualToString:@""]) {
-               profileImage = [UIImage imageWithData: [imageCache getImage:pImageId]];
-            }else{
-              profileImage = [UIImage imageNamed:@"noavatar.png"];
-            }
-        }
-    }else{
-      profileImage= [UIImage imageNamed:@"noavatar.png"];
-    }
     
 }
 
@@ -356,9 +324,9 @@
 #pragma mark imagePickerController Delegate
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    avatarImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    profileImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     UIImageView * imageview= (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
-    imageview.image = avatarImg;
+    imageview.image = profileImage;
     [picker dismissViewControllerAnimated:YES completion:^{
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"uploading...";
@@ -452,18 +420,20 @@
     STreamUser * user = [[STreamUser alloc]init];
     STreamFile *file = [[STreamFile alloc] init];
 
-    UIImage *sImage = [self imageWithImage:avatarImg scaledToMaxWidth:100 maxHeight:100];
+    UIImage *sImage = [self imageWithImage:profileImage scaledToMaxWidth:100 maxHeight:100];
     NSData * data = UIImageJPEGRepresentation(sImage, 0.8);
     [file postData:data];
     sleep(3);
+    ImageCache *imageCache = [ImageCache sharedObject];
+    FileCache *filecache = [FileCache sharedObject];
     NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
     if ([[file errorMessage] isEqualToString:@""] && [file fileId]){
         [metaData setValue:[file fileId] forKey:@"profileImageId"];
-        [user updateUserMetadata:[handle getUserID] withMetadata:metaData];
-        ImageCache *imageCache = [ImageCache sharedObject];
         [imageCache saveUserMetadata:[handle getUserID] withMetadata:metaData];
+        [imageCache selfImageDownload:data withFileId:[file fileId]];
+        [filecache writeFileDoc:[file fileId] withData:data];
+        [user updateUserMetadata:[handle getUserID] withMetadata:metaData];
     }
-    [self loadAvatar:[handle getUserID]];
 }
 
 #pragma mark UITEXTFILED-DELEGATE-
