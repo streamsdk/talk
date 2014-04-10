@@ -277,7 +277,7 @@
         if (cell.data.fileType == FileImage) {
             UIProgressView * progressView = [[UIProgressView alloc]init];
             [progressView setProgressViewStyle:UIProgressViewStyleDefault];
-            progressView .frame = CGRectMake(24, cell.frame.size.height, 90, 8);
+            progressView .frame = CGRectMake(24, cell.frame.size.height+14, 90, 8);
             CGAffineTransform transform =CGAffineTransformMakeScale(1.0f,2.0f);
             progressView.transform = transform;
             progressView.hidden = YES;
