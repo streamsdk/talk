@@ -158,11 +158,11 @@
                             NSString * dataPath = [chatDic objectForKey:@"audiodata"];
                             NSData * audioData = [NSData dataWithContentsOfFile:dataPath options: 0 error:&err];
                             NSBubbleData *bubble = [NSBubbleData dataWithtimes:time date:date type:BubbleTypeMine withData:audioData];
-                            NSFileManager * fileManager = [NSFileManager defaultManager];
-                            NSArray * array = [[NSArray alloc]initWithObjects:[chatDic objectForKey:@"fileId"],[chatDic objectForKey:@"audiodata"],bubble, nil];
-                            if (![fileManager fileExistsAtPath:dataPath]) {
-                                [download performSelectorInBackground:@selector(downloadVoice:) withObject:array];
-                            }
+//                            NSFileManager * fileManager = [NSFileManager defaultManager];
+//                            NSArray * array = [[NSArray alloc]initWithObjects:[chatDic objectForKey:@"fileId"],[chatDic objectForKey:@"audiodata"],bubble, nil];
+//                            if (![fileManager fileExistsAtPath:dataPath]) {
+//                                [download performSelectorInBackground:@selector(downloadVoice:) withObject:array];
+//                            }
                             if (myData)
                                 bubble.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:bubble];
