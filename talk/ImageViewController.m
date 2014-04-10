@@ -361,31 +361,25 @@ static NSMutableArray *colors;
     return [self imageWithImage:image scaledToSize:newSize];
 }
 -(void) sendImageClicked {
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"sending photo...";
-    [self.view addSubview:HUD];
+    [self setImageSendProtocol:mainVC];
+    [self performSelectorInBackground:@selector(scaledToImage) withObject:nil];
+}
+-(void) scaledToImage {
+    CGFloat maxWidth=self.view.frame.size.width;
+    CGFloat maxheight=self.view.frame.size.height-80;
     data = UIImageJPEGRepresentation(image, 1.0);
     NSInteger t = [data length]/1024;
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        [self setImageSendProtocol:mainVC];
-        CGFloat maxWidth=self.view.frame.size.width;
-        CGFloat maxheight=self.view.frame.size.height;
-        if (t>100) {
-            UIImage *_image = [self imageWithImage:image
-                                  scaledToMaxWidth:maxWidth
-                                         maxHeight:maxheight];
-            data = UIImageJPEGRepresentation(_image, 0.3);
-        }
-        ImageCache *imageCache = [ImageCache sharedObject];
-        [imageCache saveTablecontentOffset:0 withUser:[imageCache getFriendID]];
-      [imageSendProtocol sendImages:data withTime:time ];
-    }completionBlock:^{
-        [self dismissViewControllerAnimated:YES completion:NULL];
-        [HUD removeFromSuperview];
-        HUD = nil;
-        
-    }];
+    if (t>100) {
+        UIImage *_image = [self imageWithImage:image
+                              scaledToMaxWidth:maxWidth
+                                     maxHeight:maxheight];
+        data = UIImageJPEGRepresentation(_image, 0.5);
+    }
+    
+    [imageSendProtocol sendImages:data withTime:time ];
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
+
 -(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
     return 1;
