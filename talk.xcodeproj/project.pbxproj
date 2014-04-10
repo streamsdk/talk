@@ -197,6 +197,7 @@
 		0E0EDF4F1877E7FA00477C42 /* paintbrush@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0EDF4D1877E7FA00477C42 /* paintbrush@2x.png */; };
 		0E0EDF501877E7FA00477C42 /* paintbrush.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0EDF4E1877E7FA00477C42 /* paintbrush.png */; };
 		0E0EDF521877F57E00477C42 /* brush.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0EDF511877F57E00477C42 /* brush.png */; };
+		0E0F511F18F68965004D4BAA /* DownloadVoice.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F511E18F68965004D4BAA /* DownloadVoice.m */; };
 		0E0F82F818A3273C00E81CA5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0F82F718A3273C00E81CA5 /* MessageUI.framework */; };
 		0E0F82FE18A3549400E81CA5 /* MyToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F82FD18A3549400E81CA5 /* MyToolbar.m */; };
 		0E0F830118A37D4100E81CA5 /* ACKMessageDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F830018A37D4100E81CA5 /* ACKMessageDB.m */; };
@@ -707,6 +708,8 @@
 		0E0EDF4D1877E7FA00477C42 /* paintbrush@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paintbrush@2x.png"; sourceTree = "<group>"; };
 		0E0EDF4E1877E7FA00477C42 /* paintbrush.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paintbrush.png; sourceTree = "<group>"; };
 		0E0EDF511877F57E00477C42 /* brush.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brush.png; sourceTree = "<group>"; };
+		0E0F511D18F68965004D4BAA /* DownloadVoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DownloadVoice.h; path = downloadVoice/DownloadVoice.h; sourceTree = "<group>"; };
+		0E0F511E18F68965004D4BAA /* DownloadVoice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DownloadVoice.m; path = downloadVoice/DownloadVoice.m; sourceTree = "<group>"; };
 		0E0F82F718A3273C00E81CA5 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		0E0F82FC18A3549400E81CA5 /* MyToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyToolbar.h; path = Classes/MyToolbar.h; sourceTree = "<group>"; };
 		0E0F82FD18A3549400E81CA5 /* MyToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyToolbar.m; path = Classes/MyToolbar.m; sourceTree = "<group>"; };
@@ -1037,6 +1040,7 @@
 				0355801C18812D670036CC3C /* twitter */,
 				0E19E82518716AA100523232 /* EGOTableViewPullRefresh */,
 				03F5A1891867367500CD60FD /* handler */,
+				0E0F511C18F68941004D4BAA /* downvoice */,
 				0E8A4F30182B7EE300705C1F /* talkDB */,
 				0ED8EC9A18288D8500C84741 /* Voice */,
 				0EE07675182B53540052BC02 /* creatUI */,
@@ -1857,6 +1861,15 @@
 			path = libs;
 			sourceTree = "<group>";
 		};
+		0E0F511C18F68941004D4BAA /* downvoice */ = {
+			isa = PBXGroup;
+			children = (
+				0E0F511D18F68965004D4BAA /* DownloadVoice.h */,
+				0E0F511E18F68965004D4BAA /* DownloadVoice.m */,
+			);
+			name = downvoice;
+			sourceTree = "<group>";
+		};
 		0E19E82518716AA100523232 /* EGOTableViewPullRefresh */ = {
 			isa = PBXGroup;
 			children = (
@@ -2604,6 +2617,7 @@
 				03D9C09318145E410039118F /* XMPPMessageArchiving.xcdatamodeld in Sources */,
 				03D9BF7918145E370039118F /* XMPPParser.m in Sources */,
 				03D9C07B18145E410039118F /* XMPPvCardTemp.m in Sources */,
+				0E0F511F18F68965004D4BAA /* DownloadVoice.m in Sources */,
 				0EEFAE511895299500F44745 /* PrivacyPoolicyViewController.m in Sources */,
 				0EFC8CB518ADE0B900EF09D8 /* DownloadDB.m in Sources */,
 				03D9C06018145E410039118F /* XMPPRoster.m in Sources */,

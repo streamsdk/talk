@@ -11,7 +11,8 @@
 #import "ImageCache.h"
 #import <arcstreamsdk/JSONKit.h>
 #import <MediaPlayer/MediaPlayer.h>
-
+#import "DownloadVoice.h"
+#import "CopyDB.h"
 @implementation TalkDB
 
 -(NSString *) dataFilePath {
@@ -68,6 +69,8 @@
 -(NSMutableArray *) readInitDB :(NSString *) _userID withOtherID:(NSString *)_friendID withCount:(int)count{
     fileCount = 0;
     readCount = 0;
+    DownloadVoice * download = [[DownloadVoice alloc]init];
+    CopyDB *db = [[CopyDB alloc]init];
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSMutableDictionary *userMetaData = [imageCache getUserMetadata:_userID];
     NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
@@ -149,6 +152,14 @@
                             NSString * dataPath = [chatDic objectForKey:@"audiodata"];
                             NSData * audioData = [NSData dataWithContentsOfFile:dataPath options: 0 error:&err];
                             NSBubbleData *bubble = [NSBubbleData dataWithtimes:time date:date type:BubbleTypeMine withData:audioData];
+                            if (!audioData) {
+                                NSString *content = [db readContentCopyDB:time2];
+                                NSData *jsonData = [content dataUsingEncoding:NSUTF8StringEncoding];
+                                JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
+                                NSDictionary *json = [decoder objectWithData:jsonData];
+                                NSArray * array = [[NSArray alloc]initWithObjects:[json objectForKey:@"fileId"],[chatDic objectForKey:@"audiodata"],bubble, nil];
+                                    [download performSelectorInBackground:@selector(downloadVoice:) withObject:array];
+                            }
                             if (myData)
                                 bubble.avatar = [UIImage imageWithData:myData];
                             [dataArray addObject:bubble];
@@ -202,7 +213,6 @@
                                 bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeSomeoneElse path:[chatDic objectForKey:@"photo"]];
                             else
                                 bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] withImageTime:time withPath:[chatDic objectForKey:@"photo"] date:date withType:BubbleTypeSomeoneElse];
-                            /*NSBubbleData *bubbledata = [NSBubbleData dataWithImage:[UIImage imageWithData:data] date:date type:BubbleTypeSomeoneElse];*/
                             
                             if(otherData)
                                 bubbledata.avatar = [UIImage imageWithData:otherData];
@@ -215,6 +225,12 @@
                             NSString * dataPath = [chatDic objectForKey:@"audiodata"];
                             NSData * audioData = [NSData dataWithContentsOfFile:dataPath options: 0 error:&err];
                             NSBubbleData *bubble = [NSBubbleData dataWithtimes:time date:date type:BubbleTypeSomeoneElse withData:audioData];
+                            NSFileManager * fileManager = [NSFileManager defaultManager];
+                            NSArray * array = [[NSArray alloc]initWithObjects:[chatDic objectForKey:@"fileId"],[chatDic objectForKey:@"audiodata"],bubble, nil];
+                            if (![fileManager fileExistsAtPath:dataPath]) {
+                                [download performSelectorInBackground:@selector(downloadVoice:) withObject:array];
+                            }
+
                             if (otherData)
                                 bubble.avatar = [UIImage imageWithData:otherData];
                             [dataArray addObject:bubble];

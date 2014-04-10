@@ -88,4 +88,9 @@
 
 -(NSInteger)getAllReadCount:(NSString *)userId;
 
+-(void)saveVoiceFile:(NSArray *)array withfileID:(NSString *)fileId;
+
+-(NSArray *)getVoiceFile:(NSString *)fileId;
+
+-(void)removeVoiceFile:(NSString *)fileId;
 @end

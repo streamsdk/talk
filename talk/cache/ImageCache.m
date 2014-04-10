@@ -27,6 +27,7 @@ static NSMutableDictionary*_countDict;
 static NSMutableDictionary *_contentOffset;
 static NSMutableArray * _downVideo;
 static NSMutableDictionary*_allCountDict;
+static NSMutableDictionary*_voiceDict;
 @implementation ImageCache
 
 
@@ -53,6 +54,7 @@ static NSMutableDictionary*_allCountDict;
         _contentOffset = [[NSMutableDictionary alloc]init];
         _downVideo = [[NSMutableArray alloc]init];
         _allCountDict = [[NSMutableDictionary alloc]init];
+        _voiceDict = [[NSMutableDictionary alloc]init];
     });
     
     return sharedInstance;
@@ -242,4 +244,16 @@ static NSMutableDictionary*_allCountDict;
 -(NSInteger)getAllReadCount:(NSString *)userId{
     return [[_allCountDict objectForKey:userId]intValue];
 }
+
+-(void)saveVoiceFile:(NSArray *)array withfileID:(NSString *)fileId{
+    [_voiceDict setObject:array forKey:fileId];
+}
+-(NSArray *)getVoiceFile:(NSString *)fileId{
+    return [_voiceDict objectForKey:fileId];
+}
+-(void)removeVoiceFile:(NSString *)fileId{
+    
+    [_voiceDict removeObjectForKey:fileId];
+}
+
 @end

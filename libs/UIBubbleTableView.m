@@ -433,7 +433,9 @@
     NSString * fromId =[json objectForKey:@"fromId"];
     NSString *duration = [json objectForKey:@"duration"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *filePath =[NSHomeDirectory() stringByAppendingFormat:@"/Documents/out-%@.mp4", fileId];
+    NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,  NSUserDomainMask,YES);
+    NSString *ourDocumentPath =[documentPaths objectAtIndex:0];
+    NSString *filePath =[ourDocumentPath stringByAppendingFormat:@"/out-%@.mp4", fileId];
     if([fileManager fileExistsAtPath:filePath]){
         
         TalkDB * talkDb = [[TalkDB alloc]init];
@@ -532,7 +534,9 @@
                                    }
                                    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
                                    TalkDB * talkDb = [[TalkDB alloc]init];
-                                   NSString * filepath= [NSHomeDirectory() stringByAppendingFormat:@"/Documents/out-%@.mp4", fileId];
+                                   NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,  NSUserDomainMask,YES);
+                                   NSString *ourDocumentPath =[documentPaths objectAtIndex:0];
+                                   NSString * filepath= [ourDocumentPath stringByAppendingFormat:@"/out-%@.mp4", fileId];
                                    [data writeToFile : filepath atomically: YES ];
                                    [handler videoPath:filepath];
                                    NSMutableDictionary * dict = [[NSMutableDictionary alloc]init];
