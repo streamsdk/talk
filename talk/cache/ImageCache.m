@@ -30,6 +30,7 @@ static NSMutableDictionary *_contentOffset;
 static NSMutableDictionary*_allCountDict;
 static NSMutableDictionary*_onlineDict;
 static NSMutableDictionary*_voiceDict;
+static NSMutableArray * _searchImage;
 @implementation ImageCache
 
 
@@ -59,6 +60,7 @@ static NSMutableDictionary*_voiceDict;
         _allCountDict = [[NSMutableDictionary alloc]init];
         _onlineDict = [[NSMutableDictionary alloc]init];
         _voiceDict = [[NSMutableDictionary alloc]init];
+        _searchImage =[[NSMutableArray alloc]init];
     });
     
     return sharedInstance;
@@ -277,5 +279,13 @@ static NSMutableDictionary*_voiceDict;
     
     [_voiceDict removeObjectForKey:fileId];
 }
-
+-(void)saveSearchImage:(UIImage *)image{
+    [_searchImage addObject:image];
+}
+-(NSMutableArray *)getSearchImage{
+    return _searchImage;
+}
+-(void)removeSearchImage{
+    [_searchImage removeAllObjects];
+}
 @end

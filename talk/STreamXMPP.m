@@ -135,6 +135,7 @@ static XMPPReconnect *xmppReconnect;
 - (void)disconnect
 {
     ImageCache * imageCache =[ImageCache sharedObject];
+    [imageCache removeSearchImage];
     NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *username = [userDefaults objectForKey:@"username"];
     NSString *status = [userDefaults objectForKey:@"status"];

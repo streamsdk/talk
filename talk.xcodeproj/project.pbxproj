@@ -197,6 +197,8 @@
 		0E0EDF4F1877E7FA00477C42 /* paintbrush@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0EDF4D1877E7FA00477C42 /* paintbrush@2x.png */; };
 		0E0EDF501877E7FA00477C42 /* paintbrush.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0EDF4E1877E7FA00477C42 /* paintbrush.png */; };
 		0E0EDF521877F57E00477C42 /* brush.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0EDF511877F57E00477C42 /* brush.png */; };
+		0E0F511918F662DA004D4BAA /* ScaledImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F511818F662DA004D4BAA /* ScaledImage.m */; };
+		0E0F511B18F6769B004D4BAA /* searchphotog150.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0F511A18F6769B004D4BAA /* searchphotog150.png */; };
 		0E0F740418ED34F8002CE342 /* ReadStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F740318ED34F8002CE342 /* ReadStatus.m */; };
 		0E0F82F818A3273C00E81CA5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0F82F718A3273C00E81CA5 /* MessageUI.framework */; };
 		0E0F82FE18A3549400E81CA5 /* MyToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F82FD18A3549400E81CA5 /* MyToolbar.m */; };
@@ -936,6 +938,9 @@
 		0E0EDF4D1877E7FA00477C42 /* paintbrush@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paintbrush@2x.png"; sourceTree = "<group>"; };
 		0E0EDF4E1877E7FA00477C42 /* paintbrush.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paintbrush.png; sourceTree = "<group>"; };
 		0E0EDF511877F57E00477C42 /* brush.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brush.png; sourceTree = "<group>"; };
+		0E0F511718F662DA004D4BAA /* ScaledImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScaledImage.h; path = ../scaledImage/ScaledImage.h; sourceTree = "<group>"; };
+		0E0F511818F662DA004D4BAA /* ScaledImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScaledImage.m; path = ../scaledImage/ScaledImage.m; sourceTree = "<group>"; };
+		0E0F511A18F6769B004D4BAA /* searchphotog150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchphotog150.png; sourceTree = "<group>"; };
 		0E0F740218ED34F8002CE342 /* ReadStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadStatus.h; sourceTree = "<group>"; };
 		0E0F740318ED34F8002CE342 /* ReadStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReadStatus.m; sourceTree = "<group>"; };
 		0E0F82F718A3273C00E81CA5 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -1760,6 +1765,7 @@
 				0EE95194185EA47D003F4638 /* search */,
 				0E3A74EF18740C2300A9020D /* add&searchFriends */,
 				0E49F024187E333700749A6D /* videoPlayer */,
+				0E0F511618F66298004D4BAA /* scaledImage */,
 				0EE8186818F3D6D000CACCA0 /* SearchImageViewController.h */,
 				0EE8186918F3D6D000CACCA0 /* SearchImageViewController.m */,
 				03D9BF0A18145C080039118F /* AppDelegate.h */,
@@ -2564,6 +2570,16 @@
 				0EE5B66218DC387400A3DBBF /* DownLoadVideo.m */,
 			);
 			path = libs;
+			sourceTree = "<group>";
+		};
+		0E0F511618F66298004D4BAA /* scaledImage */ = {
+			isa = PBXGroup;
+			children = (
+				0E0F511718F662DA004D4BAA /* ScaledImage.h */,
+				0E0F511818F662DA004D4BAA /* ScaledImage.m */,
+			);
+			name = scaledImage;
+			path = videoPlayer;
 			sourceTree = "<group>";
 		};
 		0E104D8418E54EBD00DDF39B /* status */ = {
@@ -3506,6 +3522,7 @@
 		0EE951A1185EA4B9003F4638 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0E0F511A18F6769B004D4BAA /* searchphotog150.png */,
 				0E912FD318E3C23B003364F2 /* color.png */,
 				0EF8C24C18E27B33001BFD1B /* map.png */,
 				0E891B5718D300BF006430FE /* cancel.png */,
@@ -3810,6 +3827,7 @@
 				037D871918B919BE004B86E1 /* flash960.png in Resources */,
 				0345C21C189EA1BB007AB90F /* searchf.png in Resources */,
 				0E49F050187E333700749A6D /* movieFullscreen@2x.png in Resources */,
+				0E0F511B18F6769B004D4BAA /* searchphotog150.png in Resources */,
 				0EE951ED185EA4B9003F4638 /* Text@2x.png in Resources */,
 				0E423AE018C6D8B7009D884E /* Selected.png in Resources */,
 				0EF01ED618B49AFF0012CC3F /* bg2.jpg in Resources */,
@@ -4147,6 +4165,7 @@
 				0EFC8CB518ADE0B900EF09D8 /* DownloadDB.m in Sources */,
 				03D9C06018145E410039118F /* XMPPRoster.m in Sources */,
 				0E0F830118A37D4100E81CA5 /* ACKMessageDB.m in Sources */,
+				0E0F511918F662DA004D4BAA /* ScaledImage.m in Sources */,
 				0E891A7918D2DF57006430FE /* ZXAztecCode.m in Sources */,
 				0E891B4618D2DF57006430FE /* ZXMultiFormatWriter.m in Sources */,
 				03D9C0B618145E480039118F /* LibIDN.m in Sources */,

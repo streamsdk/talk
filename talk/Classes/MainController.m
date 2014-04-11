@@ -420,7 +420,7 @@
     //icon
     iconScrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, ICONHEIGHT)];
     [iconScrollView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"facesBack.png"]]];
-    for (int i=0; i<5; i++) {
+    for (int i=0; i<3; i++) {
         IconView *fview=[[IconView alloc] initWithFrame:CGRectMake(320*i, 15, self.view.frame.size.width, facialViewHeight)];
         [fview setBackgroundColor:[UIColor clearColor]];
         [fview loadIconView:i size:CGSizeMake(40, 40)];
@@ -430,8 +430,6 @@
     [iconScrollView setShowsVerticalScrollIndicator:NO];
     [iconScrollView setShowsHorizontalScrollIndicator:NO];
     iconScrollView.contentSize=CGSizeMake(320, ICONHEIGHT);
-    iconScrollView.pagingEnabled=YES;
-    iconScrollView.delegate=self;
     iconScrollView.hidden =YES;
     [self.view addSubview:iconScrollView];
 }
@@ -1187,6 +1185,7 @@
         [self scrollBubbleViewToBottomAnimated:YES];
     }
     if (buttonTag == 1) {
+        [self dismissKeyBoard];
         [self takeVideo];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
@@ -1200,6 +1199,10 @@
         [self presentViewController:map animated:NO completion:NULL];
 //        SearchImageViewController *search = [[SearchImageViewController alloc]init];
 //        [self presentViewController:search animated:NO completion:NULL];
+    }
+    if (buttonTag==4) {
+        SearchImageViewController *search = [[SearchImageViewController alloc]init];
+        [self presentViewController:search animated:NO completion:NULL];
     }
     iconScrollView.hidden = YES;
 }
