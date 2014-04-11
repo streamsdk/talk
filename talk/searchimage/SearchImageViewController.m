@@ -111,7 +111,7 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.tag = 10000;
-        UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake((cell.frame.size.width-180)/2,10. , 180, 180)];
+        UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake((cell.frame.size.width-300)/2,10, 300, 300)];
         imageView.image = [UIImage imageNamed:@"photog150.png"];
         imageView .tag = 10000;
         imageView.userInteractionEnabled = YES;
@@ -129,7 +129,7 @@
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 200;
+    return 320;
 }
 #pragma mark searchBarDelegate
 

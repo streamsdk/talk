@@ -343,7 +343,7 @@
     [so addStaff:@"online" withObject:@"YES"];
     [so updateInBackground];
     ReadStatus * readStatus = [[ReadStatus alloc]init];
-    [readStatus performSelectorInBackground:@selector(loadAllMetaData) withObject:nil];
+    [readStatus loadAllMetaData];
 }
 
 - (void)didNotAuthenticate:(NSXMLElement *)error{
