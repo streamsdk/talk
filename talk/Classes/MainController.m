@@ -153,6 +153,8 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    keyboardIsShow = NO;
+    iconScrollView.hidden=YES;
     pageControl.hidden = YES;
     faceScrollView.hidden=YES;
      [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
@@ -906,6 +908,8 @@
 -(void) dismiss{
     [pageControl setHidden:YES];
     sendButton.hidden = YES;
+    faceScrollView.hidden = YES;
+    iconScrollView.hidden=YES;
 }
 #pragma mark -
 #pragma mark facialView delegate 点击表情键盘上的文字
@@ -1204,7 +1208,7 @@
         SearchImageViewController *search = [[SearchImageViewController alloc]init];
         [self presentViewController:search animated:NO completion:NULL];
     }
-    iconScrollView.hidden = YES;
+//    iconScrollView.hidden = YES;
 }
 
 -(void)bigImage:(UIImage *)image{
