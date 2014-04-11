@@ -99,8 +99,7 @@
 }
 
 -(void)initWithToolBar{
-    pageControl.hidden = YES;
-    faceScrollView.hidden=YES;
+    
     //初始化为NO added
     keyboardIsShow=NO;
     isFace = NO;
@@ -135,7 +134,10 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    
+    pageControl.hidden = YES;
+    faceScrollView.hidden=YES;
+    iconScrollView.hidden=YES;
+    keyboardIsShow = NO;
      [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSString *sendToID = [imageCache getFriendID];
@@ -1111,7 +1113,6 @@
         [self addVideo];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
-    iconScrollView.hidden=YES;
 }
 
 -(void)bigImage:(UIImage *)image{
