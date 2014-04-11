@@ -820,6 +820,8 @@
 -(void) dismiss{
     [pageControl setHidden:YES];
     sendButton.hidden = YES;
+    iconScrollView.hidden = YES;
+    faceScrollView.hidden=YES;
 }
 
 #pragma mark -
@@ -1101,6 +1103,7 @@
         [self scrollBubbleViewToBottomAnimated:YES];
     }
     if (buttonTag == 1) {
+        [self dismissKeyBoard];
         [self takeVideo];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
