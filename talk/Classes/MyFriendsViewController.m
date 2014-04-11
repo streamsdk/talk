@@ -385,7 +385,8 @@
     [self readHistory];
     [self startUpload];
     LoadAllMetaData * loadAll = [[LoadAllMetaData alloc]init];
-    [loadAll performSelectorInBackground:@selector(loadAllMetaData) withObject:nil];
+    [loadAll loadAllMetaData];
+//    [loadAll performSelectorInBackground:@selector(loadAllMetaData) withObject:nil];
     NSLog(@"");
    
 }
