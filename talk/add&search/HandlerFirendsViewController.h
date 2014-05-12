@@ -29,6 +29,6 @@ typedef enum {
     
     UISegmentedControl *segmentedControl;
 }
-
+@property (nonatomic, retain) NSMutableDictionary *statusDict;
 @property (nonatomic,strong) UISearchBar * searchBar;
 @end

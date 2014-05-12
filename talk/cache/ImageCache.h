@@ -10,13 +10,18 @@
 #import "FilesUpload.h"
 #import "NSBubbleData.h"
 #import "DownLoadVideo.h"
+
 @interface ImageCache : NSObject
 
 +(ImageCache *)sharedObject;
 
+-(NSLock *)getLock;
+
 -(void)selfImageDownload:(NSData *)file withFileId:(NSString *)fileId;
 
 -(NSData *)getImage:(NSString *)fileId;
+
+-(void)removefileId:(NSString *)fileId;
 
 -(void)saveUserMetadata:(NSString *)userName withMetadata:(NSMutableDictionary *)metaData;
 
@@ -72,25 +77,29 @@
 
 -(NSInteger)getReadCount:(NSString *)userId;
 
--(void)saveTablecontentOffset:(CGFloat)f withUser:(NSString *)user;
-
--(CGFloat) getTablecontentOffset:(NSString *)user;
-
--(void) saveDownVideo :(DownLoadVideo *)downVideo;
-
--(DownLoadVideo *)getDownVideo;
-
--(void) deleteDownVideo;
-
--(BOOL) downVideoArrayIsNull;
+-(void) removeCoun;
 
 -(void) saveRaedAllCount:(NSNumber *)count withuserID:(NSString *)userId ;
 
 -(NSInteger)getAllReadCount:(NSString *)userId;
 
+-(void) saveDownVideo :(DownLoadVideo *)downVideo;
+-(DownLoadVideo *)getDownVideo;
+-(void) deleteDownVideo;
+-(BOOL) downVideoArrayIsNull;
+
+-(void)saveTablecontentOffset:(CGFloat)f withUser:(NSString *)user;
+
+-(CGFloat) getTablecontentOffset:(NSString *)user;
+
+-(void)saveOnline:(NSString *)online withuserId:(NSString *)userId;
+-(NSString *)getOnline:(NSString *)userId;
+
 -(void)saveVoiceFile:(NSArray *)array withfileID:(NSString *)fileId;
-
 -(NSArray *)getVoiceFile:(NSString *)fileId;
-
 -(void)removeVoiceFile:(NSString *)fileId;
+
+-(void)saveSearchImage:(UIImage *)image;
+-(NSMutableArray *)getSearchImage;
+-(void)removeSearchImage;
 @end

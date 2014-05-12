@@ -13,6 +13,7 @@
 #import <arcstreamsdk/STreamFile.h>
 #import <arcstreamsdk/STreamSession.h>
 #import <CFNetwork/CFNetwork.h>
+#import <arcstreamsdk/STreamUser.h>
 #import "ACKMessageDB.h"
 #import "AddDB.h"
 #import "ImageCache.h"
@@ -135,6 +136,33 @@ static XMPPReconnect *xmppReconnect;
 - (void)disconnect
 {
     
+    
+    ImageCache * imageCache =[ImageCache sharedObject];
+    [imageCache removeSearchImage];
+    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *username = [userDefaults objectForKey:@"username"];
+    NSString *status = [userDefaults objectForKey:@"status"];
+    if (username) {
+        STreamUser *user =[[STreamUser alloc]init];
+        NSMutableDictionary * userMetadata= [imageCache getUserMetadata:username];
+        if (status== nil||![[userMetadata objectForKey:@"status"] isEqualToString:status]) {
+            [user updateUserMetadata:username withMetadata:userMetadata];
+        }
+        
+        NSDate *now = [NSDate date];
+        long millionsSecs = [now timeIntervalSince1970];
+        NSString *time = [NSString stringWithFormat:@"%ld",millionsSecs];
+        STreamObject * so = [[STreamObject alloc]init];
+        NSMutableString *userid = [[NSMutableString alloc] init];
+        [userid appendString:username];
+        [userid appendString:@"status"];
+        [so setObjectId:userid];
+        [so addStaff:@"lastseen" withObject:time];
+        [so addStaff:@"online" withObject:@"NO"];
+        [so update];
+        
+    }
+
     
     ImageCache * imagecache = [ImageCache sharedObject];
     [imagecache removeAllFileUpload];

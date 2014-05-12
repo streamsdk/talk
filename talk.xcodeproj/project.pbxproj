@@ -11,6 +11,10 @@
 		030D10D0186D344700910292 /* camera_icon150.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10CC186D344700910292 /* camera_icon150.png */; };
 		030D10D1186D344700910292 /* video150.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10CD186D344700910292 /* video150.png */; };
 		0316AE1818A189DE00F3329A /* settings2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0316AE1718A189DE00F3329A /* settings2.png */; };
+		0325141F19201CC1002910A6 /* MyStatusDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0325141E19201CC1002910A6 /* MyStatusDB.m */; };
+		0325142519201D26002910A6 /* StatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0325142219201D26002910A6 /* StatusViewController.m */; };
+		0325142619201D26002910A6 /* EditStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0325142419201D26002910A6 /* EditStatusViewController.m */; };
+		0325142919201FF7002910A6 /* ReadStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 0325142819201FF7002910A6 /* ReadStatus.m */; };
 		0325C67618BBF24A0089C182 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0325C67518BBF24A0089C182 /* arcstreamsdk.framework */; };
 		03451B8518326C5600030E79 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03451B8418326C5600030E79 /* SignUpViewController.m */; };
 		0345C21A189E9EF6007AB90F /* addf.png in Resources */ = {isa = PBXBuildFile; fileRef = 0345C219189E9EF5007AB90F /* addf.png */; };
@@ -367,6 +371,14 @@
 		030D10CC186D344700910292 /* camera_icon150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_icon150.png; sourceTree = "<group>"; };
 		030D10CD186D344700910292 /* video150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video150.png; sourceTree = "<group>"; };
 		0316AE1718A189DE00F3329A /* settings2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings2.png; sourceTree = "<group>"; };
+		0325141D19201CC1002910A6 /* MyStatusDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyStatusDB.h; sourceTree = "<group>"; };
+		0325141E19201CC1002910A6 /* MyStatusDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyStatusDB.m; sourceTree = "<group>"; };
+		0325142119201D26002910A6 /* StatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusViewController.h; sourceTree = "<group>"; };
+		0325142219201D26002910A6 /* StatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusViewController.m; sourceTree = "<group>"; };
+		0325142319201D26002910A6 /* EditStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditStatusViewController.h; sourceTree = "<group>"; };
+		0325142419201D26002910A6 /* EditStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditStatusViewController.m; sourceTree = "<group>"; };
+		0325142719201FF7002910A6 /* ReadStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadStatus.h; sourceTree = "<group>"; };
+		0325142819201FF7002910A6 /* ReadStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReadStatus.m; sourceTree = "<group>"; };
 		0325C67518BBF24A0089C182 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
 		03451B8318326C5600030E79 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SignUpViewController.h; path = Classes/SignUpViewController.h; sourceTree = "<group>"; };
 		03451B8418326C5600030E79 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SignUpViewController.m; path = Classes/SignUpViewController.m; sourceTree = "<group>"; };
@@ -967,6 +979,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0325142019201D13002910A6 /* status */ = {
+			isa = PBXGroup;
+			children = (
+				0325142119201D26002910A6 /* StatusViewController.h */,
+				0325142219201D26002910A6 /* StatusViewController.m */,
+				0325142319201D26002910A6 /* EditStatusViewController.h */,
+				0325142419201D26002910A6 /* EditStatusViewController.m */,
+			);
+			name = status;
+			sourceTree = "<group>";
+		};
 		0355801C18812D670036CC3C /* twitter */ = {
 			isa = PBXGroup;
 			children = (
@@ -1040,6 +1063,7 @@
 		03D9BF0118145C080039118F /* talk */ = {
 			isa = PBXGroup;
 			children = (
+				0325142019201D13002910A6 /* status */,
 				0355801C18812D670036CC3C /* twitter */,
 				0E19E82518716AA100523232 /* EGOTableViewPullRefresh */,
 				03F5A1891867367500CD60FD /* handler */,
@@ -1927,6 +1951,8 @@
 		0E2918D11859579000AA21B2 /* friendsSort */ = {
 			isa = PBXGroup;
 			children = (
+				0325142719201FF7002910A6 /* ReadStatus.h */,
+				0325142819201FF7002910A6 /* ReadStatus.m */,
 				0EE9518E185EA43C003F4638 /* MainController.h */,
 				0EE9518F185EA43C003F4638 /* MainController.m */,
 				0E03AB0A1881242400F7BDC7 /* ChatSettingViewController.h */,
@@ -2020,6 +2046,8 @@
 		0E8A4F30182B7EE300705C1F /* talkDB */ = {
 			isa = PBXGroup;
 			children = (
+				0325141D19201CC1002910A6 /* MyStatusDB.h */,
+				0325141E19201CC1002910A6 /* MyStatusDB.m */,
 				0E8A4F34182B7FE300705C1F /* TalkDB.h */,
 				0E8A4F35182B7FE300705C1F /* TalkDB.m */,
 				0EFD8C0A18D40443005A93B0 /* CopyDB.h */,
@@ -2680,12 +2708,15 @@
 				03D9BF7B18145E370039118F /* XMPPStream.m in Sources */,
 				0E4B13D8187CF15F0070752B /* DisappearImageController.m in Sources */,
 				0E8A4F33182B7F8000705C1F /* CreateUI.m in Sources */,
+				0325141F19201CC1002910A6 /* MyStatusDB.m in Sources */,
 				0E49F042187E333700749A6D /* ALMoviePlayerController.m in Sources */,
 				03D9C0A618145E410039118F /* XMPPMessage+XEP_0308.m in Sources */,
 				03D9C0EB18145E510039118F /* NSString+DDXML.m in Sources */,
+				0325142919201FF7002910A6 /* ReadStatus.m in Sources */,
 				03D9C07518145E410039118F /* XMPPRoom.m in Sources */,
 				03D9C09218145E410039118F /* XMPPCapabilities.m in Sources */,
 				03D9C05918145E410039118F /* XMPPResourceCoreDataStorageObject.m in Sources */,
+				0325142619201D26002910A6 /* EditStatusViewController.m in Sources */,
 				03D9C08318145E410039118F /* NSXMLElement+XEP_0059.m in Sources */,
 				03D9C0E318145E510039118F /* DDAbstractDatabaseLogger.m in Sources */,
 				0E1B053118A623A7001715C6 /* FilesUpload.m in Sources */,
@@ -2716,6 +2747,7 @@
 				03D9C05618145E410039118F /* XMPPProcessOne.m in Sources */,
 				03D9BF7518145E370039118F /* XMPPIQ.m in Sources */,
 				03D9BF5018145E270039118F /* XMPPAnonymousAuthentication.m in Sources */,
+				0325142519201D26002910A6 /* StatusViewController.m in Sources */,
 				03D9C07718145E410039118F /* XMPPvCardAvatarCoreDataStorageObject.m in Sources */,
 				03D9C0A118145E410039118F /* NSXMLElement+XEP_0203.m in Sources */,
 				03451B8518326C5600030E79 /* SignUpViewController.m in Sources */,

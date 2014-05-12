@@ -26,6 +26,7 @@
 #import "DownloadDB.h"
 #import "UploadDB.h"
 #import "CopyDB.h"
+#import "MyStatusDB.h"
 //#import "TwitterConnect.h"
 
 @implementation UINavigationBar (UINavigationBarCategory)
@@ -85,6 +86,9 @@
     //upload
     UploadDB *uploadDb = [[UploadDB alloc]init];
     [uploadDb initDB];
+    
+    MyStatusDB *status =[[MyStatusDB alloc]init];
+    [status initDB];
     
     CopyDB * db = [[CopyDB alloc]init];
     [db initDB];
@@ -181,7 +185,7 @@
             [self.window setRootViewController:nav];
         }
     }else{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"网络错误" message:@"网络没有信号" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"network error" message:@"no network" delegate:self cancelButtonTitle:@"ok" otherButtonTitles:nil];
         [alert show];
     }
     

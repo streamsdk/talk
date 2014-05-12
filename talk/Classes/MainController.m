@@ -74,6 +74,9 @@
     BOOL isClearData;
     
     UIImageView * backgroundView;
+    UILabel *lable1;
+    UILabel *lable;
+    UIView * view;
 }
 
 @property(nonatomic,retain) Voice * voice;
@@ -96,6 +99,21 @@
         // Custom initialization
     }
     return self;
+}
+
+-(void)loadOnline{
+    [self performSelectorOnMainThread:@selector(updateTitle) withObject:nil waitUntilDone:NO];
+}
+
+-(void) updateTitle{
+    ImageCache * imageCache =  [ImageCache sharedObject];
+    NSString * online = [imageCache getOnline:[imageCache getFriendID]];
+    if ([online isEqualToString:@"online"]) {
+        [lable1 setFrame:CGRectMake(0, 20, view.frame.size.width-50, 20)];
+    }else{
+        [lable1 setFrame:CGRectMake(0, 20, view.frame.size.width, 20)];
+    }
+    lable1.text = online;
 }
 
 -(void)initWithToolBar{
@@ -142,8 +160,17 @@
     ImageCache * imageCache =  [ImageCache sharedObject];
     NSString *sendToID = [imageCache getFriendID];
     
-    self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
+    //self.title = [NSString stringWithFormat:@"chat to %@",sendToID];
 
+    lable.text=sendToID;
+    NSString * online = [imageCache getOnline:sendToID];
+    if ([online isEqualToString:@"online"])
+        [lable1 setFrame:CGRectMake(0, 20, view.frame.size.width-50, 20)];
+    else
+        [lable1 setFrame:CGRectMake(0, 20, view.frame.size.width, 20)];
+    lable1.text = online;
+    
+    
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     NSString * userID = [handler getUserID];
     rowCount = 10;
@@ -322,10 +349,37 @@
      [_deleteButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
     APPDELEGATE.button = _deleteButton;
+    
     [_deleteBackview addSubview:_cancelButton];
     [_deleteBackview addSubview:_deleteButton];
     [bubbleTableView reloadData];
     self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    view =[[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width-160, 44)];
+    view.backgroundColor =[UIColor clearColor];
+    view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    view.autoresizesSubviews = YES;
+    
+    lable = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width-50, 20)];
+    lable.backgroundColor = [UIColor clearColor];
+    lable.textColor =[UIColor whiteColor];
+    lable.font = [UIFont systemFontOfSize:13];
+    lable.textAlignment =NSTextAlignmentCenter;
+    lable.autoresizingMask = view.autoresizingMask;
+    
+    lable1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 20,view.frame.size.width, 20)];
+    lable1.backgroundColor = [UIColor clearColor];
+    lable1.textColor =[UIColor grayColor];
+    lable1.font = [UIFont systemFontOfSize:11];
+    lable1.textAlignment =NSTextAlignmentCenter;
+    lable.autoresizingMask = view.autoresizingMask;
+    
+    [view addSubview:lable];
+    [view addSubview:lable1];
+    self.navigationItem.titleView = view;
+    
+    
+    
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.tag = HUD_TAG;
     [self.view addSubview:HUD];

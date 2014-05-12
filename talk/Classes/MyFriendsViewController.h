@@ -11,6 +11,10 @@
 #import "GetAllMessagesProtocol.h"
 #import "EGORefreshTableHeaderView.h"
 #import "UploadProtocol.h"
+
+@protocol loadOnlineDelegate <NSObject>
+-(void)loadOnline;
+@end
 @interface MyFriendsViewController : UIViewController<STreamXMPPProtocol,EGORefreshTableHeaderDelegate,UITableViewDelegate,UITableViewDataSource>
 {
     EGORefreshTableHeaderView *_refreshHeaderView;
@@ -24,6 +28,8 @@
 @property(nonatomic,strong) UIButton * button;
 @property (assign,nonatomic) id<UploadProtocol> uploadProtocol;
 @property(nonatomic,strong) UIToolbar *toolBar;
+@property (nonatomic, retain) NSMutableDictionary *statusDict;
+@property (assign,nonatomic) id<loadOnlineDelegate> loadonlineProtocol;
 
 -(void)reloadTableViewDataSource;
 -(void)doneLoadingTableViewData;

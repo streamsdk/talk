@@ -21,12 +21,16 @@
 #import<MessageUI/MFMailComposeViewController.h>
 #import "STreamXMPP.h"
 #import "DownloadAvatar.h"
-
+#import "StatusViewController.h"
 #define IMAGE_TAG 10000
+#import "MyStatusDB.h"
+#import "FileCache.h"
 @interface SettingViewController ()<MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate>
 {
     BOOL isaAatarImg;
     UIImage *profileImage;
+    NSString * status;
+    NSString *email;
 }
 @end
 
@@ -47,35 +51,49 @@
 -(void) saveClicked {
     
 }
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-//    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
-    [self.view setBackgroundColor:[UIColor lightGrayColor]];
-
-	// Do any additional setup after loading the view.
+-(void) viewWillAppear:(BOOL)animated{
     
-    isaAatarImg = NO;
-    
-    /*UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveClicked)];
-    self.navigationItem.rightBarButtonItem = rightItem;*/
-    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
-    NSString * loginName = [handle getUserID];
+    NSArray * arry =[[NSArray alloc]initWithObjects:@"Sleeping",@"In a meeting",@"Available",@"Busy",@"At school",@"Hey there! I am using CoolChat", nil];
+    HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
+    MyStatusDB * db = [[MyStatusDB alloc]init];
     ImageCache * imageCache = [ImageCache sharedObject];
     NSMutableDictionary *userMetadata=[imageCache getUserMetadata:[handle getUserID]];
-    NSString *email=[userMetadata objectForKey:@"Email"];
+    email=[userMetadata objectForKey:@"Email"];
     if (!email) {
         email = @"";
     }
-    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",loginName,@"Email",email,@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
+    NSMutableArray* statusArray = [db readStatus:[handle getUserID]];
+    if ([statusArray count]==0){
+        for (NSString * str in arry) {
+            [db insertStatus:str withUser:[handle getUserID]];
+        }
+    }
+    status = [userMetadata objectForKey:@"status"];
+    if (!status) {
+        status = @"Hey there! I am using CoolChat";
+        [userMetadata setObject:status forKey:@"status"];
+        [imageCache saveUserMetadata:[handle getUserID] withMetadata:userMetadata];
+    }else{
+        [db insertStatus:status withUser:[handle getUserID]];
+    }
+    userData = [[NSMutableArray alloc]initWithObjects:@"UserName",[handle getUserID],@"status",status,@"Email",email,@"My QRCode",@"Scanner QRCode",@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
+    if (!isaAatarImg) [myTableView reloadData];
+}
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    //    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
+    [self.view setBackgroundColor:[UIColor lightGrayColor]];
+    isaAatarImg = NO;
+    HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
+    NSString * loginName = [handle getUserID];
     myTableView  = [[UITableView alloc]initWithFrame:CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height-30) style:UITableViewStyleGrouped];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
     myTableView.dataSource = self;
     myTableView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:myTableView];
-
+    
     
     UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0,self.view.bounds.size.height-30, self.view.frame.size.width, 30)];
     [label setBackgroundColor:[UIColor blackColor]];
@@ -85,18 +103,17 @@
     label.text= @"CoolChat messenger V1.0";
     [self.view addSubview:label];
     DownloadAvatar * loadavatar = [[DownloadAvatar alloc]init];
-    profileImage = [loadavatar readAvatar:loginName];
- 
+    profileImage = [loadavatar loadAvatar:loginName];
     [myTableView reloadData];
 }
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
     return 4;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-
+    
     switch (section) {
         case 0:
-            return 3;
+            return 4;
             break;
         case 1:
             return 2;
@@ -107,20 +124,17 @@
         case 3:
             return 1;
             break;
-        case 4:
-            return 1;
-            break;
         default:
             break;
     }
     return 0;
-//    return [userData count]-1;
+    //    return [userData count]-1;
 }
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     NSString* head=nil;
     switch (section) {
         case 0:
-           head = @"Basic user info";
+            head = @"Basic user info";
             break;
         case 1:
             head = @"Invite to CoolChat";
@@ -149,7 +163,7 @@
             [l setMasksToBounds:YES];
             [l setCornerRadius:CGRectGetHeight([imageview bounds]) / 2];
             [l setBorderWidth:3];
-            [l setBorderColor:[[UIColor lightGrayColor]CGColor]];   
+            [l setBorderColor:[[UIColor lightGrayColor]CGColor]];
             if (profileImage) {
                 l.contents = (id)[profileImage CGImage];
             }else{
@@ -165,11 +179,15 @@
         }else if (indexPath.row==1){
             cell .textLabel.text = [userData objectAtIndex:indexPath.row-1];
             cell.detailTextLabel.text = [userData objectAtIndex:indexPath.row];
-        }else{
-            cell.tag = indexPath.row;
+        }else if (indexPath.row==2){
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell .textLabel.text = [userData objectAtIndex:indexPath.row];
             cell.detailTextLabel.text = [userData objectAtIndex:indexPath.row+1];
+        }else if (indexPath.row==3){
+            cell.tag = indexPath.row;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell .textLabel.text = [userData objectAtIndex:indexPath.row+1];
+            cell.detailTextLabel.text = [userData objectAtIndex:indexPath.row+2];
             emailText = [[UITextField alloc] initWithFrame:CGRectMake(100,0,160,44)];
             [emailText setBackgroundColor:[UIColor clearColor]];
             [emailText setKeyboardType:UIKeyboardTypeEmailAddress];
@@ -182,12 +200,12 @@
         }
     }else if(indexPath.section==1){
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
-        cell .textLabel.text = [userData objectAtIndex:indexPath.row+4];
+        
+        cell .textLabel.text = [userData objectAtIndex:indexPath.row+8];
     }else if(indexPath.section==2){
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
-        cell .textLabel.text = [userData objectAtIndex:indexPath.row+6];
+        cell .textLabel.text = [userData objectAtIndex:indexPath.row+10];
     }else if(indexPath.section==3){
         
         cell.backgroundColor = [UIColor redColor];
@@ -201,10 +219,10 @@
         
     }
     cell.textLabel.font = [UIFont fontWithName:@"Arial" size:18.0f];
-
+    
     return cell;
     
-
+    
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section==0) {
@@ -212,13 +230,17 @@
             return 100;
         }
     }
-     return 44;
-  
+    return 44;
+    
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
         case 0:{
             if (indexPath.row==2) {
+                StatusViewController * statusVC =[[StatusViewController alloc]init];
+                [statusVC setStatus:status];
+                [self.navigationController pushViewController:statusVC animated:NO];
+            }else  if (indexPath.row==3) {
                 UITableViewCell * cell = (UITableViewCell *)[tableView viewWithTag:indexPath.row];
                 cell.detailTextLabel.text = @"";
                 [emailText setEnabled:YES];
@@ -226,6 +248,7 @@
             }
         }
             break;
+            
         case 1:{
             if (indexPath.row == 0) {
                 
@@ -239,23 +262,23 @@
                         [alert show];
                     }
                 }
-             }
-             if (indexPath.row ==1) {
-                 Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
-                 if (mailClass !=nil) {
-                     if ([mailClass canSendMail]) {
-                         [self displayMailComposerSheet];
-                     }else{
-                         UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@""message:@"设备不支持邮件功能" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-                         [alert show];;
-                     }
-                 }
-             }
+            }
+            if (indexPath.row ==1) {
+                Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
+                if (mailClass !=nil) {
+                    if ([mailClass canSendMail]) {
+                        [self displayMailComposerSheet];
+                    }else{
+                        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@""message:@"设备不支持邮件功能" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                        [alert show];;
+                    }
+                }
+            }
         }
             break;
-
+            
         case 2:{
-          if (indexPath.row == 0) {
+            if (indexPath.row == 0) {
                 TearmServiceViewController * tearm = [[TearmServiceViewController alloc]init];
                 [self.navigationController pushViewController:tearm animated:YES];
             }
@@ -265,7 +288,7 @@
             }
         }
             break;
-       
+            
         default:
             break;
     }
@@ -303,6 +326,7 @@
 }
 -(void)headImageClicked:(UITapGestureRecognizer *)gestureRecognizer
 {
+    
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
                                   initWithTitle:nil
                                   delegate:self
@@ -315,6 +339,7 @@
 }
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     
+    isaAatarImg = YES;
     if (buttonIndex ==0) {
         [self takePhoto];
     }else if (buttonIndex ==1){
@@ -328,17 +353,18 @@
     UIImageView * imageview= (UIImageView *)[self.view viewWithTag:IMAGE_TAG];
     imageview.image = profileImage;
     [picker dismissViewControllerAnimated:YES completion:^{
+        
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        HUD.labelText = @"uploading...";
+        HUD.labelText = @"uploadLoading...";
         [self.view addSubview:HUD];
         [HUD showAnimated:YES whileExecutingBlock:^{
             [self uploadProfileImage];
         }completionBlock:^{
             [HUD removeFromSuperview];
             HUD = nil;
+            isaAatarImg = NO;
         }];
     }];
-    
     
 }
 -(UIImage *)imageWithImage:(UIImage *)_image scaledToSize:(CGSize)size {
@@ -374,6 +400,7 @@
 #pragma mark alertview Delegate
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
     if (buttonIndex == 1) {
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"log out...";
@@ -384,6 +411,7 @@
             NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
             [userDefaults removeObjectForKey:@"username"];
             [userDefaults removeObjectForKey:@"password"];
+            
             
         }completionBlock:^{
             LoginViewController *loginVC = [[LoginViewController alloc]init];
@@ -397,57 +425,45 @@
             HUD = nil;
         }];
     }
-
-     /*if (isaAatarImg) {
-         if (buttonIndex == 1) {
-             __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-             HUD.labelText = @"uploading profileImage...";
-             [self.view addSubview:HUD];
-             [HUD showAnimated:YES whileExecutingBlock:^{
-                 [self uploadProfileImage];
-             }completionBlock:^{
-                 [HUD removeFromSuperview];
-                 HUD = nil;
-             }];
-
-        }
-         isaAatarImg=NO;
-     }else{}*/
     
 }
 -(void) uploadProfileImage{
     HandlerUserIdAndDateFormater * handle =[HandlerUserIdAndDateFormater sharedObject];
     STreamUser * user = [[STreamUser alloc]init];
     STreamFile *file = [[STreamFile alloc] init];
-
+    
     UIImage *sImage = [self imageWithImage:profileImage scaledToMaxWidth:100 maxHeight:100];
     NSData * data = UIImageJPEGRepresentation(sImage, 0.8);
     [file postData:data];
-    sleep(3);
+    NSLog(@"errorMessage：%@",[file errorMessage]);
+    NSLog(@"ID:%@",[file fileId]);
     ImageCache *imageCache = [ImageCache sharedObject];
     FileCache *filecache = [FileCache sharedObject];
-    NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *metaData = [imageCache getUserMetadata:[handle getUserID]];
     if ([[file errorMessage] isEqualToString:@""] && [file fileId]){
         [metaData setValue:[file fileId] forKey:@"profileImageId"];
         [imageCache saveUserMetadata:[handle getUserID] withMetadata:metaData];
         [imageCache selfImageDownload:data withFileId:[file fileId]];
         [filecache writeFileDoc:[file fileId] withData:data];
         [user updateUserMetadata:[handle getUserID] withMetadata:metaData];
+        
     }
+    //    [self loadAvatar:[handle getUserID]];
 }
 
 #pragma mark UITEXTFILED-DELEGATE-
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    NSString * email = [[textField text]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if (email &&[email length]!=0) {
+    NSString * _email = [[textField text]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (_email &&[_email length]!=0) {
         HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
         ImageCache * imageCache = [ImageCache sharedObject];
         NSMutableDictionary *userMetadata=[imageCache getUserMetadata:[handle getUserID]];
-        [userMetadata  setObject:email forKey:@"Email"];
+        [userMetadata  setObject:_email forKey:@"Email"];
         [imageCache saveUserMetadata:[handle getUserID] withMetadata:userMetadata];
         STreamUser *user = [[STreamUser alloc]init];
         [user updateUserMetadata:[handle getUserID] withMetadata:userMetadata];
-        userData = [[NSMutableArray alloc]initWithObjects:@"UserName",[handle getUserID],@"Email",email,@"Terms of Service",@"Privacy Policy",@"About",@"Log Out", nil];
+        email = _email;
+        userData = [[NSMutableArray alloc]initWithObjects:@"UserName",[handle getUserID],@"status",status,@"Email",_email,@"My QRCode",@"Scanner QRCode",@"Invite by SMS",@"Invite by Mail",@"Terms of Service",@"Privacy Policy",@"Log Out", nil];
     }
     [textField setText:@""];
     [textField setEnabled:NO];
@@ -458,12 +474,12 @@
 -(void)displayMailComposerSheet
 {
     HandlerUserIdAndDateFormater *handle = [HandlerUserIdAndDateFormater sharedObject];
-
+    
     MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
     
     picker.mailComposeDelegate =self;
     [picker setSubject:@"文件分享"];
-    NSString *emailBody =[NSString stringWithFormat:@"I am using CoolChat now. Download CoolChat from app store or google play store. My user name is %@. Add me as friend",[handle getUserID]] ;
+    NSString *emailBody =[NSString stringWithFormat:@"I am using CoolChat now. Download CoolChat from apple store or google play store. My user name is %@. Add me as friend",[handle getUserID]] ;
     [picker setMessageBody:emailBody isHTML:NO];
     [self presentViewController:picker animated:YES completion:nil];
 }
@@ -472,7 +488,7 @@
     HandlerUserIdAndDateFormater *handle = [HandlerUserIdAndDateFormater sharedObject];
     MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
     picker.messageComposeDelegate =self;
-    NSString *smsBody =[NSString stringWithFormat:@"I am using CoolChat now. Download CoolChat from app store or google play store. My user name is %@. Add me as friend",[handle getUserID]] ;
+    NSString *smsBody =[NSString stringWithFormat:@"I am using CoolChat now. Download CoolChat from apple store or google play store. My user name is %@. Add me as friend",[handle getUserID]] ;
     picker.body=smsBody;
     [self presentViewController:picker animated:YES completion:nil];
 }

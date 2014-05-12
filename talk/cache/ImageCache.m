@@ -24,10 +24,13 @@ static NSMutableArray *_fileUpload;
 static NSMutableDictionary * dic;
 static NSMutableDictionary*_downloadingFile;
 static NSMutableDictionary*_countDict;
-static NSMutableDictionary *_contentOffset;
+static NSLock *_theLock;
 static NSMutableArray * _downVideo;
+static NSMutableDictionary *_contentOffset;
 static NSMutableDictionary*_allCountDict;
+static NSMutableDictionary*_onlineDict;
 static NSMutableDictionary*_voiceDict;
+static NSMutableArray * _searchImage;
 @implementation ImageCache
 
 
@@ -37,8 +40,8 @@ static NSMutableDictionary*_voiceDict;
     dispatch_once(&onceToken, ^{
         
         sharedInstance = [[ImageCache alloc] init];
-         _userMetaData = [[NSMutableDictionary alloc] init];
-         fileCache = [FileCache sharedObject];
+        _userMetaData = [[NSMutableDictionary alloc] init];
+        fileCache = [FileCache sharedObject];
         _cachedSelfImageFiles = [[NSMutableArray alloc] init];
         _imageDictionary = [[NSMutableDictionary alloc] init];
         _selfImageDictionary = [[NSMutableDictionary alloc] init];
@@ -51,14 +54,21 @@ static NSMutableDictionary*_voiceDict;
         dic = [[NSMutableDictionary alloc]init];
         _downloadingFile =[[NSMutableDictionary alloc]init];
         _countDict = [[NSMutableDictionary alloc]init];
-        _contentOffset = [[NSMutableDictionary alloc]init];
+        _theLock = [[NSLock alloc] init];
         _downVideo = [[NSMutableArray alloc]init];
+        _contentOffset = [[NSMutableDictionary alloc]init];
         _allCountDict = [[NSMutableDictionary alloc]init];
+        _onlineDict = [[NSMutableDictionary alloc]init];
         _voiceDict = [[NSMutableDictionary alloc]init];
+        _searchImage =[[NSMutableArray alloc]init];
     });
     
     return sharedInstance;
+    
+}
 
+- (NSLock *)getLock{
+    return _theLock;
 }
 
 -(void)saveJsonData:(NSString *)jd forFileId:(NSString *)fileId{
@@ -75,12 +85,12 @@ static NSMutableDictionary*_voiceDict;
 
 -(void)saveUserMetadata:(NSString *)userName withMetadata:(NSMutableDictionary *)metaData{
     
-     [_userMetaData setObject:metaData forKey:userName];
+    [_userMetaData setObject:metaData forKey:userName];
 }
 
 -(NSMutableDictionary *)getUserMetadata:(NSString *)userName{
     
-     return [_userMetaData objectForKey:userName];
+    return [_userMetaData objectForKey:userName];
 }
 
 -(void)selfImageDownload:(NSData *)file withFileId:(NSString *)fileId{
@@ -94,9 +104,12 @@ static NSMutableDictionary*_voiceDict;
         
     }
     [_cachedSelfImageFiles addObject:fileId];
-    [_selfImageDictionary setObject:file forKey:fileId]; 
+    [_selfImageDictionary setObject:file forKey:fileId];
 }
-
+-(void)removefileId:(NSString *)fileId{
+    [_cachedSelfImageFiles removeObject:fileId];
+    [_selfImageDictionary removeObjectForKey:fileId];
+}
 -(NSData *)getImage:(NSString *)fileId{
     NSData *data =  [_selfImageDictionary objectForKey:fileId];
     if (data){
@@ -119,7 +132,7 @@ static NSMutableDictionary*_voiceDict;
 }
 -(void)setMessagesCount:(NSString *)friendId {
     if ([[_messagesDict allKeys] containsObject:friendId]) {
-         NSInteger count =[[_messagesDict objectForKey:friendId] integerValue];
+        NSInteger count =[[_messagesDict objectForKey:friendId] integerValue];
         NSString * str = [NSString stringWithFormat:@"%d",count+1];
         [_messagesDict setObject:str forKey:friendId];
     }else{
@@ -161,7 +174,7 @@ static NSMutableDictionary*_voiceDict;
 }
 
 -(void)removeFileUpload:(FilesUpload *)file{
-
+    
     [_fileUpload removeObject:file];
 }
 
@@ -180,7 +193,7 @@ static NSMutableDictionary*_voiceDict;
 }
 
 -(void)removeBubbleData:(NSString *)key{
-   
+    
     [dic removeObjectForKey:key];
 }
 
@@ -207,17 +220,25 @@ static NSMutableDictionary*_voiceDict;
     if (userId) {
         [_countDict setObject:count forKey:userId];
     }
+    
 }
 
 -(NSInteger)getReadCount:(NSString *)userId{
-
+    
     return [[_countDict objectForKey:userId]intValue];
 }
--(void) saveTablecontentOffset:(CGFloat)f withUser:(NSString *)user{
-    [_contentOffset setObject:[NSNumber numberWithFloat:f] forKey:user];
+
+-(void) removeCoun{
+    [_countDict removeAllObjects];
 }
--(CGFloat)getTablecontentOffset:(NSString *)user{
-    return [[_contentOffset objectForKey:user] floatValue];
+-(void) saveRaedAllCount:(NSNumber *)count withuserID:(NSString *)userId{
+    if (userId) {
+        [_allCountDict setObject:count forKey:userId];
+    }
+}
+
+-(NSInteger)getAllReadCount:(NSString *)userId{
+    return [[_allCountDict objectForKey:userId]intValue];
 }
 -(void) saveDownVideo :(DownLoadVideo *)downVideo{
     [_downVideo addObject:downVideo];
@@ -235,16 +256,19 @@ static NSMutableDictionary*_voiceDict;
 -(void) deleteDownVideo{
     [_downVideo removeObjectAtIndex:0];
 }
--(void) saveRaedAllCount:(NSNumber *)count withuserID:(NSString *)userId{
-    if (userId) {
-        [_allCountDict setObject:count forKey:userId];
-    }
+-(void) saveTablecontentOffset:(CGFloat)f withUser:(NSString *)user{
+    [_contentOffset setObject:[NSNumber numberWithFloat:f] forKey:user];
+}
+-(CGFloat)getTablecontentOffset:(NSString *)user{
+    return [[_contentOffset objectForKey:user] floatValue];
 }
 
--(NSInteger)getAllReadCount:(NSString *)userId{
-    return [[_allCountDict objectForKey:userId]intValue];
+-(void)saveOnline:(NSString *)online withuserId:(NSString *)userId{
+    [_onlineDict setObject:online forKey:userId];
 }
-
+-(NSString *)getOnline:(NSString *)userId{
+    return [_onlineDict objectForKey:userId];
+}
 -(void)saveVoiceFile:(NSArray *)array withfileID:(NSString *)fileId{
     [_voiceDict setObject:array forKey:fileId];
 }
@@ -255,5 +279,13 @@ static NSMutableDictionary*_voiceDict;
     
     [_voiceDict removeObjectForKey:fileId];
 }
-
+-(void)saveSearchImage:(UIImage *)image{
+    [_searchImage addObject:image];
+}
+-(NSMutableArray *)getSearchImage{
+    return _searchImage;
+}
+-(void)removeSearchImage{
+    [_searchImage removeAllObjects];
+}
 @end
