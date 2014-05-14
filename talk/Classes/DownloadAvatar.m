@@ -15,6 +15,9 @@
 @implementation DownloadAvatar
 
 -(UIImage *)loadAvatar:(NSString *) userID {
+    if ([userID isEqualToString:@"makhan"]){
+        NSLog(@"");
+    }
     __block UIImage *avatarImage = [UIImage imageNamed:@"noavatar.png"];
     ImageCache *imageCache = [ImageCache sharedObject];
     NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
@@ -24,7 +27,7 @@
             FileCache *fileCache = [FileCache sharedObject];
             STreamFile *file = [[STreamFile alloc] init];
             [file downloadAsData:pImageId downloadedData:^(NSData *imageData, NSString *oId) {
-                if ([pImageId isEqualToString:oId]){
+                if ([pImageId isEqualToString:oId] && [imageData length] != 0){
                     [imageCache selfImageDownload:imageData withFileId:pImageId];
                     [fileCache writeFileDoc:pImageId withData:imageData];
                     avatarImage = [UIImage imageWithData: [imageCache getImage:pImageId]];

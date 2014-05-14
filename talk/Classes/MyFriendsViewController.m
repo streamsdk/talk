@@ -105,7 +105,7 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self.view addSubview:_tableView];
-    
+    [self performSelectorInBackground:@selector(loadFriends) withObject:nil];
     //background
     //    UIView *backgrdView = [[UIView alloc] initWithFrame:self.tableView.frame];
     //    backgrdView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]];
@@ -213,11 +213,13 @@
     [self readAddDb];
     sectionHeadsKeys=[[NSMutableArray alloc]init];
     sortedArrForArrays = [self getChineseStringArr:userData];
+    ReadStatus * readStatus = [[ReadStatus alloc]init];
+    [readStatus loadAllMetaData];
+    [self.tableView reloadData];
 }
 -(void) connect {
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     if (![handle getUserID]) return;
-    [self performSelectorInBackground:@selector(loadFriends) withObject:nil];
     [self setMessagesProtocol:mainVC];
     [self setUploadProtocol:mainVC];
     STreamXMPP *con = [STreamXMPP sharedObject];
@@ -342,8 +344,7 @@
     [so setObjectId:userid];
     [so addStaff:@"online" withObject:@"YES"];
     [so updateInBackground];
-    ReadStatus * readStatus = [[ReadStatus alloc]init];
-    [readStatus loadAllMetaData];
+ 
 }
 
 - (void)didNotAuthenticate:(NSXMLElement *)error{
