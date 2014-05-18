@@ -97,6 +97,8 @@
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem * rightItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addFriends)];
     self.navigationItem.rightBarButtonItem = rightItem;
+    [self performSelectorInBackground:@selector(loadFriends) withObject:nil];
+    
     
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     _reloading= NO;
@@ -217,7 +219,6 @@
 -(void) connect {
     HandlerUserIdAndDateFormater * handle = [HandlerUserIdAndDateFormater sharedObject];
     if (![handle getUserID]) return;
-    [self performSelectorInBackground:@selector(loadFriends) withObject:nil];
     [self setMessagesProtocol:mainVC];
     [self setUploadProtocol:mainVC];
     STreamXMPP *con = [STreamXMPP sharedObject];
