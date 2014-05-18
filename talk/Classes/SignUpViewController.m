@@ -145,18 +145,16 @@
     [myObject setObjectId:friendUserName];
     [myObject addStaff:@"status" withObject:@"friend"];
     [myObject setCategory:myUserName];
-    [myObject updateInBackground];
+    [myObject update];
     
     
     STreamObject *friendObject = [[STreamObject alloc] init];
     [friendObject setObjectId:myUserName];
     [friendObject setCategory:friendUserName];
     [friendObject addStaff:@"status" withObject:@"friend"];
-    [friendObject updateInBackground];
+    [friendObject update];
     
-    AddDB * addDb = [[AddDB alloc]init];
-    [addDb insertDB:myUserName withFriendID:friendUserName withStatus:@"friend"];
-
+   
     
 }
 
@@ -167,17 +165,15 @@
     [myObject setObjectId:friendUserName];
     [myObject addStaff:@"status" withObject:@"request"];
     [myObject setCategory:myUserName];
-    [myObject updateInBackground];
+    [myObject update];
     
     
     STreamObject *friendObject = [[STreamObject alloc] init];
     [friendObject setObjectId:myUserName];
     [friendObject setCategory:friendUserName];
     [friendObject addStaff:@"status" withObject:@"request"];
-    [friendObject updateInBackground];
+    [friendObject update];
     
-     AddDB * addDb = [[AddDB alloc]init];
-     [addDb insertDB:myUserName withFriendID:friendUserName withStatus:@"request"];
 }
 
 
@@ -226,8 +222,11 @@
                 STreamCategoryObject * sto = [[STreamCategoryObject alloc]initWithCategory:username];
                 [sto createNewCategoryObject:^(BOOL succeed, NSString *response){
                     
-                    if (succeed)
+                    if (succeed){
                         NSLog(@"succeed");
+                        [self addAsFriend:username withFriend:@"coolchat"];
+                        [self addAsFriendRequest:username withFriend:@"maria"];
+                    }
                     else
                         NSLog(@"failed");
                 }];
@@ -237,10 +236,11 @@
                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                 [userDefaults setObject:username forKey:@"username"];
                 [userDefaults setObject:pword forKey:@"password"];
-                
-                
-                [self addAsFriend:username withFriend:@"coolchat"];
-                [self addAsFriendRequest:username withFriend:@"maria"];
+                AddDB * addDb = [[AddDB alloc]init];
+                [addDb insertDB:username withFriendID:@"coolchat" withStatus:@"friend"];
+                [addDb insertDB:username withFriendID:@"maria" withStatus:@"request"];
+
+               
               
                 //  [self addAsFriend:username withFriend:@"joy"];
                 //  [self addAsFriendRequest:username withFriend:@"funny"];
