@@ -782,8 +782,8 @@
             if (!time){
                 time = [imageCache getOnline:userName];
                 if (time) return ;
-                int value = (arc4random() % 24) + 1;
-                long lastseen=[[NSDate dateWithTimeIntervalSinceNow:-(value*60*60)] timeIntervalSince1970];
+                int value = (arc4random() % (24*60)) + 1;
+                long lastseen=[[NSDate dateWithTimeIntervalSinceNow:-(value*60)] timeIntervalSince1970];
                 time =[NSString stringWithFormat:@"%ld",lastseen];
             }
             //            long long lastModifiedTime = [time longLongValue];
@@ -826,7 +826,7 @@
         [formatter1 setDateFormat:@"HH:mm"];
         lastseenTime=[NSString stringWithFormat:@"last seen yesterday at %@", [formatter1 stringFromDate:last]];
     }else{
-        [formatter1 setDateFormat:@"MM/dd/yyyy"];
+        [formatter1 setDateFormat:@"dd/MM/yyyy"];
         lastseenTime=[NSString stringWithFormat:@"last seen at %@", [formatter1 stringFromDate:last]];
     }
     return lastseenTime;
@@ -846,7 +846,7 @@
     }else  if (days<=1) {
         lastseenTime=[NSString stringWithFormat:@"last seen yesterday at %@", [formatter1 stringFromDate:d]];
     }else{
-        [formatter1 setDateFormat:@"MM/dd/yyyy"];
+        [formatter1 setDateFormat:@"dd/MM/yyyy"];
         lastseenTime=[NSString stringWithFormat:@"last seen at %@", [formatter1 stringFromDate:d]];
     }
     return lastseenTime;
