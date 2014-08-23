@@ -428,7 +428,7 @@
     }
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-    NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
+    NSDate * date = [handler getDate];
     [handler setDate:date];
     DownloadDB * downloadDB = [[DownloadDB alloc]init];
     [downloadDB insertDownloadDB:[handler getUserID] fileID:fileId withBody:body withFrom:fromID withTime:[dateFormatter stringFromDate:date]];
@@ -509,7 +509,7 @@
         NSMutableDictionary *json = [decoder objectWithData:jsonData];
         NSString *type = [json objectForKey:@"type"];
         NSString *fromUser = [json objectForKey:@"from"];
-        NSString * timeId  =[json objectForKey:@"id"];
+       // NSString * timeId  =[json objectForKey:@"id"];
         NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
         HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
         NSString * path;
@@ -596,7 +596,7 @@
         NSString  *str = [jsonDic JSONString];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-        NSDate *date = [NSDate dateWithTimeIntervalSince1970:[timeId longLongValue]/1000.0];
+       // NSDate *date = [NSDate dateWithTimeIntervalSince1970:[timeId longLongValue]/1000.0];
         //        NSTimeZone *zone = [NSTimeZone systemTimeZone];
         //        NSInteger interval = [zone secondsFromGMTForDate:date];
         //        date = [date dateByAddingTimeInterval:interval];

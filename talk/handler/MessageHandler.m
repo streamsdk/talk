@@ -32,13 +32,13 @@
 
 -(void) sendMessage :(NSString *)messages forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleMyData:(NSData *) myData withSendId:(NSString *)sendID{
     NSMutableDictionary *jsonDic = [[NSMutableDictionary alloc]init];
-    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
+    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
+    NSDate *date = [handler getDate];
     NSBubbleData *sendBubble = [NSBubbleData dataWithText:messages date:date type:BubbleTypeMine];
     if (myData)
         sendBubble.avatar = [UIImage imageWithData:myData];
     [bubbleData addObject:sendBubble];
   
-    HandlerUserIdAndDateFormater *handler =[HandlerUserIdAndDateFormater sharedObject];
     
     STreamXMPP *con = [STreamXMPP sharedObject];
     

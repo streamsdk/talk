@@ -77,6 +77,7 @@ static NSDate * _date;
 }
 
 -(NSDate *)getDate{
+    _date =[[NSDate alloc]init];
     return _date;
 }
 @end
