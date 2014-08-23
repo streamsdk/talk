@@ -502,7 +502,7 @@
     CGFloat newHeight = bubbleTableView.contentSize.height;
     [bubbleTableView setContentOffset:CGPointMake(0, newHeight-formerHeight)];
 }
--(void)getFiles:(NSData *)data withFromID:(NSString *)fromID withBody:(NSString *)body withPath:(NSString *)path{
+-(void)getFiles:(NSData *)data withFromID:(NSString *)fromID withBody:(NSString *)body withPath:(NSString *)path withDate:(NSDate *)date{
     
     ImageCache *imageCache = [ImageCache sharedObject];
     HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
@@ -522,7 +522,7 @@
     NSString *type = [json objectForKey:@"type"];
      NSString * time = [json objectForKey:@"duration"];
     if ([path isEqualToString:[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0]]) {
-        [photoHandler receiveFile:data withPath:path forBubbleDataArray:bubbleData withTime:time forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+        [photoHandler receiveFile:data withPath:path forBubbleDataArray:bubbleData withTime:time forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID withDate:date];
         if ([bubbleData count]!=0) {
             NSBubbleData * bubble = [bubbleData lastObject];
             [imageCache saveBubbleData:bubble withKey:body];
@@ -532,12 +532,12 @@
     }else{
         if ([type isEqualToString:@"photo"]) {
             [photoHandler setController:self];
-            [photoHandler receiveFile:data withPath:path forBubbleDataArray:bubbleData withTime:time forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+            [photoHandler receiveFile:data withPath:path forBubbleDataArray:bubbleData withTime:time forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID withDate:date];
             
         }else if ([type isEqualToString:@"video"]){
 
             [videoHandler setController:self];
-            [videoHandler receiveVideoFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withVideoTime:time withSendId:sendToID withFromId:fromID withJsonBody:body];
+            [videoHandler receiveVideoFile:data forBubbleDataArray:bubbleData forBubbleOtherData:otherData withVideoTime:time withSendId:sendToID withFromId:fromID withJsonBody:body withDate:date];
 
            
         }else if ([type isEqualToString:@"voice"]){

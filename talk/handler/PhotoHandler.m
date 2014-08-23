@@ -33,16 +33,15 @@
 @synthesize photopath;
 @synthesize uploadDate;
 
--(void)receiveFile:(NSData *)data withPath:(NSString *)path forBubbleDataArray:(NSMutableArray *)bubbleData withTime:(NSString *)time forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID{
-    HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
-
+-(void)receiveFile:(NSData *)data withPath:(NSString *)path forBubbleDataArray:(NSMutableArray *)bubbleData withTime:(NSString *)time forBubbleOtherData:(NSData *) otherData withSendId:(NSString *)sendID withFromId:(NSString *)fromID withDate:(NSDate *)date{
+  
     if ([fromID isEqualToString:sendID]) {
         UIImage * image = [UIImage imageWithData:data];
         NSBubbleData * bubble;
         if (time) {
-             bubble = [NSBubbleData dataWithImage:image withImageTime:time withPath:path date:[handler getDate] withType:BubbleTypeSomeoneElse];
+             bubble = [NSBubbleData dataWithImage:image withImageTime:time withPath:path date:date withType:BubbleTypeSomeoneElse];
         }else{
-            bubble = [NSBubbleData dataWithImage:image date:[handler getDate] type:BubbleTypeSomeoneElse path:path];
+            bubble = [NSBubbleData dataWithImage:image date:date type:BubbleTypeSomeoneElse path:path];
         }
         if (otherData) {
             bubble.avatar = [UIImage imageWithData:otherData];

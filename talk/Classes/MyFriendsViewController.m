@@ -487,11 +487,11 @@
             NSString  *str = [jsonDic JSONString];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-            NSDate *date = [NSDate dateWithTimeIntervalSince1970:[timeId longLongValue]/1000.0];
+           // NSDate *date = [NSDate dateWithTimeIntervalSince1970:[timeId longLongValue]/1000.0];
             //            NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
             [handler setDate:date];
             [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
-            [messagesProtocol getFiles:data withFromID:fromUser withBody:jsBody withPath:tidpath];
+            [messagesProtocol getFiles:data withFromID:fromUser withBody:jsBody withPath:tidpath withDate:date];
             [self.tableView reloadData];
             return;
         }
@@ -603,7 +603,7 @@
         //        NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
         [handler setDate:date];
         [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
-        [messagesProtocol getFiles:data withFromID:fromUser withBody:jsBody withPath:path];
+        [messagesProtocol getFiles:data withFromID:fromUser withBody:jsBody withPath:path withDate:date];
         [self.tableView reloadData];
         
     }];

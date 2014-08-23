@@ -28,7 +28,7 @@
 @synthesize type;
 @synthesize uploadDate;
 
-- (void)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withVideoTime:(NSString *)time withSendId:(NSString *)sendID withFromId:(NSString *)fromID withJsonBody:(NSString *)body{
+- (void)receiveVideoFile:(NSData *)data forBubbleDataArray:(NSMutableArray *)bubbleData forBubbleOtherData:(NSData *) otherData withVideoTime:(NSString *)time withSendId:(NSString *)sendID withFromId:(NSString *)fromID withJsonBody:(NSString *)body withDate:(NSDate *)d{
     
     HandlerUserIdAndDateFormater * handler = [HandlerUserIdAndDateFormater sharedObject];
     
@@ -40,7 +40,7 @@
 //        player.shouldAutoplay = NO;
 //        UIImage *fileImage = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
         UIImage *fileImage = [UIImage imageWithData:data];
-        NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withTime:time withType:@"video" date:[handler getDate] type:BubbleTypeSomeoneElse withVidePath:mp4Path withJsonBody:body];
+        NSBubbleData *bdata = [NSBubbleData dataWithImage:fileImage withTime:time withType:@"video" date:d type:BubbleTypeSomeoneElse withVidePath:mp4Path withJsonBody:body];
         if (otherData)
             bdata.avatar = [UIImage imageWithData:otherData];
         [bubbleData addObject:bdata];
