@@ -22,4 +22,6 @@
 
 -(void)copyAudiodate:(NSDate *)date withView:(UIImageView *)imageview withAudioTime:(NSString *)time withBubbleType:(BOOL)isMine;
 
+-(void) showLocation:(NSString *)address latitude:(float)latitude longitude:(float)longitude;
+
 @end

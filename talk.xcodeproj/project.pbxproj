@@ -10,6 +10,9 @@
 		030D10CF186D344700910292 /* photog150.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10CB186D344700910292 /* photog150.png */; };
 		030D10D0186D344700910292 /* camera_icon150.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10CC186D344700910292 /* camera_icon150.png */; };
 		030D10D1186D344700910292 /* video150.png in Resources */ = {isa = PBXBuildFile; fileRef = 030D10CD186D344700910292 /* video150.png */; };
+		03123E3319A9D7D1006E74D7 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03123E3019A9D7D1006E74D7 /* MapViewController.m */; };
+		03123E3419A9D7D1006E74D7 /* LookMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03123E3219A9D7D1006E74D7 /* LookMapViewController.m */; };
+		03123E3719A9D8D6006E74D7 /* Maphandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 03123E3619A9D8D6006E74D7 /* Maphandler.m */; };
 		0316AE1818A189DE00F3329A /* settings2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0316AE1718A189DE00F3329A /* settings2.png */; };
 		0325141F19201CC1002910A6 /* MyStatusDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0325141E19201CC1002910A6 /* MyStatusDB.m */; };
 		0325142519201D26002910A6 /* StatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0325142219201D26002910A6 /* StatusViewController.m */; };
@@ -370,6 +373,12 @@
 		030D10CB186D344700910292 /* photog150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photog150.png; sourceTree = "<group>"; };
 		030D10CC186D344700910292 /* camera_icon150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_icon150.png; sourceTree = "<group>"; };
 		030D10CD186D344700910292 /* video150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video150.png; sourceTree = "<group>"; };
+		03123E2F19A9D7D1006E74D7 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		03123E3019A9D7D1006E74D7 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		03123E3119A9D7D1006E74D7 /* LookMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LookMapViewController.h; sourceTree = "<group>"; };
+		03123E3219A9D7D1006E74D7 /* LookMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LookMapViewController.m; sourceTree = "<group>"; };
+		03123E3519A9D8D6006E74D7 /* Maphandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Maphandler.h; sourceTree = "<group>"; };
+		03123E3619A9D8D6006E74D7 /* Maphandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Maphandler.m; sourceTree = "<group>"; };
 		0316AE1718A189DE00F3329A /* settings2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings2.png; sourceTree = "<group>"; };
 		0325141D19201CC1002910A6 /* MyStatusDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyStatusDB.h; sourceTree = "<group>"; };
 		0325141E19201CC1002910A6 /* MyStatusDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyStatusDB.m; sourceTree = "<group>"; };
@@ -979,6 +988,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		03123E2E19A9D7AE006E74D7 /* map */ = {
+			isa = PBXGroup;
+			children = (
+				03123E2F19A9D7D1006E74D7 /* MapViewController.h */,
+				03123E3019A9D7D1006E74D7 /* MapViewController.m */,
+				03123E3119A9D7D1006E74D7 /* LookMapViewController.h */,
+				03123E3219A9D7D1006E74D7 /* LookMapViewController.m */,
+			);
+			name = map;
+			sourceTree = "<group>";
+		};
 		0325142019201D13002910A6 /* status */ = {
 			isa = PBXGroup;
 			children = (
@@ -1008,6 +1028,7 @@
 		03D9BEEF18145C080039118F = {
 			isa = PBXGroup;
 			children = (
+				03123E2E19A9D7AE006E74D7 /* map */,
 				0EE951A1185EA4B9003F4638 /* images */,
 				03D9C0BA18145E510039118F /* Vendor */,
 				03D9C0A718145E480039118F /* Utilities */,
@@ -1846,6 +1867,8 @@
 		03F5A1891867367500CD60FD /* handler */ = {
 			isa = PBXGroup;
 			children = (
+				03123E3519A9D8D6006E74D7 /* Maphandler.h */,
+				03123E3619A9D8D6006E74D7 /* Maphandler.m */,
 				037D20B218AF560400928647 /* MediaHandler.h */,
 				037D20B318AF560400928647 /* MediaHandler.m */,
 				03F5A18D1867376400CD60FD /* PhotoHandler.h */,
@@ -2659,6 +2682,7 @@
 				03D9C09318145E410039118F /* XMPPMessageArchiving.xcdatamodeld in Sources */,
 				03D9BF7918145E370039118F /* XMPPParser.m in Sources */,
 				03D9C07B18145E410039118F /* XMPPvCardTemp.m in Sources */,
+				03123E3719A9D8D6006E74D7 /* Maphandler.m in Sources */,
 				0E0F511F18F68965004D4BAA /* DownloadVoice.m in Sources */,
 				0EEFAE511895299500F44745 /* PrivacyPoolicyViewController.m in Sources */,
 				0EFC8CB518ADE0B900EF09D8 /* DownloadDB.m in Sources */,
@@ -2675,6 +2699,7 @@
 				03D9C08918145E410039118F /* XMPPMessage+XEP_0066.m in Sources */,
 				03D9C08E18145E410039118F /* XMPPCapabilities.xcdatamodel in Sources */,
 				03D9C06D18145E410039118F /* XMPPRoomHybridStorage.m in Sources */,
+				03123E3419A9D7D1006E74D7 /* LookMapViewController.m in Sources */,
 				44A80EB0183129E2006069DE /* EmojiTransport.m in Sources */,
 				03D9C0ED18145E510039118F /* DDXMLElement.m in Sources */,
 				03D9C09818145E410039118F /* XMPPvCardAvatarModule.m in Sources */,
@@ -2735,6 +2760,7 @@
 				03D9BF5518145E270039118F /* XMPPXFacebookPlatformAuthentication.m in Sources */,
 				0EFD8C1418D41710005A93B0 /* CopyHandler.m in Sources */,
 				03D9C07018145E410039118F /* XMPPRoomMemoryStorage.m in Sources */,
+				03123E3319A9D7D1006E74D7 /* MapViewController.m in Sources */,
 				0EF01EBD18B4889D0012CC3F /* DownloadAvatar.m in Sources */,
 				0E084794182736BC00350741 /* UIBubbleTypingTableViewCell.m in Sources */,
 				0EE9519D185EA47D003F4638 /* ChineseString.m in Sources */,

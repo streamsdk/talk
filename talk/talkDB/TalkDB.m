@@ -165,6 +165,20 @@
                             [dataArray addObject:bubble];
                              fileCount = fileCount+1;
                         }
+                        else if ([key isEqualToString:@"address"]){
+                            NSMutableDictionary * addressDict = [chatDic objectForKey:@"address"];
+                            NSString * address = [addressDict objectForKey:@"address"];
+                            NSString * latitude = [addressDict objectForKey:@"latitude"];
+                            NSString * longitude = [addressDict objectForKey:@"longitude"];
+                            NSString *path = [addressDict objectForKey:@"path"];
+                            UIImage *image = [UIImage imageWithContentsOfFile:path];
+                            NSBubbleData *bubble = [NSBubbleData dataWithAddress:address latitude:[latitude floatValue] longitude:[longitude floatValue] withImage:image date:date type:BubbleTypeMine path:path];
+                            if (myData)
+                                bubble.avatar = [UIImage imageWithData:myData];
+                            [dataArray addObject:bubble];
+                            fileCount = fileCount+1;
+                        }
+
 
                     }
                    
@@ -236,8 +250,19 @@
                             [dataArray addObject:bubble];
                              fileCount = fileCount+1;
                             break;
+                        }else if ([key isEqualToString:@"address"]){
+                            NSMutableDictionary * addressDict = [chatDic objectForKey:@"address"];
+                            NSString * address = [addressDict objectForKey:@"address"];
+                            NSString * latitude = [addressDict objectForKey:@"latitude"];
+                            NSString * longitude = [addressDict objectForKey:@"longitude"];
+                            NSString *path = [addressDict objectForKey:@"path"];
+                            UIImage *image = [UIImage imageWithContentsOfFile:path];
+                            NSBubbleData *bubble = [NSBubbleData dataWithAddress:address latitude:[latitude floatValue] longitude:[longitude floatValue] withImage:image date:date type:BubbleTypeSomeoneElse path:path];
+                            if (otherData)
+                                bubble.avatar = [UIImage imageWithData:otherData];
+                            [dataArray addObject:bubble];
+                            fileCount = fileCount+1;
                         }
-                        
                 
                     }
                 }

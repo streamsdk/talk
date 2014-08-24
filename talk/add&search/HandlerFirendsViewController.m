@@ -153,7 +153,6 @@
                 [sq setQueryLogicAnd:true];
                 [sq whereEqualsTo:@"status" forValue:@"sendRequest"];
                 NSMutableArray * friends = [sq find];
-                ReadStatus * readStatus =[[ReadStatus alloc]init];
                 for (STreamObject *so in friends) {
                     if (![friendsHistoryArray containsObject:[so objectId]]) {
                         [searchDB insertDB:[handler getUserID] withFriendID:[so objectId]];

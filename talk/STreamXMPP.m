@@ -345,9 +345,7 @@ static XMPPReconnect *xmppReconnect;
         if (!type){
             return;
         }
-        if ([type isEqualToString:@"map"]){
-            return;
-        }
+        
         NSString *chatId = [json objectForKey:@"id"];
         NSString *fromID = [json objectForKey:@"from"];
         if (fromID==nil) {

@@ -40,6 +40,7 @@
 #import "ChatBackGround.h"
 #import "CustomTextField.h"
 #import "CopyDB.h"
+#import "Maphandler.h"
 
 #define BUTTON_TAG 20000
 #define TOOLBARTAG		200
@@ -47,7 +48,7 @@
 #define BIG_IMG_WIDTH  300.0
 #define BIG_IMG_HEIGHT 340.0
 #define HUD_TAG 10000
-@interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate,reloadTableDeleage,reloadCellDeleage>
+@interface MainController () <UIScrollViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,PlayerDelegate,reloadTableDeleage,reloadCellDeleage,MapDeleage>
 {
     NSMutableArray *bubbleData;
     CreateUI * createUI;
@@ -66,6 +67,7 @@
     VideoHandler *videoHandler;
     MessageHandler *messageHandler;
     AudioHandler *audioHandler;
+    Maphandler *mapHandler;
     
     UIImage * sendImage;
     
@@ -325,6 +327,10 @@
     
     audioHandler = [[AudioHandler alloc]init];
     
+    
+    mapHandler = [[Maphandler alloc]init];
+    mapHandler.delegate = self;
+    
     _deleteBackview = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-40, self.view.frame.size.width,40)];
     _deleteBackview.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_deleteBackview];
@@ -426,13 +432,13 @@
     //icon
     iconScrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, ICONHEIGHT)];
     [iconScrollView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"facesBack.png"]]];
-    for (int i=0; i<5; i++) {
-        IconView *fview=[[IconView alloc] initWithFrame:CGRectMake(320*i, 15, self.view.frame.size.width, facialViewHeight)];
+   // for (int i=0; i<5; i++) {
+        IconView *fview=[[IconView alloc] initWithFrame:CGRectMake(0, 15, self.view.frame.size.width, facialViewHeight)];
         [fview setBackgroundColor:[UIColor clearColor]];
-        [fview loadIconView:i size:CGSizeMake(40, 40)];
+        [fview loadIconView:0 size:CGSizeMake(40, 40)];
         fview.delegate=self;
         [iconScrollView addSubview:fview];
-    }
+   // }
     [iconScrollView setShowsVerticalScrollIndicator:NO];
     [iconScrollView setShowsHorizontalScrollIndicator:NO];
     iconScrollView.contentSize=CGSizeMake(320, ICONHEIGHT);
@@ -542,6 +548,11 @@
            
         }else if ([type isEqualToString:@"voice"]){
             [audioHandler receiveAudioFile:data withBody:time forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
+        }else if ([type isEqualToString:@"map"]){
+            NSString *address = [json objectForKey:@"address"];
+            NSString *latitude = [json objectForKey:@"latitude"];
+            NSString *longitude = [json objectForKey:@"longitude"];
+            [mapHandler receiveAddress:address latitude:[latitude floatValue] longitude:[longitude floatValue] withImage:[UIImage imageWithData:data] forBubbleDataArray:bubbleData forBubbleOtherData:otherData withSendId:sendToID withFromId:fromID];
         }
         NSBubbleData * bubble = [bubbleData lastObject];
         bubble.delegate = self;
@@ -1167,6 +1178,11 @@
         [self addVideo];
         [self scrollBubbleViewToBottomAnimated:YES];
     }
+    if (buttonTag == 3) {
+        [self scrollBubbleViewToBottomAnimated:YES];
+        MapViewController *map = [[MapViewController alloc]init];
+        [self presentViewController:map animated:NO completion:NULL];
+    }
 }
 
 -(void)bigImage:(UIImage *)image{
@@ -1260,6 +1276,15 @@
         [audioHandler setIsAddUploadDB:YES];
         [audioHandler setUploadDate:date];
         [audioHandler sendAudio:v forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:fromID];
+    }
+    if ([type isEqualToString:@"map"]) {
+        NSDictionary * dict = [time objectFromJSONString];
+        [mapHandler setMappath:filePath];
+        [mapHandler setIsfromUploadDB:YES];
+        [mapHandler setUploadDate:date];
+        UIImage *image =[UIImage imageWithContentsOfFile:[dict objectForKey:@"path"]];
+        [mapHandler sendAddress:[dict objectForKey:@"address"] latitude:[[dict objectForKey:@"latitude"] floatValue] longitude:[[dict objectForKey:@"latitude"] floatValue] withImage:image forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:fromID];
+        
     }
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
@@ -1380,6 +1405,48 @@
     }
     [bubbleTableView reloadData];
     [self scrollBubbleViewToBottomAnimated:YES];
+}
+
+-(void) showLocation:(NSString *)address latitude:(float)latitude longitude:(float)longitude{
+    LookMapViewController * lookMap = [[LookMapViewController alloc]init];
+    [lookMap setAddress:address];
+    [lookMap setLatitude:latitude];
+    [lookMap setLongitude:longitude];
+    [self presentViewController:lookMap animated:NO completion:NULL];
+}
+
+-(void)getBubbleData{
+    [self dismissKeyBoard];
+    ImageCache *imageCache = [ImageCache sharedObject];
+    HandlerUserIdAndDateFormater *handler = [HandlerUserIdAndDateFormater sharedObject];
+    NSMutableDictionary *userMetaData = [imageCache getUserMetadata:[handler getUserID]];
+    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+    myData = [imageCache getImage:pImageId];
+    NSString *sendToID =[imageCache getFriendID];
+    NSMutableArray * dataArray = [[NSMutableArray alloc]init];
+    TalkDB * talk =[[TalkDB alloc]init];
+    dataArray = [talk readInitDB:[handler getUserID] withOtherID:sendToID withCount:10];
+    [imageCache saveRaedCount:[NSNumber numberWithInt:([imageCache getReadCount:sendToID]+1)] withuserID:sendToID];
+    bubbleData = dataArray;
+    for (NSBubbleData * data in bubbleData) {
+        data.delegate = self;
+    }
+}
+
+-(void)sendCurrendLocation:(NSString *)address latitude:(float)latitude longitude:(float)longitude withImage:(UIImage *)image{
+    [self getBubbleData];
+    ImageCache *imageCache = [ImageCache sharedObject];
+    if ([imageCache getFriendID]) {
+        
+        [mapHandler sendAddress:address latitude:latitude longitude:longitude withImage:image forBubbleDataArray:bubbleData forBubbleMyData:myData withSendId:[imageCache getFriendID]];
+    }
+    [bubbleTableView reloadData];
+    [self scrollBubbleViewToBottomAnimated:YES];
+    [imageCache saveTablecontentOffset:0 withUser:[imageCache getFriendID]];
+}
+
+-(void) reloadMapView{
+    //    [self viewWillAppear:YES];
 }
 
 -(void)doInBackground
