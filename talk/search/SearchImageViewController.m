@@ -122,7 +122,7 @@
         [imageView addGestureRecognizer:recognizer];
         activityIndicatorView.frame = CGRectMake(imageView.frame.size.width/2, imageView.frame.size.height/2, 20, 20);
         [activityIndicatorView setCenter:CGPointMake(imageView.frame.size.width/2, imageView.frame.size.height/2)];
-        //[imageView addSubview:activityIndicatorView];
+        [imageView addSubview:activityIndicatorView];
     }
     UIImageView * imageView = (UIImageView *)[cell.contentView viewWithTag:10000];
     imageView.image = [dataArray objectAtIndex:indexPath.row];
