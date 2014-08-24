@@ -116,7 +116,7 @@
 //    NSArray * nameArray = [[NSArray alloc]initWithObjects:userName,passWord, nil];
     __block NSString * error;
     DownloadAvatar *downloadAvatar = [[DownloadAvatar alloc]init];
-    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"user does not exist or password wrong" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"user does not exist or password wrong" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     if (userName && ([userName length] != 0) && passWord &&([passWord length]!= 0)) {
         
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -156,7 +156,7 @@
 
     }else {
         
-        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"please input user name or password" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"please input user name or password" delegate:self cancelButtonTitle:@"TRY AGAIN" otherButtonTitles:nil, nil];
         [alertView show];
     }
 

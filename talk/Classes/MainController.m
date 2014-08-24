@@ -41,6 +41,7 @@
 #import "CustomTextField.h"
 #import "CopyDB.h"
 #import "Maphandler.h"
+#import "SearchImageViewController.h"
 
 #define BUTTON_TAG 20000
 #define TOOLBARTAG		200
@@ -1182,6 +1183,14 @@
         [self scrollBubbleViewToBottomAnimated:YES];
         MapViewController *map = [[MapViewController alloc]init];
         [self presentViewController:map animated:NO completion:NULL];
+    }
+    if (buttonTag==4) {
+        SearchImageViewController *search = [[SearchImageViewController alloc]init];
+        [self presentViewController:search animated:NO completion:NULL];
+    }
+    if (buttonTag==5) {
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"coming soon!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alertView show];
     }
 }
 

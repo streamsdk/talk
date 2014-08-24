@@ -148,7 +148,7 @@
     [myMapView setRegion:[myMapView regionThatFits:viewRegion] animated:YES];
     MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
     point.coordinate = userLocation.coordinate;
-    point.title = @"点击发送当前位置";
+    point.title = @"Click To Send";
     point.subtitle = @"";
     [myMapView addAnnotation:point];
     latitude = userLocation.location.coordinate.latitude;
@@ -163,7 +163,7 @@
                                  mapView.showsUserLocation = NO;
                                  label.text = address;
                             }
-                             point.title = @"点击发送当前位置";
+                             point.title = @"Click To Send";
                              point.subtitle = locatedAt;
                              [myMapView selectAnnotation:point animated:YES];
                          }else{
@@ -199,7 +199,7 @@
             
             MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
             point.coordinate = coords;
-            point.title = @"点击发送当前位置";
+            point.title = @"Click To Send";
             point.subtitle = oreillyAddress;
             [myMapView addAnnotation:point];
             label.text = oreillyAddress;

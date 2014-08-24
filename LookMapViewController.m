@@ -73,7 +73,7 @@
     
     MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
     point.coordinate = coords;
-    point.title = @"当前位置";
+    point.title = @"current location";
     point.subtitle = address;//设置一些显示的信息
     [myMapView addAnnotation:point];
      [myMapView selectAnnotation:point animated:YES];
