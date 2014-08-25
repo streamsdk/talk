@@ -428,16 +428,15 @@
     }
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
-    NSDate * date = [handler getDate];
-    [handler setDate:date];
-    DownloadDB * downloadDB = [[DownloadDB alloc]init];
-    [downloadDB insertDownloadDB:[handler getUserID] fileID:fileId withBody:body withFrom:fromID withTime:[dateFormatter stringFromDate:date]];
     
     STreamFile *sf = [[STreamFile alloc] init];
     NSData *jsonData = [body dataUsingEncoding:NSUTF8StringEncoding];
     JSONDecoder *decoder = [[JSONDecoder alloc] initWithParseOptions:JKParseOptionNone];
     NSMutableDictionary *json = [decoder objectWithData:jsonData];
     NSString *type = [json objectForKey:@"type"];
+    
+    DownloadDB * downloadDB = [[DownloadDB alloc]init];
+    [downloadDB insertDownloadDB:[handler getUserID] fileID:fileId withBody:body withFrom:fromID withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]]];
     
     if ([type isEqualToString:@"video"]) {
         
@@ -489,9 +488,9 @@
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
            // NSDate *date = [NSDate dateWithTimeIntervalSince1970:[timeId longLongValue]/1000.0];
             //            NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
-            [handler setDate:date];
-            [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
-            [messagesProtocol getFiles:data withFromID:fromUser withBody:jsBody withPath:tidpath withDate:date];
+           // [handler setDate:date];
+            [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]] withIsMine:1];
+            [messagesProtocol getFiles:data withFromID:fromUser withBody:jsBody withPath:tidpath withDate:[NSDate dateWithTimeIntervalSinceNow:0]];
             [self.tableView reloadData];
             return;
         }
@@ -601,9 +600,13 @@
         //        NSInteger interval = [zone secondsFromGMTForDate:date];
         //        date = [date dateByAddingTimeInterval:interval];
         //        NSDate * date = [NSDate dateWithTimeIntervalSinceNow:0];
+        NSDate * date = [handler getDate];
+        //NSLog(@"JUST %@", [dateFormatter stringFromDate:date]);
         [handler setDate:date];
         [db insertDBUserID:userID fromID:fromUser withContent:str withTime:[dateFormatter stringFromDate:date] withIsMine:1];
+         //NSLog(@"before %@ %@", type, [dateFormatter stringFromDate:date]);
         [messagesProtocol getFiles:data withFromID:fromUser withBody:jsBody withPath:path withDate:date];
+       
         [self.tableView reloadData];
         
     }];
