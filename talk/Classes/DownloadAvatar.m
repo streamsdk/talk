@@ -19,7 +19,7 @@
     ImageCache *imageCache = [ImageCache sharedObject];
     NSMutableDictionary *userMetaData = [imageCache getUserMetadata:userID];
     if (userMetaData!=nil) {
-        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+        NSString *pImageId = [self getProfileImageId:userMetaData];
         if (pImageId!=nil && ![pImageId isEqualToString:@""] &&[imageCache getImage:pImageId]==nil){
             FileCache *fileCache = [FileCache sharedObject];
             STreamFile *file = [[STreamFile alloc] init];
@@ -37,6 +37,22 @@
         }
     }
     return avatarImage;
+}
+
+-(NSString *)getProfileImageId:(NSMutableDictionary *)userMetaData{
+    
+    NSString *newProfileImageIds = [userMetaData objectForKey:@"newprofileimage"];
+    if (newProfileImageIds){
+        if ([newProfileImageIds rangeOfString:@"|"].location != NSNotFound){
+            NSArray *ids = [newProfileImageIds componentsSeparatedByString:@"|"];
+            return [ids objectAtIndex:0];
+        }else{
+            return newProfileImageIds;
+        }
+    }else{
+        return [userMetaData objectForKey:@"profileImageId"];
+    }
+    
 }
 
 
