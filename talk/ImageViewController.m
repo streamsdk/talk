@@ -35,6 +35,12 @@ static NSMutableArray *colors;
     NSData * data;
     NSArray * itemsarray;
     NSArray * donearray;
+    
+    
+    UIView *maskView;
+    UIPickerView *_providerPickerView;
+    UIToolbar *_providerToolbar;
+    UILabel *lable;
 }
 @end
 
@@ -70,6 +76,13 @@ static NSMutableArray *colors;
     if ([colors count]==0) {
         [colors addObject:[UIColor greenColor]];
     }
+    
+    
+    lable = [[UILabel alloc]initWithFrame:CGRectMake(self.view.bounds.size.width/2 - 50, self.view.bounds.size.height - 344 + 11, 120, 24)];
+    lable.text = @"Expire After";
+    lable.textColor = [UIColor whiteColor];
+    lable.hidden = YES;
+    
     UIImage *newImg = [self imageWithImageSimple:image scaledToSize:CGSizeMake(self.view.frame.size.width, self.view.frame.size.height)];
     drawView = [[MyView alloc]initWithFrame:self.view.frame];
     drawView.userInteractionEnabled = YES;
@@ -416,8 +429,16 @@ static NSMutableArray *colors;
         [button setTitle:time forState:UIControlStateNormal] ;
     }
 }
+
+- (void)dismissActionSheet:(id)sender{
+    [maskView removeFromSuperview];
+    [_providerPickerView removeFromSuperview];
+    [_providerToolbar removeFromSuperview];
+    lable.hidden = YES;
+}
+
 -(void) clockClicled {
-    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+    /*actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
     UIPickerView * pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 10, self.view.frame.size.width, 60)] ;
     pickerView.tag = 101;
@@ -439,11 +460,37 @@ static NSMutableArray *colors;
     [actionSheet addSubview:button];
     [actionSheet showInView:self.view];
     [actionSheet setBounds:CGRectMake(0, 0, 320,300)];
-    [actionSheet setBackgroundColor:[UIColor whiteColor]];
+    [actionSheet setBackgroundColor:[UIColor whiteColor]];*/
+    
+    
+    maskView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    [maskView setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5]];
+    
+    [self.view addSubview:maskView];
+    _providerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 344, self.view.bounds.size.width, 44)];
+  
+    
+    
+    UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissActionSheet:)];
+    _providerToolbar.items = @[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], done];
+    _providerToolbar.barStyle = UIBarStyleBlackOpaque;
+    
+    lable.hidden = NO;
+    [self.view addSubview:_providerToolbar];
+    [self.view addSubview:lable];
+    
+    
+    _providerPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 300, 0, 0)];
+    _providerPickerView.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5];
+    _providerPickerView.showsSelectionIndicator = YES;
+    _providerPickerView.dataSource = self;
+    _providerPickerView.delegate = self;
+    
+    [self.view addSubview:_providerPickerView];
+    
 }
 -(void)segmentAction:(UISegmentedControl*)seg{
     NSInteger index = seg.selectedSegmentIndex;
-    NSLog(@"%d",index);
     [actionSheet dismissWithClickedButtonIndex:index animated:YES];
 }
 

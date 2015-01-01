@@ -51,18 +51,17 @@ static const NSTimeInterval fullscreenAnimationDuration = 0.3;
 
 # pragma mark - Construct/Destruct
 
-- (id)init {
+/*- (id)init {
     return [self initWithFrame:CGRectZero];
 }
 
 - (id)initWithContentURL:(NSURL *)url {
     [[NSException exceptionWithName:@"ALMoviePlayerController Exception" reason:@"Set contentURL after initialization." userInfo:nil] raise];
     return nil;
-}
+}*/
 
 - (id)initWithFrame:(CGRect)frame {
     if ( (self = [super init]) ) {
-        
         self.view.frame = frame;
         self.view.backgroundColor = [UIColor blackColor];
         [self setControlStyle:MPMovieControlStyleNone];
