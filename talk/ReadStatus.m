@@ -20,6 +20,7 @@
     NSMutableDictionary * addDict = [addDB readDB:[handle getUserID]];
     NSArray * array = [addDict allKeys];
     for (NSString * friendID in array) {
+        [self saveData:friendID];
         [self performSelectorInBackground:@selector(saveData:) withObject:friendID ];
     }
     
@@ -27,14 +28,17 @@
 -(void) saveData:(NSString *)friendID {
     STreamUser *user = [[STreamUser alloc] init];
     ImageCache *imageCache = [ImageCache sharedObject];
-    NSMutableDictionary * allMetaData = [[NSMutableDictionary alloc]initWithCapacity:0];
-    [user loadUserMetadata:friendID response:^(BOOL succeed, NSString *error){
+    [user loadUserMetadata:friendID];
+    if ([user userMetadata])
+       [imageCache saveUserMetadata:friendID withMetadata:[user userMetadata]];
+    
+    /*[user loadUserMetadata:friendID response:^(BOOL succeed, NSString *error){
         if ([error isEqualToString:friendID]){
             NSMutableDictionary *dic = [user userMetadata];
             [allMetaData setObject:dic forKey:friendID];
              [imageCache saveUserMetadata:friendID withMetadata:dic];
         }
-        }];
+    }];*/
 
 }
 -(NSString *) readStatus:(NSString *)fromID {

@@ -572,7 +572,7 @@ static NSMutableArray *colors;
                                      kCGImageAlphaPremultipliedFirst);
     if (context == NULL)
     {
-        free (bitmapData);
+         free (bitmapData);
         fprintf (stderr, "Context not created!");
     }
     // Make sure and release colorspace before returning

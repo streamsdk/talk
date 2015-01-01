@@ -646,13 +646,15 @@
     [sectionView addSubview:label];
     return sectionView;
 }
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     NSString *cellId = @"CellId";
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
     if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellId];
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:cellId];
         //        [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.tag = TABLECELL_TAG;
@@ -678,7 +680,7 @@
             NSInteger count = [imageCache getMessagesCount:str.string];
             
             if (count!= 0) {
-                NSString * title =[NSString stringWithFormat:@"%d",count];
+                NSString * title =[NSString stringWithFormat:@"%ld",(long)count];
                 [button setBackgroundImage:[UIImage imageNamed:@"message_count.png"] forState:UIControlStateNormal];
                 [button setTitle:title forState:UIControlStateNormal];
             }
@@ -863,8 +865,8 @@
     cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 }
--(float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 60;
+-(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 60.0;
 }
 
 #pragma mark egoRefreshScrollViewDidScroll delegate

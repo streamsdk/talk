@@ -97,7 +97,9 @@
 {
     [super viewDidLoad];
     mainVC = [[MainController alloc]init];
-	// Do any additional setup after loading the view.
+    
+    
+    // Do any additional setup after loading the view.
     UIView * topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 70)];
     topView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
     [self.view addSubview:topView];
@@ -129,6 +131,15 @@
 //	[myLocationManager setDelegate:self];
 //	[myLocationManager setDesiredAccuracy:kCLLocationAccuracyBest];
 //	[myLocationManager startUpdatingLocation];
+    
+    self.myLocationManager = [[CLLocationManager alloc] init];
+    self.myLocationManager.delegate = self;
+    // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
+    if ([self.myLocationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        [self.myLocationManager requestWhenInUseAuthorization];
+    }
+    [self.myLocationManager startUpdatingLocation];
+    
     myGeoCoder = [[CLGeocoder alloc]init];
     HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"sending...";
